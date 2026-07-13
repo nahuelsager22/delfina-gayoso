@@ -66,7 +66,8 @@
 | Media | técnica | **Atmósferas en los cinco formatos.** Confirmar que el campo se comporta consistente en Mobile/iPhone/Tablet/MacBook/Desktop (posición de los focos por viewport, rendimiento del repintado en Android bajo). |
 | Baja | técnica | **Afinar el color del navbar por atmósfera.** Hoy el bar hereda `--atm-navbar-rgb` (Harina teñida) y se funde sin borde. Validar la legibilidad de los enlaces sobre la zona de fade cuando pasa contenido por debajo, en cada atmósfera. |
 | Media | conceptual/técnica | **Afinar el bloom de MasterChef.** El foco rojo del campo (`--atm-emo-*`, pico 0.26, radio 60%, falloff 0.62vh) es una primera propuesta; ajustar intensidad/tamaño/curva con Delfina para que evoque con la fuerza justa. |
-| Media | técnica | **Validar contraste con las atmósferas más presentes.** Con las nuevas temperaturas (corazón café/corteza 0.30, íntima piedra 0.20, fresca verde 0.22) confirmar que `Hierro` se mantiene ≥AA en el punto más intenso de cada momento; ajustar intensidad si algún foco baja el contraste. |
+| **Alta** | técnica | **Validar contraste con las atmósferas al máximo de presencia.** Se subieron las intensidades (corazón corteza 0.42 + café 0.24, calida yema 0.36, fresca perejil 0.34, íntima piedra 0.30, despedida corteza 0.34). Confirmar con medición real que `Hierro` se mantiene ≥AA en el punto más intenso y en la base del lavado vertical de cada momento; bajar intensidad puntual si algún foco compromete la lectura. |
+| Baja | conceptual | **Atmósferas ancladas (Opción C) — afinar la meseta.** `HOLD = 0.36` (fuerza plena) y banda de transición central: recorrer vivo y ajustar si algún cruce se siente muy rápido o muy lento. |
 
 ---
 

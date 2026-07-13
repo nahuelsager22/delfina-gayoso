@@ -102,10 +102,19 @@ export function AtmosferaProvider({ children }: { children: React.ReactNode }) {
         const b = anclas[i + 1]!;
         if (ref >= a.centro && ref <= b.centro) {
           const t = (ref - a.centro) / (b.centro - a.centro);
-          // smoothstep: la atmósfera se mantiene estable dentro de cada sección y
-          // el cambio se concentra —gradual y orgánico— en el aire entre secciones.
-          const suave = t * t * (3 - 2 * t);
-          escribirVars(raiz, mezclar(a.atm, b.atm, suave));
+          // ATMÓSFERAS ANCLADAS (Opción C): cada atmósfera se sostiene a FUERZA PLENA
+          // mientras se recorre su sección (meseta `HOLD` en cada extremo) y sólo
+          // cruza —suave— en la zona de borde entre dos secciones. Así cada capítulo
+          // llega a su identidad completa (deja un recuerdo distinto), sin cortes.
+          const HOLD = 0.36;
+          let k: number;
+          if (t <= HOLD) k = 0;
+          else if (t >= 1 - HOLD) k = 1;
+          else {
+            const u = (t - HOLD) / (1 - 2 * HOLD);
+            k = u * u * (3 - 2 * u); // smoothstep en la banda de transición
+          }
+          escribirVars(raiz, mezclar(a.atm, b.atm, k));
           return;
         }
       }

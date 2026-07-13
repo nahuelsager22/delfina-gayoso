@@ -42,7 +42,7 @@ export const servicios: readonly PropuestaServicio[] = [
     aQuienLeSirve:
       "Escuelas, espacios gastronómicos o equipos que quieran un taller o una clase pensada para ellos.",
     comoEsTrabajar:
-      "Armamos juntos el temario según el nivel del grupo, y yo llevo todo listo para cocinar.",
+      "Armamos juntos el temario según el nivel del grupo.",
     contacto: {
       invitacion: "Contame de tu grupo o tu espacio y la diseñamos a medida.",
       canales: CANALES,

@@ -346,6 +346,11 @@ Nueva evidencia (indicaciones directas del usuario) con prioridad sobre las deci
 - **Sistema de Atmósferas — nueva capa del sistema de experiencia.** El recorrido deja de sentirse como una sucesión de secciones y pasa a un **único universo continuo**: un campo de luz que acompaña la emoción de cada momento (declarada en `momento.atmosfera`) e **interpola** de una a otra sin cortes. Cada momento conserva su intención emocional (§1); la atmósfera la acompaña, no la explica ni compite con el contenido. Las **transiciones** entre momentos (los silencios, ya con adornos) son ahora también parte del campo. El **navbar** hereda la atmósfera activa (es parte del universo, no una capa superpuesta), incluido el menú mobile.
 - **Detalle técnico decoupled:** la lógica y los colores viven en un único lugar (`app/_chrome/atmosferas/`); el contenido sólo declara qué atmósfera usa. Reutilizable en futuros proyectos cambiando la config.
 
+### Continuación (séptima ola de indicaciones, 2026-07-11)
+
+- **Arquitectura de atmósferas — decisión.** Frente a "campo continuo" (A) vs "atmósferas ancladas por sección con transición" (B, filosofía Brenda), se adoptó una **Opción C**: cada momento **posee su atmósfera a fuerza plena** mientras se lo recorre y sólo transiciona —suave— en los bordes. Razón desde la experiencia: cada capítulo debe dejar un **recuerdo emocional distinto** (lo que A diluía al promediar), manteniendo la continuidad del recorrido y sin sumar complejidad. Es coherente con la identidad —momentos claros, conectados, un solo universo— y con la regla de elegir la solución más natural, no la más compleja. Detalle técnico en `sistema-visual.md` (Continuación 7ª ola).
+- **La navegación es parte del universo (mobile).** Con el menú abierto, navegación y contenido no se superponen: el menú es una **hoja opaca coloreada por la atmósfera activa** (no una capa transparente encima). Refuerza "la interfaz acompaña": el navbar pertenece al mismo aire del recorrido.
+
 ---
 
 *Fin de la Arquitectura de Experiencia. Próximos bloques (no desarrollar aquí): Sistema Visual (4), Setup Técnico (5), Implementación por momentos (6).*

@@ -462,7 +462,16 @@
     pointer-events: none;
   }
 
+  /* Con el menú abierto: el bar deja de desvanecerse y se vuelve OPACO con la
+     atmósfera activa, formando una sola pieza con la hoja del menú (sin frontera,
+     sin que se vea el contenido detrás). */
+  .navbar[data-abierto="true"] {
+    background: rgb(var(--atm-navbar-rgb, 247 242 234));
+  }
+
   .navbar-inner {
+    position: relative;
+    z-index: 2; /* el bar (marca + botón) queda sobre la hoja del menú */
     max-inline-size: 80rem;
     margin-inline: auto;
     padding-inline: var(--space-lg);
@@ -541,20 +550,36 @@
 
   /* Panel mobile desplegable, debajo del bar. Hereda la atmósfera: al abrir el menú
      el usuario sigue dentro del mismo universo, no en un overlay genérico. */
+  /* Hoja del menú mobile: una superficie OPACA de pantalla completa, coloreada por
+     la MISMA atmósfera del punto del recorrido donde está el usuario (color + luz,
+     nunca transparencia). Cubre el contenido: no se ve nada detrás. El menú no es un
+     overlay superpuesto, es seguir dentro del mismo universo. */
   .navbar-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 1; /* debajo del bar (navbar-inner), sobre el contenido */
+    block-size: 100dvh;
     display: flex;
     flex-direction: column;
-    gap: var(--space-2xs);
+    justify-content: center;
+    gap: var(--space-xs);
     pointer-events: auto;
-    /* Mismo aire que el bar: hereda la atmósfera y se funde hacia abajo (sin borde),
-       para que abrir el menú sea seguir dentro del universo, no un overlay aparte. */
-    background: linear-gradient(
-      180deg,
-      rgb(var(--atm-navbar-rgb, 247 242 234)) 0%,
-      rgb(var(--atm-navbar-rgb, 247 242 234) / 0.92) 70%,
-      rgb(var(--atm-navbar-rgb, 247 242 234) / 0) 100%
-    );
-    padding: var(--space-sm) var(--space-lg) var(--space-2xl);
+    padding: calc(var(--navbar-h) + var(--space-2xl)) var(--space-lg)
+      var(--space-2xl);
+    overflow-y: auto;
+    /* Base opaca teñida por la atmósfera + focos de color/profundidad del momento. */
+    background-color: rgb(var(--atm-navbar-rgb, 247 242 234));
+    background-image:
+      radial-gradient(
+        circle at 26% 20%,
+        rgb(var(--atm-color-rgb) / 0.55) 0%,
+        transparent 62%
+      ),
+      radial-gradient(
+        circle at 84% 86%,
+        rgb(var(--atm-prof-rgb) / 0.5) 0%,
+        transparent 60%
+      );
   }
 
   .navbar-panel-link {

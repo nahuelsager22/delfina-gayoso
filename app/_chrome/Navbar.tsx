@@ -117,7 +117,7 @@ export function Navbar() {
   }, [abierto]);
 
   return (
-    <header className="navbar">
+    <header className="navbar" data-abierto={abierto ? "true" : undefined}>
       <div className="navbar-inner">
         <a
           href="#seccion-umbral"
