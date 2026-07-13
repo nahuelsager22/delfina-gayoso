@@ -85,6 +85,10 @@ export function CapituloSerie({ pieza }: { pieza: PiezaAprendizaje }) {
         </div>
       )}
 
+      {/* La apertura se siente como desplegar una hoja de recetario: la altura se
+          abre (grid-rows, estable), el texto se apoya en un "papel" (superficie Masa)
+          con una luz cálida arriba y una línea de margen (Corteza), y sube al
+          aparecer. Invita a seguir leyendo, paso a paso. */}
       {caption && (
         <div
           id={captionId}
@@ -93,16 +97,17 @@ export function CapituloSerie({ pieza }: { pieza: PiezaAprendizaje }) {
           aria-hidden={!abierto}
         >
           <div style={{ overflow: "hidden", minBlockSize: 0 }}>
-            <p
-              className="voz voz-texto text-cuerpo"
-              style={{
-                color: "var(--color-hierro)",
-                whiteSpace: "pre-line",
-                paddingBlockStart: "var(--space-sm)",
-              }}
-            >
-              <TextoConMenciones texto={caption} />
-            </p>
+            <div className="cap-paper">
+              <p
+                className="voz voz-texto text-cuerpo cap-paper-texto"
+                style={{
+                  color: "var(--color-hierro)",
+                  whiteSpace: "pre-line",
+                }}
+              >
+                <TextoConMenciones texto={caption} />
+              </p>
+            </div>
           </div>
         </div>
       )}

@@ -821,6 +821,11 @@ Nueva evidencia (indicaciones directas del usuario) con prioridad sobre lo anter
 - **Sección personal — ilustraciones del día a día.** "La cocina compartida" suma pequeñas ilustraciones line-art (`IlustracionComunidad`: mate, huellas de Budín, olla, plato, pantalla) junto a cada viñeta —cuentan quién es sin explicarlo con palabras— y se reformularon las tres frases que sonaban de relleno.
 - **Presentación del nombre (Opción B).** Al cargar, la marca del navbar aparece como **"Delfina Gayoso"** y, tras una pausa, se reduce con una transición elegante a **"DG"** (colapso CSS de las letras no iniciales; reduced-motion muestra "DG" directo). Da un momento claro de presentación conservando el tratamiento de las iniciales.
 
+### Continuación (novena ola de indicaciones, 2026-07-11)
+
+- **El logo re-presenta el nombre al abrir el menú.** La transición "Delfina Gayoso" → "DG" del intro se extiende al menú mobile: al abrirlo, la marca vuelve a expandirse a **"Delfina Gayoso"** y permanece mientras el menú está abierto; al cerrarlo, vuelve a **"DG"** con la misma transición. El estado lo maneja el navbar vía `data-nombre` en el monograma (DOM por ref, sin estado React → sin conflicto con el lint); `.np-resto` transiciona ancho + opacidad. El menú se siente como un momento donde la identidad vuelve a presentarse.
+- **Caption de la serie como hoja de recetario.** "Leer más" ya no es sólo una altura que se abre: el texto se apoya en una **superficie "papel"** (Masa, `--radius-min`) con una **luz cálida arriba** (iluminación de una hoja), una **línea de margen** (Corteza) a la izquierda —cue de recetario— y **sube al aparecer** (translateY) mientras la altura se despliega (grid-rows). Da la sensación de descubrir una explicación paso a paso e invita a seguir leyendo. Coherente con la DA (Masa como superficie, Corteza como acento, luz cálida, motion "posar"); sin librerías nuevas.
+
 ---
 
 *Fin del Sistema Visual. Próximos bloques (no desarrollar aquí): Setup Técnico (5), Implementación por momentos (6).*

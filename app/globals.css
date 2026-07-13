@@ -352,6 +352,38 @@
     opacity: 1;
   }
 
+  /* El caption como una hoja de recetario que se despliega (Bloque 6.5): superficie
+     "papel" (Masa) con luz cálida arriba y una línea de margen a la izquierda; el
+     texto sube al aparecer, como cuando abrís una hoja con instrucciones. */
+  .cap-paper {
+    position: relative;
+    margin-block-start: var(--space-sm);
+    padding: var(--space-md) var(--space-md) var(--space-md) var(--space-lg);
+    border-radius: var(--radius-min);
+    background-color: rgb(237 229 216 / 0.45); /* Masa: papel */
+    background-image: linear-gradient(
+      180deg,
+      rgb(255 246 228 / 0.6) 0%,
+      transparent 34%
+    ); /* luz cálida sobre la hoja */
+  }
+  .cap-paper::before {
+    content: "";
+    position: absolute;
+    inset-block: var(--space-md);
+    inset-inline-start: var(--space-md);
+    inline-size: 1px;
+    background-color: var(--color-corteza);
+    opacity: 0.32; /* margen de recetario */
+  }
+  .cap-paper-texto {
+    transform: translateY(-8px);
+    transition: transform var(--dur-lg) var(--ease-posar);
+  }
+  .cap-caption[data-abierto="true"] .cap-paper-texto {
+    transform: none;
+  }
+
   /* ---------------------------------------------------------------------------
      Aparición "vapor" (sistema-visual §5.3-1): opacity + translateY corto, se
      posa con --ease-posar. Sin librería de motion: es una transición CSS que un
@@ -527,22 +559,23 @@
     color: var(--color-corteza);
   }
 
-  /* Presentación (Opción B): "Delfina Gayoso" aparece al cargar y, tras una pausa,
-     se reduce a "DG" (quedan la D y la G, con su tratamiento). Transición CSS pura:
-     las letras no iniciales colapsan en ancho + opacidad. */
+  /* Presentación (Opción B): "Delfina Gayoso" ↔ "DG". Las letras no iniciales
+     colapsan en ancho + opacidad. El estado lo maneja el navbar con `data-nombre`
+     (JS, vía ref): se reduce tras el intro, se expande al abrir el menú y vuelve a
+     reducirse al cerrarlo. Por defecto (sin JS) queda expandido: nombre completo. */
   .np-resto {
     display: inline-block;
     overflow: hidden;
     white-space: pre;
     max-inline-size: 8ch;
     opacity: 1;
-    animation: np-colapsar 0.8s var(--ease-posar) 1.6s forwards;
+    transition:
+      max-inline-size 0.8s var(--ease-posar),
+      opacity 0.5s var(--ease-suave);
   }
-  @keyframes np-colapsar {
-    to {
-      max-inline-size: 0;
-      opacity: 0;
-    }
+  .navbar-monograma[data-nombre="reducido"] .np-resto {
+    max-inline-size: 0;
+    opacity: 0;
   }
 
   /* Desktop: enlaces de orientación. Ocultos en mobile (ahí manda el menú). */
@@ -687,12 +720,5 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
-  }
-
-  /* La marca aparece ya como "DG" (sin la intro del nombre completo). */
-  .np-resto {
-    animation: none !important;
-    max-inline-size: 0;
-    opacity: 0;
   }
 }

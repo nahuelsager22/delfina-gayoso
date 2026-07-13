@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { getMomentos, getRedes } from "@/content";
 
@@ -82,6 +82,36 @@ export function Navbar() {
   const [activo, setActivo] = useState<string | null>(null);
   const sinMotion = useReducedMotion();
 
+  // Presentación del nombre (Opción B) — controlada por `data-nombre` en el
+  // monograma (DOM vía ref, no estado React). Se reduce a "DG" tras el intro, y el
+  // menú vuelve a presentar el nombre completo: al abrir expande, al cerrar reduce.
+  const monoRef = useRef<HTMLSpanElement>(null);
+  const abiertoRef = useRef(abierto);
+
+  // El menú manda: abierto → nombre completo; cerrado → "DG" (misma transición).
+  useEffect(() => {
+    abiertoRef.current = abierto;
+    const el = monoRef.current;
+    if (el) el.dataset.nombre = abierto ? "expandido" : "reducido";
+  }, [abierto]);
+
+  // Intro al cargar: "Delfina Gayoso" y, tras una pausa, se reduce a "DG" (una vez).
+  // Corre después del efecto del menú, así en el montaje gana el intro (expandido).
+  useEffect(() => {
+    const el = monoRef.current;
+    if (!el) return;
+    if (sinMotion) {
+      el.dataset.nombre = abiertoRef.current ? "expandido" : "reducido";
+      return;
+    }
+    el.dataset.nombre = "expandido";
+    const t = setTimeout(() => {
+      if (!abiertoRef.current && monoRef.current)
+        monoRef.current.dataset.nombre = "reducido";
+    }, 1600);
+    return () => clearTimeout(t);
+  }, [sinMotion]);
+
   // Momento activo: el que cruza el centro del viewport (orienta, no navega).
   useEffect(() => {
     const secciones = Array.from(
@@ -125,9 +155,13 @@ export function Navbar() {
           aria-label="Delfina Gayoso — volver al inicio"
           onClick={() => setAbierto(false)}
         >
-          {/* Presentación (Opción B): "Delfina Gayoso" aparece y se reduce a "DG"
-              (transición CSS pura; ver `.np-resto` en globals). */}
-          <span className="navbar-monograma voz-display" aria-hidden="true">
+          {/* Presentación (Opción B): "Delfina Gayoso" ↔ "DG". El estado lo maneja
+              el navbar (data-nombre); el menú vuelve a presentar el nombre completo. */}
+          <span
+            ref={monoRef}
+            className="navbar-monograma voz-display"
+            aria-hidden="true"
+          >
             <span>D</span>
             <span className="np-resto">elfina&nbsp;</span>
             <span className="navbar-monograma-g">G</span>

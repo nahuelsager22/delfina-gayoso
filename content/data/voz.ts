@@ -58,7 +58,7 @@ export const voz: readonly VozDelfina[] = [
     // sigue de paso; hoy la define su presente (recibida, cocina, enseña, colabora).
     id: "quien-recorrido",
     texto:
-      "En 2023 pasé por MasterChef Argentina, y de ahí salí con ganas de tomármelo en serio. Estudié y me recibí de Profesional Gastronómico en el IAG. Hoy cocino, enseño y sigo formándome todos los días.",
+      "La cocina siempre estuvo conmigo. En 2023 pasé por MasterChef Argentina, una experiencia que me abrió nuevas puertas para seguir creciendo. Estudié y me recibí de Profesional Gastronómico en el IAG. Hoy cocino, enseño y sigo formándome todos los días.",
     registro: "reflexion",
     pertenece: "quien-cocina",
   },
