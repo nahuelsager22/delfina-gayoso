@@ -351,6 +351,11 @@ Nueva evidencia (indicaciones directas del usuario) con prioridad sobre las deci
 - **Arquitectura de atmósferas — decisión.** Frente a "campo continuo" (A) vs "atmósferas ancladas por sección con transición" (B, filosofía Brenda), se adoptó una **Opción C**: cada momento **posee su atmósfera a fuerza plena** mientras se lo recorre y sólo transiciona —suave— en los bordes. Razón desde la experiencia: cada capítulo debe dejar un **recuerdo emocional distinto** (lo que A diluía al promediar), manteniendo la continuidad del recorrido y sin sumar complejidad. Es coherente con la identidad —momentos claros, conectados, un solo universo— y con la regla de elegir la solución más natural, no la más compleja. Detalle técnico en `sistema-visual.md` (Continuación 7ª ola).
 - **La navegación es parte del universo (mobile).** Con el menú abierto, navegación y contenido no se superponen: el menú es una **hoja opaca coloreada por la atmósfera activa** (no una capa transparente encima). Refuerza "la interfaz acompaña": el navbar pertenece al mismo aire del recorrido.
 
+### Continuación (octava ola de indicaciones, 2026-07-11)
+
+- **Portadas de capítulo (matiza "no es una colección de secciones / sin placa").** Los grandes momentos ahora **anuncian su entrada** con un encabezado visible y distintivo (rótulo + título serif grande). No contradice la continuidad del recorrido: cada momento sigue siendo un tramo del mismo descenso, pero se **percibe claramente cuándo empieza un capítulo importante**, con identidad propia (reforzado por su atmósfera, ahora muy distinta). Sigue sin haber menú/placa corporativa; es señalización dentro del pasillo.
+- **Presentación del nombre.** Se resolvió el "momento claro donde aparece el nombre completo": al entrar, la marca muestra **Delfina Gayoso** y se reduce a **DG** (Opción B). Coherente con "entrar in medias res" —no es un hero— pero da la presentación explícita que faltaba tanto para quien la conoce como para quien llega por primera vez.
+
 ---
 
 *Fin de la Arquitectura de Experiencia. Próximos bloques (no desarrollar aquí): Sistema Visual (4), Setup Técnico (5), Implementación por momentos (6).*

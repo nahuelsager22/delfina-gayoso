@@ -302,6 +302,29 @@
     color: var(--color-corteza);
   }
 
+  /* Portada de capítulo (Bloque 6.5 · jerarquía): anuncia la entrada a un gran
+     momento con presencia tipográfica —un rótulo corto + un título en serif display,
+     grande, con aire—, para que cada capítulo se sienta con identidad propia. */
+  .momento-portada {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    max-inline-size: var(--measure-cuerpo);
+    margin-block-end: var(--space-2xl);
+  }
+  .momento-kicker {
+    font-family: var(--font-mundo);
+    font-size: var(--text-meta);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-piedra);
+  }
+  .momento-titulo {
+    font-size: var(--text-voz-xl);
+    line-height: 1.08;
+    color: var(--color-hierro);
+  }
+
   /* Mención @Instagram dentro del contenido (Bloque 6.5): enlace natural, cálido,
      en Corteza, sin subrayado permanente (aparece en hover). */
   .mencion-ig {
@@ -504,6 +527,24 @@
     color: var(--color-corteza);
   }
 
+  /* Presentación (Opción B): "Delfina Gayoso" aparece al cargar y, tras una pausa,
+     se reduce a "DG" (quedan la D y la G, con su tratamiento). Transición CSS pura:
+     las letras no iniciales colapsan en ancho + opacidad. */
+  .np-resto {
+    display: inline-block;
+    overflow: hidden;
+    white-space: pre;
+    max-inline-size: 8ch;
+    opacity: 1;
+    animation: np-colapsar 0.8s var(--ease-posar) 1.6s forwards;
+  }
+  @keyframes np-colapsar {
+    to {
+      max-inline-size: 0;
+      opacity: 0;
+    }
+  }
+
   /* Desktop: enlaces de orientación. Ocultos en mobile (ahí manda el menú). */
   .navbar-desktop {
     display: none;
@@ -646,5 +687,12 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* La marca aparece ya como "DG" (sin la intro del nombre completo). */
+  .np-resto {
+    animation: none !important;
+    max-inline-size: 0;
+    opacity: 0;
   }
 }

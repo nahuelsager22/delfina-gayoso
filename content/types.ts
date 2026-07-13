@@ -245,4 +245,10 @@ export interface MomentoComunidad {
   /** Registro: cómo se siente (ej. "humor", "calidez", "cotidiano"). */
   readonly registro: string;
   readonly imagen?: ImagenRealRef;
+  /**
+   * Pequeña ilustración del día a día que acompaña la viñeta (Bloque 6.5): cuenta
+   * quién es sin explicarlo todo con palabras. Identificador de un motivo dibujado
+   * (ver `IlustracionComunidad`): "mate", "huellas", "olla", "plato", "pantalla".
+   */
+  readonly ilustracion?: string;
 }

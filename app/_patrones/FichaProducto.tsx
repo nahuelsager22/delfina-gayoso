@@ -56,6 +56,15 @@ export function FichaProducto({
 
   const portada = imagen ? getImagen(imagen) : undefined;
 
+  // Categoría legible (rótulo) derivada del formato: un ebook y una clase se
+  // distinguen de un vistazo.
+  const f = formato.toLowerCase();
+  const categoria = f.includes("clase")
+    ? "Clase en vivo"
+    : f.includes("ebook")
+      ? "Ebook"
+      : formato;
+
   return (
     <Aparicion
       style={{
@@ -106,6 +115,12 @@ export function FichaProducto({
             gap: "var(--space-md)",
           }}
         >
+          {/* Rótulo de categoría: distingue de un vistazo un ebook de una clase
+              (jerarquía Bloque 6.5). */}
+          <p className="momento-kicker" style={{ color: "var(--color-corteza)" }}>
+            {categoria}
+          </p>
+
           {/* Título del producto — sans, sin gritar (§7.1). Marca de ejemplo si
               es un placeholder del ecosistema (Bloque 6.5). */}
           <div

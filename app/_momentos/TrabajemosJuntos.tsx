@@ -24,7 +24,11 @@ export function TrabajemosJuntos() {
   const servicios = getServicios();
 
   return (
-    <Momento id="trabajemos-juntos">
+    <Momento
+      id="trabajemos-juntos"
+      kicker="Servicios"
+      titulo="Trabajemos juntos"
+    >
       <div
         style={{
           display: "flex",

@@ -125,9 +125,13 @@ export function Navbar() {
           aria-label="Delfina Gayoso — volver al inicio"
           onClick={() => setAbierto(false)}
         >
+          {/* Presentación (Opción B): "Delfina Gayoso" aparece y se reduce a "DG"
+              (transición CSS pura; ver `.np-resto` en globals). */}
           <span className="navbar-monograma voz-display" aria-hidden="true">
             <span>D</span>
+            <span className="np-resto">elfina&nbsp;</span>
             <span className="navbar-monograma-g">G</span>
+            <span className="np-resto">ayoso</span>
           </span>
         </a>
 

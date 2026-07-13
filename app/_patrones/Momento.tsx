@@ -9,16 +9,26 @@ import { getMomento, type MomentoId } from "@/content";
  *    una plantilla fija: un momento de silencio respira más (§3.4).
  *  · Hereda la temperatura del anterior (no cambia de registro visual).
  *
- * Accesibilidad: expone un encabezado sr-only con el nombre del momento, para dar
- * estructura a lectores de pantalla sin instalar títulos visibles (el diseño evita
- * hero y About con placa). No es navegación: el wayfinding sigue sin ser un índice.
+ * PORTADA DE CAPÍTULO (Bloque 6.5 · jerarquía): los grandes momentos pueden anunciar
+ * su entrada con un encabezado VISIBLE y distintivo (un rótulo corto + un título en
+ * serif display, con aire), para que el usuario perciba claramente que empieza un
+ * capítulo con identidad propia. Cuando se pasa `titulo`, ese encabezado ES el `h2`
+ * visible (reemplaza al sr-only); si no, se mantiene el sr-only (entradas sin placa).
+ *
+ * Accesibilidad: siempre hay un `h2` (visible o sr-only) que da estructura.
  */
 export function Momento({
   id,
   children,
+  titulo,
+  kicker,
 }: {
   id: MomentoId;
   children: React.ReactNode;
+  /** Título visible de la portada del capítulo (serif display). */
+  titulo?: string;
+  /** Rótulo corto sobre el título (sans, meta). */
+  kicker?: string;
 }) {
   const m = getMomento(id);
   const headingId = `momento-${id}`;
@@ -35,14 +45,19 @@ export function Momento({
       data-momento={id}
       style={{ paddingBlock: aireVertical }}
     >
-      <h2 id={headingId} className="sr-only">
-        {m?.nombre ?? id}
-      </h2>
-      {/* El ancla de navegación vive en el INICIO DEL CONTENIDO (después del aire
-          superior del momento), no en el borde de la sección: así un salto del
-          navbar aterriza donde el momento empieza de verdad, respetando el navbar
-          y la composición (Bloque 6.5 · navegación). `scroll-margin` = navbar + respiro. */}
       <div id={`seccion-${id}`} className="ancla-momento">
+        {titulo ? (
+          <header className="momento-portada">
+            {kicker && <p className="momento-kicker">{kicker}</p>}
+            <h2 id={headingId} className="momento-titulo voz-display">
+              {titulo}
+            </h2>
+          </header>
+        ) : (
+          <h2 id={headingId} className="sr-only">
+            {m?.nombre ?? id}
+          </h2>
+        )}
         {children}
       </div>
     </section>

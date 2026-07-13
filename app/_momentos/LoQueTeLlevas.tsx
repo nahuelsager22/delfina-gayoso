@@ -24,7 +24,11 @@ export function LoQueTeLlevas() {
   const productos = getProductos();
 
   return (
-    <Momento id="lo-que-te-llevas">
+    <Momento
+      id="lo-que-te-llevas"
+      kicker="Ebooks y clases"
+      titulo="Lo que te podés llevar"
+    >
       <div
         style={{
           display: "flex",

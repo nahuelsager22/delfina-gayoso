@@ -2,12 +2,15 @@ import type { MomentoComunidad } from "../types";
 
 /**
  * Comunidad / vida real (tipo G): lo humano alrededor de la cocina. Habita el
- * Momento 5, que se construye en el Bloque 6c; en 6a queda disponible vía la
- * capa de acceso.
+ * Momento "La cocina compartida".
  *
  * DATOS REALES de su universo (Discovery / concepto §3d–e): el perro Budín, el
  * mate, los talleres con chicos, las mesas compartidas, los trends con su mamá.
- * La redacción en su voz queda PENDIENTE DE VALIDACIÓN DE DELFINA.
+ *
+ * Bloque 6.5: cada viñeta lleva una pequeña ILUSTRACIÓN de su día a día
+ * (`ilustracion`) que cuenta quién es sin explicarlo todo con palabras; y las tres
+ * últimas frases se reformularon para que se sientan suyas, no de relleno. Copy
+ * PENDIENTE DE VALIDACIÓN DE DELFINA.
  */
 export const comunidad: readonly MomentoComunidad[] = [
   {
@@ -15,27 +18,32 @@ export const comunidad: readonly MomentoComunidad[] = [
     que: "Budín, mi perro, siempre en la cocina esperando que se caiga algo.",
     personas: ["Budín"],
     registro: "humor",
+    ilustracion: "huellas",
   },
   {
     id: "mate",
     que: "El mate al lado de la mesada, que nunca falta mientras cocino.",
     registro: "cotidiano",
+    ilustracion: "mate",
   },
   {
     id: "talleres-chicos",
-    que: "Talleres de cocina con chicos, que son los que más se copan.",
+    que: "Los talleres con chicos son un quilombo hermoso, y de lo que más disfruto enseñar.",
     personas: ["chicos"],
     registro: "comunidad",
+    ilustracion: "olla",
   },
   {
     id: "mesas-compartidas",
-    que: "Mesas largas, donde lo que cociné termina siendo una excusa para juntarnos.",
+    que: "Las mesas largas en casa, donde lo que cociné es la excusa para quedarnos horas.",
     registro: "calidez",
+    ilustracion: "plato",
   },
   {
     id: "trends-mama",
-    que: "Trends en la cocina con mi mamá, que siempre se prende.",
+    que: "Mi mamá, que se prende a cualquier idea rara que se me ocurre grabar.",
     personas: ["mi mamá"],
     registro: "humor",
+    ilustracion: "pantalla",
   },
 ];

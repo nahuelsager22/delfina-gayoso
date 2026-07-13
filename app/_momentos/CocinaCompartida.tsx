@@ -7,6 +7,7 @@ import {
 import { Momento } from "../_patrones/Momento";
 import { Voz } from "../_patrones/Voz";
 import { Aparicion } from "../_patrones/Aparicion";
+import { IlustracionComunidad } from "../_chrome/adornos/IlustracionComunidad";
 
 /**
  * Momento 5 — La cocina compartida (arquitectura §1). El puente hacia la
@@ -66,19 +67,36 @@ export function CocinaCompartida() {
 
         {/* El racimo de vida real: viñetas en su voz, zigzag con ancla, no una
             grilla. Cada una respira; ninguna es una card. */}
-        {comunidad.map((c: MomentoComunidad) => (
-          <Aparicion
-            key={c.id}
-            style={{
-              maxInlineSize: "var(--measure-voz)",
-              alignSelf: (ANCLA[c.id] ?? "izq") === "der"
-                ? "flex-end"
-                : "flex-start",
-            }}
-          >
-            <Voz texto={c.que} escala="l" />
-          </Aparicion>
-        ))}
+        {comunidad.map((c: MomentoComunidad) => {
+          const derecha = (ANCLA[c.id] ?? "izq") === "der";
+          return (
+            <Aparicion
+              key={c.id}
+              style={{
+                maxInlineSize: "var(--measure-voz)",
+                alignSelf: derecha ? "flex-end" : "flex-start",
+              }}
+            >
+              {/* Cada faceta de su día a día con una pequeña ilustración: cuenta
+                  quién es sin explicarlo todo con palabras (Bloque 6.5). */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "var(--space-md)",
+                  flexDirection: derecha ? "row-reverse" : "row",
+                }}
+              >
+                {c.ilustracion && (
+                  <div style={{ flexShrink: 0, marginBlockStart: "0.3em" }}>
+                    <IlustracionComunidad motivo={c.ilustracion} />
+                  </div>
+                )}
+                <Voz texto={c.que} escala="l" />
+              </div>
+            </Aparicion>
+          );
+        })}
       </div>
     </Momento>
   );
