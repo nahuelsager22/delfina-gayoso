@@ -1,0 +1,627 @@
+@import "tailwindcss";
+/* Bloque 6.5 — cuarta ola (navegación, atmósferas, enriquecimiento, aura). */
+
+/* =============================================================================
+   TOKENS — Sistema Visual (Bloque 4) cableado a Tailwind v4.
+   -----------------------------------------------------------------------------
+   Regla de cableado (una sola, documentada):
+   · Si el token corresponde a un namespace de Tailwind (--color-*, --font-*,
+     --text-*, --radius-*, --ease-*) se define ahí para que Tailwind genere las
+     utilidades (bg-harina, font-voz, text-numeral, ease-posar…). El sufijo
+     conserva el nombre semántico de sistema-visual.md; el valor es 1:1.
+   · Si el token no tiene namespace de Tailwind (escala de espaciado bespoke,
+     carriles/bleed, duraciones, ejes de Fraunces, medidas, grano) conserva su
+     nombre literal de sistema-visual.md y se usa vía var().
+   El único renombre es --fs-*  →  --text-* (el cableado sancionado por B4 §0);
+   valores, escala de 7 pasos y clamp() son idénticos al documento.
+   ========================================================================== */
+
+@theme {
+  /* ---- Color — los siete tonos y su rol semántico (§1.1) ---- */
+  --color-harina: #f7f2ea; /* fondo primario   */
+  --color-masa: #ede5d8; /* superficie sec.  */
+  --color-hierro: #2a241e; /* texto primario   */
+  --color-piedra: #6b6156; /* texto secundario */
+  --color-yema: #e8a13a; /* acento (relleno) */
+  --color-corteza: #b4611f; /* acento cálido    */
+  --color-perejil: #4e6a3c; /* acento fresco    */
+
+  /* ---- Tipografía — familias (§2.1) ----
+     El valor encadena la variable autohospedada por next/font con el stack de
+     fallback de sistema-visual.md: control de FOUT + render Android (B3 §6). */
+  --font-voz: var(--font-fraunces), "Literata", Georgia, "Times New Roman",
+    serif;
+  --font-mundo: var(--font-karla), "Work Sans", system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+
+  /* ---- Tipografía — escala fluida de 7 pasos (§2.2, era --fs-*) ----
+     clamp() reales, interpolando 375px → 1440px. Interlineado y tracking van
+     como companions del propio token de tamaño (§2.4, §2.5). */
+  --text-numeral: clamp(2.75rem, 1.3rem + 6.2vw, 6.875rem);
+  --text-numeral--line-height: 1;
+  --text-numeral--letter-spacing: -0.02em;
+
+  --text-voz-xl: clamp(1.875rem, 1.215rem + 2.82vw, 3.75rem);
+  --text-voz-xl--line-height: 1.15;
+  --text-voz-xl--letter-spacing: -0.01em;
+
+  --text-voz-l: clamp(1.375rem, 1.11rem + 1.13vw, 2.125rem);
+  --text-voz-l--line-height: 1.2;
+  --text-voz-l--letter-spacing: -0.01em;
+
+  --text-titulo: clamp(1.1875rem, 1.03rem + 0.66vw, 1.625rem);
+  --text-titulo--line-height: 1.3;
+
+  --text-cuerpo: clamp(1.0625rem, 1.02rem + 0.19vw, 1.1875rem);
+  --text-cuerpo--line-height: 1.6;
+
+  --text-meta: clamp(0.875rem, 0.853rem + 0.094vw, 0.9375rem);
+  --text-meta--line-height: 1.4;
+  --text-meta--letter-spacing: 0.01em;
+
+  --text-micro: clamp(0.78rem, 0.76rem + 0.05vw, 0.8125rem);
+  --text-micro--line-height: 1.4;
+  --text-micro--letter-spacing: 0.01em;
+
+  /* ---- Pesos (§2.3) ---- */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+
+  /* ---- Radios (§6.2) ---- */
+  --radius-none: 0; /* fotos: una foto es una foto, no una card */
+  --radius-min: 2px; /* único radio en elementos funcionales     */
+
+  /* ---- Motion — curvas (§5.2). Una sola familia, sin overshoot ---- */
+  --ease-posar: cubic-bezier(0.22, 0.61, 0.36, 1); /* se asienta        */
+  --ease-suave: cubic-bezier(0.4, 0, 0.2, 1); /* simétrica         */
+}
+
+/* -----------------------------------------------------------------------------
+   Tokens bespoke sin namespace de Tailwind (nombre literal de sistema-visual.md,
+   se usan vía var()). No generan utilidades a propósito: el layout del recorrido
+   es a medida (carriles + bleed), no una grilla de columnas (§4.1).
+   -------------------------------------------------------------------------- */
+:root {
+  /* ---- Aire y espaciado — una sola progresión, del gesto al silencio (§3.1) */
+  --space-3xs: 4px;
+  --space-2xs: 8px;
+  --space-xs: 12px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: clamp(32px, 5vw, 48px);
+  --space-xl: clamp(48px, 8vw, 80px);
+  --space-2xl: clamp(72px, 11vw, 128px);
+  --space-3xl: clamp(96px, 14vw, 200px);
+  --space-silencio: clamp(120px, 20vw, 260px);
+
+  /* ---- Retícula: carriles + niveles de desborde (§4.2) ---- */
+  --measure-voz: 42ch; /* --track-texto en voz  (34–46ch)   */
+  --measure-cuerpo: 64ch; /* --track-texto en cuerpo (60–68ch) */
+  --track-media: 62%; /* foto que domina sin llenar        */
+  --track-ancho: 85%; /* imagen de comunidad               */
+  --bleed-full: 100vw; /* gesto a plena pantalla            */
+
+  /* ---- Interlineado explícito (§2.4), por si se necesita fuera de --text-* */
+  --lh-numeral: 1;
+  --lh-display: 1.15;
+  --lh-cuerpo: 1.6;
+  --lh-voz: 1.5;
+  --lh-meta: 1.4;
+
+  /* ---- Ejes variables de Fraunces (§2.3), configurables ---- */
+  --fraunces-opsz-display: 144; /* numeral, voz-xl: máximo carácter     */
+  --fraunces-opsz-texto: 40; /* párrafo largo: más legible           */
+  --fraunces-soft: 50; /* terminales redondeados, sin caricatura */
+  --fraunces-wonk-display: 1; /* irregularidad permitida en grande    */
+  --fraunces-wonk-texto: 0; /* en párrafo largo, WONK off           */
+
+  /* ---- Motion — duraciones y escalonado (§5.2) ---- */
+  --dur-xs: 200ms;
+  --dur-sm: 300ms;
+  --dur-md: 450ms; /* aparición estándar                 */
+  --dur-lg: 600ms; /* hover foto, salidas suaves         */
+  --dur-xl: 900ms; /* imagen que viaja entre momentos    */
+  --stagger: 75ms; /* solo con orden de lectura real     */
+
+  /* ---- Textura (§6.2): grano solo sobre Harina, imperceptible ---- */
+  --grano-opacidad: 0.03; /* referencia; se valida viéndolo     */
+
+  /* ---- Navbar de orientación (Bloque 6.5 · R6): altura del bar fijo ---- */
+  --navbar-h: 56px;
+
+  /* ---- Sistema de Atmósferas (Bloque 6.5): valores por defecto = atmósfera
+     "bienvenida" (modelo de 3 capas: luz / color / profundidad). Sin JS la capa se
+     ve estática (degradación elegante); el motor (AtmosferaProvider) las interpola
+     en scroll. El contenido no define colores. */
+  --atm-luz-rgb: 255 248 233;
+  --atm-luz-int: 0.16;
+  --atm-luz-x: 50%;
+  --atm-luz-y: 0%;
+  --atm-luz-radio: 55%;
+  --atm-color-rgb: 232 161 58;
+  --atm-color-int: 0.12;
+  --atm-color-x: 50%;
+  --atm-color-y: 12%;
+  --atm-color-radio: 76%;
+  --atm-prof-rgb: 237 229 216;
+  --atm-prof-int: 0.1;
+  --atm-prof-x: 50%;
+  --atm-prof-y: 100%;
+  --atm-prof-radio: 70%;
+  --atm-navbar-rgb: 248 242 231;
+}
+
+/* =============================================================================
+   BASE — el par de lectura por defecto y las convenciones de calidad.
+   ========================================================================== */
+@layer base {
+  html {
+    /* Fondo Harina + texto Hierro = par de lectura 13.8:1 (AAA, §1.3). */
+    background-color: var(--color-harina);
+    color: var(--color-hierro);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Los saltos nativos (y reduced-motion) aterrizan debajo del navbar fijo. */
+    scroll-padding-top: var(--navbar-h);
+  }
+
+  /* Ancla de momento (inicio del contenido): el salto aterriza dejando el navbar
+     libre + un respiro, no pegado ni con el aire superior del momento por delante. */
+  .ancla-momento {
+    scroll-margin-top: calc(var(--navbar-h) + var(--space-md));
+  }
+
+  body {
+    /* El mundo (contenido/navegación) vive en la sans; la voz de Delfina
+       (serif) se aplica localmente donde ella habla (§2.1). */
+    font-family: var(--font-mundo);
+    font-size: var(--text-cuerpo); /* cuerpo desde 17px, no baja (§2.2) */
+    line-height: var(--lh-cuerpo);
+    font-weight: var(--font-weight-regular);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* Guarda contra desbordes horizontales (fix Bloque 6.5): `clip` no crea un
+       contenedor de scroll (a diferencia de `hidden`), así no interfiere con Lenis
+       ni con el scroll vertical; los elementos fijos (navbar, atmósfera) no se ven
+       afectados. La experiencia queda contenida en el viewport. */
+    overflow-x: clip;
+  }
+
+  /* Foco visible SIEMPRE, en Hierro (≥3:1 no-texto), nunca en Yema, con aire
+     alrededor. Nunca se suprime el outline (§6.3). */
+  :focus-visible {
+    outline: 2px solid var(--color-hierro);
+    outline-offset: 3px;
+  }
+
+  /* Tipografía: izquierda, nunca justificado (§2.6). */
+  p,
+  h1,
+  h2,
+  h3,
+  li {
+    text-align: left;
+    text-wrap: pretty;
+  }
+
+  /* Nombre accesible para lectores de pantalla sin chrome visual: da estructura
+     (h1 de página, encabezados de momento) sin instalar títulos que el diseño
+     deliberadamente evita (sin hero, sin About con placa). */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+/* =============================================================================
+   VOZ DE DELFINA — utilidades que exponen los ejes de Fraunces (§2.3, §2.7).
+   Ejes configurables vía los tokens --fraunces-*. La familia serif es la voz;
+   display enciende WONK, texto lo apaga para priorizar la lectura.
+   ========================================================================== */
+@layer components {
+  .voz {
+    font-family: var(--font-voz);
+  }
+
+  /* Voz a gran tamaño (numeral, detenciones): máximo carácter. Líneas equilibradas
+     para una composición cuidada en los titulares (evita líneas huérfanas y cortes
+     poco elegantes; fix Bloque 6.5). */
+  .voz-display {
+    font-family: var(--font-voz);
+    font-variation-settings:
+      "opsz" var(--fraunces-opsz-display),
+      "SOFT" var(--fraunces-soft),
+      "WONK" var(--fraunces-wonk-display);
+    text-wrap: balance;
+  }
+
+  /* Voz en párrafo largo: WONK off, opsz de texto → prioriza legibilidad. */
+  .voz-texto {
+    font-family: var(--font-voz);
+    font-variation-settings:
+      "opsz" var(--fraunces-opsz-texto),
+      "SOFT" var(--fraunces-soft),
+      "WONK" var(--fraunces-wonk-texto);
+  }
+
+  /* ---------------------------------------------------------------------------
+     CTA de la ficha de producto (sistema-visual §7.1): invita hacia Hotmart.
+     Relleno `Yema` + texto `Hierro` = 7.0:1 (§1.3). Sans (es UI, no su voz). El
+     único acento de relleno del recorrido; sin sombra, radio mínimo. Hover: una
+     leve aproximación de opacidad (sin rebote, §5.2). El foco visible lo da la
+     regla global (:focus-visible en Hierro), nunca Yema.
+     -------------------------------------------------------------------------- */
+  .cta-producto {
+    display: inline-block;
+    background-color: var(--color-yema);
+    color: var(--color-hierro);
+    font-family: var(--font-mundo);
+    font-weight: var(--font-weight-medium);
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-min);
+    text-decoration: none;
+    transition: opacity var(--dur-sm) var(--ease-suave);
+  }
+  .cta-producto:hover {
+    opacity: 0.9;
+  }
+
+  /* ---------------------------------------------------------------------------
+     Enlace/botón de la serie (Bloque 6.5 · R7): "Leer más" / "Ver el reel".
+     Lenguaje de enlace de texto, no botón de acento (el `Yema` es de la compra).
+     Sans (es UI), subrayado tenue, en `Hierro` (13.8:1); hover cálido en Corteza.
+     -------------------------------------------------------------------------- */
+  .enlace-serie {
+    font-family: var(--font-mundo);
+    font-size: var(--text-meta);
+    color: var(--color-hierro);
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: color var(--dur-sm) var(--ease-suave);
+  }
+  .enlace-serie:hover {
+    color: var(--color-corteza);
+  }
+
+  /* Mención @Instagram dentro del contenido (Bloque 6.5): enlace natural, cálido,
+     en Corteza, sin subrayado permanente (aparece en hover). */
+  .mencion-ig {
+    color: var(--color-corteza);
+    text-decoration: none;
+    font-style: italic;
+  }
+  .mencion-ig:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* Despliegue estable del caption (fix Bloque 6.5): grid-rows 0fr→1fr anima la
+     altura sin medir en JS, consistente para cualquier largo de texto. */
+  .cap-caption {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+      grid-template-rows var(--dur-md) var(--ease-posar),
+      opacity var(--dur-md) var(--ease-posar);
+  }
+  .cap-caption[data-abierto="true"] {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  /* ---------------------------------------------------------------------------
+     Aparición "vapor" (sistema-visual §5.3-1): opacity + translateY corto, se
+     posa con --ease-posar. Sin librería de motion: es una transición CSS que un
+     helper cliente (app/_patrones/Aparicion.tsx) dispara vía data-attributes.
+     · Sin JS / SSR: el contenido se ve (no hay data-armed) → nada importante
+       aparece después de una animación (§5.4).
+     · data-armed lo agrega el cliente sólo si NO hay prefers-reduced-motion:
+       recién ahí el elemento parte oculto y se revela al entrar en viewport.
+     · El delay de escalonado llega por la custom property --reveal-delay.
+     -------------------------------------------------------------------------- */
+  .aparicion[data-armed="true"] {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  .aparicion[data-armed="true"][data-shown="true"] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--dur-lg) var(--ease-posar),
+      transform var(--dur-lg) var(--ease-posar);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+}
+
+/* =============================================================================
+   MANCHA DE HARINA (Bloque 6.5 · CSS Mask) — dusting sobre la mesada.
+   Un patrón de puntitos generado por CSS (sin imágenes) enmascarado por un radial
+   suave que lo desvanece en los bordes: parece harina espolvoreada, no un recuadro.
+   ========================================================================== */
+.mancha-harina {
+  inline-size: min(560px, 80%);
+  block-size: 120px;
+  opacity: 0.5;
+  background-image: radial-gradient(
+    var(--color-piedra) 0.6px,
+    transparent 0.7px
+  );
+  background-size: 9px 9px;
+  -webkit-mask-image: radial-gradient(
+    ellipse 55% 75% at 50% 50%,
+    #000 0%,
+    rgba(0, 0, 0, 0.35) 45%,
+    transparent 72%
+  );
+  mask-image: radial-gradient(
+    ellipse 55% 75% at 50% 50%,
+    #000 0%,
+    rgba(0, 0, 0, 0.35) 45%,
+    transparent 72%
+  );
+}
+
+/* =============================================================================
+   AURA MASTERCHEF (Bloque 6.5) — referencia emocional, no branding.
+   Un resplandor rojo MUY tenue detrás del párrafo de MasterChef: evoca ese momento
+   sin logos ni literalidad. Es la ÚNICA aparición del rojo (excluido de la paleta,
+   DA §color), localizada y sutil, sin competir con el contenido ni con la atmósfera.
+   ========================================================================== */
+.aura-masterchef {
+  position: relative;
+  isolation: isolate;
+}
+.aura-masterchef::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -2em -2.8em;
+  pointer-events: none;
+  /* Con más fuerza y personalidad (Bloque 6.5), sin romper legibilidad: el texto
+     sigue en Hierro sobre un rojo apagado y cálido. Dos focos dan profundidad. */
+  background:
+    radial-gradient(
+      ellipse 62% 82% at 26% 48%,
+      rgba(178, 40, 36, 0.26),
+      rgba(178, 40, 36, 0.1) 46%,
+      transparent 74%
+    ),
+    radial-gradient(
+      ellipse 50% 60% at 62% 60%,
+      rgba(150, 34, 32, 0.12),
+      transparent 70%
+    );
+}
+@media (prefers-reduced-motion: no-preference) {
+  .aura-masterchef::before {
+    opacity: 0;
+    animation: aura-aparece 1.6s var(--ease-posar) 0.3s forwards;
+  }
+}
+@keyframes aura-aparece {
+  to {
+    opacity: 1;
+  }
+}
+
+/* =============================================================================
+   SISTEMA DE ATMÓSFERAS (Bloque 6.5) — la capa única y continua.
+   Un solo elemento fijo, un gradiente por foco (principal + secundario), que
+   consume las variables `--atm-*` que el motor interpola. Va debajo del grano
+   (z -2 < grano -1 < contenido). Sutil: modifica apenas la luz sobre `Harina`.
+   ========================================================================== */
+.campo-atmosferico {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  /* Tres focos: luz (arriba, la fuente), color (el ánimo) y profundidad (la base).
+     Juntos dan riqueza cromática, sensación de luz y volumen, sobre `Harina`. */
+  background:
+    radial-gradient(
+      circle at var(--atm-luz-x) var(--atm-luz-y),
+      rgb(var(--atm-luz-rgb) / var(--atm-luz-int)) 0%,
+      transparent var(--atm-luz-radio)
+    ),
+    radial-gradient(
+      circle at var(--atm-color-x) var(--atm-color-y),
+      rgb(var(--atm-color-rgb) / var(--atm-color-int)) 0%,
+      transparent var(--atm-color-radio)
+    ),
+    radial-gradient(
+      circle at var(--atm-prof-x) var(--atm-prof-y),
+      rgb(var(--atm-prof-rgb) / var(--atm-prof-int)) 0%,
+      transparent var(--atm-prof-radio)
+    ),
+    linear-gradient(
+      180deg,
+      rgb(var(--atm-luz-rgb) / calc(var(--atm-luz-int) * 0.55)) 0%,
+      transparent 38%,
+      rgb(var(--atm-prof-rgb) / calc(var(--atm-prof-int) * 0.9)) 100%
+    );
+}
+
+/* =============================================================================
+   NAVBAR DE ORIENTACIÓN (Bloque 6.5 · R6) — facilita el recorrido sin instalar
+   un sitio corporativo: enlaces cortos a los momentos, su nombre en serif como
+   marca, redes. Fondo `Harina` sólido (sin glass/traslúcido, §6.2). Sin lógica
+   comercial: nunca "Shop"/carrito. El acento `Yema` sigue reservado a la compra.
+   ========================================================================== */
+@layer components {
+  .navbar {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 10;
+    /* Hereda la atmósfera activa: el bar es parte del mismo universo, no una capa
+       superpuesta. `--atm-navbar-rgb` = Harina teñida por el foco (fallback Harina). */
+    background-color: rgb(var(--atm-navbar-rgb, 247 242 234));
+    border-block-end: 1px solid var(--color-masa);
+  }
+
+  .navbar-inner {
+    max-inline-size: 80rem;
+    margin-inline: auto;
+    padding-inline: var(--space-lg);
+    block-size: var(--navbar-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+
+  /* Monograma DG: pequeña identidad tipográfica (serif display), no un texto suelto.
+     La D hereda el color del navbar (se adapta a la atmósfera); la G lleva el acento
+     Corteza. Kerning ajustado para que lean como una marca, no como dos letras. */
+  .navbar-marca {
+    color: var(--color-hierro);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+  }
+  .navbar-monograma {
+    display: inline-flex;
+    align-items: baseline;
+    font-size: 1.5rem;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    font-weight: var(--font-weight-medium);
+  }
+  .navbar-monograma-g {
+    color: var(--color-corteza);
+  }
+
+  /* Desktop: enlaces de orientación. Ocultos en mobile (ahí manda el menú). */
+  .navbar-desktop {
+    display: none;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .navbar-link {
+    font-family: var(--font-mundo);
+    font-size: var(--text-meta);
+    letter-spacing: 0.01em;
+    color: var(--color-piedra); /* 5.4:1 AA sobre Harina */
+    text-decoration: none;
+    transition: color var(--dur-sm) var(--ease-suave);
+  }
+  .navbar-link:hover,
+  .navbar-link[data-activo="true"] {
+    color: var(--color-hierro); /* activo/hover: 13.8:1, nunca Yema */
+  }
+  .navbar-link[data-activo="true"] {
+    font-weight: var(--font-weight-medium);
+  }
+
+  .navbar-sep {
+    inline-size: 1px;
+    block-size: 14px;
+    background-color: var(--color-piedra);
+    opacity: 0.35;
+  }
+
+  /* Botón mobile: los dos utensilios. Objetivo táctil ≥44px. */
+  .navbar-toggle {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 44px;
+    block-size: 44px;
+    margin-inline-end: calc(-1 * var(--space-2xs));
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--color-hierro);
+    cursor: pointer;
+  }
+
+  /* Panel mobile desplegable, debajo del bar. Hereda la atmósfera: al abrir el menú
+     el usuario sigue dentro del mismo universo, no en un overlay genérico. */
+  .navbar-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    background-color: rgb(var(--atm-navbar-rgb, 247 242 234));
+    border-block-end: 1px solid var(--color-masa);
+    padding: var(--space-sm) var(--space-lg) var(--space-lg);
+  }
+
+  .navbar-panel-link {
+    font-family: var(--font-mundo);
+    font-size: var(--text-titulo);
+    color: var(--color-hierro);
+    text-decoration: none;
+    padding-block: var(--space-2xs);
+  }
+  .navbar-panel-link[data-activo="true"] {
+    color: var(--color-corteza); /* texto grande: AA-grande sobre Harina */
+  }
+
+  .navbar-panel-sep {
+    block-size: 1px;
+    inline-size: 100%;
+    background-color: var(--color-piedra);
+    opacity: 0.2;
+    margin-block: var(--space-2xs);
+  }
+
+  /* A partir de tablet: se ven los enlaces, se oculta el botón de utensilios. */
+  @media (min-width: 720px) {
+    .navbar-desktop {
+      display: flex;
+    }
+    .navbar-toggle,
+    .navbar-panel {
+      display: none;
+    }
+  }
+}
+
+/* =============================================================================
+   GRANO DE PAPEL (§6.2) — solo sobre Harina, imperceptible.
+   Capa fija detrás del contenido. En Bloque 6 debe excluirse de fotos, Masa,
+   texto y fichas; aquí (sin fotos) cubre solo fondo Harina, que es su lugar.
+   ========================================================================== */
+@layer base {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: var(--grano-opacidad);
+    /* feTurbulence de baja amplitud: temperatura, no patrón reconocible. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+}
+
+/* =============================================================================
+   prefers-reduced-motion = la versión honesta del sitio (§5.4).
+   No es una degradación: es el sitio sin adornos. Se eliminan transforms y
+   viajes; quedan, como mucho, fades muy breves. Nada importante aparece
+   después de una animación en ningún modo.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
