@@ -551,7 +551,9 @@
     display: inline-flex;
     align-items: baseline;
     font-size: 1.5rem;
-    line-height: 1;
+    /* Con espacio para los descendentes (la "y" de Gayoso no se corta abajo, ya que
+       `.np-resto` recorta con overflow). */
+    line-height: 1.3;
     letter-spacing: -0.06em;
     font-weight: var(--font-weight-medium);
   }
@@ -569,9 +571,11 @@
     white-space: pre;
     max-inline-size: 8ch;
     opacity: 1;
+    /* `--ease-suave` (ease-in-out) para que expandir y contraer tengan el MISMO
+       ritmo (con ease-out el colapso adelantaba el movimiento y se sentía rápido). */
     transition:
-      max-inline-size 0.8s var(--ease-posar),
-      opacity 0.5s var(--ease-suave);
+      max-inline-size 0.8s var(--ease-suave),
+      opacity 0.6s var(--ease-suave);
   }
   .navbar-monograma[data-nombre="reducido"] .np-resto {
     max-inline-size: 0;
