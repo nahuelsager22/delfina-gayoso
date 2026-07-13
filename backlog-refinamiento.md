@@ -64,7 +64,9 @@
 | **Alta** | técnica | **Contraste sobre atmósferas.** Con el color más presente, verificar en el punto más intenso de cada atmósfera (p. ej. "corazón" con Corteza ~0.20) que el texto `Hierro` sigue AAA y los acentos legibles; recalcular si se sube alguna intensidad. |
 | Media | técnica | **Overflow horizontal — auditar los cinco formatos.** Se corrigió el capítulo de la serie y se agregó `overflow-x: clip`; barrer el resto de los momentos en Mobile/iPhone/Tablet para asegurar que nada más desborde (el 9px del emulador es artefacto de scrollbar, no ocurre en dispositivos reales). |
 | Media | técnica | **Atmósferas en los cinco formatos.** Confirmar que el campo se comporta consistente en Mobile/iPhone/Tablet/MacBook/Desktop (posición de los focos por viewport, rendimiento del repintado en Android bajo). |
-| Baja | técnica | **Afinar el color del navbar por atmósfera.** Hoy el bar hereda `--atm-navbar-rgb` (Harina teñida). Evaluar si además conviene adaptar sutilmente el hairline o la presencia según la atmósfera. |
+| Baja | técnica | **Afinar el color del navbar por atmósfera.** Hoy el bar hereda `--atm-navbar-rgb` (Harina teñida) y se funde sin borde. Validar la legibilidad de los enlaces sobre la zona de fade cuando pasa contenido por debajo, en cada atmósfera. |
+| Media | conceptual/técnica | **Afinar el bloom de MasterChef.** El foco rojo del campo (`--atm-emo-*`, pico 0.26, radio 60%, falloff 0.62vh) es una primera propuesta; ajustar intensidad/tamaño/curva con Delfina para que evoque con la fuerza justa. |
+| Media | técnica | **Validar contraste con las atmósferas más presentes.** Con las nuevas temperaturas (corazón café/corteza 0.30, íntima piedra 0.20, fresca verde 0.22) confirmar que `Hierro` se mantiene ≥AA en el punto más intenso de cada momento; ajustar intensidad si algún foco baja el contraste. |
 
 ---
 

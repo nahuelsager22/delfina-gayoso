@@ -48,20 +48,26 @@ export function QuienCocina() {
       >
         {voces.map((v: VozDelfina) => {
           const d = DISPOSICION[v.id] ?? POR_DEFECTO;
-          // El beat de MasterChef lleva un aura roja muy tenue (referencia
-          // emocional, no branding): la única aparición del rojo, y sólo acá.
+          // El beat de MasterChef marca el punto donde la atmósfera se tiñe de rojo
+          // (referencia emocional, no branding). El marcador lo lee el motor de
+          // atmósferas, que enciende el foco rojo en el campo (no un fondo del texto).
           const esMasterchef = v.id === "quien-recorrido";
           return (
             <Aparicion
               key={v.id}
-              className={esMasterchef ? "aura-masterchef" : undefined}
               style={{
                 maxInlineSize: "var(--measure-voz)",
                 alignSelf: d.ancla === "der" ? "flex-end" : "flex-start",
                 marginBlockStart: d.respiroExtra ? "var(--space-lg)" : undefined,
               }}
             >
-              <Voz texto={v.texto} escala={d.escala} />
+              {esMasterchef ? (
+                <div data-emocion="masterchef">
+                  <Voz texto={v.texto} escala={d.escala} />
+                </div>
+              ) : (
+                <Voz texto={v.texto} escala={d.escala} />
+              )}
             </Aparicion>
           );
         })}

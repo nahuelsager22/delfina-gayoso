@@ -34,6 +34,7 @@ export function AtmosferaProvider({ children }: { children: React.ReactNode }) {
     const raiz = document.documentElement;
     const momentos = getMomentos();
     let anclas: Ancla[] = [];
+    let emoEl: HTMLElement | null = null;
     let frame = 0;
 
     const medir = () => {
@@ -51,10 +52,39 @@ export function AtmosferaProvider({ children }: { children: React.ReactNode }) {
         });
       }
       anclas = encontradas.sort((a, b) => a.centro - b.centro);
+      emoEl = document.querySelector<HTMLElement>('[data-emocion="masterchef"]');
       aplicar();
     };
 
+    // Acento emocional (MasterChef): NO es un fondo del párrafo, es una modificación
+    // de la atmósfera. Un foco rojo grande y difuso, parte del mismo campo fijo, que
+    // florece cuando el párrafo cruza el centro del viewport y se desvanece al
+    // alejarse —sin bordes perceptibles, como si cambiara la luz del universo—.
+    const ROJO_MC = "178 40 36";
+    const aplicarEmocion = () => {
+      if (!emoEl) {
+        raiz.style.setProperty("--atm-emo-int", "0");
+        return;
+      }
+      const vh = window.innerHeight;
+      const r = emoEl.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const d = Math.abs(cy - vh / 2) / vh; // 0 en el centro, ~1 a un alto
+      const p = Math.max(0, Math.min(1, 1 - d / 0.62));
+      const suave = p * p * (3 - 2 * p); // florece y se apaga suave
+      raiz.style.setProperty("--atm-emo-rgb", ROJO_MC);
+      raiz.style.setProperty("--atm-emo-int", (0.26 * suave).toFixed(3));
+      raiz.style.setProperty(
+        "--atm-emo-x",
+        `${((cx / window.innerWidth) * 100).toFixed(1)}%`,
+      );
+      raiz.style.setProperty("--atm-emo-y", `${((cy / vh) * 100).toFixed(1)}%`);
+      raiz.style.setProperty("--atm-emo-radio", "60%");
+    };
+
     const aplicar = () => {
+      aplicarEmocion();
       if (anclas.length === 0) return;
       const ref = window.scrollY + window.innerHeight / 2;
 

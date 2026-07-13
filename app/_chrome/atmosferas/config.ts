@@ -40,65 +40,75 @@ export interface Atmosfera {
   readonly profundidad: CapaAtmosfera;
 }
 
-/* Paleta base (sistema-visual §1) + tonos de luz/profundidad derivados de ella. */
+/* Paleta ampliada del universo gastronómico (Bloque 6.5): a los siete tonos base
+   se suman tonos de luz y profundidad que dan a cada momento su TEMPERATURA propia
+   —manteca, café, oliva, hierro, rescoldo—, para que el recorrido deje de vivir en
+   un único crema. Se usa el color con más decisión donde construye emoción. */
 const MASA: RGB = [237, 229, 216];
 const PIEDRA: RGB = [107, 97, 86];
 const YEMA: RGB = [232, 161, 58];
 const CORTEZA: RGB = [180, 97, 31];
 const PEREJIL: RGB = [78, 106, 60];
-const CREMA: RGB = [255, 248, 233]; // luz cálida alta (amanecer / horno)
-const EMBER: RGB = [128, 58, 26]; // profundidad cálida (rescoldo)
-const MUSGO: RGB = [52, 80, 55]; // profundidad fresca (verde hondo)
-const MALVA: RGB = [122, 92, 108]; // profundidad neutra con algo de chroma
+const MANTECA: RGB = [242, 214, 138]; // amarillo manteca, cálido y suave
+const CAFE: RGB = [92, 62, 44]; // marrón café/madera, profundidad honda
+const EMBER: RGB = [138, 60, 26]; // rescoldo del horno
+const OLIVA: RGB = [120, 128, 78]; // verde oliva
+const MUSGO: RGB = [48, 74, 52]; // verde hondo
+const HIERRO_ATM: RGB = [74, 66, 58]; // gris cálido oscuro (piedra/hierro)
+const LUZ_CALIDA: RGB = [255, 246, 228];
+const LUZ_HORNO: RGB = [255, 224, 176];
+const LUZ_FRESCA: RGB = [244, 249, 236];
+const LUZ_NEUTRA: RGB = [247, 245, 242];
 
 /**
  * Las atmósferas del recorrido, nombradas por su EMOCIÓN (no por la sección). Cada
- * una construye una sensación claramente distinta —amanecer, apetito, el horno, lo
- * íntimo, lo fresco, la mesa compartida, el atardecer— y la continuidad la garantiza
- * la interpolación entre momentos.
+ * una tiene una TEMPERATURA claramente distinta —manteca, oro, el horno de café,
+ * lo íntimo en piedra fría, lo fresco en verde, la mesa dorada, el atardecer— y la
+ * continuidad la garantiza la interpolación entre momentos. Intensidades con más
+ * presencia (el contenido sigue de protagonista; `Hierro` legible).
  */
 export const ATMOSFERAS: Record<string, Atmosfera> = {
-  // Entrada: amanecer en la cocina. Luz alta y cálida, aire que recibe.
+  // Entrada: amanecer amantecado. Luz alta, aire suave que recibe.
   bienvenida: {
-    luz: { rgb: CREMA, intensidad: 0.16, x: 50, y: 0, radio: 55 },
-    color: { rgb: YEMA, intensidad: 0.12, x: 50, y: 12, radio: 76 },
-    profundidad: { rgb: MASA, intensidad: 0.1, x: 50, y: 100, radio: 70 },
+    luz: { rgb: LUZ_CALIDA, intensidad: 0.16, x: 50, y: 0, radio: 56 },
+    color: { rgb: MANTECA, intensidad: 0.18, x: 52, y: 12, radio: 78 },
+    profundidad: { rgb: MASA, intensidad: 0.12, x: 50, y: 100, radio: 70 },
   },
-  // La oferta: apetito, mediodía dorado. El color con decisión.
+  // La oferta: apetito, mediodía de oro. El dorado con decisión.
   calida: {
-    luz: { rgb: CREMA, intensidad: 0.16, x: 72, y: 8, radio: 50 },
-    color: { rgb: YEMA, intensidad: 0.19, x: 70, y: 22, radio: 72 },
-    profundidad: { rgb: CORTEZA, intensidad: 0.08, x: 14, y: 74, radio: 68 },
+    luz: { rgb: LUZ_CALIDA, intensidad: 0.14, x: 72, y: 8, radio: 50 },
+    color: { rgb: YEMA, intensidad: 0.26, x: 70, y: 22, radio: 74 },
+    profundidad: { rgb: CORTEZA, intensidad: 0.12, x: 14, y: 76, radio: 66 },
   },
-  // El corazón (aprendizaje): el horno encendido. El registro más cálido y hondo.
+  // El corazón (aprendizaje): el horno encendido, café y corteza. Lo más hondo y cálido.
   corazon: {
-    luz: { rgb: CREMA, intensidad: 0.16, x: 30, y: 30, radio: 44 },
-    color: { rgb: CORTEZA, intensidad: 0.2, x: 34, y: 46, radio: 64 },
-    profundidad: { rgb: EMBER, intensidad: 0.1, x: 82, y: 86, radio: 74 },
+    luz: { rgb: LUZ_HORNO, intensidad: 0.16, x: 30, y: 28, radio: 46 },
+    color: { rgb: CORTEZA, intensidad: 0.3, x: 34, y: 46, radio: 62 },
+    profundidad: { rgb: CAFE, intensidad: 0.18, x: 80, y: 88, radio: 74 },
   },
-  // La persona: íntima y serena, más fría que el corazón. Un respiro de otro registro.
+  // La persona: íntima y serena, en piedra fría. Otra temperatura, un respiro.
   intima: {
-    luz: { rgb: [250, 246, 240], intensidad: 0.14, x: 50, y: 38, radio: 60 },
-    color: { rgb: PIEDRA, intensidad: 0.12, x: 50, y: 56, radio: 92 },
-    profundidad: { rgb: MALVA, intensidad: 0.08, x: 74, y: 92, radio: 70 },
+    luz: { rgb: LUZ_NEUTRA, intensidad: 0.13, x: 50, y: 36, radio: 62 },
+    color: { rgb: PIEDRA, intensidad: 0.2, x: 50, y: 56, radio: 92 },
+    profundidad: { rgb: HIERRO_ATM, intensidad: 0.12, x: 76, y: 94, radio: 70 },
   },
-  // El servicio: fresco, claro, profesional. El verde aparece con presencia.
+  // El servicio: fresco y claro, verde de hierbas y oliva. Presencia de verde.
   fresca: {
-    luz: { rgb: [248, 250, 240], intensidad: 0.14, x: 72, y: 18, radio: 54 },
-    color: { rgb: PEREJIL, intensidad: 0.14, x: 72, y: 30, radio: 72 },
-    profundidad: { rgb: MUSGO, intensidad: 0.08, x: 18, y: 82, radio: 68 },
+    luz: { rgb: LUZ_FRESCA, intensidad: 0.14, x: 72, y: 16, radio: 56 },
+    color: { rgb: PEREJIL, intensidad: 0.22, x: 70, y: 30, radio: 72 },
+    profundidad: { rgb: MUSGO, intensidad: 0.14, x: 18, y: 84, radio: 68 },
   },
-  // La comunidad: calidez ANCHA que se reparte, mesa larga.
+  // La comunidad: calidez ANCHA de mesa larga, dorada y especiada.
   compartir: {
-    luz: { rgb: CREMA, intensidad: 0.15, x: 30, y: 54, radio: 55 },
-    color: { rgb: YEMA, intensidad: 0.17, x: 28, y: 64, radio: 92 },
-    profundidad: { rgb: CORTEZA, intensidad: 0.09, x: 82, y: 40, radio: 64 },
+    luz: { rgb: LUZ_CALIDA, intensidad: 0.15, x: 30, y: 52, radio: 56 },
+    color: { rgb: YEMA, intensidad: 0.22, x: 28, y: 64, radio: 94 },
+    profundidad: { rgb: EMBER, intensidad: 0.12, x: 82, y: 38, radio: 64 },
   },
-  // La despedida: atardecer, el rescoldo. La luz baja y se posa.
+  // La despedida: atardecer, el rescoldo. La luz baja y se posa, honda y cálida.
   despedida: {
-    luz: { rgb: [255, 242, 222], intensidad: 0.12, x: 50, y: 28, radio: 50 },
-    color: { rgb: CORTEZA, intensidad: 0.16, x: 50, y: 82, radio: 88 },
-    profundidad: { rgb: EMBER, intensidad: 0.1, x: 50, y: 100, radio: 72 },
+    luz: { rgb: LUZ_HORNO, intensidad: 0.13, x: 50, y: 26, radio: 52 },
+    color: { rgb: CORTEZA, intensidad: 0.22, x: 50, y: 80, radio: 88 },
+    profundidad: { rgb: EMBER, intensidad: 0.16, x: 50, y: 100, radio: 74 },
   },
 };
 

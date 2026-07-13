@@ -389,6 +389,12 @@ Nueva evidencia (indicaciones directas del usuario) con prioridad sobre lo anter
 - **Perder el miedo al color — atmósferas más ricas.** Las atmósferas ganan riqueza cromática, profundidad y una clara sensación de luz (modelo de tres capas + lavado vertical): cada momento se siente claramente distinto del anterior, conectado por transiciones suaves. Se tomó la **filosofía** atmosférica de un proyecto anterior de North-Studio (Brenda) como referencia —riqueza, profundidad, luz, continuidad, identidad emocional por sección—, **nunca sus colores, composición ni partículas**. Los colores siguen naciendo del universo gastronómico de Delfina (amanecer, apetito dorado, el horno, lo íntimo, lo fresco, la mesa, el atardecer), siempre sobre `Harina` y sin bajar la legibilidad (`Hierro`). Matiz sobre "el universo es luminoso": sigue siéndolo, pero el color puede usarse con más decisión donde construye emoción.
 - **Aura de MasterChef con más presencia.** Se reforzó (mantiene el criterio: rojo sólo acá, evocativo, sin branding, sin competir).
 
+### Continuación (sexta ola de indicaciones, 2026-07-11)
+
+- **Cada momento, una temperatura emocional distinta.** Las atmósferas ganan carácter real: la paleta se amplía con manteca, café/madera, oliva, hierro y rescoldo, y cada momento tiene su propia temperatura (no todo vive en un mismo crema). El color se usa con decisión donde construye emoción, siempre sobre `Harina`, con el contenido de protagonista y `Hierro` legible. El recorrido debe dejar un recuerdo visual distinto por capítulo.
+- **El rojo de MasterChef, integrado en el aire.** Deja de ser un fondo del párrafo (con bordes) y pasa a ser una **modificación de la iluminación** del universo en ese punto: un foco rojo difuso del propio campo atmosférico que florece y se apaga con el scroll, sin frontera perceptible. Sigue siendo la única aparición del rojo, evocativa y sin branding.
+- **La navegación es parte del universo.** El navbar pierde su frontera visual (sin borde, fondo que hereda la atmósfera y se desvanece): no debe percibirse dónde termina la navegación y empieza el recorrido.
+
 ---
 
 *Fin de la Dirección de Arte. Próximos bloques (no desarrollar aquí): Arquitectura de Experiencia, Sistema Visual.*

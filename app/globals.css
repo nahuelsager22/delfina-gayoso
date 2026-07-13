@@ -149,6 +149,13 @@
   --atm-prof-y: 100%;
   --atm-prof-radio: 70%;
   --atm-navbar-rgb: 248 242 231;
+  /* Acento emocional (MasterChef): foco rojo difuso del campo; el motor lo enciende
+     y apaga según el scroll. Por defecto apagado (int 0). */
+  --atm-emo-rgb: 178 40 36;
+  --atm-emo-int: 0;
+  --atm-emo-x: 50%;
+  --atm-emo-y: 50%;
+  --atm-emo-radio: 60%;
 }
 
 /* =============================================================================
@@ -375,47 +382,14 @@
 }
 
 /* =============================================================================
-   AURA MASTERCHEF (Bloque 6.5) — referencia emocional, no branding.
-   Un resplandor rojo MUY tenue detrás del párrafo de MasterChef: evoca ese momento
-   sin logos ni literalidad. Es la ÚNICA aparición del rojo (excluido de la paleta,
-   DA §color), localizada y sutil, sin competir con el contenido ni con la atmósfera.
+   ACENTO EMOCIONAL — MASTERCHEF (Bloque 6.5).
+   El rojo de MasterChef ya NO es un fondo del párrafo (se notaban sus bordes y se
+   sentía un bloque aparte): ahora es una MODIFICACIÓN DE LA ATMÓSFERA. El motor
+   (`AtmosferaProvider`) enciende un foco rojo grande y difuso dentro del mismo campo
+   fijo (`--atm-emo-*`) cuando el párrafo cruza el centro del viewport, y lo apaga al
+   alejarse: forma parte del aire, se difumina sin bordes y desaparece progresivamente.
+   Es la única aparición del rojo (excluido de la paleta general, DA §color).
    ========================================================================== */
-.aura-masterchef {
-  position: relative;
-  isolation: isolate;
-}
-.aura-masterchef::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: -2em -2.8em;
-  pointer-events: none;
-  /* Con más fuerza y personalidad (Bloque 6.5), sin romper legibilidad: el texto
-     sigue en Hierro sobre un rojo apagado y cálido. Dos focos dan profundidad. */
-  background:
-    radial-gradient(
-      ellipse 62% 82% at 26% 48%,
-      rgba(178, 40, 36, 0.26),
-      rgba(178, 40, 36, 0.1) 46%,
-      transparent 74%
-    ),
-    radial-gradient(
-      ellipse 50% 60% at 62% 60%,
-      rgba(150, 34, 32, 0.12),
-      transparent 70%
-    );
-}
-@media (prefers-reduced-motion: no-preference) {
-  .aura-masterchef::before {
-    opacity: 0;
-    animation: aura-aparece 1.6s var(--ease-posar) 0.3s forwards;
-  }
-}
-@keyframes aura-aparece {
-  to {
-    opacity: 1;
-  }
-}
 
 /* =============================================================================
    SISTEMA DE ATMÓSFERAS (Bloque 6.5) — la capa única y continua.
@@ -437,6 +411,11 @@
       transparent var(--atm-luz-radio)
     ),
     radial-gradient(
+      circle at var(--atm-emo-x) var(--atm-emo-y),
+      rgb(var(--atm-emo-rgb) / var(--atm-emo-int)) 0%,
+      transparent var(--atm-emo-radio)
+    ),
+    radial-gradient(
       circle at var(--atm-color-x) var(--atm-color-y),
       rgb(var(--atm-color-rgb) / var(--atm-color-int)) 0%,
       transparent var(--atm-color-radio)
@@ -448,9 +427,9 @@
     ),
     linear-gradient(
       180deg,
-      rgb(var(--atm-luz-rgb) / calc(var(--atm-luz-int) * 0.55)) 0%,
-      transparent 38%,
-      rgb(var(--atm-prof-rgb) / calc(var(--atm-prof-int) * 0.9)) 100%
+      rgb(var(--atm-luz-rgb) / calc(var(--atm-luz-int) * 0.5)) 0%,
+      transparent 42%,
+      rgb(var(--atm-prof-rgb) / calc(var(--atm-prof-int) * 0.5)) 100%
     );
 }
 
@@ -466,10 +445,21 @@
     inset-block-start: 0;
     inset-inline: 0;
     z-index: 10;
-    /* Hereda la atmósfera activa: el bar es parte del mismo universo, no una capa
-       superpuesta. `--atm-navbar-rgb` = Harina teñida por el foco (fallback Harina). */
-    background-color: rgb(var(--atm-navbar-rgb, 247 242 234));
-    border-block-end: 1px solid var(--color-masa);
+    /* Sin frontera: el navbar respira el mismo aire que la página. En vez de una
+       barra opaca con borde, un gradiente que hereda la atmósfera activa
+       (`--atm-navbar-rgb`) arriba y se DESVANECE a transparente abajo: no hay línea
+       ni borde donde termina la navegación y empieza el recorrido; el contenido se
+       funde con el bar en el mismo universo continuo. */
+    background: linear-gradient(
+      180deg,
+      rgb(var(--atm-navbar-rgb, 247 242 234)) 0%,
+      rgb(var(--atm-navbar-rgb, 247 242 234) / 0.86) 42%,
+      rgb(var(--atm-navbar-rgb, 247 242 234) / 0) 100%
+    );
+    block-size: calc(var(--navbar-h) + var(--space-md));
+    /* La zona de fade (transparente) no debe capturar clics del contenido de abajo:
+       el header no recibe eventos; sólo el contenido interactivo los reactiva. */
+    pointer-events: none;
   }
 
   .navbar-inner {
@@ -477,6 +467,7 @@
     margin-inline: auto;
     padding-inline: var(--space-lg);
     block-size: var(--navbar-h);
+    pointer-events: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -554,9 +545,16 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-2xs);
-    background-color: rgb(var(--atm-navbar-rgb, 247 242 234));
-    border-block-end: 1px solid var(--color-masa);
-    padding: var(--space-sm) var(--space-lg) var(--space-lg);
+    pointer-events: auto;
+    /* Mismo aire que el bar: hereda la atmósfera y se funde hacia abajo (sin borde),
+       para que abrir el menú sea seguir dentro del universo, no un overlay aparte. */
+    background: linear-gradient(
+      180deg,
+      rgb(var(--atm-navbar-rgb, 247 242 234)) 0%,
+      rgb(var(--atm-navbar-rgb, 247 242 234) / 0.92) 70%,
+      rgb(var(--atm-navbar-rgb, 247 242 234) / 0) 100%
+    );
+    padding: var(--space-sm) var(--space-lg) var(--space-2xl);
   }
 
   .navbar-panel-link {

@@ -801,6 +801,13 @@ Nueva evidencia (indicaciones directas del usuario) con prioridad sobre lo anter
 - **Aura de MasterChef con más fuerza.** Núcleo más presente (`rgba(178,40,36,~0.26)`) + un segundo foco para profundidad; sigue sin competir y el texto sigue en `Hierro`.
 - **Atmósferas — modelo de TRES capas + lavado vertical (más ricas).** Cada atmósfera es `luz` (fuente de luz cálida) + `color` (color emocional del momento, con más decisión) + `profundidad` (tono hondo hacia un borde), más un **lavado vertical** en la capa de campo que da volumen y continuidad al descender. Colores más presentes y momentos claramente distintos (amanecer → apetito dorado → el horno → íntimo → fresco verde → mesa compartida → atardecer), siempre sobre `Harina`, con `Hierro` legible. Se tomó la FILOSOFÍA atmosférica de un proyecto anterior (riqueza, profundidad, luz, continuidad), no su estética ni sus colores ni partículas.
 
+### Continuación (sexta ola de indicaciones, 2026-07-11)
+
+- **Aura de MasterChef = modificación de la atmósfera (rehecha).** Dejó de ser un `::before` con fondo detrás del párrafo (se notaban sus bordes, se sentía un bloque). Ahora es un **foco emocional del propio campo** (`--atm-emo-*`): el motor lo enciende cuando el párrafo cruza el centro del viewport y lo apaga al alejarse (falloff suave), grande y difuso, sin bordes, siguiendo el scroll. Se integra en el aire del recorrido; el rojo sigue localizado a ese momento.
+- **Atmósferas con más carácter.** Paleta ampliada (manteca, café, oliva, hierro, rescoldo, además de los siete tonos) y **temperaturas claramente distintas** por momento (manteca → oro → el horno de café → piedra fría → verde → mesa dorada → atardecer), con más presencia (color 0.18–0.30) y un lavado vertical suavizado. El texto sigue en `Hierro`, legible; el contenido, protagonista.
+- **Navbar sin frontera (dissolve).** Se quitó el borde inferior y el fondo pasó a un **gradiente que hereda `--atm-navbar-rgb` arriba y se desvanece a transparente abajo**: no hay línea donde termina la navegación y empieza el recorrido. El header no captura eventos en su zona de fade (`pointer-events: none`; el contenido interactivo los reactiva). El menú mobile hereda el mismo aire (gradiente, sin borde).
+- **CTAs de servicio diferenciados.** Cada propuesta tiene su propia invitación (colaboraciones: "…escribime y la cocinamos juntas"; propuestas educativas: "Contame de tu grupo o tu espacio y la diseñamos a medida"); los canales (Instagram + email) se comparten. Evita la sensación de contenido duplicado.
+
 ---
 
 *Fin del Sistema Visual. Próximos bloques (no desarrollar aquí): Setup Técnico (5), Implementación por momentos (6).*

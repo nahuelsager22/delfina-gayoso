@@ -15,13 +15,12 @@ import type { PropuestaServicio } from "../types";
  *
  * PENDIENTE DE CONFIRMAR: el usuario de Instagram real. El email ya es el definitivo.
  */
-const CONTACTO = {
-  invitacion: "Contame qué tenés en mente y lo vemos.",
-  canales: [
-    { medio: "instagram", destino: "https://instagram.com/delfinagayoso" },
-    { medio: "email", destino: "mailto:gayosodelfina@gmail.com" },
-  ],
-} as const;
+// Los canales de contacto son los mismos; la invitación es propia de cada sección
+// (cada CTA con su intención, para que no se sienta duplicada — Bloque 6.5).
+const CANALES = [
+  { medio: "instagram", destino: "https://instagram.com/delfinagayoso" },
+  { medio: "email", destino: "mailto:gayosodelfina@gmail.com" },
+] as const;
 
 export const servicios: readonly PropuestaServicio[] = [
   {
@@ -31,7 +30,10 @@ export const servicios: readonly PropuestaServicio[] = [
       "Marcas que quieran cocinar algo conmigo, y gente que necesite una asesoría gastronómica o tenga una idea para proponerme.",
     comoEsTrabajar:
       "Me gusta trabajar como cocino: sin vueltas, poniendo las manos y contándote todo el proceso.",
-    contacto: CONTACTO,
+    contacto: {
+      invitacion: "Si tenés una marca o una idea, escribime y la cocinamos juntas.",
+      canales: CANALES,
+    },
   },
   {
     // EJEMPLO (borrador): propuesta educativa a medida. Reemplazable por datos reales.
@@ -41,7 +43,10 @@ export const servicios: readonly PropuestaServicio[] = [
       "Escuelas, espacios gastronómicos o equipos que quieran un taller o una clase pensada para ellos.",
     comoEsTrabajar:
       "Armamos juntos el temario según el nivel del grupo, y yo llevo todo listo para cocinar.",
-    contacto: CONTACTO,
+    contacto: {
+      invitacion: "Contame de tu grupo o tu espacio y la diseñamos a medida.",
+      canales: CANALES,
+    },
     borrador: true,
   },
 ];
