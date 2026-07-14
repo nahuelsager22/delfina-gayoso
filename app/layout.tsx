@@ -8,7 +8,12 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Delfina Gayoso",
   description: "Aprender cocina junto a Delfina.",
-  twitter: {
+  openGraph: {
+    type: "website",
+    url: "https://delfina-gayoso.vercel.app",
+    title: "Delfina Gayoso",
+    description: "Aprender cocina junto a Delfina.",
+    siteName: "Delfina Gayoso",
     images: "cover-desayunos-meriendas",
   },
 };
