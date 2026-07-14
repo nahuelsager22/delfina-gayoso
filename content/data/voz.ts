@@ -49,7 +49,7 @@ export const voz: readonly VozDelfina[] = [
   {
     id: "quien-desde-siempre",
     texto:
-      "Cocino desde que tengo memoria. Me apasiona la gastronomía, y hace un tiempo decidí dedicarme a esto en serio.",
+      "Cocino desde que tengo memoria. Me apasiona la gastronomía, y hace tiempo decidí dedicarme a esto en serio.",
     registro: "reflexion",
     pertenece: "quien-cocina",
   },

@@ -35,14 +35,14 @@ export const comunidad: readonly MomentoComunidad[] = [
   },
   {
     id: "mesas-compartidas",
-    que: "Las mesas largas en casa, donde lo que cociné es la excusa para quedarnos horas.",
+    que: "Las mesas largas, donde lo que cociné es la excusa para quedarnos horas.",
     registro: "calidez",
     ilustracion: "plato",
   },
   {
     id: "trends-mama",
-    que: "Mi mamá, que se prende a cualquier idea rara que se me ocurre grabar.",
-    personas: ["mi mamá"],
+    que: "Familia y amigos, que se prenden a cualquier idea rara que se me ocurre grabar.",
+    personas: ["familia", "amigos"],
     registro: "humor",
     ilustracion: "pantalla",
   },
