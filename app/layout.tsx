@@ -8,6 +8,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Delfina Gayoso",
   description: "Aprender cocina junto a Delfina.",
+  twitter: {
+    images: "cover-desayunos-meriendas",
+  },
 };
 
 export const viewport: Viewport = {
