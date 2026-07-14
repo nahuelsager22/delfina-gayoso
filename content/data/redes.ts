@@ -19,6 +19,6 @@ export const redes: readonly RedSocial[] = [
     id: "tiktok",
     plataforma: "tiktok",
     usuario: "@gayosodelfi",
-    url: "https://tiktok.com/@gayosodelfi",
+    url: "https://www.tiktok.com/@delfinagayos0",
   },
 ];
