@@ -2,122 +2,78 @@
 
 import { useEffect } from "react";
 import { getMomentos } from "@/content";
-import {
-  ATMOSFERA_DEFECTO,
-  escribirVars,
-  getAtmosfera,
-  mezclar,
-  type Atmosfera,
-} from "./config";
+import { getSala, type Sala } from "./config";
+
+/** Interpolación por canal (para que el navbar cruce de una sala a la otra sin salto). */
+const lerp = (a: number, b: number, t: number) => Math.round(a + (b - a) * t);
+const mezclaRGB = (a: readonly number[], b: readonly number[], t: number) =>
+  `${lerp(a[0]!, b[0]!, t)} ${lerp(a[1]!, b[1]!, t)} ${lerp(a[2]!, b[2]!, t)}`;
 
 /**
- * Motor del Sistema de Atmósferas (Bloque 6.5). Un ÚNICO sistema, una ÚNICA capa
- * continua. Lee, por cada sección, qué atmósfera declara (`momento.atmosfera`), y a
- * medida que se desciende INTERPOLA de una a la siguiente —color, intensidad,
- * posición, radio— escribiendo unas pocas variables CSS en `:root`. La capa fija
- * (`.campo-atmosferico`) sólo consume esas variables: el campo se siente continuo,
- * sin bordes entre secciones.
+ * Proveedor de SALAS (Bloque 8, 3ª ola). El color ya no es un campo continuo que
+ * interpola: cada `<section>` pinta su propia habitación (ver `Momento`). Lo único que
+ * este proveedor mantiene es la TINTA DEL NAVBAR: el bar es fijo y está fuera del flujo,
+ * así que necesita saber qué sala tiene debajo para heredar su color. Se actualiza en el
+ * borde entre salas (cuando el límite de una habitación pasa bajo el bar), de modo que
+ * el navbar cambia junto con la sala —sin "encender" nada a destiempo—.
  *
- *  · Rendimiento: cálculos compartidos, un rAF por frame de scroll, anclas cacheadas
- *    (se recalculan en resize y cuando el layout cambia —p. ej. al desplegar un
- *    caption—). Una sola capa, un solo gradiente.
- *  · Accesibilidad / degradación: sin JS, `:root` ya trae una atmósfera por defecto
- *    (la capa se ve estática, no rota). No hay animación autónoma: el campo sólo
- *    refleja la posición de scroll (control del usuario), así que es compatible con
- *    `prefers-reduced-motion`. El tinte es sutil: el texto sigue en `Hierro` (≈AAA).
+ *  · Rendimiento: un rAF por frame de scroll; sólo escribe cuando cambia de sala.
+ *  · Degradación: sin JS, `:root` trae la tinta de navbar por defecto (sala de entrada).
+ *    Compatible con `prefers-reduced-motion` (sólo refleja el scroll, sin animación).
  */
-
-type Ancla = { centro: number; atm: Atmosfera };
-
 export function AtmosferaProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const raiz = document.documentElement;
     const momentos = getMomentos();
-    let anclas: Ancla[] = [];
-    let emoEl: HTMLElement | null = null;
+    let secciones: { top: number; sala: Sala }[] = [];
     let frame = 0;
 
     const medir = () => {
       const y = window.scrollY;
-      const encontradas: Ancla[] = [];
-      for (const m of momentos) {
-        const el = document.querySelector<HTMLElement>(
-          `section[data-momento="${m.id}"]`,
-        );
-        if (!el) continue;
-        const r = el.getBoundingClientRect();
-        encontradas.push({
-          centro: r.top + y + r.height / 2,
-          atm: getAtmosfera(m.atmosfera),
-        });
-      }
-      anclas = encontradas.sort((a, b) => a.centro - b.centro);
-      emoEl = document.querySelector<HTMLElement>('[data-emocion="masterchef"]');
+      secciones = momentos
+        .map((m) => {
+          const el = document.querySelector<HTMLElement>(
+            `section[data-momento="${m.id}"]`,
+          );
+          if (!el) return null;
+          const r = el.getBoundingClientRect();
+          return { top: r.top + y, sala: getSala(m.atmosfera) };
+        })
+        .filter((s): s is { top: number; sala: Sala } => !!s)
+        .sort((a, b) => a.top - b.top);
       aplicar();
     };
 
-    // Acento emocional (MasterChef): NO es un fondo del párrafo, es una modificación
-    // de la atmósfera. Un foco rojo grande y difuso, parte del mismo campo fijo, que
-    // florece cuando el párrafo cruza el centro del viewport y se desvanece al
-    // alejarse —sin bordes perceptibles, como si cambiara la luz del universo—.
-    const ROJO_MC = "178 40 36";
-    const aplicarEmocion = () => {
-      if (!emoEl) {
-        raiz.style.setProperty("--atm-emo-int", "0");
-        return;
-      }
-      const vh = window.innerHeight;
-      const r = emoEl.getBoundingClientRect();
-      const cx = r.left + r.width / 2;
-      const cy = r.top + r.height / 2;
-      const d = Math.abs(cy - vh / 2) / vh; // 0 en el centro, ~1 a un alto
-      const p = Math.max(0, Math.min(1, 1 - d / 0.62));
-      const suave = p * p * (3 - 2 * p); // florece y se apaga suave
-      raiz.style.setProperty("--atm-emo-rgb", ROJO_MC);
-      raiz.style.setProperty("--atm-emo-int", (0.26 * suave).toFixed(3));
-      raiz.style.setProperty(
-        "--atm-emo-x",
-        `${((cx / window.innerWidth) * 100).toFixed(1)}%`,
-      );
-      raiz.style.setProperty("--atm-emo-y", `${((cy / vh) * 100).toFixed(1)}%`);
-      raiz.style.setProperty("--atm-emo-radio", "60%");
-    };
+    // Banda de transición del navbar (px): cuando el borde de la sala siguiente entra en
+    // esta banda por encima de la línea del bar, el color del navbar se cruza de forma
+    // GRADUAL de una sala a la otra. Así no "cambia de tema": pertenece al lugar.
+    const BANDA = 140;
 
     const aplicar = () => {
-      aplicarEmocion();
-      if (anclas.length === 0) return;
-      const ref = window.scrollY + window.innerHeight / 2;
-
-      if (ref <= anclas[0]!.centro) {
-        escribirVars(raiz, anclas[0]!.atm);
-        return;
+      if (secciones.length === 0) return;
+      const linea = window.scrollY + 8;
+      let idx = 0;
+      for (let i = 0; i < secciones.length; i++) {
+        if (secciones[i]!.top <= linea) idx = i;
       }
-      const ultima = anclas[anclas.length - 1]!;
-      if (ref >= ultima.centro) {
-        escribirVars(raiz, ultima.atm);
-        return;
-      }
-      for (let i = 0; i < anclas.length - 1; i++) {
-        const a = anclas[i]!;
-        const b = anclas[i + 1]!;
-        if (ref >= a.centro && ref <= b.centro) {
-          const t = (ref - a.centro) / (b.centro - a.centro);
-          // ATMÓSFERAS ANCLADAS (Opción C): cada atmósfera se sostiene a FUERZA PLENA
-          // mientras se recorre su sección (meseta `HOLD` en cada extremo) y sólo
-          // cruza —suave— en la zona de borde entre dos secciones. Así cada capítulo
-          // llega a su identidad completa (deja un recuerdo distinto), sin cortes.
-          const HOLD = 0.36;
-          let k: number;
-          if (t <= HOLD) k = 0;
-          else if (t >= 1 - HOLD) k = 1;
-          else {
-            const u = (t - HOLD) / (1 - 2 * HOLD);
-            k = u * u * (3 - 2 * u); // smoothstep en la banda de transición
-          }
-          escribirVars(raiz, mezclar(a.atm, b.atm, k));
-          return;
+      const a = secciones[idx]!.sala;
+      const sig = secciones[idx + 1];
+      // t = 0 mientras la sala siguiente está lejos; sube a 1 al cruzar su borde.
+      let t = 0;
+      let b: Sala = a;
+      if (sig) {
+        const dist = sig.top - linea; // px hasta el borde de la sala siguiente
+        if (dist <= BANDA) {
+          b = sig.sala;
+          const u = 1 - Math.max(0, dist) / BANDA;
+          t = u * u * (3 - 2 * u); // smoothstep
         }
       }
+      raiz.style.setProperty("--nav-ink", mezclaRGB(a.ink, b.ink, t));
+      raiz.style.setProperty("--nav-ink-soft", mezclaRGB(a.inkSoft, b.inkSoft, t));
+      raiz.style.setProperty("--nav-accent", mezclaRGB(a.accent, b.accent, t));
+      raiz.style.setProperty("--nav-bg", mezclaRGB(a.navBg, b.navBg, t));
+      raiz.style.setProperty("--nav-oscura", (t < 0.5 ? a.oscura : b.oscura) ? "1" : "0");
     };
 
     const alScrollear = () => {
@@ -128,12 +84,9 @@ export function AtmosferaProvider({ children }: { children: React.ReactNode }) {
       });
     };
 
-    // Primera medición tras el paint (fuentes/layout ya asentados).
     const inicio = window.requestAnimationFrame(medir);
-
     window.addEventListener("scroll", alScrollear, { passive: true });
     window.addEventListener("resize", medir);
-    // El layout cambia al desplegar captions o al cargar: re-medir las anclas.
     const ro = new ResizeObserver(() => {
       if (frame) return;
       frame = window.requestAnimationFrame(() => {
@@ -152,11 +105,5 @@ export function AtmosferaProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  return (
-    <>
-      {/* La capa continua: un solo elemento fijo que consume las variables. */}
-      <div className="campo-atmosferico" aria-hidden data-atmosfera-defecto={ATMOSFERA_DEFECTO} />
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }

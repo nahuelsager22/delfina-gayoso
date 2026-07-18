@@ -48,7 +48,7 @@ export function ColumnaAprendizaje() {
               className="text-meta"
               style={{
                 fontFamily: "var(--font-mundo)",
-                color: "var(--color-piedra)",
+                color: "rgb(var(--atm-ink-soft, 62 54 45))",
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
               }}
@@ -58,15 +58,18 @@ export function ColumnaAprendizaje() {
             <h3
               className="voz-display text-voz-l"
               style={{
-                color: "var(--color-hierro)",
+                color: "rgb(var(--atm-ink, 42 36 30))",
                 alignSelf: "flex-start",
                 // Aire extra para que el círculo (más grande) respire arriba y abajo.
                 marginBlock: "var(--space-xs)",
               }}
             >
               {/* Un círculo a mano, como marcar la serie en un cuaderno. Vive
-                  pegado al texto (estable con el scroll). */}
-              <CirculoAnotado>{serie.titulo}</CirculoAnotado>
+                  pegado al texto (estable con el scroll). En galaxia profunda el
+                  círculo usa el acento del paisaje (oro sobre chocolate). */}
+              <CirculoAnotado color="rgb(var(--atm-accent, 180 97 31))">
+                {serie.titulo}
+              </CirculoAnotado>
             </h3>
             <Voz texto={serie.premisa} escala="cuerpo" />
           </div>

@@ -78,7 +78,8 @@ export function Wayfinding() {
           // Medidor corto y centrado: no es un scrollbar de página completa.
           blockSize: "clamp(72px, 16vh, 168px)",
           inlineSize: "2px",
-          backgroundColor: "var(--color-masa)",
+          // Tinta adaptativa (Bloque 8): el medidor se ve sobre cualquier paisaje.
+          backgroundColor: "rgb(var(--atm-ink, 42 36 30) / 0.18)",
           borderRadius: "var(--radius-min)",
           opacity: activo ? 0.9 : 0.4,
           transition: "opacity var(--dur-sm) var(--ease-suave)",
@@ -88,7 +89,7 @@ export function Wayfinding() {
           style={{
             inlineSize: "100%",
             blockSize: `${progreso * 100}%`,
-            backgroundColor: "var(--color-piedra)",
+            backgroundColor: "rgb(var(--atm-ink, 42 36 30) / 0.6)",
             borderRadius: "var(--radius-min)",
           }}
         />

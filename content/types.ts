@@ -119,7 +119,9 @@ export interface SerieAprendizaje {
    D · Producto — ebook, ticket de clase.
    Sin campos de catálogo (SKU/stock/categorías/filtros): B3 §4-D.
    El precio es un dato de presentación (se muestra, no se opera): no hay
-   carrito ni checkout, la compra ocurre en Hotmart (B3 §7).
+   carrito ni checkout, la compra ocurre en la plataforma de venta externa (B3 §7).
+   Bloque 8: la web es AGNÓSTICA de plataforma —el destino es una URL cualquiera
+   (Hotmart, Tienda Nube u otra); cambiar de plataforma es sólo cambiar la URL.
    ========================================================================= */
 export interface Producto {
   readonly id: string;
@@ -136,8 +138,12 @@ export interface Producto {
   readonly precio: string;
   /** Texto del CTA; por defecto "Llevátelo". Ej. "Reservar lugar" para una clase. */
   readonly ctaLabel?: string;
-  /** Destino de compra/reserva. La web no cobra. */
-  readonly destinoHotmart: string;
+  /**
+   * Destino de compra/reserva: URL de la plataforma de venta (agnóstica — Bloque 8).
+   * La web no cobra; sólo enlaza a donde estén alojados los productos. Migrar de
+   * plataforma (p. ej. Hotmart → Tienda Nube) es reemplazar esta URL, nada más.
+   */
+  readonly destino: string;
   /** Imagen real opcional; sin ella la ficha se sostiene con voz + aire (§8). */
   readonly imagen?: ImagenRealRef;
   /**

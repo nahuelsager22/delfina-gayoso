@@ -48,9 +48,8 @@ export function QuienCocina() {
       >
         {voces.map((v: VozDelfina) => {
           const d = DISPOSICION[v.id] ?? POR_DEFECTO;
-          // El beat de MasterChef marca el punto donde la atmósfera se tiñe de rojo
-          // (referencia emocional, no branding). El marcador lo lee el motor de
-          // atmósferas, que enciende el foco rojo en el campo (no un fondo del texto).
+          // El beat de MasterChef lleva un rescoldo rojo tenue detrás (referencia
+          // emocional, no branding), parte de la habitación íntima (estático).
           const esMasterchef = v.id === "quien-recorrido";
           return (
             <Aparicion
@@ -62,8 +61,25 @@ export function QuienCocina() {
               }}
             >
               {esMasterchef ? (
-                <div data-emocion="masterchef">
-                  <Voz texto={v.texto} escala={d.escala} />
+                // Rescoldo de MasterChef: un resplandor rojo tenue detrás del párrafo,
+                // parte de la habitación (Bloque 8, estático; ya no lo enciende un motor).
+                // Evocativo, sin branding; el texto sigue legible sobre la piedra.
+                <div style={{ position: "relative" }}>
+                  <div
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      inset: "-14% -8%",
+                      zIndex: 0,
+                      pointerEvents: "none",
+                      background:
+                        "radial-gradient(58% 60% at 28% 50%, rgba(176,42,36,0.30) 0%, transparent 70%)",
+                      filter: "blur(8px)",
+                    }}
+                  />
+                  <div style={{ position: "relative", zIndex: 1 }}>
+                    <Voz texto={v.texto} escala={d.escala} />
+                  </div>
                 </div>
               ) : (
                 <Voz texto={v.texto} escala={d.escala} />

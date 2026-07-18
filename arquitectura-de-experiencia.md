@@ -356,6 +356,11 @@ Nueva evidencia (indicaciones directas del usuario) con prioridad sobre las deci
 - **Portadas de capítulo (matiza "no es una colección de secciones / sin placa").** Los grandes momentos ahora **anuncian su entrada** con un encabezado visible y distintivo (rótulo + título serif grande). No contradice la continuidad del recorrido: cada momento sigue siendo un tramo del mismo descenso, pero se **percibe claramente cuándo empieza un capítulo importante**, con identidad propia (reforzado por su atmósfera, ahora muy distinta). Sigue sin haber menú/placa corporativa; es señalización dentro del pasillo.
 - **Presentación del nombre.** Se resolvió el "momento claro donde aparece el nombre completo": al entrar, la marca muestra **Delfina Gayoso** y se reduce a **DG** (Opción B). Coherente con "entrar in medias res" —no es un hero— pero da la presentación explícita que faltaba tanto para quien la conoce como para quien llega por primera vez.
 
+## Actualización — Bloque 8 (Personalización con la clienta, 2026-07-17)
+
+- **Plataforma de venta agnóstica (reformula "El CTA lleva a Hotmart", §2 y §5).** Indicación de Delfina: Hotmart le complica el cobro; quiere sacar los productos (evaluando Tienda Nube). El criterio deja de nombrar una plataforma: la habitación de producto enlaza a una **URL de venta cualquiera** (`Producto.destino`), la compra sigue ocurriendo fuera (la web no monta carrito, §7 intacto), y migrar de plataforma es sólo cambiar la URL —sin tocar la arquitectura—. El punto estructural "se puede entrar desde el medio (link compartido, la propia plataforma)" se mantiene idéntico; sólo se generaliza el nombre de la plataforma. La aclaración de negocio (venta central, sin estética de tienda) no cambia.
+- **Sin cambios de arquitectura de recorrido.** El resto del Bloque 8 (más intensidad de color por sección, verde de marca, detalles con color) es dirección de arte / sistema visual: ver las secciones "Actualización — Bloque 8" de `direccion-de-arte.md` y `sistema-visual.md`. El orden, las fases y los momentos no se tocaron.
+
 ---
 
 *Fin de la Arquitectura de Experiencia. Próximos bloques (no desarrollar aquí): Sistema Visual (4), Setup Técnico (5), Implementación por momentos (6).*

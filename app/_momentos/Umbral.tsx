@@ -2,6 +2,9 @@ import { getVozDeMomento } from "@/content";
 import { Momento } from "../_patrones/Momento";
 import { Voz } from "../_patrones/Voz";
 import { Aparicion } from "../_patrones/Aparicion";
+import { Sello } from "../_chrome/adornos/Sello";
+import { EspacioFoto } from "../_chrome/adornos/EspacioFoto";
+import { LineaEditorial } from "../_chrome/adornos/LineaEditorial";
 
 /**
  * Momento 1 — El umbral (arquitectura §1). Se entra a mitad de un gesto:
@@ -23,20 +26,46 @@ export function Umbral() {
   const voces = getVozDeMomento("umbral");
 
   return (
-    <Momento id="umbral">
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "var(--space-2xl)",
-          maxInlineSize: "var(--measure-voz)",
-        }}
-      >
-        {voces.map((v, i) => (
-          <Aparicion key={v.id} orden={i}>
-            <Voz texto={v.texto} escala={i === 0 ? "xl" : "l"} enfasis={v.enfasis} />
+    <Momento id="umbral" full>
+      {/* Hero editorial (Bloque 8): un spread a pantalla completa. A la izquierda el
+          titular con presencia + línea a mano + segundo beat; a la derecha un espacio
+          GENEROSO reservado para la foto real de Delfina (retrato en arco que respira y
+          será protagonista), con el sello superpuesto. Horizontal, centrado en el alto:
+          no cae en vertical. Cuando llegue la foto se pasa como children de EspacioFoto. */}
+      <div className="hero-grid">
+        <div className="hero-texto">
+          <Aparicion orden={0}>
+            <Voz
+              texto={voces[0]?.texto ?? ""}
+              escala="xl"
+              className="voz-hero"
+              enfasis={voces[0]?.enfasis}
+            />
+            <LineaEditorial
+              variante="onda"
+              ancho="clamp(140px, 34%, 320px)"
+              style={{ marginBlockStart: "var(--space-md)" }}
+            />
           </Aparicion>
-        ))}
+          {voces[1] && (
+            <Aparicion orden={1} style={{ marginBlockStart: "var(--space-lg)" }}>
+              <Voz texto={voces[1].texto} escala="l" enfasis={voces[1].enfasis} />
+            </Aparicion>
+          )}
+        </div>
+
+        <Aparicion orden={1} className="hero-foto">
+          <EspacioFoto ratio="4 / 5" forma="arco" nota="delfina" />
+          {/* Sello superpuesto: profundidad / superposición editorial. */}
+          <Sello
+            style={{
+              position: "absolute",
+              insetBlockEnd: "-1.4rem",
+              insetInlineStart: "-1.4rem",
+              inlineSize: "clamp(88px, 8vw, 124px)",
+            }}
+          />
+        </Aparicion>
       </div>
     </Momento>
   );

@@ -13,7 +13,7 @@ const TRAZO = "M2 7 Q 26 2, 50 6 T 98 5";
 
 export function SubrayadoAnotado({
   children,
-  color = "var(--color-corteza)",
+  color = "rgb(var(--atm-accent, 180 97 31))",
 }: {
   children: React.ReactNode;
   color?: string;

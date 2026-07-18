@@ -29,8 +29,12 @@ export function Numeral({
   className?: string;
   style?: CSSProperties;
 }) {
+  // Tinta adaptativa (Bloque 8): la cifra se lee sobre cualquier paisaje. `hierro` →
+  // tinta principal; `corteza` → el acento cálido del paisaje (oro en las profundas).
   const color =
-    tono === "corteza" ? "var(--color-corteza)" : "var(--color-hierro)";
+    tono === "corteza"
+      ? "rgb(var(--atm-accent, 180 97 31))"
+      : "rgb(var(--atm-ink, 42 36 30))";
 
   // Si empieza con "#", el signo es acento en Yema y la cifra lleva el color legible.
   const tieneAlmohadilla = valor.startsWith("#");

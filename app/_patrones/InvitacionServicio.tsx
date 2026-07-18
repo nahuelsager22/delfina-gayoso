@@ -15,7 +15,7 @@ import { MarcaEjemplo } from "./MarcaEjemplo";
  *  · Contacto = invitación abierta + accesos directos claros (Bloque 6.5 · R8:
  *    Instagram + email, ya no un único medio). Son enlaces de texto —no el botón
  *    `Yema` de la ficha de producto (ese acento de relleno está reservado a la
- *    compra en Hotmart)—: escribirle es una invitación, no una transacción.
+ *    compra en la plataforma de venta)—: escribirle es una invitación, no una transacción.
  *  · Si es contenido de EJEMPLO (`borrador`), lo marca visiblemente (R Oferta).
  *  · Aparición "vapor", heredando la temperatura del pasillo.
  */
@@ -63,7 +63,7 @@ export function InvitacionServicio({
             className="text-meta"
             style={{
               fontFamily: "var(--font-mundo)",
-              color: "var(--color-piedra)",
+              color: "rgb(var(--atm-ink-soft, 62 54 45))",
               letterSpacing: "0.02em",
               textTransform: "uppercase",
             }}
@@ -107,7 +107,7 @@ export function InvitacionServicio({
                   style={{
                     fontFamily: "var(--font-mundo)",
                     fontWeight: "var(--font-weight-medium)",
-                    color: "var(--color-hierro)",
+                    color: "rgb(var(--atm-ink, 42 36 30))",
                     width: "fit-content",
                   }}
                 >

@@ -3,8 +3,8 @@ import { Momento } from "../_patrones/Momento";
 import { FichaProducto } from "../_patrones/FichaProducto";
 
 /**
- * Momento 4 — Lo que te podés llevar (arquitectura §1). El producto (los dos
- * ebooks reales de Hotmart) como CONTINUACIÓN del enseñar, no como tienda.
+ * Momento 2 — Lo que te podés llevar (arquitectura §1, orden Bloque 6.5). El producto
+ * (los dos ebooks reales) como CONTINUACIÓN del enseñar, no como tienda.
  *
  *  · Transición 3→4 sin quiebre (§3.3): este momento es "denso", igual que el
  *    aprendizaje, así que el contenedor le da el mismo ritmo vertical. No hay
@@ -17,8 +17,8 @@ import { FichaProducto } from "../_patrones/FichaProducto";
  *  · El peso sigue en enseñar: dos fichas, tarde en el descenso, sin dominio
  *    comercial persistente (no hay nav "Shop" ni carrito, §3.3).
  *
- * Los productos se leen vía `@/content`; los `destinoHotmart` son placeholders
- * hasta que lleguen los enlaces reales (el CTA ya queda listo para funcionar).
+ * Los productos se leen vía `@/content`; el `destino` de cada uno es una URL de la
+ * plataforma de venta (agnóstica, Bloque 8): cambiar de plataforma es cambiar la URL.
  */
 export function LoQueTeLlevas() {
   const productos = getProductos();

@@ -24,7 +24,7 @@ const TRAZO =
 
 export function CirculoAnotado({
   children,
-  color = "var(--color-corteza)",
+  color = "rgb(var(--atm-accent, 180 97 31))",
 }: {
   children: React.ReactNode;
   color?: string;

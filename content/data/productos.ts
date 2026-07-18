@@ -5,9 +5,13 @@ import type { Producto } from "../types";
  * (B3 §7). Se muestran en "Lo que te podés llevar", temprano en el recorrido
  * (Bloque 6.5 · R1) y con presencia: cada ficha lleva su portada real como ancla.
  *
- * DATOS REALES — los dos ebooks de Hotmart: títulos, precios ($15.000 / $10.000),
- * colaboración con Florencia Depaoli, `destinoHotmart` reales. Descripciones en su
- * voz, PENDIENTES DE VALIDACIÓN.
+ * DATOS REALES — los dos ebooks: títulos, precios ($15.000 / $10.000), colaboración
+ * con Florencia Depaoli, `destino` reales. Descripciones en su voz, PENDIENTES DE
+ * VALIDACIÓN.
+ *
+ * PLATAFORMA AGNÓSTICA (Bloque 8): `destino` es sólo una URL. Hoy apunta a donde están
+ * alojados los productos; si Delfina migra de plataforma (Tienda Nube u otra), se
+ * reemplaza la URL sin tocar la arquitectura del sitio.
  *
  * CONTENIDO DE EJEMPLO (Bloque 6.5 · `borrador: true`): para que Delfina vea el
  * ecosistema completo (clases, tickets), se suma una clase ficticia claramente
@@ -26,7 +30,8 @@ export const productos: readonly Producto[] = [
     ],
     formato: "ebook en PDF",
     precio: "$15.000",
-    destinoHotmart: "https://hotmart.com/es/marketplace/productos/ebook-masas-quebradas-by-delfina-gayoso/T92555721V",
+    destino:
+      "https://hotmart.com/es/marketplace/productos/ebook-masas-quebradas-by-delfina-gayoso/T92555721V",
     imagen: "cover-masas-quebradas",
   },
   {
@@ -42,7 +47,7 @@ export const productos: readonly Producto[] = [
     formato: "ebook en PDF",
     colaboradores: ["Florencia Depaoli, nutricionista"],
     precio: "$10.000",
-    destinoHotmart:
+    destino:
       "https://hotmart.com/es/marketplace/productos/recetario-desayunos-y-meriendas/C91567976W?sck=HOTMART_PRODUCT_PAGE",
     imagen: "cover-desayunos-meriendas",
   },
@@ -61,7 +66,7 @@ export const productos: readonly Producto[] = [
     formato: "clase en vivo por videollamada",
     precio: "$12.000",
     ctaLabel: "Reservar lugar",
-    destinoHotmart: "https://ejemplo.delfinagayoso.com/clase-pastas",
+    destino: "https://ejemplo.delfinagayoso.com/clase-pastas",
     borrador: true,
   },
 ];

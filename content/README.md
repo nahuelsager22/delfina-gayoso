@@ -47,7 +47,7 @@ content/
 | A · `VozDelfina` | fragmentos en primera persona (serif) | registro + a qué momento pertenece |
 | B · `Momento` | cada parada del descenso | sembrado con los 7 (estructura) |
 | C · `PiezaAprendizaje` | capítulo / unidad de enseñanza | numeral `#01`, `NIVEL 0` |
-| D · `Producto` | ebook, ticket | **sin SKU/stock/categorías/filtros**; CTA → Hotmart |
+| D · `Producto` | ebook, ticket | **sin SKU/stock/categorías/filtros**; `destino` = URL de la plataforma de venta (agnóstica, B8) |
 | E · `PropuestaServicio` | colaboración, asesoría | invitación, sin tarifario |
 | F · `ImagenReal` | material propio | `tipoGesto` gobierna el desborde |
 | G · `MomentoComunidad` | vida real alrededor de la cocina | taller, mate, Budín, humor |

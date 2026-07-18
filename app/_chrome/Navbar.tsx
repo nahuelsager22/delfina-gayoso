@@ -40,7 +40,7 @@ function Utensilios({ abierto }: { abierto: boolean }) {
       height="26"
       viewBox="0 0 28 28"
       fill="none"
-      stroke="var(--color-hierro)"
+      stroke="rgb(var(--nav-ink, 42 36 30))"
       strokeWidth="1.6"
       strokeLinecap="round"
       strokeLinejoin="round"

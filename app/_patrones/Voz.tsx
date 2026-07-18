@@ -9,8 +9,9 @@ import { SubrayadoAnotado } from "../_chrome/adornos/SubrayadoAnotado";
  *    para párrafo largo (ahí WONK se apaga para priorizar lectura).
  *  · Línea corta (`--measure-voz`, 34–46ch), a la izquierda. El aire que la rodea
  *    lo pone el momento (§3.2); acá sólo se acota la medida.
- *  · Color `Hierro` (13.8:1 AAA). Sin comillas decorativas, sin barra de cita,
- *    sin ícono de "quote": no es un testimonial, es ella pensando en voz alta.
+ *  · Color = TINTA ADAPTATIVA del paisaje (`--atm-ink`, Bloque 8): oscura en las
+ *    galaxias luminosas, clara en las profundas; siempre legible. Sin comillas
+ *    decorativas, sin barra de cita: no es un testimonial, es ella pensando en voz alta.
  *  · El humor/autoironía vive en el texto, nunca en la tipografía (§7.3).
  */
 export function Voz({
@@ -43,7 +44,7 @@ export function Voz({
       className={clases}
       style={{
         maxInlineSize: "var(--measure-voz)",
-        color: "var(--color-hierro)",
+        color: "rgb(var(--atm-ink, 42 36 30))",
       }}
     >
       {renderConEnfasis(texto, enfasis)}

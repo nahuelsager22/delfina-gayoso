@@ -16,8 +16,8 @@ export function MarcaEjemplo() {
         fontFamily: "var(--font-mundo)",
         textTransform: "uppercase",
         letterSpacing: "0.08em",
-        color: "var(--color-piedra)",
-        border: "1px solid var(--color-masa)",
+        color: "rgb(var(--atm-ink-soft, 62 54 45))",
+        border: "1px solid rgb(var(--atm-ink-soft, 62 54 45) / 0.4)",
         borderRadius: "var(--radius-min)",
         padding: "2px var(--space-2xs)",
       }}

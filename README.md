@@ -93,7 +93,7 @@ configuran con los tokens `--fraunces-*` y se aplican con las clases `.voz-displ
   - **tailwind-merge** — útil recién cuando haya composición real de `className`
     en componentes (B6). Hoy no hay componentes que lo justifiquen.
 - **Modelo de contenido local tipado** (no CMS) — ver `content/README.md`.
-- **Sin carrito/checkout.** Los productos referencian su CTA a Hotmart (B3 §7).
+- **Sin carrito/checkout.** Los productos enlazan su CTA a la plataforma de venta externa vía `Producto.destino` (URL agnóstica — Bloque 8; B3 §7).
 
 ## Calidad desde el inicio
 

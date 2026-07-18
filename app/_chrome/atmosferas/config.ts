@@ -1,182 +1,138 @@
 /**
- * Sistema de Atmósferas — configuración centralizada (Bloque 6.5).
+ * Sistema de SALAS — configuración centralizada (Bloque 8, 3ª ola: modelo editorial).
  * -----------------------------------------------------------------------------
- * La atmósfera no es un fondo: es el aire del proyecto. Un campo continuo de luz
- * que acompaña la emoción de cada momento y se interpola de uno a otro sin cortes.
+ * Evolución del sistema de atmósferas: se abandona el CAMPO CONTINUO (una capa fija
+ * que interpolaba el color al hacer scroll y "encendía" la atmósfera al llegar a cada
+ * sección —una sensación incómoda—). Ahora cada momento es una HABITACIÓN de la misma
+ * casa: su color YA existe en su espacio; el usuario entra y simplemente está dentro
+ * de ese universo. Cada sala es una pequeña pieza editorial —el color puede ser el
+ * protagonista, ocupar todo el ancho— dentro del mismo universo gastronómico.
  *
- * TODA la definición vive acá. El contenido sólo declara `momento.atmosfera`; los
- * componentes no hardcodean colores. Para reutilizar el sistema en otro proyecto de
- * North-Studio se cambia SÓLO este archivo (y las declaraciones por sección).
+ * TODA la definición vive acá. El contenido sólo declara `momento.atmosfera` (la clave
+ * de la sala); `Momento` pinta el fondo y fija la tinta local como variables scopeadas
+ * (`--atm-ink` / `--atm-ink-soft` / `--atm-accent`), que el texto, los acentos y los
+ * detalles heredan. El navbar (fijo, fuera del flujo) lee la sala de arriba vía el
+ * proveedor. Reutilizable en otro proyecto cambiando sólo este archivo.
  *
- * MODELO DE TRES CAPAS (profundizado en la cuarta ola, inspirado en la FILOSOFÍA
- * atmosférica de proyectos anteriores —riqueza cromática, profundidad, sensación de
- * luz—, NO en su estética):
- *   · `luz`         — un foco claro y cálido: la fuente de luz (da luminosidad).
- *   · `color`       — el color emocional del momento (da identidad y carácter).
- *   · `profundidad` — un tono más hondo hacia un borde (da volumen y profundidad).
- * Las tres se interpolan de forma continua entre secciones. Los colores nacen del
- * universo gastronómico de Delfina; se usa color con más decisión donde ayuda a la
- * emoción, siempre sobre `Harina` y sin bajar la legibilidad del texto (`Hierro`).
+ * LEGIBILIDAD: cada sala declara su tinta pensada para SU fondo (oscura en las claras,
+ * clara en las profundas). Contraste medido del texto principal ≥AA (varias AAA); el
+ * secundario ≥AA; el acento es para detalle. Islas claras (hoja de recetario) reasignan
+ * tinta oscura localmente.
  */
 
-/** Un RGB como triplete (para interpolar por canal). */
 export type RGB = readonly [number, number, number];
 
-/** Una capa de luz: un foco radial (color + intensidad + posición + radio). */
-export interface CapaAtmosfera {
-  readonly rgb: RGB;
-  /** Opacidad del tinte sobre Harina (0–1). */
-  readonly intensidad: number;
-  /** Posición del foco, en % del viewport. */
-  readonly x: number;
-  readonly y: number;
-  /** Radio de influencia, en % (dónde se desvanece a transparente). */
-  readonly radio: number;
+export interface Sala {
+  /** Fondo de la habitación (string CSS: color o gradiente con profundidad editorial). */
+  readonly bg: string;
+  /** Texto principal legible sobre este fondo. */
+  readonly ink: RGB;
+  /** Texto secundario / meta. */
+  readonly inkSoft: RGB;
+  /** Acento que resalta sobre este fondo (detalles, curvas, sellos, numerales). */
+  readonly accent: RGB;
+  /** Color sólido representativo de la sala (para el navbar y el menú opaco). */
+  readonly navBg: RGB;
+  /** ¿La habitación es de tono oscuro? (para el navbar y micro-decisiones). */
+  readonly oscura: boolean;
 }
 
-export interface Atmosfera {
-  readonly luz: CapaAtmosfera;
-  readonly color: CapaAtmosfera;
-  readonly profundidad: CapaAtmosfera;
-}
-
-/* Paleta ampliada del universo gastronómico (Bloque 6.5): a los siete tonos base
-   se suman tonos de luz y profundidad que dan a cada momento su TEMPERATURA propia
-   —manteca, café, oliva, hierro, rescoldo—, para que el recorrido deje de vivir en
-   un único crema. Se usa el color con más decisión donde construye emoción. */
-const MASA: RGB = [237, 229, 216];
-const PIEDRA: RGB = [107, 97, 86];
-const YEMA: RGB = [232, 161, 58];
-const CORTEZA: RGB = [180, 97, 31];
-const PEREJIL: RGB = [78, 106, 60];
-const MANTECA: RGB = [242, 214, 138]; // amarillo manteca, cálido y suave
-const CHOCOLATE: RGB = [78, 48, 40]; // chocolate profundo (el horno / lo hondo)
-const CAFE: RGB = [92, 62, 44]; // marrón café/madera, profundidad honda
-const MADERA: RGB = [150, 108, 72]; // madera / tabla
-const ESPECIA: RGB = [190, 98, 60]; // terracota / especias (páprika, canela)
-const VINO: RGB = [122, 54, 60]; // atardecer, vino tinto tenue
-const EMBER: RGB = [138, 60, 26]; // rescoldo del horno
-const OLIVA: RGB = [120, 128, 78]; // verde oliva
-const MUSGO: RGB = [48, 74, 52]; // verde hondo
-const HIERRO_ATM: RGB = [74, 66, 58]; // gris cálido oscuro (piedra/hierro)
-const LUZ_CALIDA: RGB = [255, 246, 228];
-const LUZ_HORNO: RGB = [255, 224, 176];
-const LUZ_FRESCA: RGB = [244, 249, 236];
-const LUZ_NEUTRA: RGB = [247, 245, 242];
-
-/**
- * Las atmósferas del recorrido, nombradas por su EMOCIÓN (no por la sección). Cada
- * una tiene una TEMPERATURA claramente distinta —manteca, oro, el horno de café,
- * lo íntimo en piedra fría, lo fresco en verde, la mesa dorada, el atardecer— y la
- * continuidad la garantiza la interpolación entre momentos. Intensidades con más
- * presencia (el contenido sigue de protagonista; `Hierro` legible).
- */
-export const ATMOSFERAS: Record<string, Atmosfera> = {
-  // Entrada: amanecer amantecado. Luz alta, aire suave que recibe.
+/* Las 7 habitaciones, por clave de `momento.atmosfera`. Cada una con un color dominante
+   y su tinta. El recorrido es una secuencia de piezas editoriales: crema → oro → EL
+   HORNO (chocolate) → piedra → EL VERDE (servicios) → la mesa (terracota) → EL ATARDECER
+   (vino). Algunas claras (tinta oscura), otras profundas (tinta clara). */
+export const SALAS: Record<string, Sala> = {
+  // Entrada: crema amantecada, cálida y luminosa. Recibe.
   bienvenida: {
-    luz: { rgb: LUZ_CALIDA, intensidad: 0.14, x: 50, y: 0, radio: 56 },
-    color: { rgb: MANTECA, intensidad: 0.26, x: 52, y: 12, radio: 80 },
-    profundidad: { rgb: MASA, intensidad: 0.14, x: 50, y: 100, radio: 70 },
+    bg: "radial-gradient(135% 100% at 50% 0%, #f7ecce 0%, #efdfb6 58%, #e9d6a8 100%)",
+    ink: [42, 36, 30],
+    inkSoft: [91, 82, 68],
+    accent: [180, 97, 31],
+    navBg: [239, 223, 182],
+    oscura: false,
   },
-  // La oferta (ebooks/clases): apetito, ORO brillante que abraza el ancho.
+  // La oferta (ebooks/clases): ORO pleno, apetito. El color como protagonista.
   calida: {
-    luz: { rgb: LUZ_CALIDA, intensidad: 0.12, x: 72, y: 8, radio: 50 },
-    color: { rgb: YEMA, intensidad: 0.4, x: 66, y: 24, radio: 92 },
-    profundidad: { rgb: CORTEZA, intensidad: 0.16, x: 14, y: 82, radio: 66 },
+    bg: "radial-gradient(125% 105% at 70% 8%, #eeb64f 0%, #e7a63a 52%, #d9922b 100%)",
+    ink: [42, 36, 30],
+    inkSoft: [74, 49, 19],
+    accent: [110, 47, 14],
+    navBg: [231, 166, 58],
+    oscura: false,
   },
-  // El corazón (aprendizaje): el horno, CHOCOLATE y café. Lo más hondo; envuelve.
+  // El corazón (aprendizaje): EL HORNO. Chocolate profundo, inmersivo, tinta crema.
   corazon: {
-    luz: { rgb: LUZ_HORNO, intensidad: 0.18, x: 32, y: 24, radio: 48 },
-    color: { rgb: CHOCOLATE, intensidad: 0.36, x: 36, y: 48, radio: 88 },
-    profundidad: { rgb: CAFE, intensidad: 0.22, x: 82, y: 92, radio: 78 },
+    bg: "radial-gradient(125% 95% at 30% 12%, #4d352a 0%, #3d2a21 60%, #2f2019 100%)",
+    ink: [245, 238, 223],
+    inkSoft: [216, 198, 173],
+    accent: [240, 178, 78],
+    navBg: [61, 42, 33],
+    oscura: true,
   },
-  // La persona: íntima y serena, PIEDRA fría. Más sutil, un respiro entre dos calores.
+  // La persona: PIEDRA cálida, íntima. Acá vive el rescoldo rojo de MasterChef.
   intima: {
-    luz: { rgb: LUZ_NEUTRA, intensidad: 0.13, x: 50, y: 34, radio: 64 },
-    color: { rgb: PIEDRA, intensidad: 0.26, x: 50, y: 56, radio: 72 },
-    profundidad: { rgb: HIERRO_ATM, intensidad: 0.14, x: 76, y: 96, radio: 68 },
+    bg: "radial-gradient(125% 105% at 50% 16%, #ccbdad 0%, #c1b2a2 58%, #b1a191 100%)",
+    ink: [36, 31, 25],
+    inkSoft: [70, 61, 49],
+    accent: [143, 47, 36],
+    navBg: [193, 178, 162],
+    oscura: false,
   },
-  // El servicio: fresco, VERDE de hierbas y oliva, con presencia ancha.
+  // El servicio: EL VERDE de marca (#39532A), forestal, pleno, tinta crema.
   fresca: {
-    luz: { rgb: LUZ_FRESCA, intensidad: 0.12, x: 72, y: 14, radio: 56 },
-    color: { rgb: PEREJIL, intensidad: 0.36, x: 68, y: 32, radio: 90 },
-    profundidad: { rgb: MUSGO, intensidad: 0.2, x: 18, y: 88, radio: 72 },
+    bg: "radial-gradient(125% 95% at 68% 14%, #3a6a34 0%, #2f5a2c 58%, #24491f 100%)",
+    ink: [243, 240, 226],
+    inkSoft: [205, 214, 182],
+    accent: [242, 200, 110],
+    navBg: [47, 90, 44],
+    oscura: true,
   },
-  // La comunidad: mesa compartida, TERRACOTA / especias. Cálida pero distinta del oro.
+  // La comunidad: la MESA, terracota / especias. Cálida y saturada, tinta crema.
   compartir: {
-    luz: { rgb: LUZ_CALIDA, intensidad: 0.13, x: 30, y: 52, radio: 56 },
-    color: { rgb: ESPECIA, intensidad: 0.34, x: 30, y: 62, radio: 96 },
-    profundidad: { rgb: MADERA, intensidad: 0.18, x: 82, y: 34, radio: 66 },
+    bg: "radial-gradient(125% 105% at 28% 16%, #b85631 0%, #a6482a 58%, #8f3c22 100%)",
+    ink: [251, 238, 224],
+    inkSoft: [247, 222, 201],
+    accent: [255, 216, 154],
+    navBg: [166, 72, 42],
+    oscura: true,
   },
-  // La despedida: atardecer, VINO tenue y rescoldo. Hondo, distinto del chocolate.
+  // La despedida: EL ATARDECER, vino y rescoldo. Profundo, cierra, tinta crema.
   despedida: {
-    luz: { rgb: LUZ_HORNO, intensidad: 0.12, x: 50, y: 22, radio: 52 },
-    color: { rgb: VINO, intensidad: 0.3, x: 50, y: 80, radio: 90 },
-    profundidad: { rgb: EMBER, intensidad: 0.2, x: 50, y: 100, radio: 76 },
+    bg: "radial-gradient(125% 105% at 50% 10%, #7a2637 0%, #5f1e2c 56%, #471620 100%)",
+    ink: [246, 233, 224],
+    inkSoft: [224, 185, 179],
+    accent: [240, 176, 84],
+    navBg: [95, 30, 44],
+    oscura: true,
   },
 };
 
-/** Atmósfera por defecto (sin JS o antes de calcular): la de la entrada. */
-export const ATMOSFERA_DEFECTO = "bienvenida";
+export const SALA_DEFECTO = "bienvenida";
 
-export function getAtmosfera(id: string | undefined): Atmosfera {
-  return (id && ATMOSFERAS[id]) || ATMOSFERAS[ATMOSFERA_DEFECTO]!;
-}
-
-/* ------------------------------------------------------------------ */
-/* Interpolación — el campo es continuo: todo se mezcla, sin cortes.   */
-/* ------------------------------------------------------------------ */
-
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-
-const lerpRGB = (a: RGB, b: RGB, t: number): RGB => [
-  Math.round(lerp(a[0], b[0], t)),
-  Math.round(lerp(a[1], b[1], t)),
-  Math.round(lerp(a[2], b[2], t)),
-];
-
-function mezclarCapa(a: CapaAtmosfera, b: CapaAtmosfera, t: number): CapaAtmosfera {
-  return {
-    rgb: lerpRGB(a.rgb, b.rgb, t),
-    intensidad: lerp(a.intensidad, b.intensidad, t),
-    x: lerp(a.x, b.x, t),
-    y: lerp(a.y, b.y, t),
-    radio: lerp(a.radio, b.radio, t),
-  };
-}
-
-export function mezclar(a: Atmosfera, b: Atmosfera, t: number): Atmosfera {
-  const k = Math.min(1, Math.max(0, t));
-  return {
-    luz: mezclarCapa(a.luz, b.luz, k),
-    color: mezclarCapa(a.color, b.color, k),
-    profundidad: mezclarCapa(a.profundidad, b.profundidad, k),
-  };
-}
-
-const HARINA: RGB = [247, 242, 234];
-
-/** Color del navbar/menú: Harina teñida por la luz y el color del momento (para que
- *  herede la atmósfera y se sienta parte del mismo universo). */
-export function colorNavbar(atm: Atmosfera): RGB {
-  const conLuz = lerpRGB(HARINA, atm.luz.rgb, atm.luz.intensidad * 0.5);
-  return lerpRGB(conLuz, atm.color.rgb, atm.color.intensidad * 0.4);
+export function getSala(id: string | undefined): Sala {
+  return (id && SALAS[id]) || SALAS[SALA_DEFECTO]!;
 }
 
 const rgbStr = (c: RGB) => `${c[0]} ${c[1]} ${c[2]}`;
 
-function escribirCapa(el: HTMLElement, nombre: string, c: CapaAtmosfera): void {
-  el.style.setProperty(`--atm-${nombre}-rgb`, rgbStr(c.rgb));
-  el.style.setProperty(`--atm-${nombre}-int`, c.intensidad.toFixed(3));
-  el.style.setProperty(`--atm-${nombre}-x`, `${c.x.toFixed(1)}%`);
-  el.style.setProperty(`--atm-${nombre}-y`, `${c.y.toFixed(1)}%`);
-  el.style.setProperty(`--atm-${nombre}-radio`, `${c.radio.toFixed(1)}%`);
+/** Variables de tinta de una sala, para fijar en el `<section>` (las hereda el contenido). */
+export function estiloSala(sala: Sala): Record<string, string> {
+  return {
+    background: sala.bg,
+    color: `rgb(${rgbStr(sala.ink)})`,
+    "--atm-ink": rgbStr(sala.ink),
+    "--atm-ink-soft": rgbStr(sala.inkSoft),
+    "--atm-accent": rgbStr(sala.accent),
+  };
 }
 
-/** Escribe la atmósfera mezclada como variables CSS en un elemento (`:root`). */
-export function escribirVars(el: HTMLElement, atm: Atmosfera): void {
-  escribirCapa(el, "luz", atm.luz);
-  escribirCapa(el, "color", atm.color);
-  escribirCapa(el, "prof", atm.profundidad);
-  el.style.setProperty("--atm-navbar-rgb", rgbStr(colorNavbar(atm)));
+/** Escribe en `:root` la tinta de la sala que está bajo el navbar (para que el bar,
+ *  fijo y fuera del flujo, herede la habitación de arriba sin "encender" nada raro:
+ *  cambia junto con el borde de la sala al pasar bajo él). */
+export function escribirNavbar(el: HTMLElement, sala: Sala): void {
+  el.style.setProperty("--nav-ink", rgbStr(sala.ink));
+  el.style.setProperty("--nav-ink-soft", rgbStr(sala.inkSoft));
+  el.style.setProperty("--nav-accent", rgbStr(sala.accent));
+  el.style.setProperty("--nav-bg", rgbStr(sala.navBg));
+  el.style.setProperty("--nav-oscura", sala.oscura ? "1" : "0");
 }

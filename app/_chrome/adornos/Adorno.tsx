@@ -9,7 +9,11 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
  * navbar— que viven en los SILENCIOS entre momentos y conectan una sección con la
  * siguiente. No son decoración por decoración: marcan el respiro y la transición.
  *
- *  · Trazo en `Piedra`, sin relleno ni sombra: acompaña, no compite (DA §textura).
+ *  · Trazo con COLOR que resalta (Bloque 8: Delfina pidió "los detalles así en colores
+ *    q resalten"). Cada adorno lleva un color del universo —cálido `Corteza` o el
+ *    VERDE DE MARCA `Bosque`— en vez del gris `Piedra` uniforme; sigue siendo line-art
+ *    fino, sin relleno ni sombra, así acompaña sin competir (DA §textura). El default
+ *    sigue en `Piedra` para usos neutros.
  *  · Motion: los trazos se DIBUJAN al entrar en viewport (pathLength, una vez), y el
  *    adorno DERIVA apenas con el scroll (±14px) —acompaña el desplazamiento sin
  *    parallax ni secuestro—. Con `prefers-reduced-motion`: dibujados y quietos.
@@ -114,9 +118,14 @@ const MOTIVOS: Record<Variante, Motivo> = {
 export function Adorno({
   variante,
   className,
+  color = "rgb(var(--atm-accent, 180 97 31))",
 }: {
   variante: Variante;
   className?: string;
+  /** Color del trazo (Bloque 8). Default = ACENTO ADAPTATIVO del paisaje (corteza en las
+   *  galaxias luminosas, oro en las profundas) → el detalle siempre resalta sobre el
+   *  campo donde cae, sin quedar invisible en un fondo hondo. */
+  color?: string;
 }) {
   const sinMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
@@ -144,7 +153,7 @@ export function Adorno({
           viewBox={m.viewBox}
           style={{ inlineSize: m.inlineSize, blockSize: "auto", display: "block" }}
           fill="none"
-          stroke="var(--color-piedra)"
+          stroke={color}
           strokeWidth="1.4"
           strokeLinecap="round"
           strokeLinejoin="round"

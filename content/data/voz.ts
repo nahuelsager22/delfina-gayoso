@@ -5,7 +5,7 @@ import type { VozDelfina } from "../types";
  * "hable" a lo largo del recorrido; van en serif (`--font-voz`).
  *
  * COPY PENDIENTE DE VALIDACIÓN DE DELFINA. Escrito como la mejor interpretación
- * de su voz a partir de la evidencia real: la descripción de su ebook en Hotmart
+ * de su voz a partir de la evidencia real: la descripción de su ebook
  * ("Me gusta mucho compartir lo que he aprendido… espero que te acompañe en cada
  * paso… seguir aprendiendo con errores y aciertos es lo más importante"), cálida y
  * profesional. No son citas literales salvo donde se indica.
