@@ -86,7 +86,7 @@ export function IlustracionComunidad({ motivo }: { motivo: string }) {
         opacity: 0.72,
       }}
       fill="none"
-      stroke="var(--color-corteza)"
+      stroke="rgb(var(--atm-ink-soft, 91 82 68))"
       strokeWidth="1.6"
       strokeLinecap="round"
       strokeLinejoin="round"

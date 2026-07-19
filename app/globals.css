@@ -144,10 +144,12 @@
   --atm-accent: 180 97 31; /* Corteza */
   /* Tinta del NAVBAR: el bar es fijo y está fuera del flujo, así que no puede heredar
      la sala; el proveedor escribe estas variables según la habitación de arriba. */
+  /* 7ª ola: el fondo es crema y el navbar vive sobre crema → tinta fija (Hierro sobre
+     Harina). El proveedor ya no reescribe estas variables. */
   --nav-ink: 42 36 30;
   --nav-ink-soft: 91 82 68;
   --nav-accent: 180 97 31;
-  --nav-bg: 239 223 182; /* color sólido de la sala de entrada */
+  --nav-bg: 247 242 234; /* Harina */
 }
 
 /* =============================================================================
@@ -320,10 +322,12 @@
     position: relative;
     inline-size: 100%;
     overflow: hidden;
-    padding-block: clamp(14px, 2vw, 24px);
+    padding-block: clamp(16px, 2.2vw, 26px);
+    /* Banda recta (Opción A) sobre crema: filete fino arriba y abajo (artesanal). */
+    border-block: 1px solid rgb(var(--mq-ink) / 0.16);
   }
-  /* Marquee recto (Opción B): dos grupos idénticos que se desplazan; al recorrer -50%
-     el segundo toma el lugar del primero (bucle continuo). El fondo es el que ondula. */
+  /* Marquee recto: dos grupos idénticos que se desplazan; al recorrer -50% el segundo
+     toma el lugar del primero (bucle continuo). */
   .marquesina-pista {
     display: flex;
     inline-size: max-content;
@@ -352,38 +356,23 @@
       transform: translateX(-50%);
     }
   }
-  /* La onda superior comparte el color de la banda: la banda "sube" con una curva sobre
-     la sala anterior, integrada al sistema de ondas (no un rectángulo agregado). */
-  .marquesina-onda {
-    position: absolute;
-    inset-inline: 0;
-    inset-block-start: 0;
-    inline-size: 100%;
-    block-size: clamp(34px, 5vw, 62px);
-    transform: translateY(calc(-100% + 1px));
-    display: block;
-  }
   .marquesina[data-tono="hierro"] {
     background-color: var(--color-hierro);
-    --mq-fill: #2a241e;
     --mq-ink: 247 242 234;
     --mq-acc: 232 161 58;
   }
   .marquesina[data-tono="verde"] {
     background-color: #2f5a2c;
-    --mq-fill: #2f5a2c;
     --mq-ink: 243 240 226;
     --mq-acc: 242 200 110;
   }
   .marquesina[data-tono="vino"] {
     background-color: #5f1e2c;
-    --mq-fill: #5f1e2c;
     --mq-ink: 246 233 224;
     --mq-acc: 240 176 84;
   }
   .marquesina[data-tono="corteza"] {
     background-color: var(--color-corteza);
-    --mq-fill: #b4611f;
     --mq-ink: 247 236 206;
     --mq-acc: 61 42 33;
   }
@@ -554,15 +543,28 @@
 }
 
 /* =============================================================================
-   SALAS EDITORIALES (Bloque 8, 3ª ola) — cada momento es una habitación a pleno
-   ancho con su propio color (lo pinta la `<section>` vía `Momento`/`config.ts`).
-   El color YA vive en el espacio: no hay campo fijo que "encienda" al llegar.
-   `.sala-inner` centra el contenido en un carril legible dentro del color pleno.
+   COMPOSICIÓN EDITORIAL (Bloque 8, 7ª ola) — el fondo es CREMA; los momentos
+   importantes viven en un BLOQUE de color contenido (`.sala-panel`), como en las
+   referencias. `.sala-inner` centra el contenido de las secciones en crema.
    ========================================================================== */
 .sala-inner {
   max-inline-size: 80rem;
   margin-inline: auto;
   padding-inline: var(--space-lg);
+}
+/* Bloque de color contenido: una superficie rectangular con marco fino artesanal, que
+   destaca un tramo del recorrido sobre el crema. El color/tinta llegan inline (config). */
+.sala-panel {
+  max-inline-size: min(74rem, calc(100% - 2 * var(--space-lg)));
+  margin-inline: auto;
+  padding: clamp(var(--space-xl), 5vw, var(--space-3xl))
+    clamp(var(--space-lg), 4vw, var(--space-2xl));
+  border-radius: 8px;
+  /* Marco fino: un hilo de la propia tinta a baja opacidad (artesanal, no un borde UI). */
+  box-shadow: inset 0 0 0 1px rgb(var(--atm-ink) / 0.16);
+}
+.sala-panel-full {
+  inline-size: min(74rem, calc(100% - 2 * var(--space-lg)));
 }
 
 /* Pantalla de carga (Bloque 8 · 6ª ola): medallón sobre `Harina` que respira y se
@@ -580,7 +582,9 @@
   inline-size: clamp(116px, 22vw, 176px);
   block-size: auto;
   transform-origin: center;
-  animation: carga-respira 2.6s var(--ease-suave) infinite;
+  /* Entrada suave FINITA (sin loop): crece y se asienta mientras el logo aparece; no
+     queda animando en segundo plano tras disolverse la pantalla. */
+  animation: carga-logo 2.1s var(--ease-suave) forwards;
 }
 @keyframes carga-salida {
   0%,
@@ -594,13 +598,15 @@
     pointer-events: none;
   }
 }
-@keyframes carga-respira {
-  0%,
-  100% {
-    transform: scale(0.965);
-    opacity: 0.82;
+@keyframes carga-logo {
+  0% {
+    transform: scale(0.94);
+    opacity: 0;
   }
-  50% {
+  36% {
+    opacity: 1;
+  }
+  100% {
     transform: scale(1);
     opacity: 1;
   }
@@ -636,18 +642,33 @@
 /* Cierre: el logotipo oficial como medallón de despedida, protagónico y centrado en su
    columna. Un punto de acento (~0.06 de opacidad) detrás no hace falta: el disco crema
    del logo ya resalta sobre el vino. */
+/* Cierre COMPACTO (7ª ola): dentro del bloque vino contenido; tipografía, interlineado y
+   separaciones reducidos para que todo el final entre en el viewport (desktop y mobile)
+   sin perder aire. Columnas centradas (bloque de despedida equilibrado). */
 .cierre-grid {
-  /* Columnas ancladas al fondo: el logo y los enlaces llegan al borde inferior, sin
-     dejar vino vacío debajo (el cierre se siente completo). */
-  align-items: end;
+  align-items: center;
+  gap: var(--space-lg);
+}
+.cierre-grid .hero-texto {
+  gap: var(--space-sm) !important;
+}
+.cierre-grid .voz-hero {
+  font-size: clamp(1.4rem, 2.6vw, 2.05rem);
+  line-height: 1.06;
+}
+.cierre-grid .voz {
+  --measure-voz: 42ch;
 }
 .cierre-logo {
-  inline-size: min(24rem, 82%);
+  inline-size: min(13rem, 54%);
   justify-self: center;
 }
 @media (min-width: 900px) {
+  .cierre-grid {
+    grid-template-columns: 1.3fr 0.7fr;
+  }
   .cierre-logo {
-    inline-size: min(27rem, 100%);
+    inline-size: min(15rem, 100%);
     justify-self: end;
   }
 }

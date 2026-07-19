@@ -35,6 +35,13 @@ export interface Sala {
   readonly navBg: RGB;
   /** ¿La habitación es de tono oscuro? (para el navbar y micro-decisiones). */
   readonly oscura: boolean;
+  /**
+   * Bloque 8 · 7ª ola (dirección de referencias): el fondo del sitio es CREMA. Cuando
+   * `panel` es true, el momento se muestra dentro de una SUPERFICIE de color contenida
+   * (un bloque editorial que destaca ese tramo); cuando es false, vive directo sobre el
+   * crema (sección de descanso). El color/tinta de la sala se usan para el panel.
+   */
+  readonly panel: boolean;
 }
 
 /* Las 7 habitaciones, por clave de `momento.atmosfera`. Cada una con un color dominante
@@ -50,6 +57,7 @@ export const SALAS: Record<string, Sala> = {
     accent: [180, 97, 31],
     navBg: [239, 223, 182],
     oscura: false,
+    panel: false,
   },
   // La oferta (ebooks/clases): ORO pleno, apetito. El color como protagonista.
   calida: {
@@ -59,6 +67,7 @@ export const SALAS: Record<string, Sala> = {
     accent: [110, 47, 14],
     navBg: [231, 166, 58],
     oscura: false,
+    panel: true,
   },
   // El corazón (aprendizaje): EL HORNO. Chocolate profundo, inmersivo, tinta crema.
   corazon: {
@@ -68,6 +77,7 @@ export const SALAS: Record<string, Sala> = {
     accent: [240, 178, 78],
     navBg: [61, 42, 33],
     oscura: true,
+    panel: true,
   },
   // La persona: PIEDRA cálida, íntima. Acá vive el rescoldo rojo de MasterChef.
   intima: {
@@ -77,6 +87,7 @@ export const SALAS: Record<string, Sala> = {
     accent: [143, 47, 36],
     navBg: [193, 178, 162],
     oscura: false,
+    panel: false,
   },
   // El servicio: EL VERDE de marca (#39532A), forestal, pleno, tinta crema.
   fresca: {
@@ -86,6 +97,7 @@ export const SALAS: Record<string, Sala> = {
     accent: [242, 200, 110],
     navBg: [51, 80, 46],
     oscura: true,
+    panel: true,
   },
   // La comunidad: la MESA, terracota / especias. Cálida y saturada, tinta crema.
   compartir: {
@@ -95,6 +107,7 @@ export const SALAS: Record<string, Sala> = {
     accent: [255, 216, 154],
     navBg: [166, 72, 42],
     oscura: true,
+    panel: true,
   },
   // La despedida: EL ATARDECER, vino y rescoldo. Profundo, cierra, tinta crema.
   despedida: {
@@ -104,6 +117,7 @@ export const SALAS: Record<string, Sala> = {
     accent: [240, 176, 84],
     navBg: [95, 30, 44],
     oscura: true,
+    panel: true,
   },
 };
 
