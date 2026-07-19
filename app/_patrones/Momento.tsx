@@ -25,6 +25,7 @@ export function Momento({
   titulo,
   kicker,
   full = false,
+  alFinal = false,
 }: {
   id: MomentoId;
   children: React.ReactNode;
@@ -33,9 +34,13 @@ export function Momento({
   /** Sala a pantalla completa con el contenido centrado (hero / cierre): composición
    *  editorial que ocupa el alto del viewport, sin caer verticalmente. */
   full?: boolean;
+  /** Última sala: ancla el contenido al fondo para que el cierre llegue al borde
+   *  inferior del documento, sin dejar un vacío debajo (con `full`). */
+  alFinal?: boolean;
 }) {
   const m = getMomento(id);
   const sala = getSala(m?.atmosfera);
+  const ondaColor = `rgb(${sala.navBg[0]}, ${sala.navBg[1]}, ${sala.navBg[2]})`;
   const headingId = `momento-${id}`;
   const esPrimera = (m?.orden ?? 1) === 1;
 
@@ -61,14 +66,21 @@ export function Momento({
             ? {
                 minBlockSize: "100svh",
                 display: "flex",
-                alignItems: "center",
-                paddingBlock: "calc(var(--navbar-h) + var(--space-2xl))",
+                alignItems: alFinal ? "flex-end" : "center",
+                paddingBlockStart: "calc(var(--navbar-h) + var(--space-2xl))",
+                paddingBlockEnd: alFinal
+                  ? "var(--space-xl)"
+                  : "calc(var(--navbar-h) + var(--space-2xl))",
               }
             : { paddingBlock: aireVertical }),
         } as CSSProperties
       }
     >
-      {/* Borde de onda: la sala sube con una curva sobre la anterior (no en la entrada). */}
+      {/* Borde de onda: la sala sube con una curva sobre la anterior (no en la entrada).
+          El relleno es un DEGRADADO VERTICAL que arranca transparente arriba y llega al
+          color pleno de la sala abajo: el tope translúcido se funde con el color de
+          arriba (sea la sala anterior o una marquesina) creando un tono intermedio, sin
+          "corte" perceptible entre secciones (Bloque 8, 6ª ola). Prev-agnóstico. */}
       {!esPrimera && (
         <svg
           aria-hidden
@@ -79,16 +91,23 @@ export function Momento({
             insetInline: 0,
             insetBlockStart: 0,
             inlineSize: "100%",
-            blockSize: "clamp(30px, 4.4vw, 56px)",
-            // Se solapa 1px hacia abajo para no dejar una línea de corte con la sala.
+            blockSize: "clamp(34px, 5vw, 62px)",
             transform: "translateY(calc(-100% + 1px))",
             display: "block",
-            fill: `rgb(${sala.navBg[0]} ${sala.navBg[1]} ${sala.navBg[2]})`,
           }}
         >
-          {/* Curva continua de borde a borde (sin tramos rectos en los extremos: evita
-              el "corte" al inicio de la onda). */}
-          <path d="M0,60 L0,30 C300,4 560,4 720,26 C880,48 1140,48 1440,22 L1440,60 Z" />
+          <defs>
+            <linearGradient id={`onda-${id}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={ondaColor} stopOpacity="0" />
+              <stop offset="58%" stopColor={ondaColor} stopOpacity="1" />
+              <stop offset="100%" stopColor={ondaColor} stopOpacity="1" />
+            </linearGradient>
+          </defs>
+          {/* Curva continua de borde a borde (sin tramos rectos: evita el corte). */}
+          <path
+            d="M0,60 L0,30 C300,4 560,4 720,26 C880,48 1140,48 1440,22 L1440,60 Z"
+            fill={`url(#onda-${id})`}
+          />
         </svg>
       )}
 

@@ -1,8 +1,8 @@
+import Image from "next/image";
 import { getRedes, getVozDeMomento, type VozDelfina } from "@/content";
 import { Momento } from "../_patrones/Momento";
 import { Voz } from "../_patrones/Voz";
 import { Aparicion } from "../_patrones/Aparicion";
-import { Sello } from "../_chrome/adornos/Sello";
 import { Flecha } from "../_chrome/adornos/Flecha";
 import { LineaEditorial } from "../_chrome/adornos/LineaEditorial";
 
@@ -37,12 +37,12 @@ export function LaClaseNoTermina() {
   const redes = getRedes();
 
   return (
-    <Momento id="la-clase-no-termina" full>
-      {/* Cierre editorial (Bloque 8): un spread a pantalla completa que ESPEJA el hero
-          —texto a la izquierda, sello grande a la derecha—, centrado en el alto del vino
-          profundo. Titular con presencia + línea + enlaces con flecha. Sin hueco vacío:
-          el sello equilibra la composición y el momento se siente un final cuidado. */}
-      <div className="hero-grid">
+    <Momento id="la-clase-no-termina" full alFinal>
+      {/* Cierre editorial (Bloque 8 · 6ª ola): spread a pantalla completa que espeja el
+          hero —texto a la izquierda, el LOGOTIPO OFICIAL grande a la derecha, como una
+          firma / medallón de despedida sobre el vino—. El logo cierra la experiencia
+          (no un elemento agregado): es la identidad de Delfina la que da el final. */}
+      <div className="hero-grid cierre-grid">
         <div className="hero-texto" style={{ display: "flex", flexDirection: "column", gap: "var(--space-xl)" }}>
           {cierre.map((v: VozDelfina, i) => (
             <Aparicion key={v.id} orden={i}>
@@ -90,9 +90,17 @@ export function LaClaseNoTermina() {
           </Aparicion>
         </div>
 
-        {/* Sello de despedida grande, a la derecha: equilibra y cierra (espejo del hero). */}
-        <Aparicion orden={1} className="hero-foto" style={{ inlineSize: "min(15rem, 70%)" }}>
-          <Sello texto="hasta la próxima · seguí cocinando ·" style={{ inlineSize: "100%" }} />
+        {/* Logotipo oficial (Manual de Marca): medallón crema que resalta sobre el vino;
+            cierra la experiencia con la identidad de Delfina. Aparición "vapor". */}
+        <Aparicion orden={1} className="hero-foto cierre-logo">
+          <Image
+            src="/logotipo/logotipo-1.png"
+            alt="Delfina Gayoso"
+            width={1080}
+            height={1080}
+            sizes="(max-width: 900px) 60vw, 26rem"
+            style={{ inlineSize: "100%", blockSize: "auto" }}
+          />
         </Aparicion>
       </div>
     </Momento>

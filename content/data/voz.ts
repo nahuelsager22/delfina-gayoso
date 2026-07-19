@@ -31,8 +31,8 @@ export const voz: readonly VozDelfina[] = [
       "Aprendé a cocinar conmigo. De lo más simple a eso que siempre quisiste animarte a hacer.",
     registro: "bienvenida",
     pertenece: "umbral",
-    // Un subrayado a mano bajo "conmigo": el corazón de la propuesta.
-    enfasis: "conmigo",
+    // Sin subrayado: la línea ilustrada debajo del titular ya aporta ese énfasis
+    // gráfico (Bloque 8, 6ª ola) — se evita la redundancia visual.
   },
   {
     id: "umbral-oferta",

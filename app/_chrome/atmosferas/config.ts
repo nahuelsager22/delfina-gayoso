@@ -44,7 +44,7 @@ export interface Sala {
 export const SALAS: Record<string, Sala> = {
   // Entrada: crema amantecada, cálida y luminosa. Recibe.
   bienvenida: {
-    bg: "radial-gradient(135% 100% at 50% 0%, #f7ecce 0%, #efdfb6 58%, #e9d6a8 100%)",
+    bg: "linear-gradient(180deg, #efdfb6 0%, #efdfb6 20%, #e6d3a3 100%)",
     ink: [42, 36, 30],
     inkSoft: [91, 82, 68],
     accent: [180, 97, 31],
@@ -53,7 +53,7 @@ export const SALAS: Record<string, Sala> = {
   },
   // La oferta (ebooks/clases): ORO pleno, apetito. El color como protagonista.
   calida: {
-    bg: "radial-gradient(125% 105% at 70% 8%, #eeb64f 0%, #e7a63a 52%, #d9922b 100%)",
+    bg: "linear-gradient(180deg, #e7a63a 0%, #e7a63a 20%, #d1902a 100%)",
     ink: [42, 36, 30],
     inkSoft: [74, 49, 19],
     accent: [110, 47, 14],
@@ -62,7 +62,7 @@ export const SALAS: Record<string, Sala> = {
   },
   // El corazón (aprendizaje): EL HORNO. Chocolate profundo, inmersivo, tinta crema.
   corazon: {
-    bg: "radial-gradient(125% 95% at 30% 12%, #4d352a 0%, #3d2a21 60%, #2f2019 100%)",
+    bg: "linear-gradient(180deg, #3d2a21 0%, #3d2a21 20%, #2a1c15 100%)",
     ink: [245, 238, 223],
     inkSoft: [216, 198, 173],
     accent: [240, 178, 78],
@@ -71,7 +71,7 @@ export const SALAS: Record<string, Sala> = {
   },
   // La persona: PIEDRA cálida, íntima. Acá vive el rescoldo rojo de MasterChef.
   intima: {
-    bg: "radial-gradient(125% 105% at 50% 16%, #ccbdad 0%, #c1b2a2 58%, #b1a191 100%)",
+    bg: "linear-gradient(180deg, #c1b2a2 0%, #c1b2a2 20%, #ad9c8a 100%)",
     ink: [36, 31, 25],
     inkSoft: [70, 61, 49],
     accent: [143, 47, 36],
@@ -80,16 +80,16 @@ export const SALAS: Record<string, Sala> = {
   },
   // El servicio: EL VERDE de marca (#39532A), forestal, pleno, tinta crema.
   fresca: {
-    bg: "radial-gradient(125% 95% at 68% 14%, #3a6a34 0%, #2f5a2c 58%, #24491f 100%)",
+    bg: "linear-gradient(180deg, #33502e 0%, #33502e 20%, #24401f 100%)",
     ink: [243, 240, 226],
     inkSoft: [205, 214, 182],
     accent: [242, 200, 110],
-    navBg: [47, 90, 44],
+    navBg: [51, 80, 46],
     oscura: true,
   },
   // La comunidad: la MESA, terracota / especias. Cálida y saturada, tinta crema.
   compartir: {
-    bg: "radial-gradient(125% 105% at 28% 16%, #b85631 0%, #a6482a 58%, #8f3c22 100%)",
+    bg: "linear-gradient(180deg, #a6482a 0%, #a6482a 20%, #86381e 100%)",
     ink: [251, 238, 224],
     inkSoft: [247, 222, 201],
     accent: [255, 216, 154],
@@ -98,7 +98,7 @@ export const SALAS: Record<string, Sala> = {
   },
   // La despedida: EL ATARDECER, vino y rescoldo. Profundo, cierra, tinta crema.
   despedida: {
-    bg: "radial-gradient(125% 105% at 50% 10%, #7a2637 0%, #5f1e2c 56%, #471620 100%)",
+    bg: "linear-gradient(180deg, #5f1e2c 0%, #5f1e2c 20%, #431520 100%)",
     ink: [246, 233, 224],
     inkSoft: [224, 185, 179],
     accent: [240, 176, 84],
