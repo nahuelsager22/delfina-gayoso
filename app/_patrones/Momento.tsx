@@ -76,9 +76,13 @@ export function Momento({
           ? {
               minBlockSize: "100svh",
               display: "flex",
-              alignItems: alFinal ? "flex-end" : "center",
-              paddingBlockStart: "calc(var(--navbar-h) + var(--space-xl))",
-              paddingBlockEnd: alFinal ? "var(--space-xl)" : "var(--space-xl)",
+              // El cierre ESTIRA su bloque para ocupar el alto disponible (sin vacío
+              // debajo, integrado con el navbar); el hero centra su composición.
+              alignItems: alFinal ? "stretch" : "center",
+              paddingBlockStart: alFinal
+                ? "calc(var(--navbar-h) + var(--space-sm))"
+                : "calc(var(--navbar-h) + var(--space-xl))",
+              paddingBlockEnd: alFinal ? "var(--space-sm)" : "var(--space-xl)",
             }
           : { paddingBlock: aireVertical }),
       }}

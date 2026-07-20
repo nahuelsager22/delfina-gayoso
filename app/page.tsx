@@ -7,6 +7,7 @@ import { TrabajemosJuntos } from "./_momentos/TrabajemosJuntos";
 import { LaClaseNoTermina } from "./_momentos/LaClaseNoTermina";
 import { Wayfinding } from "./_patrones/Wayfinding";
 import { Marquesina } from "./_chrome/adornos/Marquesina";
+import { Adorno } from "./_chrome/adornos/Adorno";
 
 /**
  * El recorrido — una secuencia de HABITACIONES editoriales (Bloque 8, 3ª ola). Ya no es
@@ -24,14 +25,21 @@ export default function Recorrido() {
       <h1 className="sr-only">Delfina Gayoso — aprender cocina, juntos</h1>
 
       <main>
+        {/* En los respiros de crema entre bloques vuelven los pequeños dibujos del
+            universo (8ª ola): line-art fino, en el ocre del sistema, que enhebra el
+            recorrido sin volverse decoración. */}
         <Umbral />
-        <Marquesina tono="corteza" texto="aprender · cocinar · compartir · equivocarse · volver a empezar" />
+        <Marquesina tono="verde" texto="aprender · cocinar · compartir · equivocarse · volver a empezar" />
         <LoQueTeLlevas />
+        <Adorno variante="espiga" />
         <ColumnaAprendizaje />
+        <Adorno variante="vapor" />
         <QuienCocina />
+        <Adorno variante="hierba" />
         <TrabajemosJuntos />
+        <Adorno variante="cuchara" />
         <CocinaCompartida />
-        <Marquesina tono="hierro" texto="la clase no termina · seguimos cocinando · nos vemos en la cocina" />
+        <Marquesina tono="marron" texto="la clase no termina · seguimos cocinando · nos vemos en la cocina" />
         <LaClaseNoTermina />
       </main>
 

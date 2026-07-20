@@ -75,17 +75,21 @@ export function ColumnaAprendizaje() {
           </div>
         </Aparicion>
 
-        {capitulos.map((cap, i) => (
-          <Aparicion
-            key={cap.id}
-            style={{
-              maxInlineSize: "var(--measure-cuerpo)",
-              alignSelf: i % 2 === 1 ? "flex-end" : "flex-start",
-            }}
-          >
-            <CapituloSerie pieza={cap} />
-          </Aparicion>
-        ))}
+        {/* Capítulos: más aire entre bloques y un filete que marca el ritmo vertical.
+            El zigzag sólo desde 900px; en mobile todos alinean a la izquierda para que
+            la lectura no se desplace (8ª ola · #3 y #4). */}
+        <div className="serie-capitulos">
+          {capitulos.map((cap, i) => (
+            <Aparicion
+              key={cap.id}
+              className={
+                i % 2 === 1 ? "serie-capitulo serie-capitulo-der" : "serie-capitulo"
+              }
+            >
+              <CapituloSerie pieza={cap} />
+            </Aparicion>
+          ))}
+        </div>
       </div>
     </Momento>
   );

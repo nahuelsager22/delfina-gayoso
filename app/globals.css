@@ -140,8 +140,8 @@
      / `--atm-ink-soft` / `--atm-accent` (los hereda su contenido). Estos defaults son
      el fallback (sala de entrada) para lo que quede fuera de una sección. */
   --atm-ink: 42 36 30; /* Hierro */
-  --atm-ink-soft: 91 82 68;
-  --atm-accent: 180 97 31; /* Corteza */
+  --atm-ink-soft: 63 55 45;
+  --atm-accent: 107 74 31; /* ocre profundo (8ª ola: reemplaza el naranja Corteza) */
   /* Tinta del NAVBAR: el bar es fijo y está fuera del flujo, así que no puede heredar
      la sala; el proveedor escribe estas variables según la habitación de arriba. */
   /* 7ª ola: el fondo es crema y el navbar vive sobre crema → tinta fija (Hierro sobre
@@ -268,8 +268,10 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-2xs);
-    background-color: var(--color-yema);
-    color: var(--color-hierro);
+    /* 8ª ola: el acento de compra deja el oro/naranja y pasa al VERDE DE MARCA con
+       tinta crema — sobrio, editorial y coherente con el manual. */
+    background-color: #39532a;
+    color: #f5efe3;
     border: 2px solid rgb(var(--atm-ink, 42 36 30));
     border-radius: 16px 11px 18px 10px / 12px 18px 10px 16px;
     box-shadow: 4px 4px 0 0 rgb(var(--atm-ink, 42 36 30));
@@ -356,25 +358,49 @@
       transform: translateX(-50%);
     }
   }
-  .marquesina[data-tono="hierro"] {
-    background-color: var(--color-hierro);
-    --mq-ink: 247 242 234;
-    --mq-acc: 232 161 58;
+  /* GUARDA (8ª ola): una cenefa de arcos —motivo de recetario— arriba y abajo de la
+     banda. Da identidad artesanal sin competir con el texto (baja opacidad). */
+  .marquesina::before,
+  .marquesina::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    block-size: 8px;
+    background-image: radial-gradient(
+      circle at 7px 8px,
+      rgb(var(--mq-ink) / 0.3) 5.4px,
+      transparent 5.8px
+    );
+    background-size: 14px 8px;
+    background-repeat: repeat-x;
+    pointer-events: none;
+  }
+  .marquesina::before {
+    inset-block-start: 0;
+  }
+  .marquesina::after {
+    inset-block-end: 0;
+    transform: scaleY(-1);
+  }
+  .marquesina[data-tono="marron"] {
+    background-color: #4a3527;
+    --mq-ink: 245 239 227;
+    --mq-acc: 201 168 106;
   }
   .marquesina[data-tono="verde"] {
-    background-color: #2f5a2c;
-    --mq-ink: 243 240 226;
-    --mq-acc: 242 200 110;
+    background-color: #39532a;
+    --mq-ink: 245 239 227;
+    --mq-acc: 201 187 132;
   }
   .marquesina[data-tono="vino"] {
-    background-color: #5f1e2c;
-    --mq-ink: 246 233 224;
-    --mq-acc: 240 176 84;
+    background-color: #4e2630;
+    --mq-ink: 245 239 227;
+    --mq-acc: 201 168 106;
   }
-  .marquesina[data-tono="corteza"] {
-    background-color: var(--color-corteza);
-    --mq-ink: 247 236 206;
-    --mq-acc: 61 42 33;
+  .marquesina[data-tono="taupe"] {
+    background-color: #aea391;
+    --mq-ink: 42 36 30;
+    --mq-acc: 90 58 32;
   }
   /* ---------------------------------------------------------------------------
      Enlace/botón de la serie (Bloque 6.5 · R7): "Leer más" / "Ver el reel".
@@ -565,6 +591,51 @@
 }
 .sala-panel-full {
   inline-size: min(74rem, calc(100% - 2 * var(--space-lg)));
+  /* El bloque final ocupa el alto disponible y centra su contenido: el cierre llena la
+     pantalla (sin vacío debajo) y se integra con el navbar (8ª ola). */
+  display: flex;
+  align-items: center;
+}
+.sala-panel-full > * {
+  inline-size: 100%;
+}
+
+/* LA SERIE (8ª ola · #3 y #4): más aire entre capítulos, filete que marca el ritmo
+   vertical y jerarquía más clara. En mobile todos alinean a la izquierda (sin zigzag)
+   para que la lectura no se desplace; el zigzag vuelve desde 900px. */
+.serie-capitulos {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(var(--space-2xl), 6vw, var(--space-3xl));
+  margin-block-start: var(--space-2xl);
+}
+.serie-capitulo {
+  max-inline-size: var(--measure-cuerpo);
+  align-self: flex-start;
+  inline-size: 100%;
+}
+.serie-capitulo + .serie-capitulo {
+  border-block-start: 1px solid rgb(var(--atm-ink, 42 36 30) / 0.16);
+  padding-block-start: clamp(var(--space-xl), 4vw, var(--space-2xl));
+}
+@media (min-width: 900px) {
+  .serie-capitulo-der {
+    align-self: flex-end;
+  }
+}
+
+/* La CLASE EN VIVO: superficie propia dentro del bloque de ebooks (8ª ola) — otra
+   propuesta, con su rótulo y su aire, para que se identifique rápido sin competir. */
+.bloque-clases {
+  margin-block-start: var(--space-3xl);
+  padding: clamp(var(--space-lg), 4vw, var(--space-2xl));
+  border-radius: 8px;
+  background-color: rgb(247 242 234 / 0.5);
+  box-shadow: inset 0 0 0 1px rgb(var(--atm-ink, 42 36 30) / 0.18);
+}
+.bloque-clases-rotulo {
+  margin-block-end: var(--space-lg);
+  color: rgb(var(--atm-accent, 107 74 31));
 }
 
 /* Pantalla de carga (Bloque 8 · 6ª ola): medallón sobre `Harina` que respira y se

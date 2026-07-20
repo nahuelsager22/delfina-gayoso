@@ -22,6 +22,12 @@ import { FichaProducto } from "../_patrones/FichaProducto";
  */
 export function LoQueTeLlevas() {
   const productos = getProductos();
+  // 8ª ola: los EBOOKS y las CLASES EN VIVO son dos propuestas distintas y se separan.
+  // Los ebooks abren el bloque; la clase en vivo cierra con identidad propia (su propia
+  // superficie, rótulo y aire), para que se identifique rápido sin competir con ellos.
+  const esClase = (formato: string) => formato.toLowerCase().includes("clase");
+  const ebooks = productos.filter((p) => !esClase(p.formato));
+  const clases = productos.filter((p) => esClase(p.formato));
 
   return (
     <Momento
@@ -36,7 +42,7 @@ export function LoQueTeLlevas() {
           gap: "var(--space-3xl)",
         }}
       >
-        {productos.map((p, i) => (
+        {ebooks.map((p, i) => (
           <FichaProducto
             key={p.id}
             producto={p}
@@ -44,6 +50,25 @@ export function LoQueTeLlevas() {
           />
         ))}
       </div>
+
+      {/* La clase en vivo: su propia superficie dentro del bloque, con rótulo propio.
+          Se diferencia de los ebooks (otra cosa: sucede en vivo, con ella). */}
+      {clases.length > 0 && (
+        <div className="bloque-clases">
+          <p className="momento-kicker bloque-clases-rotulo">En vivo, conmigo</p>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "var(--space-2xl)",
+            }}
+          >
+            {clases.map((p) => (
+              <FichaProducto key={p.id} producto={p} ancla="izq" />
+            ))}
+          </div>
+        </div>
+      )}
     </Momento>
   );
 }

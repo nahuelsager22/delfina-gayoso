@@ -11,10 +11,11 @@
  */
 export function Marquesina({
   texto = "aprender · cocinar · compartir · equivocarse · volver a empezar",
-  tono = "hierro",
+  tono = "marron",
 }: {
   texto?: string;
-  tono?: "hierro" | "verde" | "vino" | "corteza";
+  /** Paleta de la banda (8ª ola, manual de marca): marrón, verde bosque, vino, taupe. */
+  tono?: "marron" | "verde" | "vino" | "taupe";
 }) {
   const items = Array.from({ length: 2 }, (_, i) => (
     <div className="marquesina-grupo" key={i} aria-hidden>

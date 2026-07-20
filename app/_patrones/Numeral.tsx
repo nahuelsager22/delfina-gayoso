@@ -50,7 +50,7 @@ export function Numeral({
       style={{ color, display: "inline-block", ...style }}
     >
       {tieneAlmohadilla && (
-        <span aria-hidden style={{ color: "var(--color-yema)" }}>
+        <span aria-hidden style={{ color: "rgb(var(--atm-accent, 107 74 31))" }}>
           #
         </span>
       )}
