@@ -33,7 +33,7 @@ export default function Recorrido() {
             sueltos entre secciones, viven DENTRO de las zonas de transición (ver
             `Momento` · prop `adornos`). Por eso acá quedan sólo los respiros reales. */}
         <Umbral />
-        <Marquesina tono="verde" texto="aprender · cocinar · compartir · equivocarse · volver a empezar" />
+        <Marquesina tono="verde" texto="aprender · cocinar · compartir · volver a empezar" />
         <LoQueTeLlevas />
         <ColumnaAprendizaje />
         <QuienCocina />
