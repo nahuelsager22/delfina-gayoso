@@ -28,6 +28,7 @@ export function TrabajemosJuntos() {
       id="trabajemos-juntos"
       kicker="Servicios"
       titulo="Trabajemos juntos"
+      adornos={["hierba", "cuchara"]}
     >
       <div
         style={{

@@ -38,10 +38,17 @@ const PASILLO = "#seccion-columna-aprendizaje";
 export function FichaProducto({
   producto,
   ancla = "izq",
+  mostrarCategoria = true,
 }: {
   producto: Producto;
   /** Lado en el que se apoya la habitación (zigzag con ancla, §4.2c). */
   ancla?: "izq" | "der";
+  /**
+   * Bloque 8 · 9ª ola: el rótulo de categoría se omite cuando el contenedor ya la
+   * nombra (la clase en vivo vive bajo "En vivo, conmigo" y su título ya dice
+   * "Clase en vivo: …"). Evita repetir la misma información en dos niveles.
+   */
+  mostrarCategoria?: boolean;
 }) {
   const {
     titulo,
@@ -122,10 +129,12 @@ export function FichaProducto({
           }}
         >
           {/* Rótulo de categoría: distingue de un vistazo un ebook de una clase
-              (jerarquía Bloque 6.5). */}
-          <p className="momento-kicker" style={{ color: "rgb(var(--atm-accent, 180 97 31))" }}>
-            {categoria}
-          </p>
+              (jerarquía Bloque 6.5). Se omite cuando el contenedor ya lo dice. */}
+          {mostrarCategoria && (
+            <p className="momento-kicker" style={{ color: "rgb(var(--atm-accent, 180 97 31))" }}>
+              {categoria}
+            </p>
+          )}
 
           {/* Título del producto — sans, sin gritar (§7.1). Marca de ejemplo si
               es un placeholder del ecosistema (Bloque 6.5). */}

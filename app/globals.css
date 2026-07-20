@@ -144,12 +144,23 @@
   --atm-accent: 107 74 31; /* ocre profundo (8ª ola: reemplaza el naranja Corteza) */
   /* Tinta del NAVBAR: el bar es fijo y está fuera del flujo, así que no puede heredar
      la sala; el proveedor escribe estas variables según la habitación de arriba. */
-  /* 7ª ola: el fondo es crema y el navbar vive sobre crema → tinta fija (Hierro sobre
-     Harina). El proveedor ya no reescribe estas variables. */
+  /* 9ª ola: el navbar es transparente (mismo plano) y su TINTA la reescribe el motor
+     (`AtmosferaProvider`) frame por frame según el color que hay debajo. Estos son los
+     valores de arranque —y el estado sin JS—: tinta oscura sobre crema, sin halo. */
   --nav-ink: 42 36 30;
   --nav-ink-soft: 91 82 68;
   --nav-accent: 180 97 31;
-  --nav-bg: 247 242 234; /* Harina */
+  --nav-bg: 247 242 234; /* Harina, medido bajo el bar */
+  --nav-bg-pie: 247 242 234; /* … y bajo su borde inferior (rampa del velo) */
+  --nav-halo: 247 242 234;
+  --nav-halo-a: 0;
+
+  /* ---- ORO de los dibujos (Bloque 8 · 9ª ola) ----
+     Un solo dorado, en dos valores. Sobre crema va el ORO PROFUNDO (4.9:1 sobre
+     `Harina`); sobre los campos hondos, el ORO CLARO (5.0:1 sobre el marrón, 3.8:1
+     sobre el verde) —el mismo oro que ya usan sus acentos—. El dibujo se lee siempre;
+     la conmutación la hace `[data-oscura]`, no cada componente. */
+  --adorno-oro: 126 95 30;
 }
 
 /* =============================================================================
@@ -324,7 +335,8 @@
     position: relative;
     inline-size: 100%;
     overflow: hidden;
-    padding-block: clamp(16px, 2.2vw, 26px);
+    /* El sello del logotipo fija la altura; el padding sólo le da aire sobre la guarda. */
+    padding-block: clamp(14px, 1.8vw, 22px);
     /* Banda recta (Opción A) sobre crema: filete fino arriba y abajo (artesanal). */
     border-block: 1px solid rgb(var(--mq-ink) / 0.16);
   }
@@ -335,6 +347,23 @@
     inline-size: max-content;
     will-change: transform;
     animation: mq-scroll 30s linear infinite;
+    /* 9ª ola: la pista entra y sale del encuadre en lugar de cortarse contra el borde
+       del viewport. La banda y su guarda siguen a pleno ancho; sólo se desvanece lo
+       que se desplaza. */
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 6%,
+      #000 94%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 6%,
+      #000 94%,
+      transparent 100%
+    );
   }
   .marquesina-grupo {
     display: inline-flex;
@@ -347,8 +376,13 @@
     letter-spacing: 0.01em;
     color: rgb(var(--mq-ink));
   }
-  .marquesina-dot {
-    color: rgb(var(--mq-acc));
+  /* El separador es su LOGOTIPO OFICIAL (9ª ola), estampado como un sello entre
+     frases: el detalle más chico también pertenece a su universo. */
+  .marquesina-sello {
+    flex: none;
+    inline-size: clamp(54px, 6vw, 76px);
+    block-size: auto;
+    border-radius: 50%;
   }
   @keyframes mq-scroll {
     from {
@@ -600,6 +634,89 @@
   inline-size: 100%;
 }
 
+/* =============================================================================
+   CAMPO (Bloque 8 · 9ª ola) — las secciones principales a pleno ancho que se
+   DISUELVEN. El color no empieza ni termina con un corte: nace del crema y vuelve
+   al crema a lo largo de una zona amplia (`--campo-fade`), con una rampa de varios
+   pasos en oklab para que no se lea la recta del degradado. Como los dos bordes de
+   la sección SON crema, la unión con las vecinas es invisible sin superponer capas
+   ni pelear con el orden de pintado.
+
+   El contenido empieza recién cuando el color es sólido (el padding reserva la zona
+   de disolución completa): el color puede ser intenso sin negociar contraste.
+   ========================================================================== */
+.sala-campo {
+  --campo-fade: clamp(200px, 30vh, 380px);
+  padding-block: calc(var(--campo-fade) + var(--space-xl));
+  background-color: var(--color-harina);
+  background-image: linear-gradient(
+    180deg,
+    var(--color-harina) 0,
+    color-mix(in oklab, rgb(var(--campo-c)) 9%, var(--color-harina))
+      calc(var(--campo-fade) * 0.3),
+    color-mix(in oklab, rgb(var(--campo-c)) 40%, var(--color-harina))
+      calc(var(--campo-fade) * 0.58),
+    color-mix(in oklab, rgb(var(--campo-c)) 79%, var(--color-harina))
+      calc(var(--campo-fade) * 0.83),
+    rgb(var(--campo-c)) var(--campo-fade),
+    rgb(var(--campo-c)) calc(100% - var(--campo-fade)),
+    color-mix(in oklab, rgb(var(--campo-c)) 79%, var(--color-harina))
+      calc(100% - var(--campo-fade) * 0.83),
+    color-mix(in oklab, rgb(var(--campo-c)) 40%, var(--color-harina))
+      calc(100% - var(--campo-fade) * 0.58),
+    color-mix(in oklab, rgb(var(--campo-c)) 9%, var(--color-harina))
+      calc(100% - var(--campo-fade) * 0.3),
+    var(--color-harina) 100%
+  );
+}
+
+/* Sobre un campo hondo el oro cambia de valor (ver `--adorno-oro` en :root). */
+[data-oscura="true"] {
+  --adorno-oro: 201 168 106;
+}
+
+/* Presencia y layout del dibujo. En CSS —y no inline en el componente— para que cada
+   contexto los ajuste: un respiro de crema y una zona de disolución no piden lo mismo. */
+.adorno {
+  display: flex;
+  justify-content: center;
+  opacity: var(--adorno-opacidad, 0.72);
+  margin-block: var(--adorno-margen, var(--space-xl));
+}
+
+/* La zona de disolución como ESPACIO NARRATIVO: aloja un dibujo del universo, que se
+   traza al entrar en viewport, deriva con el scroll y hace su gesto propio (`Adorno`).
+   No compite con el contenido —está en el tramo donde no hay texto— y hace que la
+   transición se sienta parte del recorrido y no un recurso para cambiar de color.
+
+   El dibujo NO se centra en la zona: se apoya contra su borde interior y entra un poco
+   en el color sólido. En el medio de la rampa el fondo es un tono intermedio donde
+   ningún oro se lee; sobre el color pleno, sí. La legibilidad manda sobre la simetría. */
+.campo-transicion {
+  position: absolute;
+  inset-inline: 0;
+  block-size: var(--campo-fade);
+  display: grid;
+  justify-items: center;
+  pointer-events: none;
+  --adorno-opacidad: 1;
+  --adorno-margen: 0;
+}
+.campo-transicion-inicio {
+  inset-block-start: 0;
+  align-items: end;
+}
+.campo-transicion-inicio .adorno {
+  margin-block-end: calc(-1 * var(--space-xl));
+}
+.campo-transicion-fin {
+  inset-block-end: 0;
+  align-items: start;
+}
+.campo-transicion-fin .adorno {
+  margin-block-start: calc(-1 * var(--space-xl));
+}
+
 /* LA SERIE (8ª ola · #3 y #4): más aire entre capítulos, filete que marca el ritmo
    vertical y jerarquía más clara. En mobile todos alinean a la izquierda (sin zigzag)
    para que la lectura no se desplace; el zigzag vuelve desde 900px. */
@@ -618,7 +735,16 @@
   border-block-start: 1px solid rgb(var(--atm-ink, 42 36 30) / 0.16);
   padding-block-start: clamp(var(--space-xl), 4vw, var(--space-2xl));
 }
+/* Zigzag de desktop (9ª ola). Antes cada capítulo medía `--measure-cuerpo` (~64ch,
+   712px): dos bloques tan anchos dentro del panel se superponían casi por completo y
+   el desplazamiento no se leía —los pares parecían apoyados contra el borde izquierdo
+   de su mitad, con aire muerto a la derecha—. Al ajustar la medida a la de una columna
+   real, cada capítulo llena su lado y los pares quedan ópticamente centrados en la
+   mitad derecha, en equilibrio con los impares. */
 @media (min-width: 900px) {
+  .serie-capitulo {
+    max-inline-size: min(var(--measure-cuerpo), 34rem);
+  }
   .serie-capitulo-der {
     align-self: flex-end;
   }
@@ -765,15 +891,18 @@
     inset-block-start: 0;
     inset-inline: 0;
     z-index: 10;
-    /* Sin frontera: el bar hereda el color de la SALA que tiene debajo (`--nav-bg`,
-       que el proveedor actualiza en el borde entre habitaciones) y se DESVANECE a
-       transparente abajo: no hay línea donde termina la navegación y empieza la sala.
-       La transición suave evita el "salto" de color al cambiar de habitación. */
+    /* 9ª ola — MISMO PLANO. El bar no tiene un color propio: lleva el color EXACTO que
+       el motor mide debajo de él en cada frame (`--nav-bg`), desvanecido a nada hacia
+       abajo. Pintar el mismo color que ya está detrás no agrega una capa —es invisible,
+       no hay borde ni cambio de tono— pero evita que el contenido se cruce con el
+       monograma al pasar por debajo.
+       Lo que antes lo delataba como capa superpuesta no era el velo: era que el color
+       se fijaba por sección y SALTABA en cada borde. Ahora no salta nunca. */
     background: linear-gradient(
       180deg,
-      rgb(var(--nav-bg, 239 223 182) / 0.92) 0%,
-      rgb(var(--nav-bg, 239 223 182) / 0.72) 40%,
-      rgb(var(--nav-bg, 239 223 182) / 0) 100%
+      rgb(var(--nav-bg, 247 242 234) / 0.96) 0%,
+      rgb(var(--nav-bg-pie, var(--nav-bg, 247 242 234)) / 0.86) 46%,
+      rgb(var(--nav-bg-pie, var(--nav-bg, 247 242 234)) / 0) 100%
     );
     block-size: calc(var(--navbar-h) + var(--space-md));
     /* La zona de fade (transparente) no debe capturar clics del contenido de abajo:
@@ -781,10 +910,38 @@
     pointer-events: none;
   }
 
-  /* Con el menú abierto: el bar deja de desvanecerse y se vuelve OPACO con el color de
-     la sala, formando una sola pieza con la hoja del menú. */
+  /* Con el menú abierto: el bar se vuelve OPACO con el color que tenía debajo en ese
+     instante (el motor congela `--nav-bg` al abrir), formando una sola pieza con la
+     hoja del menú. Nunca salta a un color fijo. */
   .navbar[data-abierto="true"] {
-    background: rgb(var(--nav-bg, 239 223 182));
+    background: rgb(var(--nav-bg, 247 242 234));
+  }
+
+  /* Sin superficie propia, el texto del bar cruza tramos de fondo en plena disolución,
+     donde ningún par de tinta llega a AA (es una propiedad del medio tono). En vez de
+     devolverle una capa al navbar —que rompería el mismo plano—, los rótulos llevan un
+     halo difuso del tono OPUESTO a su tinta, cuya opacidad la escribe el motor: vale 0
+     cuando el fondo ya es claramente claro u oscuro y sólo sube en la franja ambigua.
+     No tiene caja ni borde: vive alrededor de las letras y desaparece solo. */
+  .navbar-marca,
+  .navbar-link {
+    text-shadow:
+      0 0 4px rgb(var(--nav-halo, 247 242 234) / var(--nav-halo-a, 0)),
+      0 0 14px rgb(var(--nav-halo, 247 242 234) / var(--nav-halo-a, 0));
+  }
+  /* La tinta cruza de oscura a clara donde el fondo lo pide; la transición la hace
+     imperceptible (el fondo ya venía cambiando de forma continua). */
+  .navbar-marca,
+  .navbar-toggle svg {
+    transition:
+      color var(--dur-md) var(--ease-suave),
+      stroke var(--dur-md) var(--ease-suave);
+  }
+  /* Los utensilios son trazo, no texto: reciben el mismo halo como drop-shadow. */
+  .navbar-toggle svg {
+    filter: drop-shadow(
+      0 0 4px rgb(var(--nav-halo, 247 242 234) / var(--nav-halo-a, 0))
+    );
   }
 
   .navbar-inner {

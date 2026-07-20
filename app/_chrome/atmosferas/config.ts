@@ -42,6 +42,19 @@ export interface Sala {
    * crema (sección de descanso). El color/tinta de la sala se usan para el panel.
    */
   readonly panel: boolean;
+  /**
+   * Bloque 8 · 9ª ola — CAMPO. Las secciones principales (La Serie, Trabajemos juntos)
+   * dejan el bloque contenido y ocupan el ancho completo, pero no empiezan ni terminan
+   * con un corte: su color nace del crema y vuelve al crema a través de zonas de
+   * disolución amplias (`--campo-fade`), de modo que no hay un punto identificable
+   * donde termina un color y empieza el siguiente. Como el borde de la sección ES
+   * crema, la unión con las secciones vecinas es invisible sin superponer capas.
+   *
+   * Regla de legibilidad: dentro de la zona de disolución NUNCA vive texto —sólo
+   * adornos—; el contenido empieza cuando el color ya es sólido. Así el color puede
+   * ser intenso sin negociar el contraste (R14).
+   */
+  readonly campo?: boolean;
 }
 
 /* Las 7 habitaciones, por clave de `momento.atmosfera`. Cada una con un color dominante
@@ -82,7 +95,8 @@ export const SALAS: Record<string, Sala> = {
     accent: [201, 168, 106],
     navBg: [74, 53, 39],
     oscura: true,
-    panel: true,
+    panel: false,
+    campo: true, // 9ª ola: sección principal → campo a pleno ancho que se disuelve
   },
   // La persona: crema (sin bloque) — el respiro. Acá vive el rescoldo de MasterChef.
   intima: {
@@ -102,7 +116,8 @@ export const SALAS: Record<string, Sala> = {
     accent: [201, 187, 132],
     navBg: [57, 83, 42],
     oscura: true,
-    panel: true,
+    panel: false,
+    campo: true, // 9ª ola: sección principal → campo a pleno ancho que se disuelve
   },
   // La comunidad: TAUPE del manual (#AEA391). Bloque claro y sereno, tinta oscura.
   compartir: {
@@ -132,7 +147,33 @@ export function getSala(id: string | undefined): Sala {
   return (id && SALAS[id]) || SALAS[SALA_DEFECTO]!;
 }
 
-const rgbStr = (c: RGB) => `${c[0]} ${c[1]} ${c[2]}`;
+export const rgbStr = (c: RGB) => `${c[0]} ${c[1]} ${c[2]}`;
+
+/** Sólo la tinta de la sala (sin fondo): la usa el CAMPO, que pinta su propio gradiente
+ *  de disolución desde CSS y no puede recibir un `background` inline que lo pise. */
+export function tintaSala(sala: Sala): Record<string, string> {
+  return {
+    color: `rgb(${rgbStr(sala.ink)})`,
+    "--atm-ink": rgbStr(sala.ink),
+    "--atm-ink-soft": rgbStr(sala.inkSoft),
+    "--atm-accent": rgbStr(sala.accent),
+  };
+}
+
+/** Atributos que el navbar lee del DOM para saber qué color tiene debajo, frame por
+ *  frame (9ª ola). Cada superficie de color —panel o campo— se declara a sí misma. */
+export function datosNavbar(
+  sala: Sala,
+  tipo: "panel" | "campo",
+): Record<string, string> {
+  return {
+    "data-nav-color": rgbStr(sala.navBg),
+    "data-nav-ink": rgbStr(sala.ink),
+    "data-nav-ink-soft": rgbStr(sala.inkSoft),
+    "data-nav-accent": rgbStr(sala.accent),
+    "data-nav-tipo": tipo,
+  };
+}
 
 /** Variables de tinta de una sala, para fijar en el `<section>` (las hereda el contenido). */
 export function estiloSala(sala: Sala): Record<string, string> {

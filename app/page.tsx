@@ -27,17 +27,18 @@ export default function Recorrido() {
       <main>
         {/* En los respiros de crema entre bloques vuelven los pequeños dibujos del
             universo (8ª ola): line-art fino, en el ocre del sistema, que enhebra el
-            recorrido sin volverse decoración. */}
+            recorrido sin volverse decoración.
+            9ª ola: las dos secciones principales —La Serie y Trabajemos juntos— son
+            CAMPOS a pleno ancho que se disuelven en el crema; sus dibujos ya no van
+            sueltos entre secciones, viven DENTRO de las zonas de transición (ver
+            `Momento` · prop `adornos`). Por eso acá quedan sólo los respiros reales. */}
         <Umbral />
         <Marquesina tono="verde" texto="aprender · cocinar · compartir · equivocarse · volver a empezar" />
         <LoQueTeLlevas />
-        <Adorno variante="espiga" />
         <ColumnaAprendizaje />
-        <Adorno variante="vapor" />
         <QuienCocina />
-        <Adorno variante="hierba" />
         <TrabajemosJuntos />
-        <Adorno variante="cuchara" />
+        <Adorno variante="especias" />
         <CocinaCompartida />
         <Marquesina tono="marron" texto="la clase no termina · seguimos cocinando · nos vemos en la cocina" />
         <LaClaseNoTermina />

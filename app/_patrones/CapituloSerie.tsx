@@ -32,10 +32,12 @@ export function CapituloSerie({ pieza }: { pieza: PiezaAprendizaje }) {
         display: "flex",
         flexDirection: "column",
         gap: "var(--space-xs)",
-        // Ancho fijo para que expandir el caption no cambie las dimensiones, pero
-        // capado al viewport (menos el padding del <main>) para no desbordar en
-        // mobile (fix Bloque 6.5): el 64ch no fuerza scroll horizontal.
-        inlineSize: "min(var(--measure-cuerpo), calc(100vw - 2 * var(--space-lg)))",
+        // El ancho lo fija el contenedor (`.serie-capitulo`, medida por breakpoint):
+        // el capítulo lo ocupa entero, así expandir el caption no cambia dimensiones
+        // ni corre la composición. Fix 9ª ola: antes se medía contra `100vw`, que
+        // ignora el padding del bloque de color y hacía que el texto se saliera del
+        // panel por el margen derecho en mobile.
+        inlineSize: "100%",
       }}
     >
       <Numeral valor={numeral} />

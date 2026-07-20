@@ -52,7 +52,9 @@ export function LoQueTeLlevas() {
       </div>
 
       {/* La clase en vivo: su propia superficie dentro del bloque, con rótulo propio.
-          Se diferencia de los ebooks (otra cosa: sucede en vivo, con ella). */}
+          Se diferencia de los ebooks (otra cosa: sucede en vivo, con ella).
+          9ª ola: la ficha NO repite su categoría —el rótulo del bloque ya dice "En
+          vivo, conmigo" y el título ya dice "Clase en vivo: …"—; queda un solo nivel. */}
       {clases.length > 0 && (
         <div className="bloque-clases">
           <p className="momento-kicker bloque-clases-rotulo">En vivo, conmigo</p>
@@ -64,7 +66,12 @@ export function LoQueTeLlevas() {
             }}
           >
             {clases.map((p) => (
-              <FichaProducto key={p.id} producto={p} ancla="izq" />
+              <FichaProducto
+                key={p.id}
+                producto={p}
+                ancla="izq"
+                mostrarCategoria={false}
+              />
             ))}
           </div>
         </div>

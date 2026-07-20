@@ -89,10 +89,15 @@ export function Navbar() {
   const abiertoRef = useRef(abierto);
 
   // El menú manda: abierto → nombre completo; cerrado → "DG" (misma transición).
+  // 9ª ola: además avisa al motor del navbar para que CONGELE el color heredado
+  // mientras el menú está abierto (la hoja conserva el color de la sección en la que
+  // estaba el usuario, en vez de saltar a un color fijo).
   useEffect(() => {
     abiertoRef.current = abierto;
     const el = monoRef.current;
     if (el) el.dataset.nombre = abierto ? "expandido" : "reducido";
+    if (abierto) document.documentElement.dataset.menu = "abierto";
+    else delete document.documentElement.dataset.menu;
   }, [abierto]);
 
   // Intro al cargar: "Delfina Gayoso" y, tras una pausa, se reduce a "DG" (una vez).

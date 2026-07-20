@@ -1,6 +1,13 @@
 import type { CSSProperties } from "react";
 import { getMomento, type MomentoId } from "@/content";
-import { getSala, estiloSala } from "../_chrome/atmosferas/config";
+import {
+  getSala,
+  estiloSala,
+  tintaSala,
+  datosNavbar,
+  rgbStr,
+} from "../_chrome/atmosferas/config";
+import { Adorno, type VarianteAdorno } from "../_chrome/adornos/Adorno";
 
 /**
  * Contenedor de momento (sistema-visual §7.5 · reescrito Bloque 8, 7ª ola — dirección
@@ -24,6 +31,7 @@ export function Momento({
   kicker,
   full = false,
   alFinal = false,
+  adornos,
 }: {
   id: MomentoId;
   children: React.ReactNode;
@@ -31,6 +39,13 @@ export function Momento({
   kicker?: string;
   full?: boolean;
   alFinal?: boolean;
+  /**
+   * Sólo para salas CAMPO (9ª ola): los dos dibujos que habitan las zonas de
+   * disolución —el de entrada y el de salida—. La transición deja de ser un recurso
+   * técnico para cambiar de color y pasa a ser un espacio del recorrido: el adorno se
+   * dibuja al entrar en viewport y deriva apenas con el scroll (ver `Adorno`).
+   */
+  adornos?: readonly [VarianteAdorno, VarianteAdorno];
 }) {
   const m = getMomento(id);
   const sala = getSala(m?.atmosfera);
@@ -58,6 +73,42 @@ export function Momento({
       {children}
     </div>
   );
+
+  // CAMPO (9ª ola): pleno ancho, sin bloque contenido. El color nace del crema y
+  // vuelve al crema; el gradiente vive en `.sala-campo` (CSS) y recibe su color por
+  // `--campo-c`. Las dos zonas de disolución son espacios narrativos: alojan un dibujo
+  // del universo, no sólo un cambio de color.
+  if (sala.campo) {
+    return (
+      <section
+        aria-labelledby={headingId}
+        data-momento={id}
+        data-oscura={sala.oscura ? "true" : "false"}
+        data-panel="false"
+        className="sala-campo"
+        {...datosNavbar(sala, "campo")}
+        style={
+          {
+            ...tintaSala(sala),
+            "--campo-c": rgbStr(sala.navBg),
+            position: "relative",
+            overflowX: "clip",
+          } as CSSProperties
+        }
+      >
+        {/* Las dos zonas se renderizan siempre (con o sin dibujo): además de alojar el
+            adorno, su alto ES `--campo-fade` ya resuelto en píxeles, y de ahí lo lee el
+            motor del navbar para saber cuánto pesa el color en cada punto. */}
+        <div className="campo-transicion campo-transicion-inicio" aria-hidden>
+          {adornos && <Adorno variante={adornos[0]} />}
+        </div>
+        <div className="sala-inner">{cuerpo}</div>
+        <div className="campo-transicion campo-transicion-fin" aria-hidden>
+          {adornos && <Adorno variante={adornos[1]} />}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
@@ -90,6 +141,7 @@ export function Momento({
       {sala.panel ? (
         <div
           className={`sala-panel${full ? " sala-panel-full" : ""}`}
+          {...datosNavbar(sala, "panel")}
           style={estiloSala(sala) as CSSProperties}
         >
           {cuerpo}

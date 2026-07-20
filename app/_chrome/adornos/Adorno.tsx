@@ -9,16 +9,22 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
  * navbar— que viven en los SILENCIOS entre momentos y conectan una sección con la
  * siguiente. No son decoración por decoración: marcan el respiro y la transición.
  *
- *  · Trazo con COLOR que resalta (Bloque 8: Delfina pidió "los detalles así en colores
- *    q resalten"). Cada adorno lleva un color del universo —cálido `Corteza` o el
- *    VERDE DE MARCA `Bosque`— en vez del gris `Piedra` uniforme; sigue siendo line-art
- *    fino, sin relleno ni sombra, así acompaña sin competir (DA §textura). El default
- *    sigue en `Piedra` para usos neutros.
- *  · Motion: los trazos se DIBUJAN al entrar en viewport (pathLength, una vez), y el
- *    adorno DERIVA apenas con el scroll (±14px) —acompaña el desplazamiento sin
- *    parallax ni secuestro—. Con `prefers-reduced-motion`: dibujados y quietos.
+ *  · Trazo en ORO (9ª ola): un único dorado que cambia de valor según el fondo que le
+ *    toca —oro profundo sobre crema, oro claro sobre los campos hondos—, declarado en
+ *    `--adorno-oro` y conmutado por `[data-oscura]`. Así el dibujo se lee siempre, sin
+ *    depender de qué sección lo aloje. Sigue siendo line-art fino, sin relleno ni
+ *    sombra, así acompaña sin competir (DA §textura).
+ *  · Motion (9ª ola): los trazos se DIBUJAN al entrar en viewport (pathLength, una
+ *    vez), el adorno DERIVA apenas con el scroll (±14px) y —nuevo— cada dibujo tiene
+ *    SU PROPIO gesto continuo, derivado de lo que representa: el vapor asciende, la
+ *    espiga y la hierba se mecen desde su base, la cuchara revuelve, el batidor bate,
+ *    las especias caen. No es un movimiento genérico repetido siete veces: es lo que
+ *    hace cada objeto. Amplitudes mínimas y tiempos largos, para que se perciba vida y
+ *    no animación. Con `prefers-reduced-motion`: dibujados y quietos.
  *  · `aria-hidden`: decorativos.
  */
+
+export type VarianteAdorno = Variante;
 
 type Variante =
   | "vapor"
@@ -29,10 +35,21 @@ type Variante =
   | "cuchara"
   | "especias";
 
+/** El gesto continuo de un dibujo: qué hace ese objeto, no una animación genérica. */
+type Gesto = {
+  /** Valores que se recorren de ida y vuelta (`mirror`). */
+  animate: Record<string, number[]>;
+  /** Duración de un tramo, en segundos. Largas: se percibe vida, no animación. */
+  dur: number;
+  /** Punto sobre el que pivota (una espiga se mece desde la tierra, no desde el aire). */
+  origen?: string;
+};
+
 type Motivo = {
   viewBox: string;
   inlineSize: string;
   paths: readonly string[];
+  gesto: Gesto;
 };
 
 const MOTIVOS: Record<Variante, Motivo> = {
@@ -44,6 +61,8 @@ const MOTIVOS: Record<Variante, Motivo> = {
       "M16 82 C 4 64, 28 56, 16 38 C 8 24, 24 16, 16 4",
       "M40 82 C 28 64, 52 56, 40 38 C 32 24, 48 16, 40 4",
     ],
+    // El vapor asciende y respira: sube, se afina, vuelve.
+    gesto: { animate: { y: [0, -7, 0], opacity: [0.82, 1, 0.82] }, dur: 5.2 },
   },
   // Espiga de trigo: harina, masa, el principio de todo.
   espiga: {
@@ -56,6 +75,8 @@ const MOTIVOS: Record<Variante, Motivo> = {
       "M22 42 L12 34 M22 42 L32 34",
       "M22 54 L13 47 M22 54 L31 47",
     ],
+    // La espiga se mece desde la tierra, no desde el aire.
+    gesto: { animate: { rotate: [-2.6, 2.6] }, dur: 4.6, origen: "50% 100%" },
   },
   // Ramita de hierba: perejil, albahaca; frescura, lo cotidiano.
   hierba: {
@@ -67,6 +88,8 @@ const MOTIVOS: Record<Variante, Motivo> = {
       "M46 16 q -8 -10 -16 -5 q 6 10 16 5",
       "M64 18 q -6 -11 -15 -8 q 5 11 15 8",
     ],
+    // La ramita cimbrea desde donde nace, en el extremo del tallo.
+    gesto: { animate: { rotate: [-1.6, 1.6] }, dur: 6.4, origen: "5% 90%" },
   },
   // Guarda: una cenefa de recetario que separa y a la vez enlaza.
   guarda: {
@@ -75,6 +98,8 @@ const MOTIVOS: Record<Variante, Motivo> = {
     paths: [
       "M2 12 Q 14 0, 26 12 T 50 12 T 74 12 T 98 12 T 122 12 T 146 12 T 170 12 T 194 12",
     ],
+    // La cenefa corre despacio de lado, como una guarda impresa que respira.
+    gesto: { animate: { x: [-5, 5] }, dur: 7.5 },
   },
   // Batidor: el gesto de mezclar, airear.
   batidor: {
@@ -88,6 +113,12 @@ const MOTIVOS: Record<Variante, Motivo> = {
       "M22 52 C 29 43, 29 15, 22 7",
       "M17 8 Q 22 3, 27 8",
     ],
+    // El batidor bate: oscilación corta y rápida, con su pequeño vaivén.
+    gesto: {
+      animate: { rotate: [-6, 6], x: [-1.5, 1.5] },
+      dur: 1.9,
+      origen: "50% 100%",
+    },
   },
   // Cuchara: servir, probar, compartir.
   cuchara: {
@@ -97,6 +128,8 @@ const MOTIVOS: Record<Variante, Motivo> = {
       "M20 3 C 31 3, 33 20, 20 30 C 7 20, 9 3, 20 3",
       "M20 30 L20 90",
     ],
+    // La cuchara revuelve: gira sobre su cuenco.
+    gesto: { animate: { rotate: [-9, 9] }, dur: 3.4, origen: "50% 22%" },
   },
   // Especias: semillas espolvoreadas, el detalle final.
   especias: {
@@ -112,19 +145,21 @@ const MOTIVOS: Record<Variante, Motivo> = {
       "M40 8 l3 2",
       "M52 31 l3 -1",
     ],
+    // Las semillas caen y se asientan.
+    gesto: { animate: { y: [-2.5, 2.5] }, dur: 3.1 },
   },
 };
 
 export function Adorno({
   variante,
   className,
-  color = "rgb(var(--atm-accent, 180 97 31))",
+  color = "rgb(var(--adorno-oro, 126 95 30))",
 }: {
   variante: Variante;
   className?: string;
-  /** Color del trazo (Bloque 8). Default = ACENTO ADAPTATIVO del paisaje (corteza en las
-   *  galaxias luminosas, oro en las profundas) → el detalle siempre resalta sobre el
-   *  campo donde cae, sin quedar invisible en un fondo hondo. */
+  /** Color del trazo. Default = el ORO ADAPTATIVO del sistema (9ª ola): `--adorno-oro`
+   *  vale oro profundo sobre crema y oro claro sobre los campos hondos, conmutado por
+   *  `[data-oscura]`. El dibujo se lee siempre, sin importar dónde caiga. */
   color?: string;
 }) {
   const sinMotion = useReducedMotion();
@@ -137,18 +172,38 @@ export function Adorno({
   const m = MOTIVOS[variante];
 
   return (
+    // Layout y presencia viven en CSS (`.adorno`, globals) para que el contexto que lo
+    // aloja pueda ajustarlos —una zona de disolución no quiere el mismo margen ni la
+    // misma opacidad que un respiro de crema— sin pasar props por toda la cadena.
     <div
       ref={ref}
       aria-hidden
-      className={className}
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        opacity: 0.5,
-        marginBlock: "var(--space-xl)",
-      }}
+      className={["adorno", className].filter(Boolean).join(" ")}
     >
+      {/* Capa 1: deriva con el scroll. Capa 2: el gesto propio del dibujo. Van
+          separadas porque ambas animan `y`/`transform` y se pisarían en una sola. */}
       <motion.div style={sinMotion ? undefined : { y }}>
+        <motion.div
+          style={{
+            transformOrigin: m.gesto.origen ?? "50% 50%",
+            willChange: sinMotion ? undefined : "transform",
+          }}
+          animate={sinMotion ? undefined : m.gesto.animate}
+          transition={
+            sinMotion
+              ? undefined
+              : {
+                  duration: m.gesto.dur,
+                  repeat: Infinity,
+                  repeatType: "mirror" as const,
+                  ease: "easeInOut" as const,
+                  /* Cada dibujo arranca en un punto distinto de su ciclo: dos adornos
+                     en pantalla nunca laten al unísono (se leería como una animación
+                     del sitio, no como objetos con vida propia). */
+                  delay: (m.paths.length % 5) * 0.37,
+                }
+          }
+        >
         <svg
           viewBox={m.viewBox}
           style={{ inlineSize: m.inlineSize, blockSize: "auto", display: "block" }}
@@ -177,6 +232,7 @@ export function Adorno({
             ),
           )}
         </svg>
+        </motion.div>
       </motion.div>
     </div>
   );
