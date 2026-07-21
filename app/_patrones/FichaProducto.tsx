@@ -155,7 +155,7 @@ export function FichaProducto({
             >
               {titulo}
             </h3>
-            {borrador && <MarcaEjemplo />}
+            {/* {borrador && <MarcaEjemplo />} */}
           </div>
 
           {/* Colaboración en primera persona plural: comunidad, no co-branding. */}
@@ -222,7 +222,7 @@ export function FichaProducto({
           </div>
 
           {/* Salida al pasillo: la ficha nunca es callejón sin salida (§7.1). */}
-          <a
+          {/* <a
             href={PASILLO}
             className="text-meta"
             style={{
@@ -232,7 +232,7 @@ export function FichaProducto({
             }}
           >
             Seguir la clase
-          </a>
+          </a> */}
         </div>
       </article>
     </Aparicion>

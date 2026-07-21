@@ -24,9 +24,10 @@ export const productos: readonly Producto[] = [
     descripcion:
       "Me gusta compartir lo que fui aprendiendo en la cocina, y esta es mi manera de acompañarte si estás empezando o si, como yo, siempre querés saber un poco más. Junté todo lo que sé sobre masas quebradas para que lo tengas ordenado y a mano.",
     queTeLlevas: [
-      "Las técnicas de masa quebrada, paso a paso",
-      "Mis tips para que no se te rompa ni se te encoja",
-      "Recetas dulces y saladas para practicar",
+      "Tipos de masas quebradas",
+      "Métodos de preparación, fonzado y cocción ",
+      "Tips y recomendaciones ",
+      "Recetas básicas y apenas avanzadas para seguir practicando"
     ],
     formato: "ebook en PDF",
     precio: "$15.000",
@@ -34,39 +35,39 @@ export const productos: readonly Producto[] = [
       "https://hotmart.com/es/marketplace/productos/ebook-masas-quebradas-by-delfina-gayoso/T92555721V",
     imagen: "cover-masas-quebradas",
   },
-  {
-    id: "desayunos-meriendas-saludables",
-    titulo: "Desayunos y Meriendas Saludables",
-    descripcion:
-      "Este lo hicimos con Florencia, que es nutricionista. Quisimos armar un recetario de desayunos y meriendas más completos y variados, porque son las comidas que arrancan el día y te dan energía. Hay opciones rápidas y otras más elaboradas, todas pensadas para que las disfrutes en tu casa.",
-    queTeLlevas: [
-      "Recetas de desayunos y meriendas nutritivas y ricas",
-      "Opciones rápidas para todos los días y otras para cuando tenés tiempo",
-      "La mirada de una nutricionista en cada receta",
-    ],
-    formato: "ebook en PDF",
-    colaboradores: ["Florencia Depaoli, nutricionista"],
-    precio: "$10.000",
-    destino:
-      "https://hotmart.com/es/marketplace/productos/recetario-desayunos-y-meriendas/C91567976W?sck=HOTMART_PRODUCT_PAGE",
-    imagen: "cover-desayunos-meriendas",
-  },
+  // {
+  //   id: "desayunos-meriendas-saludables",
+  //   titulo: "Desayunos y Meriendas Saludables",
+  //   descripcion:
+  //     "Este lo hicimos con Florencia, que es nutricionista. Quisimos armar un recetario de desayunos y meriendas más completos y variados, porque son las comidas que arrancan el día y te dan energía. Hay opciones rápidas y otras más elaboradas, todas pensadas para que las disfrutes en tu casa.",
+  //   queTeLlevas: [
+  //     "Recetas de desayunos y meriendas nutritivas y ricas",
+  //     "Opciones rápidas para todos los días y otras para cuando tenés tiempo",
+  //     "La mirada de una nutricionista en cada receta",
+  //   ],
+  //   formato: "ebook en PDF",
+  //   colaboradores: ["Florencia Depaoli, nutricionista"],
+  //   precio: "$10.000",
+  //   destino:
+  //     "https://hotmart.com/es/marketplace/productos/recetario-desayunos-y-meriendas/C91567976W?sck=HOTMART_PRODUCT_PAGE",
+  //   imagen: "cover-desayunos-meriendas",
+  // },
   {
     // EJEMPLO (borrador): representa "clases + tickets" del ecosistema. Ficticio,
     // marcado visiblemente y reemplazable por una clase/precio/enlace reales.
     id: "clase-en-vivo-pastas",
-    titulo: "Clase en vivo: pastas caseras",
+    titulo: "Clases en vivo · Próximamente",
     descripcion:
-      "Nos juntamos un rato a cocinar pastas desde cero, en vivo. Cocinás conmigo, me preguntás lo que quieras y te llevás la receta para repetirla las veces que quieras.",
+      "Estoy preparando este espacio para que podamos cocinar y aprender juntas, en vivo y desde cualquier lugar. Una experiencia linda, simple y cercana. Mientras tanto, seguí explorando las recetas y los eBooks. Muy pronto vas a poder sumarte a las primeras clases.",
     queTeLlevas: [
-      "Una clase en vivo, en grupo chico",
-      "La receta y la lista de materiales antes de empezar",
-      "La grabación, por si te la querés volver a ver",
+      "Próximamente clases en vivo en grupos",
+      "Material y recetas para acompañar cada encuentro",
+      "Grabaciones disponibles para volver a verlas cuando quieras",
     ],
-    formato: "clase en vivo por videollamada",
-    precio: "$12.000",
-    ctaLabel: "Reservar lugar",
-    destino: "https://ejemplo.delfinagayoso.com/clase-pastas",
+    formato: "Clase",
+    precio: "en desarrollo",
+    ctaLabel: "Muy pronto",
+    destino: "",
     borrador: true,
   },
 ];
