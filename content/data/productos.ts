@@ -40,15 +40,15 @@ export const productos: readonly Producto[] = [
   },
   {
     id: "clases-presenciales",
-    titulo: "Clases presenciales",
+    titulo: "Clase de cocina",
     descripcion:
-      "Cocinamos juntos en distintos espacios, con las manos en la masa, y te llevás la técnica para repetirla en tu casa. Si tenés un lugar o un grupo, coordinamos la fecha.",
+      "Esta vez, team salado!",
     queTeLlevas: [
-      "Una clase en vivo, cocinando paso a paso",
-      "La receta y la lista de materiales",
-      "El mismo acompañamiento de siempre, en persona",
+      "Para niños y niñas a partir de 6 años",
+      "Elaborás y te llevás a casa: Pizza, salchichitas envueltas y quesitas!",
+      "Incluye material y recetario impreso",
     ],
-    formato: "clase presencial",
+    formato: "Martes 28/7 | 16:00hs | 9 de Julio Pcia. Bs. As.",
     ctaLabel: "Escribime para coordinar",
     destino: "mailto:gayosodelfina@gmail.com",
     imagen: "manos-masa",

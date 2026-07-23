@@ -1,6 +1,7 @@
 import { getServicios } from "@/content";
 import { Momento } from "../_patrones/Momento";
 import { InvitacionServicio } from "../_patrones/InvitacionServicio";
+import { Adorno } from "../_chrome/adornos/Adorno";
 
 /**
  * Momento 6 — Trabajemos juntos (arquitectura §1). El servicio (colaboraciones,
@@ -44,6 +45,9 @@ export function TrabajemosJuntos() {
           />
         ))}
       </div>
+
+      {/* El batidor: el gesto de mezclar, en el oro que resalta sobre el verde (12ª ola). */}
+      <Adorno variante="batidor" />
     </Momento>
   );
 }

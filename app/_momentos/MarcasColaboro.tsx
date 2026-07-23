@@ -4,6 +4,7 @@ import { Momento } from "../_patrones/Momento";
 import { Voz } from "../_patrones/Voz";
 import { Aparicion } from "../_patrones/Aparicion";
 import { Flecha } from "../_chrome/adornos/Flecha";
+import { Adorno } from "../_chrome/adornos/Adorno";
 
 /**
  * Marcas con las que colaboro (Bloque 8 · 11ª ola — narrativa de PRESENTE). No es un
@@ -55,6 +56,9 @@ export function MarcasColaboro() {
           </Aparicion>
         ))}
       </ul>
+
+      {/* Semillas espolvoreadas: el detalle final, en el rojo del manual (12ª ola). */}
+      <Adorno variante="especias" color="var(--color-terracota)" />
 
       {/* Carta de presentación: la confianza vigente, como puerta abierta. */}
       <Aparicion className="marcas-invitacion">

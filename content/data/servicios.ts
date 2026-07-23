@@ -26,7 +26,7 @@ export const servicios: readonly PropuestaServicio[] = [
     aQuienLeSirve:
       "Marcas que quieran cocinar algo conmigo: colaboraciones, creación de contenido y acciones para comunicar un producto.",
     comoEsTrabajar:
-      "Trabajo como cocino: pongo las manos, cuido cada detalle y te muestro todo el proceso.",
+      "Me gusta trabajar como cocino: ponniendo las manos, sin vueltas, cuidando cada detalle y contándote todo el proceso.",
     contacto: {
       invitacion: "Si tenés una marca o una idea, escribime y la cocinamos juntas.",
       canales: CANALES,
@@ -36,7 +36,7 @@ export const servicios: readonly PropuestaServicio[] = [
     id: "asesorias-eventos",
     tipo: "Asesorías y eventos",
     aQuienLeSirve:
-      "Espacios gastronómicos, equipos y empresas que necesiten una asesoría, o un evento con una cocina que se luzca.",
+      "Espacios gastronómicos, equipos y empresas que necesiten una asesoría, o un evento con una cocina pensada al detalle.",
     comoEsTrabajar:
       "Armamos juntos la propuesta según lo que necesites, del menú a la puesta en escena.",
     contacto: {

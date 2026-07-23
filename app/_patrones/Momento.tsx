@@ -49,6 +49,7 @@ export function Momento({
   full = false,
   alFinal = false,
   primero = false,
+  alto = "100svh",
 }: {
   id: MomentoId;
   children: React.ReactNode;
@@ -58,6 +59,12 @@ export function Momento({
   alFinal?: boolean;
   /** La primera sección del recorrido: no lleva onda de corte arriba (nada que cortar). */
   primero?: boolean;
+  /**
+   * Alto mínimo cuando `full` (12ª ola). Darle a una sección MÁS presencia vertical hace
+   * que su atmósfera empiece antes: el color ocupa el arranque de la sección y el navbar
+   * lo hereda desde el primer momento, sin arrastrar restos de la anterior.
+   */
+  alto?: string;
 }) {
   const m = getMomento(id);
   const sala = getSala(m?.atmosfera);
@@ -101,7 +108,7 @@ export function Momento({
           overflowX: "clip",
           ...(full
             ? {
-                minBlockSize: "100svh",
+                minBlockSize: alto,
                 display: "flex",
                 alignItems: alFinal ? "stretch" : "center",
                 paddingBlockStart: alFinal

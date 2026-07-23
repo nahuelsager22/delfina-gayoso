@@ -34,7 +34,8 @@ type Variante =
   | "batidor"
   | "cuchara"
   | "especias"
-  | "libro";
+  | "libro"
+  | "huellas";
 
 /** El gesto continuo de un dibujo: qué hace ese objeto, no una animación genérica. */
 type Gesto = {
@@ -165,6 +166,31 @@ const MOTIVOS: Record<Variante, Motivo> = {
     ],
     // Las páginas se hojean apenas: un vaivén suave desde el lomo.
     gesto: { animate: { rotate: [-2, 2], y: [0, -2.5, 0] }, dur: 5, origen: "50% 42%" },
+  },
+  // Las huellitas de Budín cruzando la cocina (Bloque 8 · 12ª ola): la vida real de
+  // Delfina asomando en el recorrido. Tres pisadas alternadas, como quien pasa caminando.
+  huellas: {
+    viewBox: "0 0 104 62",
+    inlineSize: "clamp(64px, 10vw, 104px)",
+    paths: [
+      // Pisada 1 (abajo)
+      "M12.5 46 a5.5 5.5 0 1 0 11 0 a5.5 5.5 0 1 0 -11 0",
+      "M9.1 37 a1.9 1.9 0 1 0 3.8 0 a1.9 1.9 0 1 0 -3.8 0",
+      "M16.1 34.5 a1.9 1.9 0 1 0 3.8 0 a1.9 1.9 0 1 0 -3.8 0",
+      "M23.1 37 a1.9 1.9 0 1 0 3.8 0 a1.9 1.9 0 1 0 -3.8 0",
+      // Pisada 2 (arriba)
+      "M46.5 30 a5.5 5.5 0 1 0 11 0 a5.5 5.5 0 1 0 -11 0",
+      "M43.1 21 a1.9 1.9 0 1 0 3.8 0 a1.9 1.9 0 1 0 -3.8 0",
+      "M50.1 18.5 a1.9 1.9 0 1 0 3.8 0 a1.9 1.9 0 1 0 -3.8 0",
+      "M57.1 21 a1.9 1.9 0 1 0 3.8 0 a1.9 1.9 0 1 0 -3.8 0",
+      // Pisada 3 (abajo)
+      "M80.5 46 a5.5 5.5 0 1 0 11 0 a5.5 5.5 0 1 0 -11 0",
+      "M77.1 37 a1.9 1.9 0 1 0 3.8 0 a1.9 1.9 0 1 0 -3.8 0",
+      "M84.1 34.5 a1.9 1.9 0 1 0 3.8 0 a1.9 1.9 0 1 0 -3.8 0",
+      "M91.1 37 a1.9 1.9 0 1 0 3.8 0 a1.9 1.9 0 1 0 -3.8 0",
+    ],
+    // El paso: un bamboleo mínimo, como si acabara de cruzar.
+    gesto: { animate: { y: [0, -2.5, 0] }, dur: 4.2 },
   },
 };
 

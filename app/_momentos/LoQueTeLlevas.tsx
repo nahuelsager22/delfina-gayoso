@@ -80,6 +80,9 @@ export function LoQueTeLlevas() {
               />
             ))}
           </div>
+
+          {/* La cuchara: servir, probar, compartir. Cierra el bloque de clases (12ª ola). */}
+          <Adorno variante="cuchara" />
         </div>
       )}
     </Momento>

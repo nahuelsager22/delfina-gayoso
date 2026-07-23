@@ -664,6 +664,17 @@
   position: relative;
   z-index: 1;
 }
+/* Ubicaciones puntuales (12ª ola): los dibujos acompañan sin desbalancear cada momento. */
+.adorno-umbral {
+  --adorno-margen: var(--space-lg) 0;
+}
+/* En el cierre el bloque está alineado a la izquierda: las huellitas lo acompañan ahí,
+   no centradas, como si Budín acabara de cruzar por delante del texto. */
+.adorno-cierre {
+  justify-content: flex-start;
+  --adorno-margen: var(--space-md) 0;
+  --adorno-opacidad: 0.85;
+}
 
 /* LA SERIE (8ª ola · #3 y #4): más aire entre capítulos, filete que marca el ritmo
    vertical y jerarquía más clara. En mobile todos alinean a la izquierda (sin zigzag)

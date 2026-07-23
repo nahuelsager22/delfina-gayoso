@@ -4,6 +4,7 @@ import { Voz } from "../_patrones/Voz";
 import { Aparicion } from "../_patrones/Aparicion";
 import { Flecha } from "../_chrome/adornos/Flecha";
 import { LineaEditorial } from "../_chrome/adornos/LineaEditorial";
+import { Adorno } from "../_chrome/adornos/Adorno";
 
 /**
  * Momento 7 — La clase no termina (arquitectura §1). La salida, en su voz. Cierra
@@ -36,7 +37,7 @@ export function LaClaseNoTermina() {
   const redes = getRedes();
 
   return (
-    <Momento id="la-clase-no-termina" full>
+    <Momento id="la-clase-no-termina" full alto="118svh">
       {/* Cierre editorial (Bloque 8 · 11ª ola): una sola columna, CENTRADA en el viewport
           (ya no anclada al fondo, que cortaba el título arriba). Sobre el MARRÓN del
           manual —el terracota pasó a ser acento—. Tipografía y espaciados calibrados para
@@ -88,6 +89,10 @@ export function LaClaseNoTermina() {
               </nav>
             </div>
           </Aparicion>
+
+          {/* Las huellitas de Budín cruzando el cierre: la vida real de Delfina, en oro
+              sobre el marrón. El último detalle a mano del recorrido (12ª ola). */}
+          {/* <Adorno variante="huellas" className="adorno-cierre" /> */}
         </div>
       </div>
     </Momento>

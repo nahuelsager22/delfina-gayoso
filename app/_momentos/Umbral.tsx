@@ -6,6 +6,7 @@ import { Aparicion } from "../_patrones/Aparicion";
 import { Sello } from "../_chrome/adornos/Sello";
 import { EspacioFoto } from "../_chrome/adornos/EspacioFoto";
 import { LineaEditorial } from "../_chrome/adornos/LineaEditorial";
+import { Adorno } from "../_chrome/adornos/Adorno";
 
 /**
  * Momento 1 — El umbral (arquitectura §1). Se entra a mitad de un gesto:
@@ -82,6 +83,14 @@ export function Umbral() {
           />
         </Aparicion>
       </div>
+
+      {/* La espiga: harina, masa, el principio de todo. En el rojo del manual, que sobre
+          el crema resalta como un detalle a mano (12ª ola). */}
+      <Adorno
+        variante="espiga"
+        color="var(--color-terracota)"
+        className="adorno-umbral"
+      />
     </Momento>
   );
 }
