@@ -20,7 +20,6 @@ import { Flecha } from "../_chrome/adornos/Flecha";
  */
 export function MarcasColaboro() {
   const marcas = getMarcas();
-  const hayEjemplo = marcas.some((m) => m.borrador);
 
   return (
     <Momento id="marcas" kicker="Colaboraciones activas" titulo="Marcas con las que colaboro">
@@ -67,12 +66,6 @@ export function MarcasColaboro() {
           <Flecha className="enlace-flecha-icono" size={18} />
         </a>
       </Aparicion>
-
-      {hayEjemplo && (
-        <p className="marcas-nota-ejemplo">
-          Marcas de ejemplo — las reales, muy pronto.
-        </p>
-      )}
     </Momento>
   );
 }

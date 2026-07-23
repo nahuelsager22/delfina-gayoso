@@ -51,11 +51,12 @@ export function LoQueTeLlevas() {
         </div>
       </Aparicion>
 
-      {/* Marquesina ondulada: puente rítmico de ebooks a clases (11ª ola). */}
+      {/* Marquesina ondulada: puente rítmico de ebooks a clases (11ª ola). Copy con la
+          voz de Delfina (12ª ola): no un separador, un pequeño recurso narrativo. */}
       <Marquesina
         forma="onda"
         tono="verde"
-        texto="y también aprendemos juntos · en persona · muy pronto, en vivo online"
+        texto="con las manos en la masa · se aprende cocinando · y lo mejor es compartirlo"
       />
 
       {/* CLASES: su rótulo y las fichas (cada una con su propia foto). */}

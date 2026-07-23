@@ -67,7 +67,6 @@ export function Umbral() {
                 alt={foto.alt}
                 fill
                 sizes="(max-width: 900px) 90vw, 40vw"
-                priority
                 style={{ objectFit: "cover" }}
               />
             )}

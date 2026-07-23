@@ -1019,18 +1019,20 @@
     inset-block-start: 0;
     inset-inline: 0;
     z-index: 10;
-    /* 9ª ola — MISMO PLANO. El bar no tiene un color propio: lleva el color EXACTO que
-       el motor mide debajo de él en cada frame (`--nav-bg`), desvanecido a nada hacia
-       abajo. Pintar el mismo color que ya está detrás no agrega una capa —es invisible,
-       no hay borde ni cambio de tono— pero evita que el contenido se cruce con el
-       monograma al pasar por debajo.
-       Lo que antes lo delataba como capa superpuesta no era el velo: era que el color
-       se fijaba por sección y SALTABA en cada borde. Ahora no salta nunca. */
+    /* El bar no tiene un color propio: lleva el color EXACTO que el motor mide debajo de
+       él en cada frame (`--nav-bg`), desvanecido a nada hacia abajo, para que el
+       contenido no se cruce con el monograma al pasar por debajo.
+       12ª ola (#4): un SOLO color en todo el degradado. Antes el tramo inferior usaba
+       `--nav-bg-pie` (muestreado bajo el borde del bar): en un corte por onda ese punto
+       cae en la sección ANTERIOR, y su color se colaba en el navbar (una franja verde al
+       entrar al cierre marrón). Con los cortes limpios ya no hace falta ese segundo
+       muestreo: el bar es una sola atmósfera, la que el motor lee en su centro, y el
+       cambio se percibe limpio. El tramo superior es casi opaco (cubre el inicio). */
     background: linear-gradient(
       180deg,
-      rgb(var(--nav-bg, 247 242 234) / 0.96) 0%,
-      rgb(var(--nav-bg-pie, var(--nav-bg, 247 242 234)) / 0.86) 46%,
-      rgb(var(--nav-bg-pie, var(--nav-bg, 247 242 234)) / 0) 100%
+      rgb(var(--nav-bg, 247 242 234) / 0.98) 0%,
+      rgb(var(--nav-bg, 247 242 234) / 0.92) 52%,
+      rgb(var(--nav-bg, 247 242 234) / 0) 100%
     );
     block-size: calc(var(--navbar-h) + var(--space-md));
     /* La zona de fade (transparente) no debe capturar clics del contenido de abajo:

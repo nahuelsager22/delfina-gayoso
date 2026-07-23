@@ -50,6 +50,7 @@ export function QuienSoy() {
                 alt={foto.alt}
                 fill
                 sizes="(max-width: 820px) 80vw, 32vw"
+                priority
                 style={{ objectFit: "cover" }}
               />
             )}
