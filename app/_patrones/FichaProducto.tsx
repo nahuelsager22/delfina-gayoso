@@ -32,9 +32,6 @@ import { Flecha } from "../_chrome/adornos/Flecha";
  *    la clase* —para quien llegó por un link externo y descubre el universo.
  */
 
-/** Ancla al resto del recorrido (la columna del aprendizaje). */
-const PASILLO = "#seccion-columna-aprendizaje";
-
 export function FichaProducto({
   producto,
   ancla = "izq",
@@ -61,18 +58,29 @@ export function FichaProducto({
     destino,
     imagen,
     borrador,
+    familia,
+    disponibilidad,
   } = producto;
 
   const portada = imagen ? getImagen(imagen) : undefined;
+  // 10ª ola: una propuesta puede estar por lanzarse (clases en vivo online). Se comunica
+  // como algo que VIENE, sin CTA de compra ni "seguir".
+  const proximamente = disponibilidad === "proximamente";
 
-  // Categoría legible (rótulo) derivada del formato: un ebook y una clase se
-  // distinguen de un vistazo.
+  // Categoría legible (rótulo). Deriva de la familia (10ª ola) y cae al formato.
   const f = formato.toLowerCase();
-  const categoria = f.includes("clase")
-    ? "Clase en vivo"
-    : f.includes("ebook")
+  const categoria =
+    familia === "ebook"
       ? "Ebook"
-      : formato;
+      : familia === "clase-presencial"
+        ? "Clase presencial"
+        : familia === "clase-online"
+          ? "Clase en vivo online"
+          : f.includes("clase")
+            ? "Clase"
+            : f.includes("ebook")
+              ? "Ebook"
+              : formato;
 
   return (
     <Aparicion
@@ -189,50 +197,49 @@ export function FichaProducto({
             ))}
           </ul>
 
-          {/* Formato + precio en una línea meta: dato, no protagonista. */}
+          {/* Formato + precio en una línea meta: dato, no protagonista. En una propuesta
+              próxima a lanzarse no hay precio: sólo el formato. */}
           <p className="text-meta" style={{ color: "rgb(var(--atm-ink-soft, 62 54 45))" }}>
-            {formato} · {precio}
+            {proximamente || !precio ? formato : `${formato} · ${precio}`}
           </p>
 
-          {/* CTA que invita hacia la plataforma de venta. Relleno Yema + Hierro (7.0:1). */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "var(--space-2xs)",
-              alignItems: "flex-start",
-              marginBlockStart: "var(--space-xs)",
-            }}
-          >
-            <a
-              href={destino}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="cta-producto"
-              aria-label={`${ctaLabel ?? "Llevátelo"}: ${titulo}`}
-            >
-              <span>{ctaLabel ?? "Llevátelo"}</span>
-              <Flecha className="cta-flecha" size={18} />
-            </a>
-            {!borrador && (
-              <p className="text-micro" style={{ color: "rgb(var(--atm-ink-soft, 62 54 45))" }}>
-                Se abre en una página externa.
-              </p>
-            )}
-          </div>
-
-          {/* Salida al pasillo: la ficha nunca es callejón sin salida (§7.1). */}
-          {/* <a
-            href={PASILLO}
-            className="text-meta"
-            style={{
-              color: "rgb(var(--atm-ink, 42 36 30))",
-              marginBlockStart: "var(--space-xs)",
-              width: "fit-content",
-            }}
-          >
-            Seguir la clase
-          </a> */}
+          {/* Acción. Si la propuesta está por lanzarse (clases online), un rótulo
+              "Próximamente" en vez del CTA de compra. Si hay destino, el CTA que invita
+              (mailto para coordinar una clase, o la plataforma de venta externa). */}
+          {proximamente ? (
+            <span className="pill-proximamente" aria-label="Próximamente">
+              Próximamente
+            </span>
+          ) : (
+            destino && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "var(--space-2xs)",
+                  alignItems: "flex-start",
+                  marginBlockStart: "var(--space-xs)",
+                }}
+              >
+                <a
+                  href={destino}
+                  {...(destino.startsWith("http")
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className="cta-producto"
+                  aria-label={`${ctaLabel ?? "Llevátelo"}: ${titulo}`}
+                >
+                  <span>{ctaLabel ?? "Llevátelo"}</span>
+                  <Flecha className="cta-flecha" size={18} />
+                </a>
+                {!borrador && destino.startsWith("http") && (
+                  <p className="text-micro" style={{ color: "rgb(var(--atm-ink-soft, 62 54 45))" }}>
+                    Se abre en una página externa.
+                  </p>
+                )}
+              </div>
+            )
+          )}
         </div>
       </article>
     </Aparicion>

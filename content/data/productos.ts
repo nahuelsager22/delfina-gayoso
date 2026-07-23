@@ -1,21 +1,22 @@
 import type { Producto } from "../types";
 
 /**
- * Productos (tipo D). Sin campos de catálogo (B3 §4-D); la web no monta carrito
- * (B3 §7). Se muestran en "Lo que te podés llevar", temprano en el recorrido
- * (Bloque 6.5 · R1) y con presencia: cada ficha lleva su portada real como ancla.
+ * Propuesta educativa (tipo D). Sin campos de catálogo (B3 §4-D); la web no monta
+ * carrito (B3 §7). Se muestra en "Lo que te podés llevar", que en el Bloque 8 · 10ª ola
+ * concentra TODA la forma de aprender con Delfina: ebooks + clases.
  *
- * DATOS REALES — los dos ebooks: títulos, precios ($15.000 / $10.000), colaboración
- * con Florencia Depaoli, `destino` reales. Descripciones en su voz, PENDIENTES DE
- * VALIDACIÓN.
+ * Bloque 8 · 10ª ola (decisión de Delfina):
+ *  · EBOOKS — se quita el ebook hecho con Florencia. Queda "Masas Quebradas" como
+ *    ebook real; la sección se reorganiza para la nueva cantidad y cierra con un
+ *    aviso de que el catálogo sigue creciendo (lo renderiza el momento, no es un
+ *    producto). `familia: "ebook"`.
+ *  · CLASES — dos propuestas: PRESENCIALES (reales: hoy la contratan y dicta en
+ *    distintos espacios) y, PRÓXIMAMENTE, clases en vivo ONLINE (se comunican como
+ *    algo que viene, sin precio ni CTA de compra). `familia: "clase-presencial"` /
+ *    `"clase-online"`, con `disponibilidad`.
  *
- * PLATAFORMA AGNÓSTICA (Bloque 8): `destino` es sólo una URL. Hoy apunta a donde están
- * alojados los productos; si Delfina migra de plataforma (Tienda Nube u otra), se
- * reemplaza la URL sin tocar la arquitectura del sitio.
- *
- * CONTENIDO DE EJEMPLO (Bloque 6.5 · `borrador: true`): para que Delfina vea el
- * ecosistema completo (clases, tickets), se suma una clase ficticia claramente
- * marcada y fácil de reemplazar. No es un dato real: es un placeholder de la web.
+ * PLATAFORMA AGNÓSTICA (Bloque 8): `destino` es sólo una URL (o un contacto directo).
+ * Cambiar de plataforma es cambiar la URL, sin tocar la arquitectura.
  */
 export const productos: readonly Producto[] = [
   {
@@ -27,47 +28,47 @@ export const productos: readonly Producto[] = [
       "Tipos de masas quebradas",
       "Métodos de preparación, fonzado y cocción ",
       "Tips y recomendaciones ",
-      "Recetas básicas y apenas avanzadas para seguir practicando"
+      "Recetas básicas y apenas avanzadas para seguir practicando",
     ],
     formato: "ebook en PDF",
     precio: "$15.000",
     destino:
       "https://hotmart.com/es/marketplace/productos/ebook-masas-quebradas-by-delfina-gayoso/T92555721V",
     imagen: "cover-masas-quebradas",
+    familia: "ebook",
+    disponibilidad: "disponible",
   },
-  // {
-  //   id: "desayunos-meriendas-saludables",
-  //   titulo: "Desayunos y Meriendas Saludables",
-  //   descripcion:
-  //     "Este lo hicimos con Florencia, que es nutricionista. Quisimos armar un recetario de desayunos y meriendas más completos y variados, porque son las comidas que arrancan el día y te dan energía. Hay opciones rápidas y otras más elaboradas, todas pensadas para que las disfrutes en tu casa.",
-  //   queTeLlevas: [
-  //     "Recetas de desayunos y meriendas nutritivas y ricas",
-  //     "Opciones rápidas para todos los días y otras para cuando tenés tiempo",
-  //     "La mirada de una nutricionista en cada receta",
-  //   ],
-  //   formato: "ebook en PDF",
-  //   colaboradores: ["Florencia Depaoli, nutricionista"],
-  //   precio: "$10.000",
-  //   destino:
-  //     "https://hotmart.com/es/marketplace/productos/recetario-desayunos-y-meriendas/C91567976W?sck=HOTMART_PRODUCT_PAGE",
-  //   imagen: "cover-desayunos-meriendas",
-  // },
   {
-    // EJEMPLO (borrador): representa "clases + tickets" del ecosistema. Ficticio,
-    // marcado visiblemente y reemplazable por una clase/precio/enlace reales.
-    id: "clase-en-vivo-pastas",
-    titulo: "Clases en vivo · Próximamente",
+    id: "clases-presenciales",
+    titulo: "Clases presenciales",
     descripcion:
-      "Estoy preparando este espacio para que podamos cocinar y aprender juntas, en vivo y desde cualquier lugar. Una experiencia linda, simple y cercana. Mientras tanto, seguí explorando las recetas y los eBooks. Muy pronto vas a poder sumarte a las primeras clases.",
+      "Cocinamos juntos en distintos espacios, con las manos en la masa, y te llevás la técnica para repetirla en tu casa. Si tenés un lugar o un grupo, coordinamos la fecha.",
     queTeLlevas: [
-      "Próximamente clases en vivo en grupos",
-      "Material y recetas para acompañar cada encuentro",
-      "Grabaciones disponibles para volver a verlas cuando quieras",
+      "Una clase en vivo, cocinando paso a paso",
+      "La receta y la lista de materiales",
+      "El mismo acompañamiento de siempre, en persona",
     ],
-    formato: "Clase",
-    precio: "en desarrollo",
-    ctaLabel: "Muy pronto",
-    destino: "",
-    borrador: true,
+    formato: "clase presencial",
+    ctaLabel: "Escribime para coordinar",
+    destino: "mailto:gayosodelfina@gmail.com",
+    imagen: "manos-masa",
+    familia: "clase-presencial",
+    disponibilidad: "disponible",
+  },
+  {
+    id: "clases-online",
+    titulo: "Muy pronto",
+    descripcion:
+      "Estoy preparando este espacio para cocinar juntos desde donde estés, sin importar la distancia. Muy pronto voy a abrir los primeros cupos. Una experiencia linda, simple y cercana. Muy pronto vas a poder sumarte a las primeras clases.",
+    queTeLlevas: [
+      "Una clase en vivo, en grupo",
+      "La receta antes de empezar y la grabación después",
+      "Tus preguntas respondidas en el momento",
+    ],
+    formato: "clase en vivo por videollamada",
+    precio: "Muy pronto",
+    imagen: "cocina-al-fuego",
+    familia: "clase-online",
+    disponibilidad: "proximamente",
   },
 ];

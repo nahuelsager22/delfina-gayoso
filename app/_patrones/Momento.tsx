@@ -1,29 +1,46 @@
 import type { CSSProperties } from "react";
 import { getMomento, type MomentoId } from "@/content";
-import {
-  getSala,
-  estiloSala,
-  tintaSala,
-  datosNavbar,
-  rgbStr,
-} from "../_chrome/atmosferas/config";
-import { Adorno, type VarianteAdorno } from "../_chrome/adornos/Adorno";
+import { getSala, estiloSala, datosNavbar } from "../_chrome/atmosferas/config";
 
 /**
- * Contenedor de momento (sistema-visual §7.5 · reescrito Bloque 8, 7ª ola — dirección
- * de referencias). El FONDO del sitio es CREMA (`Harina`), continuo. Los momentos
- * IMPORTANTES (`sala.panel`) se muestran dentro de una SUPERFICIE de color contenida —un
- * bloque editorial, rectangular, con marco fino, que destaca ese tramo—; los demás viven
- * directo sobre el crema (secciones de descanso). Ya no hay fondos a pleno color ni
- * ondas entre secciones: el color vive en bloques limpios sobre crema, como en las
- * referencias aprobadas. El color/tinta de cada bloque salen de `config.ts`.
+ * Contenedor de momento (Bloque 8 · 10ª ola — modelo EDITORIAL de bandas).
+ * -----------------------------------------------------------------------------
+ * El recorrido son BANDAS de color a pleno ancho sobre una base crema. El cambio de
+ * atmósfera se produce con CORTES CLAROS: el borde entre un color y el siguiente es una
+ * ONDA nítida (`.onda-sup`), nunca un degradado donde los colores se mezclan. Así cada
+ * atmósfera conserva su identidad y las curvas son las que conectan el recorrido
+ * (reemplaza a la disolución de la 9ª ola y al bloque contenido de la 7ª).
  *
- *  · `full`: el momento ocupa el alto del viewport (hero / cierre), contenido centrado.
- *  · `alFinal`: ancla el contenido al fondo (cierre), sin dejar vacío debajo.
+ *  · `sala.banda`: la sección ocupa el ancho completo con su color sólido. Las de
+ *    descanso (`banda: false`) viven sobre crema.
+ *  · Cada sección (salvo la primera) dibuja en su borde superior una ONDA de SU color,
+ *    que se superpone a la sección de arriba: ese es el corte limpio entre atmósferas.
+ *  · `full`: ocupa el alto del viewport (hero / cierre). `alFinal`: ancla el contenido
+ *    al fondo (cierre), sin dejar vacío debajo.
  *
  * PORTADA DE CAPÍTULO: cuando se pasa `titulo`, el encabezado (rótulo + título serif) ES
  * el `h2` visible; si no, un `h2` sr-only. Siempre hay un `h2` (accesibilidad).
  */
+
+/** Onda de corte: el color de ESTA sección con borde superior ondulado, superpuesto a
+ *  la sección anterior. Es el límite editorial entre dos atmósferas (sin degradado). */
+function OndaSuperior({ color }: { color: string }) {
+  return (
+    <svg
+      className="onda-sup"
+      viewBox="0 0 1200 100"
+      preserveAspectRatio="none"
+      aria-hidden
+      focusable="false"
+    >
+      <path
+        d="M0,58 C 170,18 360,18 600,52 C 840,86 1030,86 1200,48 L1200,101 L0,101 Z"
+        fill={color}
+      />
+    </svg>
+  );
+}
+
 export function Momento({
   id,
   children,
@@ -31,7 +48,7 @@ export function Momento({
   kicker,
   full = false,
   alFinal = false,
-  adornos,
+  primero = false,
 }: {
   id: MomentoId;
   children: React.ReactNode;
@@ -39,13 +56,8 @@ export function Momento({
   kicker?: string;
   full?: boolean;
   alFinal?: boolean;
-  /**
-   * Sólo para salas CAMPO (9ª ola): los dos dibujos que habitan las zonas de
-   * disolución —el de entrada y el de salida—. La transición deja de ser un recurso
-   * técnico para cambiar de color y pasa a ser un espacio del recorrido: el adorno se
-   * dibuja al entrar en viewport y deriva apenas con el scroll (ver `Adorno`).
-   */
-  adornos?: readonly [VarianteAdorno, VarianteAdorno];
+  /** La primera sección del recorrido: no lleva onda de corte arriba (nada que cortar). */
+  primero?: boolean;
 }) {
   const m = getMomento(id);
   const sala = getSala(m?.atmosfera);
@@ -74,86 +86,40 @@ export function Momento({
     </div>
   );
 
-  // CAMPO (9ª ola): pleno ancho, sin bloque contenido. El color nace del crema y
-  // vuelve al crema; el gradiente vive en `.sala-campo` (CSS) y recibe su color por
-  // `--campo-c`. Las dos zonas de disolución son espacios narrativos: alojan un dibujo
-  // del universo, no sólo un cambio de color.
-  if (sala.campo) {
-    return (
-      <section
-        aria-labelledby={headingId}
-        data-momento={id}
-        data-oscura={sala.oscura ? "true" : "false"}
-        data-panel="false"
-        className="sala-campo"
-        {...datosNavbar(sala, "campo")}
-        style={
-          {
-            ...tintaSala(sala),
-            "--campo-c": rgbStr(sala.navBg),
-            position: "relative",
-            overflowX: "clip",
-          } as CSSProperties
-        }
-      >
-        {/* Las dos zonas se renderizan siempre (con o sin dibujo): además de alojar el
-            adorno, su alto ES `--campo-fade` ya resuelto en píxeles, y de ahí lo lee el
-            motor del navbar para saber cuánto pesa el color en cada punto. */}
-        <div className="campo-transicion campo-transicion-inicio" aria-hidden>
-          {adornos && <Adorno variante={adornos[0]} />}
-        </div>
-        <div className="sala-inner">{cuerpo}</div>
-        <div className="campo-transicion campo-transicion-fin" aria-hidden>
-          {adornos && <Adorno variante={adornos[1]} />}
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section
       aria-labelledby={headingId}
       data-momento={id}
-      data-oscura={sala.panel && sala.oscura ? "true" : "false"}
-      data-panel={sala.panel ? "true" : "false"}
-      // El fondo del sitio es crema; la tinta base (para lo que quede fuera del panel) es
-      // oscura. El panel reasigna su propia tinta.
-      style={{
-        background: "var(--color-harina)",
-        color: "rgb(42 36 30)",
-        position: "relative",
-        overflowX: "clip",
-        ...(full
-          ? {
-              minBlockSize: "100svh",
-              display: "flex",
-              // El cierre ESTIRA su bloque para ocupar el alto disponible (sin vacío
-              // debajo, integrado con el navbar); el hero centra su composición.
-              alignItems: alFinal ? "stretch" : "center",
-              paddingBlockStart: alFinal
-                ? "calc(var(--navbar-h) + var(--space-sm))"
-                : "calc(var(--navbar-h) + var(--space-xl))",
-              paddingBlockEnd: alFinal ? "var(--space-sm)" : "var(--space-xl)",
-            }
-          : { paddingBlock: aireVertical }),
-      }}
+      data-oscura={sala.oscura ? "true" : "false"}
+      data-banda={sala.banda ? "true" : "false"}
+      className="sala"
+      {...datosNavbar(sala)}
+      style={
+        {
+          ...estiloSala(sala),
+          position: "relative",
+          overflowX: "clip",
+          ...(full
+            ? {
+                minBlockSize: "100svh",
+                display: "flex",
+                alignItems: alFinal ? "stretch" : "center",
+                paddingBlockStart: alFinal
+                  ? "calc(var(--navbar-h) + var(--space-sm))"
+                  : "calc(var(--navbar-h) + var(--space-xl))",
+                paddingBlockEnd: alFinal ? "var(--space-sm)" : "var(--space-xl)",
+              }
+            : { paddingBlock: aireVertical }),
+        } as CSSProperties
+      }
     >
-      {sala.panel ? (
-        <div
-          className={`sala-panel${full ? " sala-panel-full" : ""}`}
-          {...datosNavbar(sala, "panel")}
-          style={estiloSala(sala) as CSSProperties}
-        >
-          {cuerpo}
-        </div>
-      ) : (
-        <div
-          className="sala-inner"
-          style={full ? ({ inlineSize: "100%" } as CSSProperties) : undefined}
-        >
-          {cuerpo}
-        </div>
-      )}
+      {!primero && <OndaSuperior color={sala.solido} />}
+      <div
+        className="sala-inner"
+        style={full ? ({ inlineSize: "100%" } as CSSProperties) : undefined}
+      >
+        {cuerpo}
+      </div>
     </section>
   );
 }

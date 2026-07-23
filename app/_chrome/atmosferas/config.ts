@@ -36,108 +36,129 @@ export interface Sala {
   /** ¿La habitación es de tono oscuro? (para el navbar y micro-decisiones). */
   readonly oscura: boolean;
   /**
-   * Bloque 8 · 7ª ola (dirección de referencias): el fondo del sitio es CREMA. Cuando
-   * `panel` es true, el momento se muestra dentro de una SUPERFICIE de color contenida
-   * (un bloque editorial que destaca ese tramo); cuando es false, vive directo sobre el
-   * crema (sección de descanso). El color/tinta de la sala se usan para el panel.
+   * Bloque 8 · 10ª ola — BANDA de color a pleno ancho. Reemplaza al modelo anterior
+   * (bloque contenido `panel` de la 7ª ola / campo que se disuelve de la 9ª ola). Las
+   * secciones con color propio (`banda: true`) ocupan el ancho completo con su color
+   * SÓLIDO y CORTES CLAROS: el borde entre un color y el siguiente es una ONDA nítida
+   * (ver `Momento` + `.onda-sup`), no un degradado. Cada atmósfera conserva su identidad
+   * y las curvas son las que conectan el recorrido. Las secciones de descanso viven
+   * sobre crema (`banda: false`).
    */
-  readonly panel: boolean;
-  /**
-   * Bloque 8 · 9ª ola — CAMPO. Las secciones principales (La Serie, Trabajemos juntos)
-   * dejan el bloque contenido y ocupan el ancho completo, pero no empiezan ni terminan
-   * con un corte: su color nace del crema y vuelve al crema a través de zonas de
-   * disolución amplias (`--campo-fade`), de modo que no hay un punto identificable
-   * donde termina un color y empieza el siguiente. Como el borde de la sección ES
-   * crema, la unión con las secciones vecinas es invisible sin superponer capas.
-   *
-   * Regla de legibilidad: dentro de la zona de disolución NUNCA vive texto —sólo
-   * adornos—; el contenido empieza cuando el color ya es sólido. Así el color puede
-   * ser intenso sin negociar el contraste (R14).
-   */
-  readonly campo?: boolean;
+  readonly banda: boolean;
+  /** Color sólido de la banda / de la onda de corte (hex). En crema = el propio crema. */
+  readonly solido: string;
+  /** Compatibilidad con componentes archivados (ya no se usa en el recorrido vivo). */
+  readonly panel?: boolean;
 }
 
-/* Las 7 habitaciones, por clave de `momento.atmosfera`. Cada una con un color dominante
-   y su tinta. El recorrido es una secuencia de piezas editoriales: crema → oro → EL
-   HORNO (chocolate) → piedra → EL VERDE (servicios) → la mesa (terracota) → EL ATARDECER
-   (vino). Algunas claras (tinta oscura), otras profundas (tinta clara). */
-/* PALETA (Bloque 8 · 8ª ola): se reencuadra sobre el MANUAL DE MARCA —verde bosque
-   #39532A, taupe #AEA391, marrón #573C23, crema— buscando una identidad editorial
-   sofisticada y atemporal. Se retira el naranja/oro saturado (leía "lúdico/ilustrativo"
-   más que editorial) y en su lugar entra una ARENA cálida y apagada. Los bloques
-   alternan claros (arena, taupe) y profundos (marrón, verde, vino) sobre el crema. */
+/* PALETA (Bloque 8 · 10ª ola): NUEVA paleta compartida por Delfina (images/paleta.jpg).
+   verde bosque #2C4027 · salvia #B1BFAA · marrón #413223 · crema #F3EEE4 · arena #DBC9A0
+   · terracota #9D301D. La terracota REEMPLAZA al bordó/vino del cierre —se integra mejor
+   con el resto de la identidad y recupera el rojo cálido del universo (MasterChef)—.
+   El recorrido son BANDAS de color a pleno ancho con cortes claros (ondas), sobre una
+   base crema. Alternan claras (salvia, arena, crema · tinta oscura) y profundas (verde,
+   terracota · tinta crema). */
 export const SALAS: Record<string, Sala> = {
-  // Entrada: crema (sin bloque). El aire de la casa.
+  // Entrada: crema (sin banda). El aire de la casa.
   bienvenida: {
     bg: "var(--color-harina)",
+    solido: "#F3EEE4",
     ink: [42, 36, 30],
     inkSoft: [63, 55, 45],
     accent: [107, 74, 31],
-    navBg: [247, 242, 234],
+    navBg: [243, 238, 228],
     oscura: false,
-    panel: false,
+    banda: false,
   },
-  // La oferta (ebooks): ARENA cálida y apagada — presencia sin estridencia.
+  // Quién soy (bienvenida breve): SALVIA clara del manual. Banda cálida, tinta oscura.
+  "quien-soy": {
+    bg: "#b1bfaa",
+    solido: "#B1BFAA",
+    ink: [38, 44, 34],
+    inkSoft: [64, 74, 58],
+    accent: [44, 64, 39],
+    navBg: [177, 191, 170],
+    oscura: false,
+    banda: true,
+  },
+  // Lo que te llevás (ebooks + clases): ARENA cálida. Banda clara, tinta oscura.
   calida: {
-    bg: "linear-gradient(180deg, #dccba6 0%, #dccba6 24%, #d3c099 100%)",
+    bg: "#dbc9a0",
+    solido: "#DBC9A0",
+    ink: [42, 36, 30],
+    inkSoft: [72, 62, 46],
+    accent: [107, 74, 31],
+    navBg: [219, 201, 160],
+    oscura: false,
+    banda: true,
+  },
+  // Marcas con las que colaboro: crema (respiro). Acento TERRACOTA (10ª ola): el rojo del
+  // manual pasa a ser un color de APOYO —líneas, detalles— y acá marca el recorrido pro.
+  marcas: {
+    bg: "var(--color-harina)",
+    solido: "#F3EEE4",
     ink: [42, 36, 30],
     inkSoft: [63, 55, 45],
-    accent: [107, 74, 31],
-    navBg: [220, 203, 166],
+    accent: [157, 48, 29],
+    navBg: [243, 238, 228],
     oscura: false,
-    panel: true,
+    banda: false,
   },
-  // El corazón (aprendizaje): MARRÓN profundo del manual. Inmersivo, tinta crema.
+  // Trabajemos juntos (servicios): VERDE BOSQUE del manual (#2C4027). Banda profunda.
+  fresca: {
+    bg: "#2c4027",
+    solido: "#2C4027",
+    ink: [244, 240, 228],
+    inkSoft: [206, 214, 196],
+    accent: [201, 168, 106],
+    navBg: [44, 64, 39],
+    oscura: true,
+    banda: true,
+  },
+  // La clase no termina (cierre): MARRÓN profundo del manual (#413223). 10ª ola: se
+  // retira el terracota como fondo (queda para acentos); el marrón cierra cálido y hondo
+  // sin repetir el verde de servicios. Acento ARENA para los detalles (lee sobre marrón).
+  despedida: {
+    bg: "#413223",
+    solido: "#413223",
+    ink: [246, 239, 228],
+    inkSoft: [214, 205, 190],
+    accent: [219, 201, 160],
+    navBg: [65, 50, 35],
+    oscura: true,
+    banda: true,
+  },
+
+  /* --- Salas ARCHIVADAS (componentes fuera del recorrido, no se montan) --- */
   corazon: {
-    bg: "linear-gradient(180deg, #4a3527 0%, #4a3527 24%, #3b2a1e 100%)",
+    bg: "#413223",
+    solido: "#413223",
     ink: [245, 239, 227],
     inkSoft: [220, 210, 192],
     accent: [201, 168, 106],
-    navBg: [74, 53, 39],
+    navBg: [65, 50, 35],
     oscura: true,
-    panel: false,
-    campo: true, // 9ª ola: sección principal → campo a pleno ancho que se disuelve
+    banda: true,
   },
-  // La persona: crema (sin bloque) — el respiro. Acá vive el rescoldo de MasterChef.
   intima: {
     bg: "var(--color-harina)",
+    solido: "#F3EEE4",
     ink: [42, 36, 30],
     inkSoft: [63, 55, 45],
     accent: [138, 58, 45],
-    navBg: [247, 242, 234],
+    navBg: [243, 238, 228],
     oscura: false,
-    panel: false,
+    banda: false,
   },
-  // El servicio: VERDE BOSQUE del manual (#39532A). Bloque profundo, tinta crema.
-  fresca: {
-    bg: "linear-gradient(180deg, #39532a 0%, #39532a 24%, #2e4522 100%)",
-    ink: [245, 239, 227],
-    inkSoft: [220, 210, 192],
-    accent: [201, 187, 132],
-    navBg: [57, 83, 42],
-    oscura: true,
-    panel: false,
-    campo: true, // 9ª ola: sección principal → campo a pleno ancho que se disuelve
-  },
-  // La comunidad: TAUPE del manual (#AEA391). Bloque claro y sereno, tinta oscura.
   compartir: {
-    bg: "linear-gradient(180deg, #aea391 0%, #aea391 24%, #a2967f 100%)",
-    ink: [42, 36, 30],
-    inkSoft: [63, 55, 45],
-    accent: [90, 58, 32],
-    navBg: [174, 163, 145],
+    bg: "#b1bfaa",
+    solido: "#B1BFAA",
+    ink: [38, 44, 34],
+    inkSoft: [64, 74, 58],
+    accent: [44, 64, 39],
+    navBg: [177, 191, 170],
     oscura: false,
-    panel: true,
-  },
-  // La despedida: VINO profundo y apagado. Cierra con hondura, tinta crema.
-  despedida: {
-    bg: "linear-gradient(180deg, #4e2630 0%, #4e2630 24%, #3f1e27 100%)",
-    ink: [245, 239, 227],
-    inkSoft: [220, 210, 192],
-    accent: [201, 168, 106],
-    navBg: [78, 38, 48],
-    oscura: true,
-    panel: true,
+    banda: true,
   },
 };
 
@@ -161,17 +182,13 @@ export function tintaSala(sala: Sala): Record<string, string> {
 }
 
 /** Atributos que el navbar lee del DOM para saber qué color tiene debajo, frame por
- *  frame (9ª ola). Cada superficie de color —panel o campo— se declara a sí misma. */
-export function datosNavbar(
-  sala: Sala,
-  tipo: "panel" | "campo",
-): Record<string, string> {
+ *  frame. Cada superficie —banda de color o crema— se declara a sí misma (10ª ola). */
+export function datosNavbar(sala: Sala): Record<string, string> {
   return {
     "data-nav-color": rgbStr(sala.navBg),
     "data-nav-ink": rgbStr(sala.ink),
     "data-nav-ink-soft": rgbStr(sala.inkSoft),
     "data-nav-accent": rgbStr(sala.accent),
-    "data-nav-tipo": tipo,
   };
 }
 

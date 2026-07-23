@@ -33,7 +33,8 @@ type Variante =
   | "guarda"
   | "batidor"
   | "cuchara"
-  | "especias";
+  | "especias"
+  | "libro";
 
 /** El gesto continuo de un dibujo: qué hace ese objeto, no una animación genérica. */
 type Gesto = {
@@ -147,6 +148,23 @@ const MOTIVOS: Record<Variante, Motivo> = {
     ],
     // Las semillas caen y se asientan.
     gesto: { animate: { y: [-2.5, 2.5] }, dur: 3.1 },
+  },
+  // Libro abierto: el catálogo que sigue creciendo (Bloque 8 · 11ª ola). Sus páginas
+  // respiran, como un recetario que se hojea.
+  libro: {
+    viewBox: "0 0 96 70",
+    inlineSize: "clamp(58px, 9vw, 92px)",
+    paths: [
+      "M48 16 C 36 9, 18 9, 8 15 L8 56 C 18 50, 36 50, 48 58",
+      "M48 16 C 60 9, 78 9, 88 15 L88 56 C 78 50, 60 50, 48 58",
+      "M48 16 L48 58",
+      "M17 25 L37 22",
+      "M17 33 L37 30",
+      "M59 22 L79 25",
+      "M59 30 L79 33",
+    ],
+    // Las páginas se hojean apenas: un vaivén suave desde el lomo.
+    gesto: { animate: { rotate: [-2, 2], y: [0, -2.5, 0] }, dur: 5, origen: "50% 42%" },
   },
 };
 

@@ -16,6 +16,7 @@ import { aprendizaje } from "./data/aprendizaje";
 import { serieActual } from "./data/series";
 import { productos } from "./data/productos";
 import { servicios } from "./data/servicios";
+import { marcas } from "./data/marcas";
 import { imagenes } from "./data/imagenes";
 import { comunidad } from "./data/comunidad";
 import { redes } from "./data/redes";
@@ -23,6 +24,7 @@ import { redes } from "./data/redes";
 import type {
   ImagenReal,
   ImagenRealRef,
+  Marca,
   Momento,
   MomentoComunidad,
   MomentoId,
@@ -78,6 +80,11 @@ export function getProducto(id: string): Producto | undefined {
 /* ---- Servicios (tipo E) ---- */
 export function getServicios(): readonly PropuestaServicio[] {
   return servicios;
+}
+
+/* ---- Marcas con las que colabora (tipo I) ---- */
+export function getMarcas(): readonly Marca[] {
+  return marcas;
 }
 
 /* ---- Imágenes reales (tipo F) ---- */

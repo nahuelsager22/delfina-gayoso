@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { getRedes, getVozDeMomento, type VozDelfina } from "@/content";
 import { Momento } from "../_patrones/Momento";
 import { Voz } from "../_patrones/Voz";
@@ -37,13 +36,14 @@ export function LaClaseNoTermina() {
   const redes = getRedes();
 
   return (
-    <Momento id="la-clase-no-termina" full alFinal>
-      {/* Cierre editorial (Bloque 8 · 6ª ola): spread a pantalla completa que espeja el
-          hero —texto a la izquierda, el LOGOTIPO OFICIAL grande a la derecha, como una
-          firma / medallón de despedida sobre el vino—. El logo cierra la experiencia
-          (no un elemento agregado): es la identidad de Delfina la que da el final. */}
-      <div className="hero-grid cierre-grid">
-        <div className="hero-texto" style={{ display: "flex", flexDirection: "column", gap: "var(--space-xl)" }}>
+    <Momento id="la-clase-no-termina" full>
+      {/* Cierre editorial (Bloque 8 · 11ª ola): una sola columna, CENTRADA en el viewport
+          (ya no anclada al fondo, que cortaba el título arriba). Sobre el MARRÓN del
+          manual —el terracota pasó a ser acento—. Tipografía y espaciados calibrados para
+          que todo el cierre entre en un solo viewport sin perder impacto. Sin logotipo,
+          sin CTA de venta: la despedida la lleva su voz + las formas de seguir. */}
+      <div className="cierre-col">
+        <div className="hero-texto" style={{ display: "flex", flexDirection: "column", gap: "var(--space-lg)" }}>
           {cierre.map((v: VozDelfina, i) => (
             <Aparicion key={v.id} orden={i}>
               <Voz
@@ -89,19 +89,6 @@ export function LaClaseNoTermina() {
             </div>
           </Aparicion>
         </div>
-
-        {/* Logotipo oficial (Manual de Marca): medallón crema que resalta sobre el vino;
-            cierra la experiencia con la identidad de Delfina. Aparición "vapor". */}
-        <Aparicion orden={1} className="hero-foto cierre-logo">
-          <Image
-            src="/logotipo/logotipo-1.png"
-            alt="Delfina Gayoso"
-            width={1080}
-            height={1080}
-            sizes="(max-width: 900px) 60vw, 26rem"
-            style={{ inlineSize: "100%", blockSize: "auto" }}
-          />
-        </Aparicion>
       </div>
     </Momento>
   );

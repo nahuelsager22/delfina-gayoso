@@ -42,8 +42,28 @@ export const voz: readonly VozDelfina[] = [
     pertenece: "umbral",
   },
 
-  /* ---- M2 · Quién está cocinando — la historia que da confianza (ahora más
-     tarde y más breve; acompaña, no abre) ----
+  /* ---- Quién soy — bienvenida BREVE arriba de todo (Bloque 8 · 10ª ola) ----
+     Delfina pidió "algo más corto, como 'Hola, soy Delfi', arriba de todo". No es una
+     biografía: es un saludo cercano que genera confianza en dos frases. MasterChef y el
+     IAG asoman de paso, sin volverse currículum. La versión larga (quien-cocina) queda
+     archivada por si vuelve. */
+  {
+    id: "quien-soy-hola",
+    texto: "Hola, soy Delfi.",
+    registro: "bienvenida",
+    pertenece: "quien-soy",
+  },
+  {
+    id: "quien-soy-presentacion",
+    texto:
+      "Cocino desde que tengo memoria. Pasé por MasterChef Argentina. Estudié y me recibí de Profesional Gastronómico en el IAG y hoy me dedico a esto: cocinar, enseñar y compartir todo lo que voy aprendiendo.",
+    registro: "bienvenida",
+    pertenece: "quien-soy",
+    enfasis: "compartir todo lo que voy aprendiendo",
+  },
+
+  /* ---- Quién cocina (ARCHIVADO Bloque 8 · 10ª ola) — la bio larga que ya no se
+     monta en el recorrido. Se conserva por si vuelve. ----
      Su voz, no un About. Autoridad deducida del hacer (estudia en el IAG, da
      clases); MasterChef sólo de paso, dentro de una frase que fluye. */
   {

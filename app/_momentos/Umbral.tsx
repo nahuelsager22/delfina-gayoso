@@ -1,4 +1,5 @@
-import { getVozDeMomento } from "@/content";
+import Image from "next/image";
+import { getImagen, getVozDeMomento } from "@/content";
 import { Momento } from "../_patrones/Momento";
 import { Voz } from "../_patrones/Voz";
 import { Aparicion } from "../_patrones/Aparicion";
@@ -24,6 +25,10 @@ import { LineaEditorial } from "../_chrome/adornos/LineaEditorial";
  */
 export function Umbral() {
   const voces = getVozDeMomento("umbral");
+  // 10ª ola: llega el material real. El hero abre con un PLATO que apetece (croquetas
+  // recién partidas) —lo que vas a aprender a hacer—, dentro del marco en arco ya
+  // resuelto. El retrato de Delfina se reserva para la bienvenida "Quién soy".
+  const foto = getImagen("croquetas-corte");
 
   return (
     <Momento id="umbral" full>
@@ -55,7 +60,18 @@ export function Umbral() {
         </div>
 
         <Aparicion orden={1} className="hero-foto">
-          <EspacioFoto ratio="4 / 5" forma="arco" nota="delfina" />
+          <EspacioFoto ratio="4 / 5" forma="arco" nota="delfina">
+            {foto && (
+              <Image
+                src={foto.src}
+                alt={foto.alt}
+                fill
+                sizes="(max-width: 900px) 90vw, 40vw"
+                priority
+                style={{ objectFit: "cover" }}
+              />
+            )}
+          </EspacioFoto>
           {/* Sello superpuesto: profundidad / superposición editorial. */}
           <Sello
             style={{

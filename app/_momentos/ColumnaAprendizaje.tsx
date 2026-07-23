@@ -25,7 +25,7 @@ export function ColumnaAprendizaje() {
   const serie = getSerie();
 
   return (
-    <Momento id="columna-aprendizaje" adornos={["espiga", "vapor"]}>
+    <Momento id="columna-aprendizaje">
       <div
         style={{
           display: "flex",

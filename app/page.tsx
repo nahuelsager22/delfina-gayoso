@@ -1,22 +1,24 @@
+import { QuienSoy } from "./_momentos/QuienSoy";
 import { Umbral } from "./_momentos/Umbral";
-import { QuienCocina } from "./_momentos/QuienCocina";
-import { ColumnaAprendizaje } from "./_momentos/ColumnaAprendizaje";
 import { LoQueTeLlevas } from "./_momentos/LoQueTeLlevas";
-import { CocinaCompartida } from "./_momentos/CocinaCompartida";
+import { MarcasColaboro } from "./_momentos/MarcasColaboro";
 import { TrabajemosJuntos } from "./_momentos/TrabajemosJuntos";
 import { LaClaseNoTermina } from "./_momentos/LaClaseNoTermina";
 import { Wayfinding } from "./_patrones/Wayfinding";
-import { Marquesina } from "./_chrome/adornos/Marquesina";
-import { Adorno } from "./_chrome/adornos/Adorno";
 
 /**
- * El recorrido — una secuencia de HABITACIONES editoriales (Bloque 8, 3ª ola). Ya no es
- * un lienzo continuo con un campo de color que interpola: cada momento es una sala a
- * pleno ancho con su propio color, su propia composición y su tinta. El usuario baja y
- * pasa de una habitación a la siguiente —misma casa, distintos ambientes—, sin que nada
- * "encienda" al llegar (el color ya vive en cada espacio). Los bordes entre salas son
- * curvas orgánicas (ver `Momento`). El orden lo gobierna `content/data/momentos.ts`.
- * El contenido real vive en `content/data/*` y se lee vía `content/index.ts`.
+ * El recorrido (Bloque 8 · 10ª ola — REESTRUCTURA, decisión de Delfina). Seis secciones,
+ * más breve y directo:
+ *
+ *   Quién soy → Umbral → Lo que te llevás → Marcas → Trabajemos juntos → La clase no termina
+ *
+ * (11ª ola: la bienvenida de Delfina abre; el umbral la sigue.)
+ *
+ * Cada momento es una BANDA de color a pleno ancho (o un respiro de crema); el cambio de
+ * atmósfera se produce con CORTES CLAROS conectados por ONDAS (ver `Momento`): las curvas
+ * unen el recorrido, sin degradados. Salen del recorrido (se conservan en el código, no
+ * se montan): "La columna del aprendizaje" (con la serie Cocina Nivel 0) y "La cocina
+ * compartida". El contenido real vive en `content/data/*` y se lee vía `content/index.ts`.
  */
 export default function Recorrido() {
   return (
@@ -25,22 +27,11 @@ export default function Recorrido() {
       <h1 className="sr-only">Delfina Gayoso — aprender cocina, juntos</h1>
 
       <main>
-        {/* En los respiros de crema entre bloques vuelven los pequeños dibujos del
-            universo (8ª ola): line-art fino, en el ocre del sistema, que enhebra el
-            recorrido sin volverse decoración.
-            9ª ola: las dos secciones principales —La Serie y Trabajemos juntos— son
-            CAMPOS a pleno ancho que se disuelven en el crema; sus dibujos ya no van
-            sueltos entre secciones, viven DENTRO de las zonas de transición (ver
-            `Momento` · prop `adornos`). Por eso acá quedan sólo los respiros reales. */}
+        <QuienSoy />
         <Umbral />
-        <Marquesina tono="verde" texto="aprender · cocinar · compartir · volver a empezar" />
         <LoQueTeLlevas />
-        <ColumnaAprendizaje />
-        <QuienCocina />
+        <MarcasColaboro />
         <TrabajemosJuntos />
-        <Adorno variante="especias" />
-        <CocinaCompartida />
-        <Marquesina tono="marron" texto="la clase no termina · seguimos cocinando · nos vemos en la cocina" />
         <LaClaseNoTermina />
       </main>
 

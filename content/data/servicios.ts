@@ -1,22 +1,19 @@
 import type { PropuestaServicio } from "../types";
 
 /**
- * Propuestas de servicio (tipo E): la segunda función que pidió Delfina
- * —publicitar su servicio— como invitación, no tarifario (B3 §3.2, §4-E).
+ * Propuestas de servicio (tipo E): la invitación profesional de Delfina para empresas
+ * y organizaciones (B3 §3.2, §4-E). No es tarifario: es invitación.
  *
- * Bloque 6.5:
- *  · Contacto MULTICANAL (R8): Instagram + email (`gayosodelfina@gmail.com`),
- *    accesos directos claros, no captación de leads. La invitación se reformuló
- *    para no repetir el párrafo anterior.
- *  · Ecosistema completo: además de la propuesta real (colaboraciones y asesorías),
- *    se suman propuestas de EJEMPLO (`borrador: true`) para que Delfina visualice
- *    el potencial de la web. Son ficticias, claramente marcadas y fáciles de
- *    reemplazar por información real.
+ * Bloque 8 · 10ª ola (decisión de Delfina): "Trabajemos juntos" pasa a ser EXCLUSIVAMENTE
+ * servicios profesionales para empresas/organizaciones. Toda la parte educativa (clases,
+ * talleres) se mudó a "Lo que te podés llevar". Acá quedan: colaboraciones con marcas,
+ * asesorías gastronómicas, creación de contenido, presencia en eventos y acciones
+ * comerciales. La sección funciona como una invitación clara para futuros clientes.
  *
- * PENDIENTE DE CONFIRMAR: el usuario de Instagram real. El email ya es el definitivo.
+ * Contacto MULTICANAL (Bloque 6.5 · R8): Instagram + email (`gayosodelfina@gmail.com`),
+ * accesos directos, no captación de leads. El usuario de Instagram sigue PENDIENTE de
+ * confirmar; el email ya es el definitivo.
  */
-// Los canales de contacto son los mismos; la invitación es propia de cada sección
-// (cada CTA con su intención, para que no se sienta duplicada — Bloque 6.5).
 const CANALES = [
   { medio: "instagram", destino: "https://instagram.com/delfinagayoso" },
   { medio: "email", destino: "mailto:gayosodelfina@gmail.com" },
@@ -24,29 +21,27 @@ const CANALES = [
 
 export const servicios: readonly PropuestaServicio[] = [
   {
-    id: "colaboraciones-asesorias",
-    tipo: "Colaboraciones y asesorías",
+    id: "colaboraciones-marcas",
+    tipo: "Colaboraciones y contenido",
     aQuienLeSirve:
-      "Marcas que quieran cocinar algo conmigo, y gente que necesite una asesoría gastronómica o tenga una idea para proponerme.",
+      "Marcas que quieran cocinar algo conmigo: colaboraciones, creación de contenido y acciones para comunicar un producto.",
     comoEsTrabajar:
-      "Me gusta trabajar como cocino: sin vueltas, poniendo las manos y contándote todo el proceso.",
+      "Trabajo como cocino: pongo las manos, cuido cada detalle y te muestro todo el proceso.",
     contacto: {
       invitacion: "Si tenés una marca o una idea, escribime y la cocinamos juntas.",
       canales: CANALES,
     },
   },
   {
-    // EJEMPLO (borrador): propuesta educativa a medida. Reemplazable por datos reales.
-    id: "propuestas-educativas",
-    tipo: "Propuestas educativas a medida",
+    id: "asesorias-eventos",
+    tipo: "Asesorías y eventos",
     aQuienLeSirve:
-      "Escuelas, espacios gastronómicos o equipos que quieran un taller o una clase pensada para ellos.",
+      "Espacios gastronómicos, equipos y empresas que necesiten una asesoría, o un evento con una cocina que se luzca.",
     comoEsTrabajar:
-      "Armamos juntos el temario según el nivel del grupo.",
+      "Armamos juntos la propuesta según lo que necesites, del menú a la puesta en escena.",
     contacto: {
-      invitacion: "Contame de tu grupo o tu espacio y la diseñamos a medida.",
+      invitacion: "Contame qué tenés en mente y lo diseñamos a tu medida.",
       canales: CANALES,
     },
-    borrador: true,
   },
 ];

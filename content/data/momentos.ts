@@ -1,29 +1,49 @@
 import type { Momento } from "../types";
 
 /**
- * Los 7 momentos del recorrido (B3 §1, reordenados en el Bloque 6.5 · R1).
+ * Los momentos del recorrido (B3 §1).
  *
- * CAMBIO DE ORDEN (Bloque 6.5): la propuesta de valor pasa al frente y la historia
- * la acompaña, no la precede. El recorrido ya no abre con dos momentos
- * autobiográficos: abre invitando a aprender (M1) y muestra enseguida qué se lleva
- * el visitante —ebooks (M2) y la serie de aprendizaje (M3)— antes de contar la
- * historia (M4). "Enseñar > vender" ya no se sostiene por posición (retrasar el
- * comercio), sino por peso, ausencia de dominio comercial persistente y tono/encuadre
- * (todo lo comercial hereda la voz de la enseñanza). Ver arquitectura §1 y §Integración
- * del negocio, reformuladas en este bloque.
+ * Bloque 8 · 10ª ola — RECORRIDO REESTRUCTURADO (decisión de Delfina). Se acorta a
+ * SEIS secciones para una experiencia más breve y directa, con menos texto y más foco
+ * en lo que hoy representa su actividad:
  *
- * El `orden` gobierna el descenso (page.tsx encadena los momentos en este orden) y
- * el navbar de orientación (deriva sus destinos de `getMomentos()`). El `ritmoPrevisto`
- * alterna densidad y aire a lo largo del arco (S · D · D · S · D · S · S).
+ *   1. Umbral               — la entrada.
+ *   2. Quién soy            — bienvenida BREVE y cercana ("Hola, soy Delfi"), arriba de
+ *                             todo. Ya no es una bio: reemplaza a "Quién cocina" y sube.
+ *   3. Lo que te llevás     — toda la propuesta educativa: ebooks + clases (presenciales
+ *                             y, próximamente, en vivo online).
+ *   4. Marcas con las que colaboro — confianza a través de sus colaboraciones (nueva).
+ *   5. Trabajemos juntos    — servicios profesionales para empresas/organizaciones
+ *                             (ya NO propuestas educativas: eso vive en "Lo que te llevás").
+ *   6. La clase no termina  — el cierre, en su voz.
+ *
+ * Salen del recorrido (se conservan en el código, no se montan): "La columna del
+ * aprendizaje" (con la serie Cocina Nivel 0) y "La cocina compartida". Delfina considera
+ * que hoy no son prioridad. Sus componentes y datos siguen existiendo por si vuelven.
+ *
+ * El `orden` gobierna el descenso y el navbar (deriva sus destinos de `getMomentos()`).
  */
 export const momentos: readonly Momento[] = [
+  {
+    // 11ª ola: la BIENVENIDA de Delfina abre el sitio (primer contacto humano) y el
+    // umbral —la propuesta de valor— la sigue. Introducción más cálida y natural.
+    id: "quien-soy",
+    nombre: "Quién soy",
+    intencionEmocional:
+      'primer contacto cálido. "Hola, soy Delfi" — una presentación simple, sin bio.',
+    fase: "reconocimiento",
+    orden: 1,
+    ritmoPrevisto: "silencio",
+    navLabel: "Quién soy",
+    atmosfera: "quien-soy",
+  },
   {
     id: "umbral",
     nombre: "El umbral",
     intencionEmocional:
       'propuesta de valor con calidez. "Entré y enseguida entendí qué puedo aprender y llevarme acá."',
     fase: "reconocimiento",
-    orden: 1,
+    orden: 2,
     ritmoPrevisto: "silencio",
     atmosfera: "bienvenida",
   },
@@ -31,42 +51,29 @@ export const momentos: readonly Momento[] = [
     id: "lo-que-te-llevas",
     nombre: "Lo que te podés llevar",
     intencionEmocional:
-      'deseo tranquilo y temprano, no presión. "Esto es lo que me puedo llevar para cocinar mejor."',
-    fase: "descubrimiento",
-    orden: 2,
-    ritmoPrevisto: "denso",
-    navLabel: "Ebooks",
-    atmosfera: "calida",
-  },
-  {
-    id: "columna-aprendizaje",
-    nombre: "La columna del aprendizaje",
-    intencionEmocional:
-      'descubrimiento acompañado. "Así enseña, paso a paso, y da ganas de seguir."',
+      'toda la propuesta educativa junta. "Esto es lo que puedo aprender con ella: ebooks y clases."',
     fase: "descubrimiento",
     orden: 3,
     ritmoPrevisto: "denso",
     navLabel: "Aprender",
-    atmosfera: "corazon",
+    atmosfera: "calida",
   },
   {
-    id: "quien-cocina",
-    nombre: "Quién está cocinando",
+    id: "marcas",
+    nombre: "Marcas con las que colaboro",
     intencionEmocional:
-      'la confianza se afirma. "Sé quién me enseña, me habla de igual a igual y sabe de lo que habla."',
+      'confianza. "Trabaja con marcas de verdad; esto es serio y puedo sumarme."',
     fase: "descubrimiento",
     orden: 4,
-    // "silencio": un respiro que cambia el registro —de la oferta a la persona—
-    // antes de la historia. El aire lo da el contenedor de momento (§7.5).
     ritmoPrevisto: "silencio",
-    navLabel: "Quién soy",
-    atmosfera: "intima",
+    navLabel: "Marcas",
+    atmosfera: "marcas",
   },
   {
     id: "trabajemos-juntos",
     nombre: "Trabajemos juntos",
     intencionEmocional:
-      'solidez profesional sin giro corporativo. "Esto también se puede hacer con ella."',
+      'invitación profesional clara. "Esto también se puede hacer con ella, para mi empresa."',
     fase: "pertenencia",
     orden: 5,
     ritmoPrevisto: "denso",
@@ -74,22 +81,12 @@ export const momentos: readonly Momento[] = [
     atmosfera: "fresca",
   },
   {
-    id: "cocina-compartida",
-    nombre: "La cocina compartida",
-    intencionEmocional:
-      'calidez, humor, pertenencia incipiente. "Hay una persona joven acá, y da ganas de ser parte."',
-    fase: "pertenencia",
-    orden: 6,
-    ritmoPrevisto: "silencio",
-    atmosfera: "compartir",
-  },
-  {
     id: "la-clase-no-termina",
     nombre: "La clase no termina",
     intencionEmocional:
       'pertenencia plena, sin cierre de venta. "Quiero cocinar algo / quiero seguir esto."',
     fase: "pertenencia",
-    orden: 7,
+    orden: 6,
     ritmoPrevisto: "silencio",
     atmosfera: "despedida",
   },

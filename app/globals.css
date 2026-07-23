@@ -17,17 +17,20 @@
    ========================================================================== */
 
 @theme {
-  /* ---- Color — los siete tonos y su rol semántico (§1.1) ---- */
-  --color-harina: #f7f2ea; /* fondo primario   */
-  --color-masa: #ede5d8; /* superficie sec.  */
+  /* ---- Color — paleta del manual (§1.1). Reencuadrada en el Bloque 8 · 10ª ola sobre
+     la NUEVA paleta compartida por Delfina (images/paleta.jpg): verde bosque #2C4027,
+     salvia #B1BFAA, marrón #413223, crema #F3EEE4, arena #DBC9A0, terracota #9D301D. ---- */
+  --color-harina: #f3eee4; /* fondo primario — crema del manual */
+  --color-masa: #ebe3d4; /* superficie sec.  */
   --color-hierro: #2a241e; /* texto primario   */
   --color-piedra: #6b6156; /* texto secundario */
   --color-yema: #e8a13a; /* acento (relleno) */
   --color-corteza: #b4611f; /* acento cálido    */
   --color-perejil: #4e6a3c; /* acento fresco    */
-  --color-bosque: #39532a; /* verde de MARCA (Bloque 8) — el #39532A de su manual.
-     Deja de ser un acento mínimo y se vuelve un hilo de identidad: los detalles
-     verdes (adornos) y la profundidad de la atmósfera fresca nacen de acá. */
+  --color-bosque: #2c4027; /* verde de MARCA (manual, 10ª ola: #2C4027, más profundo). */
+  --color-salvia: #b1bfaa; /* verde salvia claro del manual */
+  --color-arena: #dbc9a0; /* arena cálida del manual */
+  --color-terracota: #9d301d; /* terracota del manual — reemplaza el bordó del cierre */
 
   /* ---- Tipografía — familias (§2.1) ----
      El valor encadena la variable autohospedada por next/font con el stack de
@@ -427,14 +430,28 @@
     --mq-acc: 201 187 132;
   }
   .marquesina[data-tono="vino"] {
-    background-color: #4e2630;
-    --mq-ink: 245 239 227;
-    --mq-acc: 201 168 106;
+    background-color: #9d301d; /* 10ª ola: terracota reemplaza el bordó */
+    --mq-ink: 248 240 230;
+    --mq-acc: 219 201 160;
   }
   .marquesina[data-tono="taupe"] {
-    background-color: #aea391;
-    --mq-ink: 42 36 30;
-    --mq-acc: 90 58 32;
+    background-color: #b1bfaa; /* 10ª ola: salvia */
+    --mq-ink: 38 44 34;
+    --mq-acc: 44 64 39;
+  }
+
+  /* Marquesina ONDULADA (11ª ola): cinta a PLENO ANCHO donde la tipografía viaja sobre
+     la curva (texto en trayectoria SVG, ver `MarquesinaOnda`). Rompe el ancho del carril
+     para ocupar todo el recorrido; el `<svg>` mide su ancho real y evita deformaciones. */
+  .marquesina-onda {
+    inline-size: 100vw;
+    margin-inline: calc(50% - 50vw);
+    margin-block: clamp(var(--space-xl), 5vw, var(--space-2xl));
+    line-height: 0; /* el svg no arrastra espacio de línea */
+  }
+  .marquesina-onda svg {
+    display: block;
+    inline-size: 100%;
   }
   /* ---------------------------------------------------------------------------
      Enlace/botón de la serie (Bloque 6.5 · R7): "Leer más" / "Ver el reel".
@@ -603,118 +620,49 @@
 }
 
 /* =============================================================================
-   COMPOSICIÓN EDITORIAL (Bloque 8, 7ª ola) — el fondo es CREMA; los momentos
-   importantes viven en un BLOQUE de color contenido (`.sala-panel`), como en las
-   referencias. `.sala-inner` centra el contenido de las secciones en crema.
+   BANDAS DE COLOR + CORTE POR ONDA (Bloque 8 · 10ª ola) — modelo editorial.
+   Cada momento con color es una BANDA a pleno ancho (color sólido); el corte entre
+   una atmósfera y la siguiente es una ONDA nítida de SU color, superpuesta a la
+   sección de arriba. Sin degradados donde los colores se mezclan: las curvas conectan
+   el recorrido y cada color conserva su identidad. `.sala-inner` centra el contenido.
    ========================================================================== */
 .sala-inner {
   max-inline-size: 80rem;
   margin-inline: auto;
   padding-inline: var(--space-lg);
+  position: relative;
+  z-index: 1; /* el contenido, sobre la onda de corte */
 }
-/* Bloque de color contenido: una superficie rectangular con marco fino artesanal, que
-   destaca un tramo del recorrido sobre el crema. El color/tinta llegan inline (config). */
-.sala-panel {
-  max-inline-size: min(74rem, calc(100% - 2 * var(--space-lg)));
-  margin-inline: auto;
-  padding: clamp(var(--space-xl), 5vw, var(--space-3xl))
-    clamp(var(--space-lg), 4vw, var(--space-2xl));
-  border-radius: 8px;
-  /* Marco fino: un hilo de la propia tinta a baja opacidad (artesanal, no un borde UI). */
-  box-shadow: inset 0 0 0 1px rgb(var(--atm-ink) / 0.16);
-}
-.sala-panel-full {
-  inline-size: min(74rem, calc(100% - 2 * var(--space-lg)));
-  /* El bloque final ocupa el alto disponible y centra su contenido: el cierre llena la
-     pantalla (sin vacío debajo) y se integra con el navbar (8ª ola). */
-  display: flex;
-  align-items: center;
-}
-.sala-panel-full > * {
+
+/* La onda de corte: se apoya en el borde superior de la sección y sube sobre la
+   anterior. Su relleno es el color sólido de ESTA sección (llega por el atributo
+   `fill` del path, desde `config`), así el límite es un corte limpio y curvo. */
+.onda-sup {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
   inline-size: 100%;
+  block-size: clamp(38px, 5.5vw, 84px);
+  transform: translateY(-99%);
+  display: block;
+  z-index: 0;
+  pointer-events: none;
 }
 
-/* =============================================================================
-   CAMPO (Bloque 8 · 9ª ola) — las secciones principales a pleno ancho que se
-   DISUELVEN. El color no empieza ni termina con un corte: nace del crema y vuelve
-   al crema a lo largo de una zona amplia (`--campo-fade`), con una rampa de varios
-   pasos en oklab para que no se lea la recta del degradado. Como los dos bordes de
-   la sección SON crema, la unión con las vecinas es invisible sin superponer capas
-   ni pelear con el orden de pintado.
-
-   El contenido empieza recién cuando el color es sólido (el padding reserva la zona
-   de disolución completa): el color puede ser intenso sin negociar contraste.
-   ========================================================================== */
-.sala-campo {
-  --campo-fade: clamp(200px, 30vh, 380px);
-  padding-block: calc(var(--campo-fade) + var(--space-xl));
-  background-color: var(--color-harina);
-  background-image: linear-gradient(
-    180deg,
-    var(--color-harina) 0,
-    color-mix(in oklab, rgb(var(--campo-c)) 9%, var(--color-harina))
-      calc(var(--campo-fade) * 0.3),
-    color-mix(in oklab, rgb(var(--campo-c)) 40%, var(--color-harina))
-      calc(var(--campo-fade) * 0.58),
-    color-mix(in oklab, rgb(var(--campo-c)) 79%, var(--color-harina))
-      calc(var(--campo-fade) * 0.83),
-    rgb(var(--campo-c)) var(--campo-fade),
-    rgb(var(--campo-c)) calc(100% - var(--campo-fade)),
-    color-mix(in oklab, rgb(var(--campo-c)) 79%, var(--color-harina))
-      calc(100% - var(--campo-fade) * 0.83),
-    color-mix(in oklab, rgb(var(--campo-c)) 40%, var(--color-harina))
-      calc(100% - var(--campo-fade) * 0.58),
-    color-mix(in oklab, rgb(var(--campo-c)) 9%, var(--color-harina))
-      calc(100% - var(--campo-fade) * 0.3),
-    var(--color-harina) 100%
-  );
-}
-
-/* Sobre un campo hondo el oro cambia de valor (ver `--adorno-oro` en :root). */
+/* Sobre una banda honda (verde, terracota) el oro de los dibujos aclara para leerse
+   (ver `--adorno-oro` en :root). */
 [data-oscura="true"] {
-  --adorno-oro: 201 168 106;
+  --adorno-oro: 219 201 160;
 }
 
-/* Presencia y layout del dibujo. En CSS —y no inline en el componente— para que cada
-   contexto los ajuste: un respiro de crema y una zona de disolución no piden lo mismo. */
+/* Presencia y layout del dibujo del universo en los respiros de crema (`Adorno`). */
 .adorno {
   display: flex;
   justify-content: center;
   opacity: var(--adorno-opacidad, 0.72);
   margin-block: var(--adorno-margen, var(--space-xl));
-}
-
-/* La zona de disolución como ESPACIO NARRATIVO: aloja un dibujo del universo, que se
-   traza al entrar en viewport, deriva con el scroll y hace su gesto propio (`Adorno`).
-   No compite con el contenido —está en el tramo donde no hay texto— y hace que la
-   transición se sienta parte del recorrido y no un recurso para cambiar de color.
-
-   El dibujo NO se centra en la zona: se apoya contra su borde interior y entra un poco
-   en el color sólido. En el medio de la rampa el fondo es un tono intermedio donde
-   ningún oro se lee; sobre el color pleno, sí. La legibilidad manda sobre la simetría. */
-.campo-transicion {
-  position: absolute;
-  inset-inline: 0;
-  block-size: var(--campo-fade);
-  display: grid;
-  justify-items: center;
-  pointer-events: none;
-  --adorno-opacidad: 1;
-  --adorno-margen: 0;
-}
-.campo-transicion-inicio {
-  inset-block-start: 0;
-  align-items: end;
-}
-.campo-transicion-inicio .adorno {
-  margin-block-end: calc(-1 * var(--space-xl));
-}
-.campo-transicion-fin {
-  inset-block-end: 0;
-  align-items: start;
-}
-.campo-transicion-fin .adorno {
-  margin-block-start: calc(-1 * var(--space-xl));
+  position: relative;
+  z-index: 1;
 }
 
 /* LA SERIE (8ª ola · #3 y #4): más aire entre capítulos, filete que marca el ritmo
@@ -877,6 +825,186 @@
   font-size: clamp(2.05rem, 4.4vw, 3.4rem);
   line-height: 1.04;
   letter-spacing: -0.012em;
+}
+
+/* =============================================================================
+   Bloque 8 · 10ª ola — bienvenida "Quién soy", cierre, continuidad, marcas.
+   ========================================================================== */
+
+/* QUIÉN SOY (bienvenida breve): saludo + retrato, más compacto que el hero. */
+.hola-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+  align-items: center;
+  inline-size: 100%;
+}
+.hola-texto {
+  max-inline-size: 40ch;
+}
+.hola-foto {
+  position: relative;
+  inline-size: min(18rem, 78%);
+  justify-self: start;
+}
+@media (min-width: 820px) {
+  .hola-grid {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: var(--space-2xl);
+  }
+  .hola-foto {
+    justify-self: end;
+    inline-size: min(20rem, 100%);
+  }
+}
+
+/* CIERRE en una sola columna (10ª ola: se quitó el logotipo; 11ª ola: calibrado para
+   entrar en un viewport). La despedida la lleva la voz + las formas de seguir. */
+.cierre-col {
+  inline-size: 100%;
+  max-inline-size: 46rem;
+  margin-inline: auto;
+}
+.cierre-col .voz-hero {
+  font-size: clamp(1.7rem, 3.6vw, 2.6rem);
+  line-height: 1.06;
+}
+/* La voz secundaria del cierre no necesita el tamaño `l` completo: baja un punto para
+   que el bloque respire dentro del viewport. */
+.cierre-col .voz:not(.voz-hero) {
+  font-size: clamp(1.15rem, 1.02rem + 0.6vw, 1.45rem);
+}
+.cierre-col .enlace-flecha {
+  font-size: var(--text-titulo);
+}
+
+/* CONTINUIDAD "Nuevos ebooks en camino": aviso cálido, no una llamada principal. Un
+   libro dibujado (que se hojea) acompaña el texto. */
+.nota-continuidad {
+  margin-block-start: var(--space-2xl);
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+}
+.nota-continuidad-fila {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.nota-continuidad-dibujo.adorno {
+  margin-block: 0;
+  flex: none;
+  opacity: 0.9;
+}
+.nota-continuidad-texto {
+  font-size: var(--text-titulo);
+  color: rgb(var(--atm-ink, 42 36 30));
+  opacity: 0.9;
+}
+
+/* Foto editorial dentro del bloque de clases (11ª ola): refuerza la propuesta sin
+   sobrecargar. Marco curvo del sistema (MarcoFoto). */
+.clase-foto {
+  margin-block: var(--space-lg) var(--space-2xl);
+  max-inline-size: min(52rem, 100%);
+}
+
+/* Rótulo "Próximamente" (clases online por lanzarse): pastilla discreta, no un CTA. */
+.pill-proximamente {
+  align-self: flex-start;
+  margin-block-start: var(--space-xs);
+  padding: 0.34em 0.9em;
+  border-radius: 999px;
+  font-family: var(--font-mundo);
+  font-size: var(--text-meta);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgb(var(--atm-accent, 107 74 31));
+  box-shadow: inset 0 0 0 1.5px rgb(var(--atm-accent, 107 74 31) / 0.55);
+}
+
+/* MARCAS de PRESENTE (11ª ola): no una línea de tiempo (pasado) ni una grilla de logos,
+   sino las colaboraciones VIGENTES con protagonismo. Cada marca lleva un punto TERRACOTA
+   (acento del sistema) que la señala activa. */
+.marcas-lead {
+  margin-block-start: var(--space-xl);
+  font-family: var(--font-mundo);
+  font-size: var(--text-meta);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(var(--atm-accent, 157 48 29));
+}
+.marcas-actuales {
+  list-style: none;
+  margin-block-start: var(--space-md);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(var(--space-md), 2.4vw, var(--space-lg));
+}
+@media (min-width: 720px) {
+  .marcas-actuales {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+  }
+}
+.marca-actual {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2xs);
+  padding: clamp(var(--space-md), 2.4vw, var(--space-lg));
+  padding-inline-start: calc(clamp(var(--space-md), 2.4vw, var(--space-lg)) + 18px);
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px rgb(var(--atm-ink, 42 36 30) / 0.14);
+  background-color: rgb(255 255 255 / 0.28);
+  min-block-size: clamp(104px, 13vw, 140px);
+  justify-content: center;
+}
+/* El punto que señala "colaboración vigente": terracota, activo. */
+.marca-vigente {
+  position: absolute;
+  inset-block-start: clamp(var(--space-md), 2.4vw, var(--space-lg));
+  inset-inline-start: clamp(var(--space-md), 2.4vw, var(--space-lg));
+  inline-size: 9px;
+  block-size: 9px;
+  border-radius: 50%;
+  background-color: rgb(var(--atm-accent, 157 48 29));
+  box-shadow: 0 0 0 4px rgb(var(--atm-accent, 157 48 29) / 0.16);
+}
+.marca-nombre {
+  font-size: clamp(1.3rem, 1.1rem + 0.9vw, 1.7rem);
+  color: rgb(var(--atm-ink, 42 36 30));
+  line-height: 1.1;
+}
+.marca-rubro {
+  font-family: var(--font-mundo);
+  font-size: var(--text-meta);
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+}
+
+/* Carta de presentación al cierre de la sección: invita a nuevas marcas. */
+.marcas-invitacion {
+  margin-block-start: clamp(var(--space-2xl), 5vw, var(--space-3xl));
+  padding: clamp(var(--space-lg), 3vw, var(--space-xl));
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1.5px rgb(var(--atm-accent, 157 48 29) / 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: flex-start;
+  max-inline-size: 40rem;
+}
+.marcas-invitacion-texto {
+  font-size: clamp(1.35rem, 1.1rem + 1.1vw, 1.9rem);
+  color: rgb(var(--atm-ink, 42 36 30));
+  line-height: 1.12;
+}
+.marcas-nota-ejemplo {
+  margin-block-start: var(--space-lg);
+  font-family: var(--font-mundo);
+  font-size: var(--text-micro);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgb(var(--atm-ink-soft, 62 54 45) / 0.8);
 }
 
 /* =============================================================================

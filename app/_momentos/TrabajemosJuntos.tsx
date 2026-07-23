@@ -26,9 +26,8 @@ export function TrabajemosJuntos() {
   return (
     <Momento
       id="trabajemos-juntos"
-      kicker="Servicios"
+      kicker="Servicios profesionales"
       titulo="Trabajemos juntos"
-      adornos={["hierba", "cuchara"]}
     >
       <div
         style={{

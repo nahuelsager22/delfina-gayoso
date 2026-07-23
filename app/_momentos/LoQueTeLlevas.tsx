@@ -1,33 +1,27 @@
 import { getProductos } from "@/content";
 import { Momento } from "../_patrones/Momento";
 import { FichaProducto } from "../_patrones/FichaProducto";
+import { Aparicion } from "../_patrones/Aparicion";
+import { Adorno } from "../_chrome/adornos/Adorno";
+import { Marquesina } from "../_chrome/adornos/Marquesina";
 
 /**
- * Momento 2 — Lo que te podés llevar (arquitectura §1, orden Bloque 6.5). El producto
- * (los dos ebooks reales) como CONTINUACIÓN del enseñar, no como tienda.
+ * Momento — Lo que te podés llevar (arquitectura §1). Concentra TODA la propuesta
+ * educativa: EBOOKS y CLASES (presenciales y, muy pronto, en vivo online).
  *
- *  · Transición 3→4 sin quiebre (§3.3): este momento es "denso", igual que el
- *    aprendizaje, así que el contenedor le da el mismo ritmo vertical. No hay
- *    título de sección visible ni cambio de registro: lo primero que se lee es su
- *    voz en serif (la descripción), de modo que "acá empieza lo comercial" no se
- *    delata. Hereda la temperatura del pasillo.
- *  · Sin grilla, sin aspect ratios uniformes, sin precio protagonista: cada ebook
- *    es una HABITACIÓN (§7.1) que se apoya en su propio espacio, separada de la
- *    otra por `--space-3xl` (son cuartos, no celdas de una fila). Alternan lado.
- *  · El peso sigue en enseñar: dos fichas, tarde en el descenso, sin dominio
- *    comercial persistente (no hay nav "Shop" ni carrito, §3.3).
- *
- * Los productos se leen vía `@/content`; el `destino` de cada uno es una URL de la
- * plataforma de venta (agnóstica, Bloque 8): cambiar de plataforma es cambiar la URL.
+ *  · EBOOKS primero; el grupo cierra con "Nuevos ebooks en camino", acompañado de un
+ *    LIBRO dibujado que se hojea (continuidad sin volverse una llamada principal).
+ *  · Una MARQUESINA ONDULADA (11ª ola) separa ebooks de clases: da ritmo y se integra
+ *    al lenguaje de ondas, sin interferir con los cortes entre secciones.
+ *  · CLASES con su rótulo y las fichas: la presencial (real) y la online (por lanzarse,
+ *    sin precio ni CTA). CADA tipo de clase lleva su PROPIA fotografía dentro de su ficha
+ *    (11ª ola · #3): la presencial con las manos en la masa, la online con la escena de
+ *    cocina — quedan diferenciadas visualmente, cada una con identidad propia.
  */
 export function LoQueTeLlevas() {
   const productos = getProductos();
-  // 8ª ola: los EBOOKS y las CLASES EN VIVO son dos propuestas distintas y se separan.
-  // Los ebooks abren el bloque; la clase en vivo cierra con identidad propia (su propia
-  // superficie, rótulo y aire), para que se identifique rápido sin competir con ellos.
-  const esClase = (formato: string) => formato.toLowerCase().includes("clase");
-  const ebooks = productos.filter((p) => !esClase(p.formato));
-  const clases = productos.filter((p) => esClase(p.formato));
+  const ebooks = productos.filter((p) => p.familia === "ebook");
+  const clases = productos.filter((p) => p.familia?.startsWith("clase"));
 
   return (
     <Momento
@@ -35,6 +29,7 @@ export function LoQueTeLlevas() {
       kicker="Ebooks y clases"
       titulo="Lo que te podés llevar"
     >
+      {/* EBOOKS */}
       <div
         style={{
           display: "flex",
@@ -43,34 +38,44 @@ export function LoQueTeLlevas() {
         }}
       >
         {ebooks.map((p, i) => (
-          <FichaProducto
-            key={p.id}
-            producto={p}
-            ancla={i % 2 === 1 ? "der" : "izq"}
-          />
+          <FichaProducto key={p.id} producto={p} ancla={i % 2 === 1 ? "der" : "izq"} />
         ))}
       </div>
 
-      {/* La clase en vivo: su propia superficie dentro del bloque, con rótulo propio.
-          Se diferencia de los ebooks (otra cosa: sucede en vivo, con ella).
-          9ª ola: la ficha NO repite su categoría —el rótulo del bloque ya dice "En
-          vivo, conmigo" y el título ya dice "Clase en vivo: …"—; queda un solo nivel. */}
+      {/* Continuidad: el catálogo sigue creciendo. Un libro que se hojea + el aviso,
+          cálido y sin ser una llamada principal. */}
+      <Aparicion className="nota-continuidad">
+        <div className="nota-continuidad-fila">
+          <Adorno variante="libro" className="nota-continuidad-dibujo" />
+          <p className="nota-continuidad-texto voz-display">Nuevos ebooks en camino.</p>
+        </div>
+      </Aparicion>
+
+      {/* Marquesina ondulada: puente rítmico de ebooks a clases (11ª ola). */}
+      <Marquesina
+        forma="onda"
+        tono="verde"
+        texto="y también aprendemos juntos · en persona · muy pronto, en vivo online"
+      />
+
+      {/* CLASES: su rótulo y las fichas (cada una con su propia foto). */}
       {clases.length > 0 && (
         <div className="bloque-clases">
-          <p className="momento-kicker bloque-clases-rotulo">En vivo, conmigo</p>
+          <p className="momento-kicker bloque-clases-rotulo">Clases con Delfi</p>
+
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: "var(--space-2xl)",
+              gap: "var(--space-3xl)",
             }}
           >
-            {clases.map((p) => (
+            {clases.map((p, i) => (
               <FichaProducto
                 key={p.id}
                 producto={p}
-                ancla="izq"
-                mostrarCategoria={false}
+                ancla={i % 2 === 1 ? "der" : "izq"}
+                mostrarCategoria={p.familia === "clase-online"}
               />
             ))}
           </div>

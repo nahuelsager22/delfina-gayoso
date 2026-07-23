@@ -19,12 +19,23 @@
 /** Fase del arco reconocimiento → descubrimiento → pertenencia (B1, B3 §1). */
 export type FaseArco = "reconocimiento" | "descubrimiento" | "pertenencia";
 
-/** Identificador estable de cada uno de los 7 momentos del descenso. */
+/**
+ * Identificador estable de cada momento.
+ *
+ * Bloque 8 · 10ª ola — REESTRUCTURA del recorrido (decisión de Delfina). El recorrido
+ * se acorta a 6 secciones: umbral → quien-soy → lo-que-te-llevas → marcas →
+ * trabajemos-juntos → la-clase-no-termina. `quien-soy` reemplaza a `quien-cocina` como
+ * una bienvenida BREVE arriba de todo ("Hola, soy Delfi"). `columna-aprendizaje` y
+ * `cocina-compartida` salen del recorrido pero se CONSERVAN en el tipo y en el código
+ * (sus componentes ya no se montan) por si vuelven. `marcas` es la sección nueva.
+ */
 export type MomentoId =
   | "umbral"
+  | "quien-soy"
   | "quien-cocina"
   | "columna-aprendizaje"
   | "lo-que-te-llevas"
+  | "marcas"
   | "cocina-compartida"
   | "trabajemos-juntos"
   | "la-clase-no-termina";
@@ -134,8 +145,12 @@ export interface Producto {
   readonly formato: string;
   /** Colaboradores, en primera persona plural cuando corresponda (ej. Florencia). */
   readonly colaboradores?: readonly string[];
-  /** Precio listo para mostrar (ej. "$X", "Gratis"). Dato, no protagonista. */
-  readonly precio: string;
+  /**
+   * Precio listo para mostrar (ej. "$X", "Gratis"). Dato, no protagonista. Opcional
+   * (Bloque 8 · 10ª ola): una clase presencial se coordina por contacto y una clase
+   * online por lanzarse no tiene precio todavía.
+   */
+  readonly precio?: string;
   /** Texto del CTA; por defecto "Llevátelo". Ej. "Reservar lugar" para una clase. */
   readonly ctaLabel?: string;
   /**
@@ -143,7 +158,7 @@ export interface Producto {
    * La web no cobra; sólo enlaza a donde estén alojados los productos. Migrar de
    * plataforma (p. ej. Hotmart → Tienda Nube) es reemplazar esta URL, nada más.
    */
-  readonly destino: string;
+  readonly destino?: string;
   /** Imagen real opcional; sin ella la ficha se sostiene con voz + aire (§8). */
   readonly imagen?: ImagenRealRef;
   /**
@@ -151,6 +166,38 @@ export interface Producto {
    * web puede ofrecer (clases, tickets, propuestas), con datos ficticios claramente
    * identificables y fáciles de reemplazar. La UI lo marca visiblemente como ejemplo.
    */
+  readonly borrador?: boolean;
+  /**
+   * Familia de propuesta (Bloque 8 · 10ª ola): "ebook" | "clase-presencial" |
+   * "clase-online". "Lo que te llevás" agrupa toda la propuesta educativa y
+   * distingue los ebooks de las clases; las clases, a su vez, presenciales de online.
+   */
+  readonly familia?: "ebook" | "clase-presencial" | "clase-online";
+  /**
+   * Disponibilidad (Bloque 8 · 10ª ola). "proximamente" comunica una propuesta que
+   * todavía no se lanzó (las clases en vivo online): se muestra como algo que viene,
+   * sin CTA de compra ni precio obligatorio.
+   */
+  readonly disponibilidad?: "disponible" | "proximamente";
+}
+
+/* ============================================================================
+   I · Marca con la que colabora (Bloque 8 · 10ª ola) — confianza, no portfolio.
+   Muestra las empresas con las que Delfina trabaja habitualmente. Integrada al
+   universo visual (no una grilla corporativa de logos). Datos reales PENDIENTES
+   de Delfina; hoy hay marcadores de ejemplo (`borrador`).
+   ========================================================================= */
+export interface Marca {
+  readonly id: string;
+  /** Nombre de la marca, tal como se escribe. */
+  readonly nombre: string;
+  /** Rubro breve (ej. "cafetería", "escuela de cocina"), opcional. */
+  readonly rubro?: string;
+  /** Logo real cuando exista (`/marcas/…`); sin él, se muestra el nombre compuesto. */
+  readonly logo?: string;
+  /** Sitio/redes de la marca, opcional. */
+  readonly url?: string;
+  /** Marcador de EJEMPLO hasta que lleguen las marcas reales (ver `Producto.borrador`). */
   readonly borrador?: boolean;
 }
 
@@ -202,6 +249,10 @@ export type TipoGesto =
   | "proceso"
   | "comunidad"
   | "vida-real"
+  /** Retrato de Delfina (Bloque 8 · 10ª ola): protagonista, para el hero / bienvenida. */
+  | "retrato"
+  /** Plato terminado (Bloque 8 · 10ª ola): apetece, ancla la propuesta. */
+  | "plato"
   /** Portada de producto (ebook/clase): contenido real, ancla de la ficha (B6.5 · R4). */
   | "portada";
 export type OrientacionImagen = "vertical" | "horizontal" | "cuadrada";
