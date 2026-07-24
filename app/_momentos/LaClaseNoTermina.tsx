@@ -1,4 +1,5 @@
-import { getRedes, getVozDeMomento, type VozDelfina } from "@/content";
+import Image from "next/image";
+import { getImagen, getRedes, getVozDeMomento, type VozDelfina } from "@/content";
 import { Momento } from "../_patrones/Momento";
 import { Voz } from "../_patrones/Voz";
 import { Aparicion } from "../_patrones/Aparicion";
@@ -35,6 +36,7 @@ export function LaClaseNoTermina() {
   const cierre = voces.filter((v) => v.id !== "cierre-seguir");
   const seguir = voces.find((v) => v.id === "cierre-seguir");
   const redes = getRedes();
+  const budin = getImagen("budin");
 
   return (
     <Momento id="la-clase-no-termina" full alto="118svh">
@@ -43,8 +45,9 @@ export function LaClaseNoTermina() {
           manual —el terracota pasó a ser acento—. Tipografía y espaciados calibrados para
           que todo el cierre entre en un solo viewport sin perder impacto. Sin logotipo,
           sin CTA de venta: la despedida la lleva su voz + las formas de seguir. */}
+      <div className="cierre-escena">
       <div className="cierre-col">
-        <div className="hero-texto" style={{ display: "flex", flexDirection: "column", gap: "var(--space-lg)" }}>
+        <div className="hero-texto" style={{ display: "flex", flexDirection: "column", gap: "var(--space-md)" }}>
           {cierre.map((v: VozDelfina, i) => (
             <Aparicion key={v.id} orden={i}>
               <Voz
@@ -89,11 +92,31 @@ export function LaClaseNoTermina() {
               </nav>
             </div>
           </Aparicion>
-
-          {/* Las huellitas de Budín cruzando el cierre: la vida real de Delfina, en oro
-              sobre el marrón. El último detalle a mano del recorrido (12ª ola). */}
-          {/* <Adorno variante="huellas" className="adorno-cierre" /> */}
         </div>
+
+        {/* Las huellitas de Budín cruzando el cierre. 13ª ola: viven FUERA del flujo
+            vertical (absolutas, justo debajo del texto) para no empujar la composición;
+            el bloque de texto vuelve a respirar y entra en un viewport. */}
+        <Adorno variante="huellas" className="adorno-cierre" />
+      </div>
+
+      {/* Y el propio Budín, asomando en el cierre (13ª ola). Su ilustración es un recorte
+          limpio, así que se apoya directo sobre el marrón. Vive en la columna lateral, sin
+          robarle alto al texto, y rima con las huellitas del mismo momento: el perro y sus
+          pisadas cierran el recorrido. En mobile se oculta para que el cierre siga
+          entrando cómodo en una pantalla. */}
+      {budin && (
+        <Aparicion className="cierre-budin">
+          <Image
+            src={budin.src}
+            alt={budin.alt}
+            width={budin.ancho ?? 1024}
+            height={budin.alto ?? 1536}
+            sizes="22rem"
+            style={{ inlineSize: "100%", blockSize: "auto" }}
+          />
+        </Aparicion>
+      )}
       </div>
     </Momento>
   );

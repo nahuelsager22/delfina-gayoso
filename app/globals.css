@@ -869,24 +869,67 @@
   }
 }
 
-/* CIERRE en una sola columna (10ª ola: se quitó el logotipo; 11ª ola: calibrado para
-   entrar en un viewport). La despedida la lleva la voz + las formas de seguir. */
-.cierre-col {
+/* CIERRE (13ª ola — composición vertical rebalanceada). El fondo conserva su presencia
+   (118svh, para que el navbar tome el marrón desde el arranque); lo que se recompuso es
+   el INTERIOR: tipografía e interlineados más contenidos, menos aire entre bloques, y
+   los dos recursos ilustrados (huellitas y Budín) FUERA del flujo vertical del texto.
+   Así todo el cierre vuelve a entrar cómodo en un viewport, en desktop y en mobile. */
+.cierre-escena {
+  position: relative;
   inline-size: 100%;
-  max-inline-size: 46rem;
+}
+.cierre-col {
+  position: relative;
+  inline-size: 100%;
+  max-inline-size: 42rem;
   margin-inline: auto;
 }
 .cierre-col .voz-hero {
-  font-size: clamp(1.7rem, 3.6vw, 2.6rem);
-  line-height: 1.06;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.1;
 }
 /* La voz secundaria del cierre no necesita el tamaño `l` completo: baja un punto para
    que el bloque respire dentro del viewport. */
 .cierre-col .voz:not(.voz-hero) {
-  font-size: clamp(1.15rem, 1.02rem + 0.6vw, 1.45rem);
+  font-size: clamp(1rem, 0.95rem + 0.45vw, 1.22rem);
+  line-height: 1.45;
 }
 .cierre-col .enlace-flecha {
-  font-size: var(--text-titulo);
+  font-size: clamp(1.05rem, 1rem + 0.35vw, 1.25rem);
+}
+
+/* Las huellitas, justo debajo del texto pero sin ocupar alto en la columna. */
+.adorno-cierre {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-sm));
+  inset-inline-start: 0;
+  justify-content: flex-start;
+  --adorno-margen: 0;
+  --adorno-opacidad: 0.85;
+}
+
+/* Budín, en la banda lateral. Su PNG es un RECORTE limpio (todo transparente salvo el
+   perro), así que se apoya directo sobre el marrón sin ningún truco de mezcla. Oculto por
+   debajo de 1100px (en pantallas angostas no hay columna lateral y el cierre debe quedar
+   liviano). */
+.cierre-budin {
+  display: none;
+}
+@media (min-width: 1100px) {
+  .cierre-budin {
+    display: block;
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block-end: 50%;
+    transform: translateY(50%);
+    inline-size: clamp(15rem, 20vw, 21rem);
+    pointer-events: none;
+  }
+  /* El texto se corre a la izquierda para dejarle su lugar a Budín. */
+  .cierre-col {
+    margin-inline: 0 auto;
+    max-inline-size: 38rem;
+  }
 }
 
 /* CONTINUIDAD "Nuevos ebooks en camino": aviso cálido, no una llamada principal. Un

@@ -46,8 +46,11 @@ export function TrabajemosJuntos() {
         ))}
       </div>
 
-      {/* El batidor: el gesto de mezclar, en el oro que resalta sobre el verde (12ª ola). */}
-      <Adorno variante="batidor" />
+      {/* 13ª ola: el batidor (gesto de repostería) no dialogaba con una sección de
+          servicios profesionales. Lo reemplaza el VAPOR —"algo se está cocinando"—, que
+          es exactamente lo que propone esta sección: una colaboración en marcha. En oro
+          sobre el verde. */}
+      <Adorno variante="vapor" />
     </Momento>
   );
 }

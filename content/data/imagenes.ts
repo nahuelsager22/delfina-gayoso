@@ -48,6 +48,18 @@ export const imagenes: readonly ImagenReal[] = [
     alto: 4160,
   },
   {
+    // Ilustración de Budín, el perro de Delfina (Bloque 8 · 13ª ola). Es un retrato
+    // pintado con fondo oscuro horneado: vive sobre una banda HONDA (el cierre marrón),
+    // donde su fondo se funde y sólo queda él. Rima con las huellitas del mismo momento.
+    id: "budin",
+    src: "/ilustraciones/budin.png",
+    alt: "Budín, el perro de Delfina, ilustrado.",
+    tipoGesto: "vida-real",
+    orientacion: "vertical",
+    ancho: 1024,
+    alto: 1536,
+  },
+  {
     id: "manos-masa",
     src: "/fotos/manos-masa.jpg",
     alt: "Las manos de Delfina bolean masa sobre la mesada, en pleno proceso.",
