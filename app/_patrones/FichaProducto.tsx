@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getImagen, type Producto } from "@/content";
+import type { Producto } from "@/content";
 import { Aparicion } from "./Aparicion";
 import { Voz } from "./Voz";
 import { MarcaEjemplo } from "./MarcaEjemplo";
@@ -62,7 +62,9 @@ export function FichaProducto({
     disponibilidad,
   } = producto;
 
-  const portada = imagen ? getImagen(imagen) : undefined;
+  // 14ª ola: la imagen llega YA RESUELTA desde la capa de acceso (venga de los archivos
+  // locales o del CMS). La ficha sólo la usa.
+  const portada = imagen;
   // 10ª ola: una propuesta puede estar por lanzarse (clases en vivo online). Se comunica
   // como algo que VIENE, sin CTA de compra ni "seguir".
   const proximamente = disponibilidad === "proximamente";

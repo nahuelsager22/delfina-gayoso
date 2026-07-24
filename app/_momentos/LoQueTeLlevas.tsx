@@ -18,8 +18,8 @@ import { Marquesina } from "../_chrome/adornos/Marquesina";
  *    (11ª ola · #3): la presencial con las manos en la masa, la online con la escena de
  *    cocina — quedan diferenciadas visualmente, cada una con identidad propia.
  */
-export function LoQueTeLlevas() {
-  const productos = getProductos();
+export async function LoQueTeLlevas() {
+  const productos = await getProductos();
   const ebooks = productos.filter((p) => p.familia === "ebook");
   const clases = productos.filter((p) => p.familia?.startsWith("clase"));
 

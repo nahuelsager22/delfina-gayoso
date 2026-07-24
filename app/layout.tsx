@@ -1,10 +1,17 @@
 import type { Metadata, Viewport } from "next";
 import { fontVariables } from "./fonts";
-import { Navbar } from "./_chrome/Navbar";
-import { LenisProvider } from "./_chrome/LenisProvider";
-import { AtmosferaProvider } from "./_chrome/atmosferas/AtmosferaProvider";
 import "./globals.css";
 
+/**
+ * Layout RAÍZ — sólo el documento (Bloque 8 · 14ª ola).
+ *
+ * Antes acá vivía todo el "chrome" del sitio (pantalla de carga, navbar, Budín). Al
+ * embeber el Studio en `/studio`, ese chrome se montaba también sobre el panel de
+ * edición. Ahora la raíz es mínima y cada zona trae lo suyo:
+ *   · `app/(sitio)/layout.tsx` → el recorrido, con todo su chrome.
+ *   · `app/studio/…`           → el Studio, limpio.
+ * El grupo `(sitio)` no aparece en la URL: la home sigue siendo `/`.
+ */
 export const metadata: Metadata = {
   metadataBase: new URL("https://delfina-gayoso.vercel.app"),
   title: "Delfina Gayoso",
@@ -31,28 +38,7 @@ export default function RootLayout({
   return (
     // lang rioplatense: su voz, humor y registro son en español (B3 §7).
     <html lang="es" className={fontVariables}>
-      <body>
-        {/* Pantalla de carga (Bloque 8 · 6ª ola): el logotipo oficial con una respiración
-            suave sobre `Harina`, que se disuelve sola (animación CSS, en el HTML inicial
-            → sin flash de hidratación). No es un spinner genérico: es una extensión breve
-            del universo. Con `prefers-reduced-motion` se retira de inmediato. */}
-        <div className="pantalla-carga" aria-hidden="true">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="pantalla-carga-logo"
-            src="/logotipo/logotipo-1.png"
-            alt=""
-            width={180}
-            height={180}
-          />
-        </div>
-        <AtmosferaProvider>
-          <LenisProvider>
-            <Navbar />
-            {children}
-          </LenisProvider>
-        </AtmosferaProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

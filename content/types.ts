@@ -159,8 +159,13 @@ export interface Producto {
    * plataforma (p. ej. Hotmart → Tienda Nube) es reemplazar esta URL, nada más.
    */
   readonly destino?: string;
-  /** Imagen real opcional; sin ella la ficha se sostiene con voz + aire (§8). */
-  readonly imagen?: ImagenRealRef;
+  /**
+   * Imagen real opcional; sin ella la ficha se sostiene con voz + aire (§8). Llega YA
+   * RESUELTA desde la capa de acceso (Bloque 8 · 14ª ola): con archivos locales se
+   * resuelve la referencia, y con el CMS se arma desde el asset subido. La interfaz
+   * recibe siempre lo mismo y no sabe de dónde vino.
+   */
+  readonly imagen?: ImagenReal;
   /**
    * Contenido de EJEMPLO (Bloque 6.5): representa el ecosistema completo que la
    * web puede ofrecer (clases, tickets, propuestas), con datos ficticios claramente
@@ -180,6 +185,27 @@ export interface Producto {
    */
   readonly disponibilidad?: "disponible" | "proximamente";
 }
+
+/* ============================================================================
+   J · Budín — el perro de Delfina, compañero del recorrido (Bloque 8 · 13ª ola).
+   Deja de ser una ilustración decorativa y pasa a ser un pequeño personaje que
+   acompaña la navegación: saluda al pasar el mouse y suelta una frase al azar al
+   tocarlo. Su voz vive acá (contenido), no en la interfaz.
+   ========================================================================= */
+export interface VozBudin {
+  /** Lo que dice al pasar el mouse (invita a tocarlo). */
+  readonly saludo: string;
+  /** Frases que suelta al azar. Sumar una es agregar una línea a este arreglo. */
+  readonly frases: readonly string[];
+}
+
+/**
+ * La semilla local se escribe con la imagen POR REFERENCIA (más cómoda de mantener a
+ * mano); la capa de acceso la resuelve antes de entregarla a la interfaz.
+ */
+export type ProductoSemilla = Omit<Producto, "imagen"> & {
+  readonly imagen?: ImagenRealRef;
+};
 
 /* ============================================================================
    I · Marca con la que colabora (Bloque 8 · 10ª ola) — confianza, no portfolio.

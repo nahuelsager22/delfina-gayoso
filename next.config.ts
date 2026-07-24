@@ -1,8 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // La foundation no necesita configuración especial todavía.
-  // El recorrido, sus imágenes y su motion se agregan en el Bloque 6.
+  images: {
+    // Las fotos que Delfi suba al CMS se sirven desde la CDN de Sanity y siguen pasando
+    // por el optimizador de Next: mismo formato y mismo peso servido que hoy con los
+    // archivos locales (Bloque 8 · 14ª ola).
+    remotePatterns: [{ protocol: "https", hostname: "cdn.sanity.io" }],
+  },
 };
 
 export default nextConfig;

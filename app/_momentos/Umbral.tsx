@@ -24,12 +24,12 @@ import { Adorno } from "../_chrome/adornos/Adorno";
  * La voz se lee del contenido (getVozDeMomento): la primera pieza es la detención
  * grande (voz-xl), la segunda un segundo beat más contenido (voz-l).
  */
-export function Umbral() {
-  const voces = getVozDeMomento("umbral");
+export async function Umbral() {
+  const voces = await getVozDeMomento("umbral");
   // 10ª ola: llega el material real. El hero abre con un PLATO que apetece (croquetas
   // recién partidas) —lo que vas a aprender a hacer—, dentro del marco en arco ya
   // resuelto. El retrato de Delfina se reserva para la bienvenida "Quién soy".
-  const foto = getImagen("croquetas-corte");
+  const foto = await getImagen("croquetas-corte");
 
   return (
     <Momento id="umbral" full>

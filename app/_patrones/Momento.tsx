@@ -41,7 +41,7 @@ function OndaSuperior({ color }: { color: string }) {
   );
 }
 
-export function Momento({
+export async function Momento({
   id,
   children,
   titulo,
@@ -66,7 +66,7 @@ export function Momento({
    */
   alto?: string;
 }) {
-  const m = getMomento(id);
+  const m = await getMomento(id);
   const sala = getSala(m?.atmosfera);
   const headingId = `momento-${id}`;
 

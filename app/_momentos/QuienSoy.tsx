@@ -16,13 +16,13 @@ import { Sello } from "../_chrome/adornos/Sello";
  *    fotográfico), en el marco de arco del sistema, con el sello superpuesto.
  *  · Banda SALVIA (nueva paleta): clara y cálida, un respiro amable antes de la oferta.
  */
-export function QuienSoy() {
-  const voces = getVozDeMomento("quien-soy");
+export async function QuienSoy() {
+  const voces = await getVozDeMomento("quien-soy");
   const hola = voces.find((v: VozDelfina) => v.id === "quien-soy-hola");
   const presentacion = voces.find(
     (v: VozDelfina) => v.id === "quien-soy-presentacion",
   );
-  const foto = getImagen("delfina-hola");
+  const foto = await getImagen("delfina-hola");
 
   return (
     <Momento id="quien-soy" full primero>

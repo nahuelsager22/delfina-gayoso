@@ -1,4 +1,4 @@
-import type { Producto } from "../types";
+import type { ProductoSemilla } from "../types";
 
 /**
  * Propuesta educativa (tipo D). Sin campos de catálogo (B3 §4-D); la web no monta
@@ -18,7 +18,7 @@ import type { Producto } from "../types";
  * PLATAFORMA AGNÓSTICA (Bloque 8): `destino` es sólo una URL (o un contacto directo).
  * Cambiar de plataforma es cambiar la URL, sin tocar la arquitectura.
  */
-export const productos: readonly Producto[] = [
+export const productos: readonly ProductoSemilla[] = [
   {
     id: "masas-quebradas",
     titulo: "Masas Quebradas",

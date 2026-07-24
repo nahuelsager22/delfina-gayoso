@@ -19,8 +19,8 @@ import { Adorno } from "../_chrome/adornos/Adorno";
  *  · Cierra como CARTA DE PRESENTACIÓN: una invitación clara para nuevas marcas.
  *  · Cuando lleguen los logos reales, cada marca muestra su `logo`.
  */
-export function MarcasColaboro() {
-  const marcas = getMarcas();
+export async function MarcasColaboro() {
+  const marcas = await getMarcas();
 
   return (
     <Momento id="marcas" kicker="Colaboraciones activas" titulo="Marcas con las que colaboro">

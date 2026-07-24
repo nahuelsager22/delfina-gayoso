@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { getMomentos, getRedes } from "@/content";
+import type { Momento, RedSocial, VozBudin } from "@/content";
+import { Budin } from "./Budin";
 
 /**
  * Navbar de orientación (Bloque 6.5 · R6). Facilita el recorrido sin volverse un
@@ -72,11 +73,19 @@ function Utensilios({ abierto }: { abierto: boolean }) {
   );
 }
 
-export function Navbar() {
-  const items: ItemNav[] = getMomentos()
+export function Navbar({
+  momentos,
+  redes,
+  vozBudin,
+}: {
+  /** Contenido inyectado desde el layout (server): puede venir del CMS o de la semilla. */
+  momentos: readonly Momento[];
+  redes: readonly RedSocial[];
+  vozBudin: VozBudin;
+}) {
+  const items: ItemNav[] = momentos
     .filter((m) => m.navLabel)
     .map((m) => ({ id: `seccion-${m.id}`, label: m.navLabel as string }));
-  const redes = getRedes();
 
   const [abierto, setAbierto] = useState(false);
   const [activo, setActivo] = useState<string | null>(null);
@@ -155,7 +164,8 @@ export function Navbar() {
     <header className="navbar" data-abierto={abierto ? "true" : undefined}>
       <div className="navbar-inner">
         <a
-          href="#seccion-umbral"
+          // 13ª ola: el inicio del recorrido es "Quién soy" (la bienvenida), no el umbral.
+          href="#seccion-quien-soy"
           className="navbar-marca"
           aria-label="Delfina Gayoso — volver al inicio"
           onClick={() => setAbierto(false)}
@@ -250,6 +260,10 @@ export function Navbar() {
                 {NOMBRE_RED[r.plataforma] ?? r.plataforma}
               </a>
             ))}
+
+            {/* Budín, en la esquina del menú (13ª ola): en mobile no flota sobre el
+                contenido; aparece acá y responde igual al tocarlo. */}
+            <Budin voz={vozBudin} variante="menu" />
           </motion.nav>
         )}
       </AnimatePresence>

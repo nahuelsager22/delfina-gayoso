@@ -1,5 +1,4 @@
-import Image from "next/image";
-import { getImagen, getRedes, getVozDeMomento, type VozDelfina } from "@/content";
+import { getRedes, getVozDeMomento, type VozDelfina } from "@/content";
 import { Momento } from "../_patrones/Momento";
 import { Voz } from "../_patrones/Voz";
 import { Aparicion } from "../_patrones/Aparicion";
@@ -31,12 +30,11 @@ const NOMBRE_RED: Record<string, string> = {
   tiktok: "TikTok",
 };
 
-export function LaClaseNoTermina() {
-  const voces = getVozDeMomento("la-clase-no-termina");
+export async function LaClaseNoTermina() {
+  const voces = await getVozDeMomento("la-clase-no-termina");
   const cierre = voces.filter((v) => v.id !== "cierre-seguir");
   const seguir = voces.find((v) => v.id === "cierre-seguir");
-  const redes = getRedes();
-  const budin = getImagen("budin");
+  const redes = await getRedes();
 
   return (
     <Momento id="la-clase-no-termina" full alto="118svh">
@@ -86,7 +84,7 @@ export function LaClaseNoTermina() {
                     <Flecha className="enlace-flecha-icono" size={18} />
                   </a>
                 ))}
-                <a href="#seccion-umbral" className="enlace-flecha text-titulo">
+                <a href="#seccion-quien-soy" className="enlace-flecha text-titulo">
                   Volver al principio
                 </a>
               </nav>
@@ -100,23 +98,9 @@ export function LaClaseNoTermina() {
         <Adorno variante="huellas" className="adorno-cierre" />
       </div>
 
-      {/* Y el propio Budín, asomando en el cierre (13ª ola). Su ilustración es un recorte
-          limpio, así que se apoya directo sobre el marrón. Vive en la columna lateral, sin
-          robarle alto al texto, y rima con las huellitas del mismo momento: el perro y sus
-          pisadas cierran el recorrido. En mobile se oculta para que el cierre siga
-          entrando cómodo en una pantalla. */}
-      {budin && (
-        <Aparicion className="cierre-budin">
-          <Image
-            src={budin.src}
-            alt={budin.alt}
-            width={budin.ancho ?? 1024}
-            height={budin.alto ?? 1536}
-            sizes="22rem"
-            style={{ inlineSize: "100%", blockSize: "auto" }}
-          />
-        </Aparicion>
-      )}
+      {/* 13ª ola: Budín ya no vive acá como ilustración fija — ahora acompaña TODO el
+          recorrido como personaje (ver `Budin`), así que repetirlo en el cierre sería
+          redundante. Quedan sus huellitas: el rastro de que pasó. */}
       </div>
     </Momento>
   );

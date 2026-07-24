@@ -1,10 +1,10 @@
-import { QuienSoy } from "./_momentos/QuienSoy";
-import { Umbral } from "./_momentos/Umbral";
-import { LoQueTeLlevas } from "./_momentos/LoQueTeLlevas";
-import { MarcasColaboro } from "./_momentos/MarcasColaboro";
-import { TrabajemosJuntos } from "./_momentos/TrabajemosJuntos";
-import { LaClaseNoTermina } from "./_momentos/LaClaseNoTermina";
-import { Wayfinding } from "./_patrones/Wayfinding";
+import { QuienSoy } from "../_momentos/QuienSoy";
+import { Umbral } from "../_momentos/Umbral";
+import { LoQueTeLlevas } from "../_momentos/LoQueTeLlevas";
+import { MarcasColaboro } from "../_momentos/MarcasColaboro";
+import { TrabajemosJuntos } from "../_momentos/TrabajemosJuntos";
+import { LaClaseNoTermina } from "../_momentos/LaClaseNoTermina";
+import { Wayfinding } from "../_patrones/Wayfinding";
 
 /**
  * El recorrido (Bloque 8 · 10ª ola — REESTRUCTURA, decisión de Delfina). Seis secciones,

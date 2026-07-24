@@ -38,8 +38,8 @@ const ANCLA: Record<string, "izq" | "der"> = {
   "trends-mama": "izq",
 };
 
-export function CocinaCompartida() {
-  const puente = getVozDeMomento("cocina-compartida");
+export async function CocinaCompartida() {
+  const puente = await getVozDeMomento("cocina-compartida");
   const comunidad = getComunidad();
 
   return (

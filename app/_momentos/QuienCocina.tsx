@@ -34,8 +34,8 @@ const DISPOSICION: Record<string, Disposicion> = {
 
 const POR_DEFECTO: Disposicion = { escala: "l", ancla: "izq" };
 
-export function QuienCocina() {
-  const voces = getVozDeMomento("quien-cocina");
+export async function QuienCocina() {
+  const voces = await getVozDeMomento("quien-cocina");
 
   return (
     <Momento id="quien-cocina">

@@ -723,6 +723,86 @@
   color: rgb(var(--atm-accent, 107 74 31));
 }
 
+/* =============================================================================
+   BUDÍN — el compañero del recorrido (Bloque 8 · 13ª ola).
+   Pequeño y en una esquina: acompaña sin competir con el contenido. En desktop flota
+   abajo a la izquierda (lejos del medidor de wayfinding, que vive a media altura); en
+   mobile no flota nunca — vive dentro del menú abierto.
+   ========================================================================== */
+.budin {
+  position: relative;
+  line-height: 0;
+}
+.budin-boton {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  inline-size: clamp(84px, 6.5vw, 104px);
+  /* Se despega apenas del fondo sobre el que caiga (crema o banda honda). */
+  filter: drop-shadow(0 6px 14px rgb(42 36 30 / 0.22));
+  -webkit-tap-highlight-color: transparent;
+}
+.budin-boton:focus-visible {
+  outline: 2px solid rgb(var(--atm-accent, 157 48 29));
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
+/* El globo: una tarjeta crema legible sobre cualquier atmósfera. */
+.budin-globo {
+  position: absolute;
+  inset-block-end: calc(100% + 10px);
+  inset-inline-start: 0;
+  inline-size: max-content;
+  max-inline-size: min(15rem, 60vw);
+  margin: 0;
+  padding: 0.6em 0.85em;
+  border-radius: 14px;
+  background-color: var(--color-harina);
+  box-shadow:
+    0 8px 22px rgb(42 36 30 / 0.18),
+    inset 0 0 0 1px rgb(42 36 30 / 0.1);
+  color: var(--color-hierro);
+  font-family: var(--font-mundo);
+  font-size: var(--text-meta);
+  line-height: 1.35;
+  pointer-events: none;
+}
+
+/* Desktop: flotante, esquina inferior izquierda, acompañando todo el recorrido. */
+.budin-flotante {
+  display: none;
+}
+@media (min-width: 720px) {
+  .budin-flotante {
+    display: block;
+    position: fixed;
+    inset-block-end: clamp(18px, 2.4vw, 30px);
+    inset-inline-start: clamp(18px, 2.4vw, 30px);
+    z-index: 9; /* bajo el navbar (10), sobre el contenido */
+  }
+}
+
+/* Mobile: dentro del menú, en su esquina inferior derecha. */
+.budin-menu {
+  position: absolute;
+  inset-block-end: clamp(24px, 7vw, 48px);
+  inset-inline-end: clamp(20px, 6vw, 36px);
+  z-index: 2;
+}
+.budin-menu .budin-globo {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+@media (min-width: 720px) {
+  /* El menú no existe en desktop; su Budín tampoco. */
+  .budin-menu {
+    display: none;
+  }
+}
+
 /* Pantalla de carga (Bloque 8 · 6ª ola): medallón sobre `Harina` que respira y se
    disuelve solo. Sin `@layer` (para ganar a las utilidades sin depender del orden). */
 .pantalla-carga {
@@ -908,29 +988,8 @@
   --adorno-opacidad: 0.85;
 }
 
-/* Budín, en la banda lateral. Su PNG es un RECORTE limpio (todo transparente salvo el
-   perro), así que se apoya directo sobre el marrón sin ningún truco de mezcla. Oculto por
-   debajo de 1100px (en pantallas angostas no hay columna lateral y el cierre debe quedar
-   liviano). */
-.cierre-budin {
-  display: none;
-}
-@media (min-width: 1100px) {
-  .cierre-budin {
-    display: block;
-    position: absolute;
-    inset-inline-end: 0;
-    inset-block-end: 50%;
-    transform: translateY(50%);
-    inline-size: clamp(15rem, 20vw, 21rem);
-    pointer-events: none;
-  }
-  /* El texto se corre a la izquierda para dejarle su lugar a Budín. */
-  .cierre-col {
-    margin-inline: 0 auto;
-    max-inline-size: 38rem;
-  }
-}
+/* 13ª ola: la ilustración lateral de Budín salió del cierre (ahora es el compañero
+   flotante del recorrido). El cierre queda con su texto y las huellitas, centrado. */
 
 /* CONTINUIDAD "Nuevos ebooks en camino": aviso cálido, no una llamada principal. Un
    libro dibujado (que se hojea) acompaña el texto. */

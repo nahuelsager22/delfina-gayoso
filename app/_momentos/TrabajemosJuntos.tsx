@@ -21,8 +21,8 @@ import { Adorno } from "../_chrome/adornos/Adorno";
  *
  * Las propuestas se leen vía `@/content`; el copy queda pendiente de validación.
  */
-export function TrabajemosJuntos() {
-  const servicios = getServicios();
+export async function TrabajemosJuntos() {
+  const servicios = await getServicios();
 
   return (
     <Momento
