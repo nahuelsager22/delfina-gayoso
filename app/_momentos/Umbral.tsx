@@ -1,10 +1,10 @@
-import Image from "next/image";
 import { getImagen, getVozDeMomento } from "@/content";
 import { Momento } from "../_patrones/Momento";
 import { Voz } from "../_patrones/Voz";
 import { Aparicion } from "../_patrones/Aparicion";
 import { Sello } from "../_chrome/adornos/Sello";
 import { EspacioFoto } from "../_chrome/adornos/EspacioFoto";
+import { VideoMarco } from "../_chrome/adornos/VideoMarco";
 import { LineaEditorial } from "../_chrome/adornos/LineaEditorial";
 import { Adorno } from "../_chrome/adornos/Adorno";
 
@@ -29,6 +29,9 @@ export async function Umbral() {
   // 10ª ola: llega el material real. El hero abre con un PLATO que apetece (croquetas
   // recién partidas) —lo que vas a aprender a hacer—, dentro del marco en arco ya
   // resuelto. El retrato de Delfina se reserva para la bienvenida "Quién soy".
+  // 15ª ola: ese plato ahora RESPIRA — un loop del corte de la croqueta con el queso que
+  // se estira (el momento más apetecible del material de Delfina). La foto queda de poster
+  // y respaldo; el video es mejora progresiva (ver `VideoMarco`).
   const foto = await getImagen("croquetas-corte");
 
   return (
@@ -63,12 +66,13 @@ export async function Umbral() {
         <Aparicion orden={1} className="hero-foto">
           <EspacioFoto ratio="4 / 5" forma="arco" nota="delfina">
             {foto && (
-              <Image
-                src={foto.src}
-                alt={foto.alt}
-                fill
+              <VideoMarco
+                poster={foto}
                 sizes="(max-width: 900px) 90vw, 40vw"
-                style={{ objectFit: "cover" }}
+                fuentes={[
+                  { src: "/videos/umbral-croquetas.webm", tipo: "video/webm" },
+                  { src: "/videos/umbral-croquetas.mp4", tipo: "video/mp4" },
+                ]}
               />
             )}
           </EspacioFoto>
