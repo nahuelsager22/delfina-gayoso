@@ -26,12 +26,21 @@ export default defineConfig({
         S.list()
           .title("Contenido")
           .items([
+            // Lo primero del panel: la agenda. Es lo que cambia seguido.
             S.listItem()
-              .title("Ebooks y clases")
-              .child(S.documentTypeList("producto").title("Ebooks y clases")),
+              .title("Experiencias (clases con fecha)")
+              .child(
+                S.documentTypeList("experiencia")
+                  .title("Experiencias")
+                  .defaultOrdering([{ field: "inicio", direction: "desc" }]),
+              ),
             S.listItem()
-              .title("Marcas")
-              .child(S.documentTypeList("marca").title("Marcas")),
+              .title("Ebooks")
+              .child(S.documentTypeList("producto").title("Ebooks")),
+            // Administra a la vez la marquesina del recorrido y la página /colaboraciones.
+            S.listItem()
+              .title("Marcas y colaboraciones")
+              .child(S.documentTypeList("marca").title("Marcas y colaboraciones")),
             S.listItem()
               .title("Textos del sitio")
               .child(S.documentTypeList("voz").title("Textos del sitio")),

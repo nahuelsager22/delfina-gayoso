@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { Momento, RedSocial, VozBudin } from "@/content";
 import { Budin } from "./Budin";
@@ -87,6 +88,12 @@ export function Navbar({
     .filter((m) => m.navLabel)
     .map((m) => ({ id: `seccion-${m.id}`, label: m.navLabel as string }));
 
+  // Los destinos del navbar son secciones de la HOME. Desde una página del sitio
+  // (`/experiencias`) el ancla suelto no lleva a ningún lado: hay que volver primero.
+  // Con el prefijo, el mismo enlace funciona desde cualquier lugar (18ª ola).
+  const enHome = usePathname() === "/";
+  const destino = (ancla: string) => (enHome ? `#${ancla}` : `/#${ancla}`);
+
   const [abierto, setAbierto] = useState(false);
   const [activo, setActivo] = useState<string | null>(null);
   const sinMotion = useReducedMotion();
@@ -165,7 +172,7 @@ export function Navbar({
       <div className="navbar-inner">
         <a
           // 13ª ola: el inicio del recorrido es "Quién soy" (la bienvenida), no el umbral.
-          href="#seccion-quien-soy"
+          href={destino("seccion-quien-soy")}
           className="navbar-marca"
           aria-label="Delfina Gayoso — volver al inicio"
           onClick={() => setAbierto(false)}
@@ -189,7 +196,7 @@ export function Navbar({
           {items.map((it) => (
             <a
               key={it.id}
-              href={`#${it.id}`}
+              href={destino(it.id)}
               className="navbar-link"
               data-activo={activo === it.id ? "true" : undefined}
             >
@@ -239,7 +246,7 @@ export function Navbar({
             {items.map((it) => (
               <a
                 key={it.id}
-                href={`#${it.id}`}
+                href={destino(it.id)}
                 className="navbar-panel-link"
                 data-activo={activo === it.id ? "true" : undefined}
                 onClick={() => setAbierto(false)}

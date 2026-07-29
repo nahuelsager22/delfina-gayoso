@@ -58,7 +58,6 @@ export function FichaProducto({
     destino,
     imagen,
     borrador,
-    familia,
     disponibilidad,
   } = producto;
 
@@ -69,20 +68,10 @@ export function FichaProducto({
   // como algo que VIENE, sin CTA de compra ni "seguir".
   const proximamente = disponibilidad === "proximamente";
 
-  // Categoría legible (rótulo). Deriva de la familia (10ª ola) y cae al formato.
-  const f = formato.toLowerCase();
-  const categoria =
-    familia === "ebook"
-      ? "Ebook"
-      : familia === "clase-presencial"
-        ? "Clase presencial"
-        : familia === "clase-online"
-          ? "Clase en vivo online"
-          : f.includes("clase")
-            ? "Clase"
-            : f.includes("ebook")
-              ? "Ebook"
-              : formato;
+  // Categoría legible (rótulo). 21ª ola: se deriva del formato —el campo `familia` se
+  // retiró cuando las clases pasaron a ser `Experiencia` y todos los productos quedaron
+  // siendo ebooks—.
+  const categoria = formato.toLowerCase().includes("ebook") ? "Ebook" : formato;
 
   return (
     <Aparicion

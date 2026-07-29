@@ -1,19 +1,18 @@
 import type { ProductoSemilla } from "../types";
 
 /**
- * Propuesta educativa (tipo D). Sin campos de catálogo (B3 §4-D); la web no monta
- * carrito (B3 §7). Se muestra en "Lo que te podés llevar", que en el Bloque 8 · 10ª ola
- * concentra TODA la forma de aprender con Delfina: ebooks + clases.
+ * Lo que te llevás a casa (tipo D). Sin campos de catálogo (B3 §4-D); la web no monta
+ * carrito (B3 §7). Se muestra en "Lo que te podés llevar".
  *
- * Bloque 8 · 10ª ola (decisión de Delfina):
- *  · EBOOKS — se quita el ebook hecho con Florencia. Queda "Masas Quebradas" como
- *    ebook real; la sección se reorganiza para la nueva cantidad y cierra con un
- *    aviso de que el catálogo sigue creciendo (lo renderiza el momento, no es un
- *    producto). `familia: "ebook"`.
- *  · CLASES — dos propuestas: PRESENCIALES (reales: hoy la contratan y dicta en
- *    distintos espacios) y, PRÓXIMAMENTE, clases en vivo ONLINE (se comunican como
- *    algo que viene, sin precio ni CTA de compra). `familia: "clase-presencial"` /
- *    `"clase-online"`, con `disponibilidad`.
+ * Bloque 8 · 17ª ola: **las CLASES se fueron de acá.** Pasaron a ser `Experiencia`
+ * (`content/data/experiencias.ts`), porque una clase es una fecha concreta —con lugar,
+ * cupo y estado— y un ebook no. `Producto` queda para lo que se descarga y queda: los
+ * ebooks. La familia `clase-*` se conserva en el tipo por si un documento viejo del CMS
+ * todavía la usa, pero el recorrido ya no la lee.
+ *
+ * Bloque 8 · 10ª ola (decisión de Delfina): se quitó el ebook hecho con Florencia. Queda
+ * "Masas Quebradas" como ebook real; el grupo cierra con un aviso de que el catálogo
+ * sigue creciendo (lo renderiza el momento, no es un producto).
  *
  * PLATAFORMA AGNÓSTICA (Bloque 8): `destino` es sólo una URL (o un contacto directo).
  * Cambiar de plataforma es cambiar la URL, sin tocar la arquitectura.
@@ -35,40 +34,6 @@ export const productos: readonly ProductoSemilla[] = [
     destino:
       "https://hotmart.com/es/marketplace/productos/ebook-masas-quebradas-by-delfina-gayoso/T92555721V",
     imagen: "cover-masas-quebradas",
-    familia: "ebook",
     disponibilidad: "disponible",
-  },
-  {
-    id: "clases-presenciales",
-    titulo: "Clase de cocina",
-    descripcion:
-      "Esta vez, team salado!",
-    queTeLlevas: [
-      "Para niños y niñas a partir de 6 años",
-      "Elaborás y te llevás a casa: Pizza, salchichitas envueltas y quesitas!",
-      "Incluye material y recetario impreso",
-    ],
-    formato: "Martes 28/7 | 16:00hs | 9 de Julio Pcia. Bs. As.",
-    ctaLabel: "Escribime para coordinar",
-    destino: "mailto:gayosodelfina@gmail.com",
-    imagen: "manos-masa",
-    familia: "clase-presencial",
-    disponibilidad: "disponible",
-  },
-  {
-    id: "clases-online",
-    titulo: "Muy pronto",
-    descripcion:
-      "Estoy preparando este espacio para cocinar juntos desde donde estés, sin importar la distancia. Muy pronto voy a abrir los primeros cupos. Una experiencia linda, simple y cercana. Muy pronto vas a poder sumarte a las primeras clases.",
-    queTeLlevas: [
-      "Una clase en vivo, en grupo",
-      "La receta antes de empezar y la grabación después",
-      "Tus preguntas respondidas en el momento",
-    ],
-    formato: "clase en vivo por videollamada",
-    precio: "Muy pronto",
-    imagen: "cocina-al-fuego",
-    familia: "clase-online",
-    disponibilidad: "proximamente",
   },
 ];

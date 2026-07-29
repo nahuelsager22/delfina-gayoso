@@ -1,8 +1,8 @@
 /**
  * Carga inicial del CMS (Bloque 8 · 14ª ola).
  * -----------------------------------------------------------------------------
- * Sube a Sanity TODO el contenido que hoy vive en `content/data/*` —textos, ebooks y
- * clases, marcas, servicios, redes, secciones, la voz de Budín— junto con las imágenes
+ * Sube a Sanity TODO el contenido que hoy vive en `content/data/*` —textos, ebooks,
+ * experiencias, marcas, servicios, redes, secciones, la voz de Budín— junto con las imágenes
  * de `public/`. Después de correrlo, Delfi abre `/studio` y encuentra el sitio entero
  * cargado y editable; el respaldo local queda como red de seguridad.
  *
@@ -55,6 +55,7 @@ const cliente = createClient({
 const { momentos } = await import("../content/data/momentos.ts");
 const { voz } = await import("../content/data/voz.ts");
 const { productos } = await import("../content/data/productos.ts");
+const { experiencias } = await import("../content/data/experiencias.ts");
 const { servicios } = await import("../content/data/servicios.ts");
 const { marcas } = await import("../content/data/marcas.ts");
 const { imagenes } = await import("../content/data/imagenes.ts");
@@ -100,7 +101,7 @@ for (const img of imagenes) {
   });
 }
 
-// Ebooks y clases (la imagen de cada uno se resuelve desde las fotos del sitio).
+// Ebooks (la imagen de cada uno se resuelve desde las fotos del sitio).
 for (const [i, p] of productos.entries()) {
   const fuente = p.imagen ? imagenes.find((im) => im.id === p.imagen) : undefined;
   const imagen = fuente ? await subirImagen(fuente.src) : undefined;
@@ -116,7 +117,6 @@ for (const [i, p] of productos.entries()) {
     precio: p.precio,
     ctaLabel: p.ctaLabel,
     destino: p.destino,
-    familia: p.familia,
     disponibilidad: p.disponibilidad ?? "disponible",
     borrador: p.borrador ?? false,
     orden: (i + 1) * 10,
@@ -124,16 +124,59 @@ for (const [i, p] of productos.entries()) {
   });
 }
 
+// Experiencias: las fechas de cocinar con ella (17ª ola). El estado NO se sube: se
+// deriva de la fecha al leer; sólo viaja lo que ella declara.
+for (const e of experiencias) {
+  const fuente = e.imagen ? imagenes.find((im) => im.id === e.imagen) : undefined;
+  const imagen = fuente ? await subirImagen(fuente.src) : undefined;
+  // Galería: las fotos que se suman DESPUÉS de la clase (hoy la semilla no trae ninguna).
+  const galeria = [];
+  for (const [j, ref] of (e.galeria ?? []).entries()) {
+    const src = imagenes.find((im) => im.id === ref);
+    const subida = src ? await subirImagen(src.src) : undefined;
+    if (subida) galeria.push({ ...subida, _key: `foto-${j}`, alt: src?.alt });
+  }
+  docs.push({
+    _id: `experiencia-${e.id}`,
+    _type: "experiencia",
+    identificador: slug(e.id),
+    nombre: e.nombre,
+    modalidad: e.modalidad,
+    inicio: e.inicio,
+    fin: e.fin,
+    lugar: e.lugar,
+    direccion: e.direccion,
+    descripcion: e.descripcion,
+    queTeLlevas: [...(e.queTeLlevas ?? [])],
+    precio: e.precio,
+    ctaLabel: e.ctaLabel,
+    destino: e.destino,
+    estado: e.estado ?? "automatico",
+    historia: e.historia,
+    ...(imagen ? { imagen: { ...imagen, alt: fuente?.alt } } : {}),
+    ...(galeria.length ? { galeria } : {}),
+  });
+}
+
+// Marcas: el LOGO se sube como asset (las siluetas a tinta única de public/marcas).
 for (const [i, m] of marcas.entries()) {
+  const logo = m.logo ? await subirImagen(m.logo.src) : undefined;
+  const fuente = m.imagen ? imagenes.find((im) => im.id === m.imagen) : undefined;
+  const imagen = fuente ? await subirImagen(fuente.src) : undefined;
   docs.push({
     _id: `marca-${m.id}`,
     _type: "marca",
     identificador: slug(m.id),
     nombre: m.nombre,
     rubro: m.rubro,
+    handle: m.handle,
     url: m.url,
-    borrador: m.borrador ?? false,
+    descripcion: m.descripcion,
+    historia: m.historia,
+    resultados: m.resultados ? [...m.resultados] : undefined,
     orden: (i + 1) * 10,
+    ...(logo ? { logo: { ...logo, alt: m.nombre } } : {}),
+    ...(imagen ? { imagen: { ...imagen, alt: fuente?.alt } } : {}),
   });
 }
 

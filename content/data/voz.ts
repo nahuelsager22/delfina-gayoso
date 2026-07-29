@@ -91,6 +91,51 @@ export const voz: readonly VozDelfina[] = [
     pertenece: "quien-cocina",
   },
 
+  /* ---- Página de Experiencias (Bloque 8 · 18ª ola) ----
+     Tres piezas cortas: la que abre la página, la que presenta el material visual y la
+     que se muestra cuando todavía no hay ninguna fecha publicada. La última existe para
+     que el vacío también hable en su voz, en vez de un cartel de sistema. */
+  {
+    // 20ª ola: copy de Delfina. Sin `enfasis`: el subrayado a mano se retira y el énfasis
+    // gráfico queda sólo en la línea editorial que cierra el bloque.
+    id: "experiencias-apertura",
+    texto:
+      "Cocinar juntos es otra cosa. Se aprende con las manos, se comparte la mesa y cada encuentro deja algo distinto.",
+    registro: "bienvenida",
+    pertenece: "experiencias",
+  },
+  {
+    id: "experiencias-galeria",
+    texto: "Así se ve una clase por dentro.",
+    registro: "reflexion",
+    pertenece: "experiencias",
+  },
+  {
+    id: "experiencias-sin-fechas",
+    texto:
+      "Estoy armando las próximas fechas. Escribime y te aviso apenas abra los cupos.",
+    registro: "reflexion",
+    pertenece: "experiencias",
+  },
+
+  /* ---- Página de Colaboraciones (Bloque 8 · 19ª ola) ----
+     Dos piezas: la que abre y la que cierra invitando a marcas nuevas. El criterio del
+     copy es el mismo del resto: hablar de relaciones concretas, no de "alianzas". */
+  {
+    id: "colaboraciones-apertura",
+    texto:
+      "Me encanta trabajar con marcas que también disfrutan de la cocina. De cada una salió algo que cociné, probé y compartí.",
+    registro: "bienvenida",
+    pertenece: "colaboraciones",
+  },
+  {
+    id: "colaboraciones-cierre",
+    texto:
+      "Si querés que cocinemos algo juntos, escribime. Siempre tengo ganas de una idea nueva.",
+    registro: "cierre",
+    pertenece: "colaboraciones",
+  },
+
   /* ---- M6 · La cocina compartida — la frase que abre la comunidad ----
      Devuelve el foco a lo humano antes del racimo de vida real. */
   {

@@ -1,23 +1,26 @@
-import Image from "next/image";
-import { getMarcas, type Marca } from "@/content";
+import { getMarcas } from "@/content";
 import { Momento } from "../_patrones/Momento";
 import { Voz } from "../_patrones/Voz";
 import { Aparicion } from "../_patrones/Aparicion";
+import { EnlaceEditorial } from "../_patrones/EnlaceEditorial";
 import { Flecha } from "../_chrome/adornos/Flecha";
 import { Adorno } from "../_chrome/adornos/Adorno";
+import { MarquesinaMarcas } from "../_chrome/adornos/MarquesinaMarcas";
 
 /**
- * Marcas con las que colaboro (Bloque 8 · 11ª ola — narrativa de PRESENTE). No es un
- * historial ni un portfolio de trabajos pasados: comunica que ESTAS son las marcas con
- * las que Delfina trabaja HOY, una relación activa y vigente. La idea que debe quedar en
- * una marca visitante: "si estas marcas siguen eligiéndola, nosotros también podríamos".
+ * Marcas con las que colaboro (Bloque 8 · 11ª ola — narrativa de PRESENTE; 19ª ola —
+ * MARQUESINA de logotipos). No es un historial ni un portfolio de trabajos pasados:
+ * comunica que ESTAS son las marcas con las que Delfina trabaja HOY, una relación activa
+ * y vigente. La idea que debe quedar en una marca visitante: "si estas marcas siguen
+ * eligiéndola, nosotros también podríamos".
  *
- *  · Copy en presente ("trabajo hoy", "sigue eligiéndome"), no en pasado.
- *  · Composición que da PROTAGONISMO a las marcas: nombres grandes, cada uno con un
- *    punto TERRACOTA (acento del sistema) que señala colaboración VIGENTE —presencia y
- *    actualidad, no una línea de tiempo—.
+ *  · 19ª ola: la lista de nombres se reemplaza por los LOGOTIPOS REALES desplazándose en
+ *    continuo, a tinta única de la paleta. Se ve antes de leerse —que es el criterio de
+ *    Delfina: "la gente no lee nada"— y en un vistazo dice más que cuatro nombres.
+ *  · La marquesina es un ADELANTO, no el contenido: las colaboraciones contadas (foto,
+ *    historia, qué hacen juntos, resultados) viven en `/colaboraciones`, a un enlace
+ *    editorial de distancia.
  *  · Cierra como CARTA DE PRESENTACIÓN: una invitación clara para nuevas marcas.
- *  · Cuando lleguen los logos reales, cada marca muestra su `logo`.
  */
 export async function MarcasColaboro() {
   const marcas = await getMarcas();
@@ -33,29 +36,16 @@ export async function MarcasColaboro() {
 
       <p className="marcas-lead">Hoy cocino con</p>
 
-      {/* Las marcas, con protagonismo: cada una vigente (punto terracota). */}
-      <ul className="marcas-actuales" aria-label="Marcas con las que colabora Delfina actualmente">
-        {marcas.map((m: Marca, i) => (
-          <Aparicion as="div" key={m.id} orden={i}>
-            <li className="marca-actual">
-              <span className="marca-vigente" aria-hidden />
-              {m.logo ? (
-                <Image
-                  src={m.logo}
-                  alt={m.nombre}
-                  width={240}
-                  height={130}
-                  className="marca-logo"
-                  style={{ inlineSize: "auto", blockSize: "clamp(44px, 6vw, 64px)" }}
-                />
-              ) : (
-                <span className="marca-nombre voz-display">{m.nombre}</span>
-              )}
-              {m.rubro && <span className="marca-rubro">{m.rubro}</span>}
-            </li>
-          </Aparicion>
-        ))}
-      </ul>
+      <MarquesinaMarcas marcas={marcas} />
+
+      <Aparicion className="marcas-ver">
+        <EnlaceEditorial
+          href="/colaboraciones"
+          nota="Historias que seguimos construyendo junto a marcas que confían en mi trabajo"
+        >
+          Ver colaboraciones
+        </EnlaceEditorial>
+      </Aparicion>
 
       {/* Semillas espolvoreadas: el detalle final, en el rojo del manual (12ª ola). */}
       <Adorno variante="especias" color="var(--color-terracota)" />

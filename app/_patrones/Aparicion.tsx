@@ -35,8 +35,8 @@ export function Aparicion({
   className?: string;
   /** Layout del bloque animado (medida, anclaje del zigzag). Se combina con el delay. */
   style?: React.CSSProperties;
-  /** Etiqueta contenedora (p. ej. "div", "section"). */
-  as?: "div" | "section";
+  /** Etiqueta contenedora (p. ej. "div", "section", "li" dentro de una lista). */
+  as?: "div" | "section" | "li";
 }) {
   const ref = useRef<HTMLElement>(null);
 
@@ -81,7 +81,7 @@ export function Aparicion({
 
   return (
     <Tag
-      ref={ref as React.Ref<HTMLDivElement>}
+      ref={ref as React.Ref<never>}
       className={clase}
       style={styleFinal}
     >

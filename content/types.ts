@@ -38,7 +38,16 @@ export type MomentoId =
   | "marcas"
   | "cocina-compartida"
   | "trabajemos-juntos"
-  | "la-clase-no-termina";
+  | "la-clase-no-termina"
+  /**
+   * Bloque 8 · 18ª ola — la página `/experiencias`. No es una parada del recorrido de la
+   * home (no tiene entrada en `momentos.ts` ni aparece en el navbar): es otra habitación
+   * de la misma casa. Existe como identificador para que su copy viva en el CMS, como el
+   * del resto del sitio, y no fijo en el código.
+   */
+  | "experiencias"
+  /** Bloque 8 · 19ª ola — la página `/colaboraciones`. Misma lógica que `experiencias`. */
+  | "colaboraciones";
 
 /* ============================================================================
    A · Voz de Delfina — fragmentos en primera persona (los que van en serif).
@@ -127,7 +136,10 @@ export interface SerieAprendizaje {
 }
 
 /* ============================================================================
-   D · Producto — ebook, ticket de clase.
+   D · Producto — lo que te llevás a casa: los EBOOKS.
+   Bloque 8 · 21ª ola: se retiró `familia`. Existía para separar ebooks de clases dentro
+   de este mismo tipo; desde que las clases son `Experiencia` (17ª ola), todos los
+   productos son ebooks y el campo no distinguía nada.
    Sin campos de catálogo (SKU/stock/categorías/filtros): B3 §4-D.
    El precio es un dato de presentación (se muestra, no se opera): no hay
    carrito ni checkout, la compra ocurre en la plataforma de venta externa (B3 §7).
@@ -173,18 +185,106 @@ export interface Producto {
    */
   readonly borrador?: boolean;
   /**
-   * Familia de propuesta (Bloque 8 · 10ª ola): "ebook" | "clase-presencial" |
-   * "clase-online". "Lo que te llevás" agrupa toda la propuesta educativa y
-   * distingue los ebooks de las clases; las clases, a su vez, presenciales de online.
-   */
-  readonly familia?: "ebook" | "clase-presencial" | "clase-online";
-  /**
    * Disponibilidad (Bloque 8 · 10ª ola). "proximamente" comunica una propuesta que
    * todavía no se lanzó (las clases en vivo online): se muestra como algo que viene,
    * sin CTA de compra ni precio obligatorio.
    */
   readonly disponibilidad?: "disponible" | "proximamente";
 }
+
+/* ============================================================================
+   K · Experiencia — una FECHA concreta de cocinar con Delfina (Bloque 8 · 17ª ola).
+   ----------------------------------------------------------------------------
+   Antes las clases vivían como `Producto` y su fecha era una frase escrita a mano
+   dentro de `formato` ("Martes 28/7 | 16:00hs | 9 de Julio"). Ese texto no se puede
+   ordenar, no vence solo, no sabe si ya pasó y no puede generar un archivo de
+   calendario. Por eso se separan:
+
+     · `Producto`    → lo que te llevás a casa (ebooks).
+     · `Experiencia` → una fecha concreta con ella: presencial u online.
+
+   Con la fecha como DATO, el sitio sabe cuál es la próxima, cuáles ya pasaron y qué
+   estado le corresponde a cada una, sin que nadie lo mantenga a mano.
+   ========================================================================= */
+export type ModalidadExperiencia = "presencial" | "online";
+
+/**
+ * Lo que sólo Delfina sabe y el sitio no puede deducir. Todo lo demás se deriva de la
+ * fecha (ver `content/estados.ts`): por eso el valor por defecto es `"automatico"`.
+ */
+export type EstadoDeclarado =
+  | "automatico"
+  | "proximamente"
+  | "ultimos-lugares"
+  | "completa";
+
+/** Estado efectivo que la interfaz muestra: lo declarado + lo derivado de la fecha. */
+export type EstadoExperiencia =
+  | "nueva"
+  | "proximamente"
+  | "ultimos-lugares"
+  | "completa"
+  | "abierta"
+  | "finalizada";
+
+export interface Experiencia {
+  readonly id: string;
+  /** Cómo la nombra ella (ej. "Clase de cocina · team salado"). */
+  readonly nombre: string;
+  readonly modalidad: ModalidadExperiencia;
+  /**
+   * Comienzo, en ISO 8601 CON zona horaria (ej. "2026-07-28T16:00:00-03:00"). Sin
+   * fecha, la experiencia se comunica como algo que viene ("Próximamente") y queda
+   * fuera del módulo de invitación: no hay fecha que invitar todavía.
+   */
+  readonly inicio?: string;
+  /** Fin, mismo formato. Sin él se asume una duración de dos horas. */
+  readonly fin?: string;
+  /** Lugar en su lenguaje (ej. "9 de Julio, Pcia. Bs. As.", "Por videollamada"). */
+  readonly lugar?: string;
+  /** Dirección exacta, si la hay: es lo que viaja al calendario del visitante. */
+  readonly direccion?: string;
+  /** En su voz, breve: la gente no lee, así que acá se sugiere, no se explica. */
+  readonly descripcion: string;
+  readonly queTeLlevas: readonly string[];
+  readonly precio?: string;
+  /** Texto de la acción; por defecto "Reservar tu lugar". */
+  readonly ctaLabel?: string;
+  /** Dónde se reserva: link de pago, WhatsApp o mailto. */
+  readonly destino?: string;
+  readonly estado?: EstadoDeclarado;
+  /** Foto de la experiencia. Llega YA RESUELTA desde la capa de acceso. */
+  readonly imagen?: ImagenReal;
+  /**
+   * Información ampliada (Bloque 8 · 18ª ola): cómo es realmente estar ahí. Vive en la
+   * página de experiencias, no en el recorrido —en la home la fecha invita, acá se
+   * cuenta—. Opcional: sin ella la ficha se sostiene con la descripción breve.
+   */
+  readonly historia?: string;
+  /**
+   * Fotos de la experiencia (18ª ola). Se llenan DESPUÉS de que sucede: son la prueba de
+   * cómo fue. Vacía, la composición se dibuja igual (ver `EspacioFoto`).
+   */
+  readonly galeria?: readonly ImagenReal[];
+  /**
+   * Loop corto de la experiencia (18ª ola). MEJORA PROGRESIVA sobre `imagen`, que sigue
+   * siendo el poster y el respaldo: se integra con `VideoMarco`, respeta
+   * `prefers-reduced-motion` y carga al entrar en viewport. Loops livianos y sin audio;
+   * un video largo no va acá.
+   */
+  readonly video?: string;
+  /**
+   * Cuándo se publicó (ISO). Sirve para el estado "Nueva"; en el CMS lo aporta la
+   * fecha de creación del documento, así que nadie tiene que cargarlo.
+   */
+  readonly publicada?: string;
+}
+
+/** Como la semilla local escribe las imágenes por referencia (igual que `Producto`). */
+export type ExperienciaSemilla = Omit<Experiencia, "imagen" | "galeria"> & {
+  readonly imagen?: ImagenRealRef;
+  readonly galeria?: readonly ImagenRealRef[];
+};
 
 /* ============================================================================
    J · Budín — el perro de Delfina, compañero del recorrido (Bloque 8 · 13ª ola).
@@ -213,19 +313,46 @@ export type ProductoSemilla = Omit<Producto, "imagen"> & {
    universo visual (no una grilla corporativa de logos). Datos reales PENDIENTES
    de Delfina; hoy hay marcadores de ejemplo (`borrador`).
    ========================================================================= */
+/**
+ * Logotipo de una marca (Bloque 8 · 19ª ola). Lleva sus dimensiones porque el sitio lo
+ * dibuja como MÁSCARA a tinta única —el color lo pone la paleta, no el archivo—, y para
+ * eso necesita saber la proporción de la caja que va a enmascarar.
+ */
+export interface LogoMarca {
+  readonly src: string;
+  readonly ancho: number;
+  readonly alto: number;
+}
+
 export interface Marca {
   readonly id: string;
   /** Nombre de la marca, tal como se escribe. */
   readonly nombre: string;
   /** Rubro breve (ej. "cafetería", "escuela de cocina"), opcional. */
   readonly rubro?: string;
-  /** Logo real cuando exista (`/marcas/…`); sin él, se muestra el nombre compuesto. */
-  readonly logo?: string;
+  /** Logo real cuando exista; sin él, se muestra el nombre compuesto. */
+  readonly logo?: LogoMarca;
+  /** Usuario de Instagram tal como se muestra (ej. "@buffalo.arg"). */
+  readonly handle?: string;
   /** Sitio/redes de la marca, opcional. */
   readonly url?: string;
-  /** Marcador de EJEMPLO hasta que lleguen las marcas reales (ver `Producto.borrador`). */
-  readonly borrador?: boolean;
+  /* --- La colaboración contada (19ª ola): una relación, no un logo en una grilla. --- */
+  /** Qué hacen juntos, en una línea. */
+  readonly descripcion?: string;
+  /** Cómo empezó y cómo sigue, en su voz. */
+  readonly historia?: string;
+  /** Qué salió de eso: piezas, recetas, eventos. Uno por línea, concreto. */
+  readonly resultados?: readonly string[];
+  /** Fotografía de la colaboración. Sin ella, la composición se dibuja igual. */
+  readonly imagen?: ImagenReal;
+  /** Loop corto, como en las experiencias: mejora progresiva sobre la fotografía. */
+  readonly video?: string;
 }
+
+/** La semilla local escribe la fotografía por referencia (igual que `Producto`). */
+export type MarcaSemilla = Omit<Marca, "imagen"> & {
+  readonly imagen?: ImagenRealRef;
+};
 
 /* ============================================================================
    E · Propuesta de servicio — colaboración, asesoría, propuesta abierta.

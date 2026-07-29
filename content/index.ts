@@ -31,6 +31,7 @@ import * as Q from "@/sanity/lib/queries";
 
 import { momentos as semillaMomentos } from "./data/momentos";
 import { voz as semillaVoz } from "./data/voz";
+import { experiencias as semillaExperiencias } from "./data/experiencias";
 import { aprendizaje } from "./data/aprendizaje";
 import { serieActual } from "./data/series";
 import { productos as semillaProductos } from "./data/productos";
@@ -41,7 +42,10 @@ import { comunidad } from "./data/comunidad";
 import { redes as semillaRedes } from "./data/redes";
 import { budin as semillaBudin } from "./data/budin";
 
+import { esFutura } from "./estados";
+
 import type {
+  Experiencia,
   ImagenReal,
   ImagenRealRef,
   Marca,
@@ -58,6 +62,15 @@ import type {
 } from "./types";
 
 export type * from "./types";
+/** Reglas de estado de las experiencias: son del contenido, se leen desde `@/content`. */
+export {
+  admiteCalendario,
+  admiteReserva,
+  esFutura,
+  estadoDeExperiencia,
+  ETIQUETA_ESTADO,
+  finDe,
+} from "./estados";
 
 /* ============================================================================
    Utilidad: consultar el CMS y, si no hay nada, devolver la semilla local.
@@ -119,9 +132,15 @@ export async function getMomento(id: MomentoId): Promise<Momento | undefined> {
   return (await getMomentos()).find((m) => m.id === id);
 }
 
-/* ---- Voz de Delfina (tipo A) ---- */
+/* ---- Voz de Delfina (tipo A) ----------------------------------------------
+   Único accessor con respaldo POR IDENTIFICADOR, no por colección (18ª ola). El resto
+   del contenido son listas —las marcas del CMS son *todas* las marcas—, pero los textos
+   los pide el sitio por id: cuando una sección nueva estrena su copy, ese texto todavía
+   no existe en Sanity y la sección quedaría muda hasta re-sembrar (y re-sembrar pisa lo
+   editado). Así, el CMS manda siempre sobre el texto que ya tiene, y la semilla sólo
+   completa los que aún no subieron. */
 export async function getVoz(): Promise<readonly VozDelfina[]> {
-  return conRespaldo<VozDelfina, VozDelfina>(
+  const delCms = await conRespaldo<VozDelfina, VozDelfina>(
     Q.VOCES,
     (filas) =>
       filas.map((f) => ({
@@ -133,6 +152,10 @@ export async function getVoz(): Promise<readonly VozDelfina[]> {
       })),
     semillaVoz,
   );
+
+  const cargados = new Set(delCms.map((v) => v.id));
+  const faltantes = semillaVoz.filter((v) => !cargados.has(v.id));
+  return faltantes.length === 0 ? delCms : [...delCms, ...faltantes];
 }
 
 export async function getVozDeMomento(
@@ -197,7 +220,7 @@ interface ProductoSanity {
   precio?: string | null;
   ctaLabel?: string | null;
   destino?: string | null;
-  familia?: Producto["familia"] | null;
+
   disponibilidad?: Producto["disponibilidad"] | null;
   borrador?: boolean | null;
   imagen?: (ImagenSanity & { alt?: string | null }) | null;
@@ -225,7 +248,6 @@ export async function getProductos(): Promise<readonly Producto[]> {
         precio: limpio(f.precio),
         ctaLabel: limpio(f.ctaLabel),
         destino: limpio(f.destino),
-        familia: limpio(f.familia),
         disponibilidad: limpio(f.disponibilidad),
         borrador: f.borrador ?? undefined,
         imagen: aImagenReal(f.imagen, {
@@ -240,6 +262,104 @@ export async function getProductos(): Promise<readonly Producto[]> {
 
 export async function getProducto(id: string): Promise<Producto | undefined> {
   return (await getProductos()).find((p) => p.id === id);
+}
+
+/* ---- Experiencias: las fechas de cocinar con ella (tipo K) ----------------
+   Se ordenan por FECHA (las que todavía no la tienen, al final): la agenda se ordena
+   sola, sin un campo de orden que alguien tenga que mantener. El ESTADO no se guarda:
+   se deriva al leer (`content/estados.ts`). */
+interface ExperienciaSanity {
+  id: string;
+  nombre: string;
+  modalidad: Experiencia["modalidad"];
+  inicio?: string | null;
+  fin?: string | null;
+  lugar?: string | null;
+  direccion?: string | null;
+  descripcion: string;
+  queTeLlevas?: string[] | null;
+  precio?: string | null;
+  ctaLabel?: string | null;
+  destino?: string | null;
+  estado?: Experiencia["estado"] | null;
+  publicada?: string | null;
+  historia?: string | null;
+  imagen?: (ImagenSanity & { alt?: string | null }) | null;
+  galeria?: (ImagenSanity & { alt?: string | null })[] | null;
+  video?: string | null;
+}
+
+const porFecha = (a: Experiencia, b: Experiencia): number => {
+  if (!a.inicio) return b.inicio ? 1 : 0;
+  if (!b.inicio) return -1;
+  return Date.parse(a.inicio) - Date.parse(b.inicio);
+};
+
+export async function getExperiencias(): Promise<readonly Experiencia[]> {
+  const semilla: readonly Experiencia[] = semillaExperiencias.map((e) => ({
+    ...e,
+    imagen: e.imagen
+      ? semillaImagenes.find((i) => i.id === e.imagen)
+      : undefined,
+    galeria: e.galeria
+      ?.map((ref) => semillaImagenes.find((i) => i.id === ref))
+      .filter((i): i is ImagenReal => i !== undefined),
+  }));
+
+  const todas = await conRespaldo<ExperienciaSanity, Experiencia>(
+    Q.EXPERIENCIAS,
+    (filas) =>
+      filas.map((f) => ({
+        id: f.id,
+        nombre: f.nombre,
+        modalidad: f.modalidad,
+        inicio: limpio(f.inicio),
+        fin: limpio(f.fin),
+        lugar: limpio(f.lugar),
+        direccion: limpio(f.direccion),
+        descripcion: f.descripcion,
+        queTeLlevas: lista(f.queTeLlevas),
+        precio: limpio(f.precio),
+        ctaLabel: limpio(f.ctaLabel),
+        destino: limpio(f.destino),
+        estado: limpio(f.estado),
+        publicada: limpio(f.publicada),
+        historia: limpio(f.historia),
+        video: limpio(f.video),
+        imagen: aImagenReal(f.imagen, {
+          id: `experiencia-${f.id}`,
+          altPorDefecto: f.nombre,
+          tipoGesto: "proceso",
+        }),
+        galeria: (f.galeria ?? [])
+          .map((g, i) =>
+            aImagenReal(g, {
+              id: `experiencia-${f.id}-foto-${i}`,
+              altPorDefecto: f.nombre,
+              tipoGesto: "proceso",
+            }),
+          )
+          .filter((g): g is ImagenReal => g !== undefined),
+      })),
+    semilla,
+  );
+
+  return [...todas].sort(porFecha);
+}
+
+export async function getExperiencia(
+  id: string,
+): Promise<Experiencia | undefined> {
+  return (await getExperiencias()).find((e) => e.id === id);
+}
+
+/**
+ * La PRÓXIMA experiencia: la de fecha futura más cercana. Sin ninguna con fecha, no hay
+ * próxima —una promesa sin día no es una cita— y el módulo de invitación no se muestra.
+ */
+export async function getProximaExperiencia(): Promise<Experiencia | undefined> {
+  const ahora = Date.now();
+  return (await getExperiencias()).find((e) => esFutura(e, ahora));
 }
 
 /* ---- Servicios (tipo E) ---- */
@@ -272,18 +392,31 @@ export async function getServicios(): Promise<readonly PropuestaServicio[]> {
   );
 }
 
-/* ---- Marcas (tipo I) ---- */
+/* ---- Marcas (tipo I) ----------------------------------------------------
+   El LOGO llega con sus dimensiones porque el sitio necesita la proporción de su caja
+   para escalarlo (área óptica pareja), no sólo la URL. */
 interface MarcaSanity {
   id: string;
   nombre: string;
   rubro?: string | null;
+  handle?: string | null;
   descripcion?: string | null;
+  historia?: string | null;
+  resultados?: string[] | null;
   url?: string | null;
-  logo?: string | null;
-  borrador?: boolean | null;
+  logo?: { src?: string | null; ancho?: number | null; alto?: number | null } | null;
+  imagen?: (ImagenSanity & { alt?: string | null }) | null;
+  video?: string | null;
 }
 
 export async function getMarcas(): Promise<readonly Marca[]> {
+  const semilla: readonly Marca[] = semillaMarcas.map((m) => ({
+    ...m,
+    imagen: m.imagen
+      ? semillaImagenes.find((i) => i.id === m.imagen)
+      : undefined,
+  }));
+
   return conRespaldo<MarcaSanity, Marca>(
     Q.MARCAS,
     (filas) =>
@@ -291,11 +424,23 @@ export async function getMarcas(): Promise<readonly Marca[]> {
         id: f.id,
         nombre: f.nombre,
         rubro: limpio(f.rubro),
-        logo: limpio(f.logo),
+        handle: limpio(f.handle),
+        logo:
+          f.logo?.src && f.logo.ancho && f.logo.alto
+            ? { src: f.logo.src, ancho: f.logo.ancho, alto: f.logo.alto }
+            : undefined,
         url: limpio(f.url),
-        borrador: f.borrador ?? undefined,
+        descripcion: limpio(f.descripcion),
+        historia: limpio(f.historia),
+        resultados: f.resultados ?? undefined,
+        video: limpio(f.video),
+        imagen: aImagenReal(f.imagen, {
+          id: `marca-${f.id}`,
+          altPorDefecto: f.nombre,
+          tipoGesto: "proceso",
+        }),
       })),
-    semillaMarcas,
+    semilla,
   );
 }
 

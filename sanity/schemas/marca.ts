@@ -1,4 +1,4 @@
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 
 /**
  * Marcas con las que Delfi colabora HOY. La sección comunica vigencia: si una
@@ -29,10 +29,16 @@ export const marca = defineType({
       type: "string",
     }),
     defineField({
+      name: "handle",
+      title: "Instagram",
+      description: 'Tal como se escribe, con arroba (ej. "@buffalo.arg").',
+      type: "string",
+    }),
+    defineField({
       name: "logo",
       title: "Logo",
       description:
-        "Ideal en PNG con fondo transparente. Si no hay logo, se muestra el nombre.",
+        "PNG con FONDO TRANSPARENTE (o SVG). El sitio lo dibuja en un solo color de la paleta, así que un logo con fondo blanco o negro se vería como un rectángulo.",
       type: "image",
       options: { hotspot: false },
       fields: [
@@ -41,10 +47,46 @@ export const marca = defineType({
     }),
     defineField({
       name: "descripcion",
-      title: "Sobre la colaboración",
-      description: "Opcional. Qué hacen juntos.",
+      title: "Qué hacen juntos",
+      description: "Una línea. Se ve en la página de Colaboraciones.",
       type: "text",
-      rows: 3,
+      rows: 2,
+    }),
+    defineField({
+      name: "historia",
+      title: "Cómo empezó",
+      description: "Opcional, en tu voz: cómo se dio la colaboración y cómo sigue.",
+      type: "text",
+      rows: 4,
+    }),
+    defineField({
+      name: "resultados",
+      title: "Qué salió de eso",
+      description: "Concreto: recetas, piezas, eventos. Una línea por resultado.",
+      type: "array",
+      of: [defineArrayMember({ type: "string" })],
+    }),
+    defineField({
+      name: "imagen",
+      title: "Fotografía de la colaboración",
+      description: "Si no hay, la página igual se ve terminada.",
+      type: "image",
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Descripción (texto alternativo)",
+          type: "string",
+        }),
+      ],
+    }),
+    defineField({
+      name: "video",
+      title: "Video corto",
+      description:
+        "Opcional. Un loop de pocos segundos, sin audio y liviano. Aparece sobre la foto, que sigue siendo el respaldo.",
+      type: "file",
+      options: { accept: "video/mp4,video/webm" },
     }),
     defineField({
       name: "url",
@@ -57,12 +99,6 @@ export const marca = defineType({
       title: "Orden",
       type: "number",
       initialValue: 10,
-    }),
-    defineField({
-      name: "borrador",
-      title: "Marcar como ejemplo",
-      type: "boolean",
-      initialValue: false,
     }),
   ],
   orderings: [

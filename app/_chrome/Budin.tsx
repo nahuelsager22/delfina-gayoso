@@ -46,7 +46,14 @@ export function Budin({
   const controles = useAnimationControls();
 
   const [mensaje, setMensaje] = useState<string | null>(null);
-  const [saludando, setSaludando] = useState(false);
+  /**
+   * En desktop Budín saluda al pasar el mouse. En mobile no hay hover, así que el saludo
+   * se perdía y había que descubrirlo tocándolo de casualidad (21ª ola). Ahora arranca
+   * saludando: como sólo existe dentro del menú abierto, montarse ES el momento de
+   * saludar. Se inicializa en el estado —no en un efecto— para que el globo esté en el
+   * primer render y no aparezca con un parpadeo.
+   */
+  const [saludando, setSaludando] = useState(variante === "menu");
   const ultimaRef = useRef(-1);
   const ocultarRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -88,6 +95,14 @@ export function Budin({
     },
     [],
   );
+
+  /* El saludo de bienvenida del menú se retira solo, como se retira el del hover al
+     sacar el mouse. Si tocan a Budín antes, `hablar` ya lo reemplaza por una frase. */
+  useEffect(() => {
+    if (variante !== "menu") return;
+    const t = setTimeout(() => setSaludando(false), 4200);
+    return () => clearTimeout(t);
+  }, [variante]);
 
   /** Una frase distinta de la anterior: la sorpresa se mantiene. */
   const hablar = useCallback(() => {

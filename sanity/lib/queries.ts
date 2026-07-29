@@ -25,20 +25,58 @@ export const PRODUCTOS = `*[_type == "producto"] | order(orden asc, titulo asc) 
   precio,
   ctaLabel,
   destino,
-  familia,
   disponibilidad,
   borrador,
   "imagen": imagen${IMAGEN} + { "alt": imagen.alt }
+}`;
+
+/**
+ * Experiencias (17ª ola). Se ordenan por FECHA, no por un campo de orden manual: la
+ * agenda se ordena sola. Las que todavía no tienen fecha quedan al final. `publicada`
+ * sale de la fecha de creación del documento, así que Delfi no tiene que cargarla.
+ */
+export const EXPERIENCIAS = `*[_type == "experiencia"] | order(inicio asc) {
+  "id": identificador.current,
+  nombre,
+  modalidad,
+  inicio,
+  fin,
+  lugar,
+  direccion,
+  descripcion,
+  queTeLlevas,
+  precio,
+  ctaLabel,
+  destino,
+  estado,
+  historia,
+  "publicada": _createdAt,
+  "imagen": imagen${IMAGEN} + { "alt": imagen.alt },
+  "galeria": galeria[]{
+    "url": asset->url,
+    "ancho": asset->metadata.dimensions.width,
+    "alto": asset->metadata.dimensions.height,
+    alt
+  },
+  "video": video.asset->url
 }`;
 
 export const MARCAS = `*[_type == "marca"] | order(orden asc, nombre asc) {
   "id": identificador.current,
   nombre,
   rubro,
+  handle,
   descripcion,
+  historia,
+  resultados,
   url,
-  borrador,
-  "logo": logo.asset->url
+  "logo": {
+    "src": logo.asset->url,
+    "ancho": logo.asset->metadata.dimensions.width,
+    "alto": logo.asset->metadata.dimensions.height
+  },
+  "imagen": imagen${IMAGEN} + { "alt": imagen.alt },
+  "video": video.asset->url
 }`;
 
 export const VOCES = `*[_type == "voz"] | order(orden asc) {

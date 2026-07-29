@@ -1,13 +1,16 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 /**
- * Todo lo que se puede aprender con Delfi: EBOOKS y CLASES (presenciales y online).
- * Agregar uno nuevo es crear un documento acá — el sitio lo publica solo, en el bloque
- * que corresponda según la "familia".
+ * Los EBOOKS: lo que se descarga y queda. Agregar uno nuevo es crear un documento acá y
+ * el sitio lo publica solo, en "Lo que te podés llevar".
+ *
+ * Bloque 8 · 21ª ola: se retiró el campo "Qué es" (familia). Existía para separar ebooks
+ * de clases dentro de este mismo tipo; desde que las clases son su propio tipo
+ * (Experiencia), acá todo es un ebook y el campo no distinguía nada.
  */
 export const producto = defineType({
   name: "producto",
-  title: "Ebook o clase",
+  title: "Ebook",
   type: "document",
   fields: [
     defineField({
@@ -22,20 +25,6 @@ export const producto = defineType({
       description: "Se genera solo desde el título. No hace falta tocarlo.",
       type: "slug",
       options: { source: "titulo", maxLength: 60 },
-      validation: (r) => r.required(),
-    }),
-    defineField({
-      name: "familia",
-      title: "Qué es",
-      type: "string",
-      options: {
-        list: [
-          { title: "Ebook", value: "ebook" },
-          { title: "Clase presencial", value: "clase-presencial" },
-          { title: "Clase en vivo online", value: "clase-online" },
-        ],
-        layout: "radio",
-      },
       validation: (r) => r.required(),
     }),
     defineField({
@@ -133,6 +122,6 @@ export const producto = defineType({
     { title: "Orden", name: "orden", by: [{ field: "orden", direction: "asc" }] },
   ],
   preview: {
-    select: { title: "titulo", subtitle: "familia", media: "imagen" },
+    select: { title: "titulo", subtitle: "formato", media: "imagen" },
   },
 });

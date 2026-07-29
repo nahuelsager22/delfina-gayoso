@@ -1,6 +1,7 @@
 import type { SchemaTypeDefinition } from "sanity";
 import { imagen } from "./imagen";
 import { producto } from "./producto";
+import { experiencia } from "./experiencia";
 import { marca } from "./marca";
 import { voz } from "./voz";
 import { servicio } from "./servicio";
@@ -12,6 +13,7 @@ import { budin, momento, red } from "./varios";
  * el proyecto venía usando. Por eso migrar no cambió nada de la web.
  */
 export const schemaTypes: SchemaTypeDefinition[] = [
+  experiencia,
   producto,
   marca,
   voz,

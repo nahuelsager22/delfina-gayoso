@@ -724,6 +724,694 @@
 }
 
 /* =============================================================================
+   EXPERIENCIAS (Bloque 8 · 17ª ola) — la próxima fecha como INVITACIÓN.
+   Lo primero que llega es la foto; después el día como pieza gráfica (un número
+   grande, no una tabla); recién entonces el nombre. El texto viene al final y es
+   corto: "la gente no lee nada" se toma como criterio de composición.
+   ========================================================================== */
+.proxima {
+  margin-block-end: var(--space-xl);
+}
+.proxima-rotulo {
+  color: rgb(var(--atm-accent, 107 74 31));
+  margin-block-end: var(--space-md);
+}
+.proxima-cuerpo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(var(--space-lg), 4vw, var(--space-2xl));
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .proxima-cuerpo {
+    /* La foto pesa, pero no domina: el día tiene que respirar al lado. */
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  }
+}
+.proxima-foto {
+  position: relative;
+  max-inline-size: 460px;
+  inline-size: 100%;
+}
+.proxima-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-inline-size: var(--measure-cuerpo);
+}
+
+/* El día: la pieza gráfica del módulo. Serif grande + mes en sans, alineados por la
+   base, con una línea a mano que los ancla. */
+.proxima-fecha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-sm) var(--space-md);
+}
+.proxima-fecha-bloque {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2xs);
+}
+.proxima-dia {
+  font-size: clamp(3.25rem, 2.2rem + 4.4vw, 5.5rem);
+  line-height: 0.86;
+  color: rgb(var(--atm-ink, 42 36 30));
+}
+.proxima-mes {
+  font-family: var(--font-mundo);
+  font-size: var(--text-titulo);
+  color: rgb(var(--atm-accent, 107 74 31));
+}
+.proxima-cuando {
+  font-family: var(--font-mundo);
+  font-size: var(--text-meta);
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+  padding-inline-start: var(--space-md);
+  border-inline-start: 1.5px solid rgb(var(--atm-accent, 107 74 31) / 0.45);
+}
+.proxima-nombre {
+  font-size: var(--text-voz-l, clamp(1.4rem, 1.1rem + 1.3vw, 2rem));
+  line-height: 1.15;
+  color: rgb(var(--atm-ink, 42 36 30));
+}
+.proxima-donde {
+  font-family: var(--font-mundo);
+  font-size: var(--text-meta);
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+}
+.proxima-voz {
+  margin-block-start: var(--space-2xs);
+}
+.proxima-detalle,
+.ficha-exp-lista {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  font-family: var(--font-mundo);
+  font-size: var(--text-meta);
+  color: rgb(var(--atm-ink, 42 36 30));
+}
+.proxima-detalle li,
+.ficha-exp-lista li {
+  display: flex;
+  gap: var(--space-xs);
+}
+.proxima-detalle li > span:first-child,
+.ficha-exp-lista li > span:first-child {
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+}
+.proxima-acciones,
+.ficha-exp-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md) var(--space-lg);
+  margin-block-start: var(--space-sm);
+}
+.proxima-nota {
+  font-family: var(--font-mundo);
+  font-size: var(--text-meta);
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+}
+
+/* Ficha de experiencia en reposo: misma habitación que la del ebook, con zigzag. */
+.ficha-exp {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  align-items: flex-start;
+}
+.ficha-exp[data-ancla="der"] {
+  flex-direction: row-reverse;
+}
+.ficha-exp-foto {
+  position: relative;
+  flex: 0 1 340px;
+  min-inline-size: min(340px, 100%);
+}
+.ficha-exp-cuerpo {
+  flex: 1 1 320px;
+  max-inline-size: var(--measure-cuerpo);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.ficha-exp-modalidad {
+  color: rgb(var(--atm-accent, 107 74 31));
+}
+.ficha-exp-nombre {
+  font-family: var(--font-mundo);
+  font-weight: var(--font-weight-medium);
+}
+.ficha-exp-meta {
+  font-family: var(--font-mundo);
+  font-size: var(--text-meta);
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+}
+
+/* ---- Sello de estado ------------------------------------------------------
+   El mismo punto de "vigente" que usa Marcas, con su palabra al lado. Un solo
+   elemento gráfico para cinco significados: cambia el color y la palabra, no la
+   forma. "Últimos lugares" es el único que empuja (terracota). */
+.sello-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  align-self: flex-start;
+  font-family: var(--font-mundo);
+  font-size: var(--text-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(var(--atm-accent, 107 74 31));
+}
+.sello-estado-punto {
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 50%;
+  background-color: currentColor;
+  box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 16%, transparent);
+}
+.sello-estado[data-estado="ultimos-lugares"] {
+  color: var(--color-terracota, #9d301d);
+}
+.sello-estado[data-estado="completa"],
+.sello-estado[data-estado="finalizada"] {
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+}
+/* En las bandas hondas el terracota pierde contraste: ahí manda el acento de la sala. */
+[data-oscura="true"] .sello-estado[data-estado="ultimos-lugares"] {
+  color: rgb(var(--atm-accent, 201 168 106));
+}
+
+/* =============================================================================
+   PÁGINA DE EXPERIENCIAS (Bloque 8 · 18ª ola).
+   Otra habitación de la misma casa: usa las mismas bandas y ondas del recorrido, así
+   que acá sólo viven las piezas propias de la página.
+   ========================================================================== */
+.momento-salida {
+  margin-block-start: var(--space-2xl);
+}
+.pagina-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
+  margin-block-start: var(--space-3xl);
+}
+.pagina-rotulo {
+  color: rgb(var(--atm-accent, 107 74 31));
+}
+.pagina-vacio {
+  margin-block-start: var(--space-xl);
+}
+.pagina-salida {
+  margin-block-start: var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+/* MOSAICO: anchos, proporciones y arranques distintos, encadenados cada seis. No es una
+   grilla de miniaturas —se lee como una composición armada a mano—. */
+.mosaico {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(var(--space-md), 3vw, var(--space-xl));
+  margin-block-start: var(--space-2xl);
+  align-items: start;
+}
+.mosaico-hueco {
+  grid-column: span 6;
+}
+@media (min-width: 760px) {
+  .mosaico-hueco:nth-child(6n + 1) {
+    grid-column: span 5;
+  }
+  .mosaico-hueco:nth-child(6n + 2) {
+    grid-column: span 4;
+    margin-block-start: clamp(24px, 4vw, 64px);
+  }
+  .mosaico-hueco:nth-child(6n + 3) {
+    grid-column: span 3;
+    margin-block-start: clamp(48px, 8vw, 132px);
+  }
+  .mosaico-hueco:nth-child(6n + 4) {
+    grid-column: span 4;
+  }
+  .mosaico-hueco:nth-child(6n + 5) {
+    grid-column: span 5;
+    margin-block-start: clamp(16px, 3vw, 48px);
+  }
+  .mosaico-hueco:nth-child(6n + 6) {
+    grid-column: span 3;
+    margin-block-start: clamp(36px, 6vw, 96px);
+  }
+}
+/* Mobile: dos columnas, con la segunda descolgada — el mismo gesto, más simple. */
+@media (max-width: 759px) {
+  .mosaico-hueco:nth-child(even) {
+    margin-block-start: clamp(20px, 6vw, 40px);
+  }
+}
+
+/* LAS QUE YA SUCEDIERON: registro liviano —la fecha al margen, el relato al lado—.
+   No repiten la ficha completa: ya pasaron, no hay nada que reservar. */
+.pasadas {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  margin-block-start: var(--space-2xl);
+}
+.pasada {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: flex-start;
+  padding-block-end: var(--space-lg);
+  border-block-end: 1px solid rgb(var(--atm-ink, 42 36 30) / 0.14);
+}
+.pasada:last-of-type {
+  border-block-end: 0;
+}
+.pasada-fecha {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: none;
+  min-inline-size: 4.5rem;
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+}
+.pasada-dia {
+  font-size: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
+  line-height: 1;
+}
+.pasada-mes {
+  font-family: var(--font-mundo);
+  font-size: var(--text-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.pasada-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  max-inline-size: var(--measure-cuerpo);
+}
+.pasada-nombre {
+  font-size: var(--text-titulo);
+  color: rgb(var(--atm-ink, 42 36 30));
+}
+.pasada-meta {
+  font-family: var(--font-mundo);
+  font-size: var(--text-meta);
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+}
+.pasada-texto {
+  font-family: var(--font-voz);
+  color: rgb(var(--atm-ink, 42 36 30));
+}
+.ficha-exp-historia {
+  max-inline-size: var(--measure-cuerpo) !important;
+}
+
+/* =============================================================================
+   MARCAS (Bloque 8 · 19ª ola) — marquesina de logotipos a TINTA ÚNICA.
+   El archivo aporta la forma (máscara); la paleta aporta el color. Cuatro logos de
+   cuatro marcas distintas dejan de ser cuatro banners y se leen como un sistema.
+   ========================================================================== */
+/* BANDA (21ª ola): salvia a pleno ancho con la guarda de arcos del sistema. Le da a la
+   sección su momento y levanta el contraste de los logotipos claros sin tocar sus
+   colores. La escala de los logos se ajusta por dispositivo con `--escala-logo`. */
+.marquesina-marcas {
+  position: relative;
+  inline-size: 100vw;
+  margin-inline: calc(50% - 50vw);
+  margin-block: clamp(var(--space-xl), 5vw, var(--space-2xl));
+  overflow: hidden;
+  background-color: #b1bfaa; /* salvia del manual */
+  /* Tinta local: los detalles de la cinta se leen sobre la salvia, no sobre la sala. */
+  --mq-ink: 38 44 34;
+  --mq-acc: 157 48 29; /* terracota, el acento del sistema */
+  --escala-logo: 0.68;
+  /* El aire justo: suficiente para que la cinta respire, sin que los logotipos queden
+     flotando en un vacío. La guarda ocupa 8px arriba y abajo, así que el padding la
+     contempla. */
+  padding-block: clamp(var(--space-md), 2.6vw, var(--space-lg));
+  border-block: 1px solid rgb(var(--mq-ink) / 0.16);
+}
+@media (min-width: 700px) {
+  .marquesina-marcas {
+    --escala-logo: 1;
+  }
+}
+/* La guarda: cenefa de arcos arriba y abajo, el mismo motivo de recetario que la
+   marquesina de texto. Integra la cinta al lenguaje gráfico sin agregar ruido. */
+.marquesina-marcas::before,
+.marquesina-marcas::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  block-size: 8px;
+  background-image: radial-gradient(
+    circle at 7px 8px,
+    rgb(var(--mq-ink) / 0.26) 5.4px,
+    transparent 5.8px
+  );
+  background-size: 14px 8px;
+  background-repeat: repeat-x;
+  pointer-events: none;
+}
+.marquesina-marcas::before {
+  inset-block-start: 0;
+}
+.marquesina-marcas::after {
+  inset-block-end: 0;
+  transform: scaleY(-1);
+}
+.marquesina-marcas-pista {
+  display: flex;
+  inline-size: max-content;
+  will-change: transform;
+  /* Lenta: la sección habla de relaciones que duran, no de novedades. */
+  animation: mq-scroll 64s linear infinite;
+  /* El desvanecido va en la PISTA, no en la banda: así los logos entran y salen del
+     encuadre sin cortarse, y el color de la cinta llega entero hasta el borde. */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 5%,
+    #000 95%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 5%,
+    #000 95%,
+    transparent 100%
+  );
+}
+.marquesina-marcas-grupo {
+  display: flex;
+  align-items: center;
+}
+.marquesina-marca {
+  display: inline-flex;
+  align-items: center;
+  /* Aire generoso: cada marca necesita su silencio alrededor para leerse. */
+  gap: clamp(var(--space-2xl), 7vw, 132px);
+  padding-inline-end: clamp(var(--space-2xl), 7vw, 132px);
+}
+/* 20ª ola: el logo va con sus COLORES OFICIALES. Sin tintes ni filtros: las marcas se
+   ven como son. El alto lo fija el componente (área óptica pareja) y acá se escala. */
+.marquesina-marca-logo {
+  display: block;
+  flex: none;
+  block-size: calc(var(--alto-logo, 60px) * var(--escala-logo, 1));
+  inline-size: auto;
+  object-fit: contain;
+}
+.marquesina-marca-nombre {
+  font-size: clamp(1.2rem, 1rem + 0.8vw, 1.6rem);
+  color: rgb(var(--mq-ink, 38 44 34));
+  white-space: nowrap;
+}
+/* El punto del sistema: separa las marcas y sigue diciendo "vigente". */
+.marquesina-marca-punto {
+  flex: none;
+  inline-size: 7px;
+  block-size: 7px;
+  border-radius: 50%;
+  background-color: rgb(var(--mq-acc, 157 48 29));
+}
+.marcas-ver {
+  margin-block-start: var(--space-lg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquesina-marcas-pista {
+    animation: none;
+  }
+}
+
+/* ---- Página de colaboraciones -------------------------------------------- */
+.colab-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
+  margin-block-start: var(--space-2xl);
+}
+.colab {
+  max-inline-size: min(56rem, 100%);
+}
+.colab-cuerpo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(var(--space-lg), 4vw, var(--space-2xl));
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .colab-cuerpo {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  }
+  /* Zigzag: la foto cambia de lado sin reordenar el DOM (el texto sigue siendo el
+     segundo elemento para lectores de pantalla). */
+  .colab-cuerpo[data-ancla="der"] {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+  }
+  .colab-cuerpo[data-ancla="der"] .colab-foto {
+    order: 2;
+  }
+}
+.colab-der {
+  margin-inline-start: auto;
+}
+.colab-foto {
+  position: relative;
+  inline-size: 100%;
+  max-inline-size: 420px;
+}
+.colab-texto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-inline-size: var(--measure-cuerpo);
+}
+/* El logo, en chico y con sus colores: ya cumplió su función en la marquesina. */
+.colab-logo {
+  display: block;
+  inline-size: auto;
+  max-inline-size: clamp(120px, 15vw, 170px);
+  block-size: auto;
+  max-block-size: 64px;
+  object-fit: contain;
+  object-position: left center;
+  align-self: flex-start;
+}
+.colab-rubro {
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+}
+.colab-nombre {
+  font-size: var(--text-voz-l);
+  line-height: 1.12;
+  color: rgb(var(--atm-ink, 42 36 30));
+}
+.colab-handle {
+  font-family: var(--font-mundo);
+  font-size: var(--text-meta);
+  color: rgb(var(--atm-accent, 157 48 29));
+  text-decoration: none;
+  align-self: flex-start;
+}
+a.colab-handle:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.colab-descripcion {
+  font-family: var(--font-mundo);
+  color: rgb(var(--atm-ink, 42 36 30));
+}
+.colab-resultados {
+  margin-block-start: var(--space-2xs);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+.colab-resultados-rotulo {
+  color: rgb(var(--atm-accent, 157 48 29));
+}
+.colab-resultados ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  font-family: var(--font-mundo);
+  font-size: var(--text-meta);
+  color: rgb(var(--atm-ink, 42 36 30));
+}
+.colab-resultados li {
+  display: flex;
+  gap: var(--space-xs);
+}
+.colab-resultados li > span:first-child {
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+}
+.colab-cierre {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-xl);
+}
+.colab-cierre-enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg) var(--space-2xl);
+}
+
+/* =============================================================================
+   NAVEGACIÓN EDITORIAL (Bloque 8 · 17ª ola) — "Ver todas las experiencias ↘".
+   No un botón: una frase que señala. Al pasar el cursor, la flecha baja en diagonal
+   y un trazo se dibuja bajo el texto (subrayado a mano, de izquierda a derecha).
+   ========================================================================== */
+.enlace-editorial-caja {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+}
+.enlace-editorial {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-mundo);
+  font-size: var(--text-titulo);
+  color: rgb(var(--atm-ink, 42 36 30));
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.enlace-editorial-texto {
+  position: relative;
+}
+/* El trazo: se dibuja de 0 a 100% del ancho del texto. */
+.enlace-editorial-texto::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-end: -0.22em;
+  block-size: 1.5px;
+  inline-size: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background-color: rgb(var(--atm-accent, 107 74 31));
+  transition: transform var(--dur-md, 340ms) var(--ease-posar);
+}
+.enlace-editorial:hover .enlace-editorial-texto::after,
+.enlace-editorial:focus-visible .enlace-editorial-texto::after,
+.enlace-editorial[aria-expanded="true"] .enlace-editorial-texto::after {
+  transform: scaleX(1);
+}
+.enlace-editorial-flecha {
+  color: rgb(var(--atm-accent, 107 74 31));
+  transition: transform var(--dur-sm) var(--ease-posar);
+}
+.enlace-editorial:hover .enlace-editorial-flecha,
+.enlace-editorial:focus-visible .enlace-editorial-flecha {
+  transform: translate(3px, 3px);
+}
+/* Abierto: la flecha apunta hacia arriba (plegar), no en diagonal —una ↗ se leería
+   como "se abre en otra página", que es justo lo que no pasa acá. */
+.enlace-editorial[aria-expanded="true"] .enlace-editorial-flecha {
+  transform: rotate(-135deg);
+}
+.enlace-editorial-nota {
+  font-family: var(--font-mundo);
+  font-size: var(--text-micro);
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+}
+
+/* Guardar la fecha: tres accesos en texto, sin logos ajenos ni caja de interfaz. */
+.guardar-fecha {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+/* Pie: a qué calendario va (transparencia) + la salida para quien use otro (20ª ola). */
+.guardar-fecha-pie {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  font-family: var(--font-mundo);
+  font-size: var(--text-micro);
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+}
+.guardar-fecha-otro {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgb(var(--atm-accent, 107 74 31) / 0.5);
+}
+.guardar-fecha-otro:hover {
+  color: rgb(var(--atm-ink, 42 36 30));
+}
+.guardar-fecha-opciones {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-family: var(--font-mundo);
+  font-size: var(--text-meta);
+  color: rgb(var(--atm-ink-soft, 62 54 45));
+}
+.guardar-fecha-alt {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+.guardar-fecha-opciones a {
+  color: rgb(var(--atm-ink, 42 36 30));
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgb(var(--atm-accent, 107 74 31) / 0.6);
+}
+.guardar-fecha-opciones a:hover {
+  text-decoration-color: rgb(var(--atm-accent, 107 74 31));
+}
+.guardar-fecha-opciones[data-abierto="true"] {
+  animation: guardar-fecha-entra var(--dur-md, 340ms) var(--ease-posar) both;
+}
+@keyframes guardar-fecha-entra {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enlace-editorial-texto::after,
+  .enlace-editorial-flecha {
+    transition: none;
+  }
+  .guardar-fecha-opciones[data-abierto="true"] {
+    animation: none;
+  }
+}
+
+/* =============================================================================
    BUDÍN — el compañero del recorrido (Bloque 8 · 13ª ola).
    Pequeño y en una esquina: acompaña sin competir con el contenido. En desktop flota
    abajo a la izquierda (lejos del medidor de wayfinding, que vive a media altura); en

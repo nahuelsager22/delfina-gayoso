@@ -1,40 +1,73 @@
-import { getProductos } from "@/content";
+import { getExperiencias, getProductos, getProximaExperiencia, estadoDeExperiencia } from "@/content";
 import { Momento } from "../_patrones/Momento";
 import { FichaProducto } from "../_patrones/FichaProducto";
+import { FichaExperiencia } from "../_patrones/FichaExperiencia";
+import { ProximaExperiencia } from "../_patrones/ProximaExperiencia";
 import { Aparicion } from "../_patrones/Aparicion";
+import { EnlaceEditorial } from "../_patrones/EnlaceEditorial";
 import { Adorno } from "../_chrome/adornos/Adorno";
 import { Marquesina } from "../_chrome/adornos/Marquesina";
 
 /**
  * Momento — Lo que te podés llevar (arquitectura §1). Concentra TODA la propuesta
- * educativa: EBOOKS y CLASES (presenciales y, muy pronto, en vivo online).
+ * educativa: EBOOKS y EXPERIENCIAS (clases presenciales y en vivo online).
  *
- *  · EBOOKS primero; el grupo cierra con "Nuevos ebooks en camino", acompañado de un
+ * Bloque 8 · 17ª ola — abre con la PRÓXIMA EXPERIENCIA. Lo perecedero va primero: una
+ * fecha vence, un ebook no. Se muestra una sola, como invitación; si no hay ninguna con
+ * fecha futura, el módulo no existe (ni título, ni hueco, ni "no hay clases por ahora").
+ *
+ *  · EBOOKS después; el grupo cierra con "Nuevos ebooks en camino", acompañado de un
  *    LIBRO dibujado que se hojea (continuidad sin volverse una llamada principal).
  *  · Una MARQUESINA ONDULADA (11ª ola) separa ebooks de clases: da ritmo y se integra
  *    al lenguaje de ondas, sin interferir con los cortes entre secciones.
- *  · CLASES con su rótulo y las fichas: la presencial (real) y la online (por lanzarse,
- *    sin precio ni CTA). CADA tipo de clase lleva su PROPIA fotografía dentro de su ficha
- *    (11ª ola · #3): la presencial con las manos en la masa, la online con la escena de
- *    cocina — quedan diferenciadas visualmente, cada una con identidad propia.
+ *  · CLASES con su rótulo y las fichas de las experiencias restantes (la destacada no se
+ *    repite). Cada una con su propia fotografía (11ª ola · #3).
  */
 export async function LoQueTeLlevas() {
-  const productos = await getProductos();
-  const ebooks = productos.filter((p) => p.familia === "ebook");
-  const clases = productos.filter((p) => p.familia?.startsWith("clase"));
+  const [productos, experiencias, proxima] = await Promise.all([
+    getProductos(),
+    getExperiencias(),
+    getProximaExperiencia(),
+  ]);
+
+  // 21ª ola: todos los productos son ebooks (las clases son `Experiencia`), así que ya
+  // no hay nada que filtrar.
+  const ebooks = productos;
+
+  // Las demás: sin la destacada (no se repite) y sin las que ya sucedieron —el archivo
+  // de experiencias realizadas tendrá su propio lugar—.
+  const otras = experiencias.filter(
+    (e) => e.id !== proxima?.id && estadoDeExperiencia(e) !== "finalizada",
+  );
+
+  /**
+   * El encabezado responde a lo que ABRE la sección (21ª ola). "Lo que te podés llevar"
+   * es exacto cuando lo primero es un ebook, pero suena raro encabezando una clase con
+   * fecha. Con una experiencia al frente, la sección se presenta como lo que realmente
+   * está proponiendo: cocinar juntos. El rótulo también invierte el orden, para nombrar
+   * primero lo que se ve primero. El ancla y el destino del navbar no cambian: sigue
+   * siendo el mismo lugar del recorrido.
+   */
+  const encabezado = proxima
+    ? { kicker: "Clases y ebooks", titulo: "Cocinemos juntos" }
+    : { kicker: "Ebooks y clases", titulo: "Lo que te podés llevar" };
 
   return (
     <Momento
       id="lo-que-te-llevas"
-      kicker="Ebooks y clases"
-      titulo="Lo que te podés llevar"
+      kicker={encabezado.kicker}
+      titulo={encabezado.titulo}
     >
+      {/* LA PRÓXIMA FECHA: lo primero, porque es lo que vence. */}
+      {proxima && <ProximaExperiencia experiencia={proxima} />}
+
       {/* EBOOKS */}
       <div
         style={{
           display: "flex",
           flexDirection: "column",
           gap: "var(--space-3xl)",
+          marginBlockStart: proxima ? "var(--space-3xl)" : undefined,
         }}
       >
         {ebooks.map((p, i) => (
@@ -60,7 +93,7 @@ export async function LoQueTeLlevas() {
       />
 
       {/* CLASES: su rótulo y las fichas (cada una con su propia foto). */}
-      {clases.length > 0 && (
+      {otras.length > 0 && (
         <div className="bloque-clases">
           <p className="momento-kicker bloque-clases-rotulo">Clases con Delfi</p>
 
@@ -71,12 +104,11 @@ export async function LoQueTeLlevas() {
               gap: "var(--space-3xl)",
             }}
           >
-            {clases.map((p, i) => (
-              <FichaProducto
-                key={p.id}
-                producto={p}
+            {otras.map((e, i) => (
+              <FichaExperiencia
+                key={e.id}
+                experiencia={e}
                 ancla={i % 2 === 1 ? "der" : "izq"}
-                mostrarCategoria={p.familia === "clase-online"}
               />
             ))}
           </div>
@@ -85,6 +117,17 @@ export async function LoQueTeLlevas() {
           <Adorno variante="cuchara" />
         </div>
       )}
+
+      {/* Puerta a la página de Experiencias (18ª ola). Navegación EDITORIAL, no un botón:
+          acá la fecha invita; el que quiere ver más, entra. */}
+      <Aparicion className="momento-salida">
+        <EnlaceEditorial
+          href="/experiencias"
+          nota="Las próximas fechas, cómo se vive una clase y las que ya sucedieron"
+        >
+          Ver todas las experiencias
+        </EnlaceEditorial>
+      </Aparicion>
     </Momento>
   );
 }
