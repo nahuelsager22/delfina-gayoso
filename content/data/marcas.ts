@@ -36,7 +36,10 @@ export const marcas: readonly MarcaSemilla[] = [
     nombre: "Don Yeyo Argentina",
     handle: "@donyeyoargentina",
     url: "https://instagram.com/donyeyoargentina",
-    logo: { src: "/marcas/don-yeyo.png", ancho: 517, alto: 330 },
+    // 23ª ola: archivo REPARADO. El anterior tenía a medio borrar el blanco de las letras
+    // (el damero del original es casi blanco y la clave de color no podía distinguirlo);
+    // además se le dio antialias al contorno y aire parejo en los cuatro bordes.
+    logo: { src: "/marcas/don-yeyo.png", ancho: 534, alto: 352 },
   },
   {
     id: "3-claveles",

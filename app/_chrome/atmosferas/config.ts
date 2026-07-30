@@ -115,26 +115,50 @@ export const SALAS: Record<string, Sala> = {
     oscura: false,
     banda: true,
   },
-  /* Marcas con las que colaboro: ARENA (22ª ola — reemplaza el crema).
-     Al reordenar el recorrido, Marcas quedó justo después del Umbral, que también era
-     crema: dos salas del mismo color seguidas anulan el corte —la onda existe pero no
-     se ve— y el descenso se aplana justo donde el sitio gira de lo personal a lo
-     profesional. La arena es el único pigmento del manual que resuelve las dos cosas a
-     la vez: da un corte legible contra el crema (cambia el tono Y la temperatura) y
-     conserva el contraste que la marquesina salvia necesita para sostener los logotipos
-     —incluido el blanco de Buffalo—. Comparte pigmento con "Lo que te llevás", pero
-     entre las dos está la banda más profunda del sitio (el verde): la arena termina
-     enmarcando la mitad de trabajo del recorrido a ambos lados del verde.
-     El acento sigue siendo TERRACOTA (10ª ola): es la sala del recorrido profesional. */
+  /* Marcas con las que colaboro: MARRÓN (23ª ola — reemplaza la arena de la 22ª, que a
+     su vez había reemplazado al crema).
+     -------------------------------------------------------------------------------
+     Con el orden nuevo, Marcas dejó de ser una sección de respiro y pasó a ser la
+     BISAGRA del recorrido: donde el sitio deja de hablar de Delfina y empieza a hablar
+     de su trabajo. Una sala clara más, entre otras claras, no marcaba ese cambio de
+     capítulo — y en arena se confundía con "Lo que te llevás".
+     Por qué el marrón y no otro: las cinco tintas del manual estaban tomadas por sus
+     vecinas. Crema es el Umbral, justo arriba (dos salas iguales anulan la onda). Verde
+     es "Trabajemos juntos", justo abajo. Arena es "Lo que te llevás" —el problema que
+     vinimos a resolver—. Y salvia no puede ser: es el color de la marquesina de
+     logotipos que vive DENTRO de esta sección, y la cinta desaparecería. Queda el
+     marrón, que además es el que mejor dice lo que la sección quiere decir: una sala
+     honda, de madera, donde las marcas se ven como en una vitrina.
+     El acento pasa de terracota a SALVIA: el terracota no lee sobre marrón (1.5:1) y la
+     salvia es justamente el color de la cinta de logos —la sala y su marquesina hablan
+     el mismo idioma—. Comparte pigmento con el cierre, pero a tres secciones de
+     distancia, con otra composición y otra escala. */
   marcas: {
-    bg: PIGMENTOS.arena.hex,
-    solido: PIGMENTOS.arena.hex,
-    ink: [42, 36, 30],
-    inkSoft: [72, 62, 46],
-    accent: PIGMENTOS.terracota.rgb,
-    navBg: PIGMENTOS.arena.rgb,
-    oscura: false,
+    bg: PIGMENTOS.marron.hex,
+    solido: PIGMENTOS.marron.hex,
+    ink: [246, 239, 228],
+    inkSoft: [214, 205, 190],
+    accent: PIGMENTOS.salvia.rgb,
+    navBg: PIGMENTOS.marron.rgb,
+    oscura: true,
     banda: true,
+  },
+  /* Página /colaboraciones: CREMA con acento terracota — lo que era la sala `marcas`
+     antes de la 23ª ola. Se separó cuando Marcas pasó a marrón, y no por prolijidad: en
+     la página los logotipos van SUELTOS dentro de cada ficha, no sobre la cinta salvia,
+     y sobre un fondo hondo el de 3 Claveles (tipografía negra) desaparecería. Además es
+     la superficie de lectura larga del sitio —cuatro historias con foto y resultados—,
+     que pide papel claro. La sección es un capítulo del recorrido; la página, un lugar
+     donde uno se queda a leer. */
+  colaboraciones: {
+    bg: PIGMENTOS.crema.hex,
+    solido: PIGMENTOS.crema.hex,
+    ink: [42, 36, 30],
+    inkSoft: [63, 55, 45],
+    accent: PIGMENTOS.terracota.rgb,
+    navBg: PIGMENTOS.crema.rgb,
+    oscura: false,
+    banda: false,
   },
   // Trabajemos juntos (servicios): VERDE BOSQUE del manual (#2C4027). Banda profunda.
   fresca: {

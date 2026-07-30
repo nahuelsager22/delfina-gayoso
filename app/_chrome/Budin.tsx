@@ -42,14 +42,25 @@ import type { VozBudin } from "@/content";
  *  2. CADA TOQUE es un salto, y la inclinación ALTERNA de lado —parece que mueve la
  *     cabeza para el otro lado, no que repite un truco—. Cada cuatro toques salta un
  *     poco más alto: el juego se entusiasma.
- *  3. CADA 4–8 TOQUES (al azar, siempre distinto) hace la gracia: mira para otro lado,
- *     se corre dos pasos y SE QUEDA ahí, callado. El toque siguiente lo trae de vuelta,
- *     ya con frase. Es el único momento en que no dice nada: está jugando, no hablando.
+ *  3. SE MUEVE. En desktop, cada 4–8 toques (al azar, siempre distinto) mira para otro
+ *     lado y se corre dos pasos; el toque siguiente lo trae de vuelta. En MOBILE tiene
+ *     más libertad (23ª ola): cada toque lo desplaza un poco, alternando lado, con un
+ *     paso más largo en la gracia; cuando se aleja demasiado, tira solo hacia el centro.
+ *     No deambula al azar: alterna, que es lo que hace que parezca que juega.
  *  4. NIVELES. Pasados unos toques se destraban las frases RARAS, que salen de vez en
  *     cuando. Y muy adentro del juego, una sola vez, aparece la frase de la amistad.
  *
- * La escala del gesto no cambia: sigue siendo un saltito de 12–18px y un giro de 6–9°.
- * El juego se nota en el RITMO, no en la amplitud.
+ * SIEMPRE CONTESTA (23ª ola). Antes el toque en que se corría era mudo —jugaba en vez de
+ * hablar—. Se probó y la conclusión fue la contraria: un toque sin respuesta se siente
+ * como que no registró el toque. Ahora toda interacción devuelve las dos cosas, gesto y
+ * frase.
+ *
+ * La escala del gesto no cambia: saltito de 12–18px, giro de 6–9°, desplazamientos de
+ * 7–24px. El juego se nota en el RITMO, no en la amplitud.
+ *
+ * DOS CAPAS DE MOVIMIENTO, a propósito: el contenedor lleva el DESPLAZAMIENTO y el botón
+ * lleva el SALTO. Así el globo viaja con Budín —su punta lo sigue apuntando— mientras la
+ * cabeza salta por su cuenta.
  */
 
 /** Toques a partir de los cuales pueden aparecer las frases raras. */
@@ -62,6 +73,8 @@ const AMISTAD_MAX = 40;
 /** Cada cuántos toques, como mínimo y como máximo, hace la gracia de correrse. */
 const JUEGO_MIN = 4;
 const JUEGO_MAX = 8;
+/** Hasta dónde puede alejarse de su lugar, en px. Chico: es un juego, no una fuga. */
+const DERIVA_MAX = 26;
 
 const entre = (min: number, max: number) =>
   min + Math.floor(Math.random() * (max - min + 1));
@@ -100,7 +113,12 @@ export function Budin({
 }) {
   const { saludo, frases, secretas = [], amistad } = voz;
   const sinMotion = useReducedMotion();
+  /** El salto y la inclinación de la cabeza. */
   const controles = useAnimationControls();
+  /** Dónde está parado. Va en el contenedor para que el globo lo acompañe. */
+  const controlesPos = useAnimationControls();
+  /** En mobile se mueve en cada toque; en desktop sólo cuando hace la gracia. */
+  const deriva = variante === "menu";
 
   const [mensaje, setMensaje] = useState<string | null>(null);
   /**
@@ -117,10 +135,13 @@ export function Budin({
   const toquesRef = useRef(0);
   const bolsaRef = useRef<Bolsa>(bolsaVacia());
   const bolsaSecretasRef = useRef<Bolsa>(bolsaVacia());
-  /** En qué toque se corre a un costado. Se reprograma después de cada gracia. */
+  /** En qué toque da el paso largo. Se reprograma después de cada gracia. */
   const proximoJuegoRef = useRef(entre(JUEGO_MIN, JUEGO_MAX));
-  /** Hacia dónde se corrió (0 = está en su lugar). */
-  const corridoRef = useRef(0);
+  /** Dónde está parado, en px respecto de su lugar. */
+  const posRef = useRef(0);
+  /** Hacia qué lado fue la última vez. La dirección ALTERNA, no se sortea —por eso
+   *  arranca fija: lo que se percibe es el vaivén, no de qué lado empezó—. */
+  const ladoRef = useRef(1);
   /** En qué toque aparece la frase de la amistad, y si ya apareció. */
   const metaAmistadRef = useRef(entre(AMISTAD_MIN, AMISTAD_MAX));
   const amistadDichaRef = useRef(false);
@@ -205,41 +226,56 @@ export function Budin({
   const hablar = useCallback(() => {
     const n = (toquesRef.current += 1);
 
-    /* 1 · Si se había corrido, este toque lo trae de vuelta —y ya con frase—. */
-    if (corridoRef.current !== 0) {
-      corridoRef.current = 0;
-      void controles.start({
-        x: 0,
-        rotate: 0,
-        y: [0, -10, 0],
-        transition: { duration: 0.5, ease: "easeOut" },
-      });
-    } else if (!sinMotion && n === proximoJuegoRef.current) {
-      /* 2 · La gracia: mira para otro lado, se corre dos pasos y se queda callado.
-         Es el único toque sin frase. La próxima se reprograma con otra distancia. */
-      const lado = Math.random() < 0.5 ? -1 : 1;
-      corridoRef.current = lado;
-      proximoJuegoRef.current = n + entre(JUEGO_MIN, JUEGO_MAX);
-      void controles.start({
-        x: lado * 22,
-        rotate: lado * 9,
-        y: [0, -8, 0, -4, 0],
-        transition: { duration: 0.72, ease: "easeInOut" },
-      });
-      return;
-    } else if (!sinMotion) {
-      /* 3 · Salto normal: la inclinación alterna de lado y cada cuatro toques salta
-         un poco más alto. */
-      const lado = n % 2 === 0 ? 1 : -1;
-      const alto = n % 4 === 0 ? 18 : 12;
-      void controles.start({
-        y: [0, -alto, 0],
-        rotate: [0, lado * 6, 0],
-        transition: { duration: 0.5, ease: "easeOut" },
-      });
+    if (!sinMotion) {
+      /* 1 · DÓNDE QUEDA. El paso largo cae cada 4–8 toques; en mobile, además, cada
+         toque lo corre un poco. El lado alterna, salvo que ya esté lejos: entonces
+         vuelve hacia el centro, que es lo que hace un perro que juega y no se escapa. */
+      const paso = n === proximoJuegoRef.current;
+      if (paso) proximoJuegoRef.current = n + entre(JUEGO_MIN, JUEGO_MAX);
+
+      let destino = posRef.current;
+      if (deriva) {
+        const lejos = Math.abs(posRef.current) > DERIVA_MAX * 0.55;
+        ladoRef.current = lejos
+          ? (Math.sign(posRef.current) || 1) * -1
+          : -ladoRef.current;
+        let avance = (paso ? 16 : 7) + Math.random() * 8;
+        // Alejarse cuesta más que volver: sin esto se queda viviendo de un lado.
+        if (ladoRef.current === Math.sign(posRef.current)) avance *= 0.55;
+        destino = posRef.current + ladoRef.current * avance;
+      } else if (paso) {
+        // Desktop: se corre dos pasos; el toque siguiente lo trae de vuelta.
+        ladoRef.current = -ladoRef.current;
+        destino = posRef.current === 0 ? ladoRef.current * 22 : 0;
+      }
+      destino = Math.max(-DERIVA_MAX, Math.min(DERIVA_MAX, Math.round(destino)));
+
+      if (destino !== posRef.current) {
+        const yendo = Math.sign(destino - posRef.current);
+        posRef.current = destino;
+        void controlesPos.start({
+          x: destino,
+          transition: { duration: 0.62, ease: [0.32, 0.9, 0.36, 1] },
+        });
+        /* 2 · Mira hacia donde va: el giro acompaña el paso en vez de contradecirlo. */
+        void controles.start({
+          y: [0, -13, 0],
+          rotate: [0, yendo * 8, yendo * 3],
+          transition: { duration: 0.58, ease: "easeOut" },
+        });
+      } else {
+        /* 3 · Salto en el lugar: la inclinación alterna y cada cuatro salta más alto. */
+        const lado = n % 2 === 0 ? 1 : -1;
+        const alto = n % 4 === 0 ? 18 : 12;
+        void controles.start({
+          y: [0, -alto, 0],
+          rotate: [0, lado * 6, 0],
+          transition: { duration: 0.5, ease: "easeOut" },
+        });
+      }
     }
 
-    /* 4 · Qué dice. De lo más raro a lo más común. */
+    /* 4 · Qué dice. De lo más raro a lo más común. SIEMPRE dice algo. */
     if (!amistadDichaRef.current && amistad && n >= metaAmistadRef.current) {
       amistadDichaRef.current = true;
       decir(amistad);
@@ -258,25 +294,43 @@ export function Budin({
     }
     const frase = sacar(bolsaRef, frases);
     if (frase) decir(frase);
-  }, [amistad, controles, decir, frases, sacar, secretas, sinMotion]);
+  }, [
+    amistad,
+    controles,
+    controlesPos,
+    decir,
+    deriva,
+    frases,
+    sacar,
+    secretas,
+    sinMotion,
+  ]);
 
   // El saludo del hover sólo tiene sentido con puntero (en el menú mobile se toca).
   const conHover = variante === "flotante";
   const globo = mensaje ?? (saludando ? saludo : null);
 
   return (
-    <div className={`budin budin-${variante}`}>
+    <motion.div className={`budin budin-${variante}`} animate={controlesPos}>
       <AnimatePresence>
         {globo && (
           <motion.p
             className="budin-globo"
             key={globo}
-            initial={sinMotion ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.96 }}
+            /* Sale DE Budín: el origen de la escala está en la punta del globo, así que
+               no aparece flotando al lado, crece desde él. */
+            style={{ originX: variante === "menu" ? 1 : 0, originY: 1 }}
+            initial={
+              sinMotion ? { opacity: 0 } : { opacity: 0, y: 6, scale: 0.88 }
+            }
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={sinMotion ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.96 }}
-            transition={{ duration: sinMotion ? 0.12 : 0.24, ease: "easeOut" }}
+            exit={sinMotion ? { opacity: 0 } : { opacity: 0, y: 4, scale: 0.94 }}
+            transition={{
+              duration: sinMotion ? 0.12 : 0.34,
+              ease: [0.22, 1, 0.36, 1],
+            }}
           >
-            <span aria-hidden>🐶</span> {globo}
+            {globo}
           </motion.p>
         )}
       </AnimatePresence>
@@ -306,6 +360,6 @@ export function Budin({
       <span className="sr-only" aria-live="polite">
         {mensaje}
       </span>
-    </div>
+    </motion.div>
   );
 }

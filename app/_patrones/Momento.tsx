@@ -24,6 +24,7 @@ export async function Momento({
   alFinal = false,
   primero = false,
   alto = "100svh",
+  sobreHonda = false,
 }: {
   id: MomentoId;
   children: React.ReactNode;
@@ -39,6 +40,8 @@ export async function Momento({
    * lo hereda desde el primer momento, sin arrastrar restos de la anterior.
    */
   alto?: string;
+  /** La sección anterior es una banda honda: la onda necesita su filo (ver `Banda`). */
+  sobreHonda?: boolean;
 }) {
   const m = await getMomento(id);
 
@@ -55,6 +58,7 @@ export async function Momento({
       alFinal={alFinal}
       primero={primero}
       alto={alto}
+      sobreHonda={sobreHonda}
     >
       {children}
     </Banda>

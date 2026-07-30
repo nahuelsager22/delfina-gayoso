@@ -23,14 +23,17 @@ import { MarquesinaMarcas } from "../_chrome/adornos/MarquesinaMarcas";
  *  · Cierra como CARTA DE PRESENTACIÓN: una invitación clara para nuevas marcas.
  *
  * Bloque 8 · 22ª ola — SUBE al tercer lugar del recorrido (decisión de Delfina): una
- * marca que entra encuentra las colaboraciones enseguida. Dos consecuencias:
- *  · La sala pasa de crema a ARENA. Antes venía después de "Lo que te llevás" (arena) y
- *    el crema cortaba; ahora viene después del Umbral, que también es crema, y dos salas
- *    del mismo color seguidas anulan la onda (ver `atmosferas/config.ts`).
- *  · El cierre ("¿Sumamos tu marca a esta cocina?" → Trabajemos juntos) deja de ser un
- *    salto a una sección lejana y pasa a ser la ANTESALA de la siguiente: se lee como
- *    una frase que continúa abajo. El enlace se conserva para quien quiera saltar el
- *    encabezado, pero la transición ya no depende de él.
+ * marca que entra encuentra las colaboraciones enseguida. Su cierre ("¿Sumamos tu marca
+ * a esta cocina?" → Trabajemos juntos) deja de ser un salto a una sección lejana y pasa
+ * a ser la ANTESALA de la siguiente: se lee como una frase que continúa abajo. El enlace
+ * se conserva para quien quiera saltar el encabezado, pero la transición ya no depende
+ * de él.
+ *
+ * Bloque 8 · 23ª ola — SALA PROPIA, honda. Al subir dejó de ser una sección de respiro:
+ * es la bisagra donde el recorrido pasa de Delfina a su trabajo. La sala pasa a MARRÓN
+ * (ver el porqué en `atmosferas/config.ts`), con tinta crema y acento salvia. La
+ * marquesina de logotipos, que sigue siendo salvia, ahora es una cinta clara sobre un
+ * fondo hondo: los cuatro logos ganan el contraste que antes había que pelear.
  */
 export async function MarcasColaboro() {
   const marcas = await getMarcas();
@@ -57,8 +60,10 @@ export async function MarcasColaboro() {
         </EnlaceEditorial>
       </Aparicion>
 
-      {/* Semillas espolvoreadas: el detalle final, en el rojo del manual (12ª ola). */}
-      <Adorno variante="especias" color="var(--color-terracota)" />
+      {/* Semillas espolvoreadas: el detalle final. 23ª ola: dejan de ir en terracota fijo
+          —invisible sobre el marrón nuevo de la sala— y toman el acento de la sala, que
+          acá es la salvia de la marquesina. */}
+      <Adorno variante="especias" color="rgb(var(--atm-accent, 177 191 170))" />
 
       {/* Carta de presentación: la confianza vigente, como puerta abierta. */}
       <Aparicion className="marcas-invitacion">

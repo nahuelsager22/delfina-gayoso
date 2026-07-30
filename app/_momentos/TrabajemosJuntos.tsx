@@ -35,6 +35,9 @@ export async function TrabajemosJuntos() {
       id="trabajemos-juntos"
       kicker="Servicios profesionales"
       titulo="Trabajemos juntos"
+      // 23ª ola: Marcas pasó a marrón, así que dos salas hondas se tocan y el verde no
+      // alcanza para que se vea el corte. La onda entra con su filo (ver `Banda`).
+      sobreHonda
     >
       <div
         style={{

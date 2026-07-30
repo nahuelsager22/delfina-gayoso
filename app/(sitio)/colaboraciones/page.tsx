@@ -44,7 +44,9 @@ export default async function PaginaColaboraciones() {
 
       <main>
         <Banda
-          atmosfera="marcas"
+          // 23ª ola: sala propia. La sección "Marcas" de la home pasó a marrón, pero acá
+          // los logotipos van sueltos en cada ficha y la lectura es larga: papel claro.
+          atmosfera="colaboraciones"
           ancla="colaboraciones"
           kicker="Con quiénes trabajo"
           titulo="Colaboraciones"

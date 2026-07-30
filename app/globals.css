@@ -1096,8 +1096,11 @@
   display: flex;
   inline-size: max-content;
   will-change: transform;
-  /* Lenta: la sección habla de relaciones que duran, no de novedades. */
-  animation: mq-scroll 64s linear infinite;
+  /* Pausada, pero no lenta (23ª ola: 64s → 44s). A 64s había que esperar demasiado para
+     ver las cuatro marcas; a 44s el recorrido completo dura ~22s y la lectura de cada
+     logo sigue siendo cómoda. La sección habla de relaciones que duran, no de novedades:
+     el ritmo acompaña, no apura. */
+  animation: mq-scroll 44s linear infinite;
   /* El desvanecido va en la PISTA, no en la banda: así los logos entran y salen del
      encuadre sin cortarse, y el color de la cinta llega entero hasta el borde. */
   -webkit-mask-image: linear-gradient(
@@ -1438,25 +1441,54 @@ a.colab-handle:hover {
   border-radius: 12px;
 }
 
-/* El globo: una tarjeta crema legible sobre cualquier atmósfera. */
+/* EL GLOBO (23ª ola) — lo que dice Budín, no una notificación.
+   Antes era una tarjeta gris de interfaz: esquinas de widget, sombra de material, un
+   emoji de perro adelante. Se rehízo para que pertenezca al sitio:
+    · CREMA sobre el papel de la casa, con un filo de tinta en vez de un borde gris;
+    · una PUNTA que sale hacia Budín, para que el globo sea suyo y no del navegador —y
+      que aparece del lado correcto según de qué lado esté él—;
+    · la sombra deja de ser un plano flotante y pasa a ser el apoyo justo (dos capas
+      cortas, en la tinta de la casa, no en negro);
+    · sin el emoji: el sitio no usa emoji en su interfaz —sólo dentro de las frases de
+      Delfi, que son su voz—, y la punta ya dice quién habla;
+    · la tipografía respira: el interlineado y el ancho están calculados para dos o tres
+      renglones cortos, que es el largo real de sus frases. */
 .budin-globo {
   position: absolute;
-  inset-block-end: calc(100% + 10px);
+  inset-block-end: calc(100% + 14px);
   inset-inline-start: 0;
   inline-size: max-content;
-  max-inline-size: min(15rem, 60vw);
+  max-inline-size: min(16.5rem, 62vw);
   margin: 0;
-  padding: 0.6em 0.85em;
-  border-radius: 14px;
+  padding: 0.72em 0.95em 0.78em;
+  border-radius: 16px 16px 16px 6px;
   background-color: var(--color-harina);
   box-shadow:
-    0 8px 22px rgb(42 36 30 / 0.18),
-    inset 0 0 0 1px rgb(42 36 30 / 0.1);
+    0 1px 0 rgb(42 36 30 / 0.06),
+    0 10px 20px -12px rgb(42 36 30 / 0.34),
+    inset 0 0 0 1px rgb(42 36 30 / 0.14);
   color: var(--color-hierro);
   font-family: var(--font-mundo);
   font-size: var(--text-meta);
-  line-height: 1.35;
+  line-height: 1.45;
+  letter-spacing: 0.004em;
+  text-wrap: pretty;
   pointer-events: none;
+}
+/* La punta: un cuadradito girado que continúa el globo hacia Budín. Lleva sólo las dos
+   caras exteriores del filo, para que no se dibuje una línea cruzando el globo. */
+.budin-globo::after {
+  content: "";
+  position: absolute;
+  inset-block-end: -5px;
+  inset-inline-start: 15px;
+  inline-size: 11px;
+  block-size: 11px;
+  background-color: var(--color-harina);
+  border-inline-end: 1px solid rgb(42 36 30 / 0.14);
+  border-block-end: 1px solid rgb(42 36 30 / 0.14);
+  border-end-end-radius: 3px;
+  transform: rotate(45deg);
 }
 
 /* Desktop: flotante, esquina inferior izquierda, acompañando todo el recorrido. */
@@ -1480,9 +1512,15 @@ a.colab-handle:hover {
   inset-inline-end: clamp(20px, 6vw, 36px);
   z-index: 2;
 }
+/* En el menú, Budín está a la derecha: el globo y su punta se dan vuelta. */
 .budin-menu .budin-globo {
   inset-inline-start: auto;
   inset-inline-end: 0;
+  border-radius: 16px 16px 6px 16px;
+}
+.budin-menu .budin-globo::after {
+  inset-inline-start: auto;
+  inset-inline-end: 15px;
 }
 @media (min-width: 720px) {
   /* El menú no existe en desktop; su Budín tampoco. */

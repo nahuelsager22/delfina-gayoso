@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import { getSala, estiloSala, datosNavbar } from "../_chrome/atmosferas/config";
+import { getSala, estiloSala, datosNavbar, rgbStr } from "../_chrome/atmosferas/config";
 
 /**
  * BANDA — la franja de color con corte por onda (Bloque 8 · 18ª ola).
@@ -19,9 +19,18 @@ import { getSala, estiloSala, datosNavbar } from "../_chrome/atmosferas/config";
  * una parada del recorrido. Una página usa `Banda` directamente.
  */
 
+/** El trazo de la onda. La forma se define una sola vez: el relleno y el filo la comparten. */
+const CURVA = "M0,58 C 170,18 360,18 600,52 C 840,86 1030,86 1200,48";
+
 /** Onda de corte: el color de ESTA sección con borde superior ondulado, superpuesto a
- *  la sección anterior. Es el límite editorial entre dos atmósferas (sin degradado). */
-function OndaSuperior({ color }: { color: string }) {
+ *  la sección anterior. Es el límite editorial entre dos atmósferas (sin degradado).
+ *
+ *  `filo` (23ª ola): cuando la sala que entra cae sobre otra sala HONDA, el corte deja
+ *  de verse —dos colores profundos tienen casi la misma luminancia y la curva se
+ *  disuelve, que es justo lo que este sistema evita—. Entonces la onda se dibuja con su
+ *  filo: una línea del acento de la sala siguiendo la curva. No es un adorno nuevo, es
+ *  la misma curva haciéndose visible donde el color no alcanza. */
+function OndaSuperior({ color, filo }: { color: string; filo?: string }) {
   return (
     <svg
       className="onda-sup"
@@ -30,10 +39,17 @@ function OndaSuperior({ color }: { color: string }) {
       aria-hidden
       focusable="false"
     >
-      <path
-        d="M0,58 C 170,18 360,18 600,52 C 840,86 1030,86 1200,48 L1200,101 L0,101 Z"
-        fill={color}
-      />
+      <path d={`${CURVA} L1200,101 L0,101 Z`} fill={color} />
+      {filo && (
+        <path
+          d={CURVA}
+          fill="none"
+          stroke={filo}
+          strokeWidth={1.5}
+          strokeOpacity={0.32}
+          vectorEffect="non-scaling-stroke"
+        />
+      )}
     </svg>
   );
 }
@@ -52,6 +68,7 @@ export function Banda({
   primero = false,
   alto = "100svh",
   marca,
+  sobreHonda = false,
 }: {
   /** Clave de la sala (ver `atmosferas/config.ts`). El contenido no conoce colores. */
   atmosfera?: string;
@@ -76,6 +93,12 @@ export function Banda({
    * con su propio `h1`, también. Existe para no forzar jerarquías falsas más adelante.
    */
   marca?: "h2" | "h3";
+  /**
+   * Esta banda cae sobre otra banda HONDA (23ª ola). Entre dos colores profundos la onda
+   * se disuelve, así que se dibuja con su filo. Se declara donde se compone el recorrido,
+   * que es el único lugar que sabe qué hay arriba.
+   */
+  sobreHonda?: boolean;
 }) {
   const sala = getSala(atmosfera);
   const Titulo = marca ?? "h2";
@@ -110,7 +133,12 @@ export function Banda({
         } as CSSProperties
       }
     >
-      {!primero && <OndaSuperior color={sala.solido} />}
+      {!primero && (
+        <OndaSuperior
+          color={sala.solido}
+          filo={sobreHonda ? `rgb(${rgbStr(sala.accent)})` : undefined}
+        />
+      )}
       <div
         className="sala-inner"
         style={full ? ({ inlineSize: "100%" } as CSSProperties) : undefined}
