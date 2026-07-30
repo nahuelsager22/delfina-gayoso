@@ -121,4 +121,4 @@ export const MOMENTOS = `*[_type == "momento"] | order(orden asc) {
   ritmoPrevisto
 }`;
 
-export const BUDIN = `*[_type == "budin"][0] { saludo, frases }`;
+export const BUDIN = `*[_type == "budin"][0] { saludo, frases, secretas, amistad }`;

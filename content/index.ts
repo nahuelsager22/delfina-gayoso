@@ -459,9 +459,19 @@ export async function getRedes(): Promise<readonly RedSocial[]> {
   );
 }
 
-/* ---- Budín, el compañero del recorrido (tipo J) ---- */
+/* ---- Budín, el compañero del recorrido (tipo J) ----
+   Budín es un documento ÚNICO, no una colección: se combina CAMPO A CAMPO con la semilla,
+   como los momentos. Importa a partir de la 22ª ola, que le sumó dos niveles nuevos
+   (`secretas` y `amistad`): si el documento del CMS mandara entero, esos niveles
+   quedarían vacíos hasta volver a sembrar. Así, lo que Delfi ya editó manda, y lo que
+   todavía no existe en el Studio lo completa la semilla. */
 export async function getBudin(): Promise<VozBudin> {
-  const doc = await consultar<VozBudin | null>(Q.BUDIN);
+  const doc = await consultar<Partial<VozBudin> | null>(Q.BUDIN);
   if (!doc?.saludo || !doc.frases?.length) return semillaBudin;
-  return { saludo: doc.saludo, frases: doc.frases };
+  return {
+    saludo: doc.saludo,
+    frases: doc.frases,
+    secretas: doc.secretas?.length ? doc.secretas : semillaBudin.secretas,
+    amistad: limpio(doc.amistad) ?? semillaBudin.amistad,
+  };
 }

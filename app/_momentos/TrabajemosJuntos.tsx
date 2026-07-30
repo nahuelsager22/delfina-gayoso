@@ -4,14 +4,20 @@ import { InvitacionServicio } from "../_patrones/InvitacionServicio";
 import { Adorno } from "../_chrome/adornos/Adorno";
 
 /**
- * Momento 6 — Trabajemos juntos (arquitectura §1). El servicio (colaboraciones,
- * asesorías, propuestas) como INVITACIÓN, tarde y no dominante, cuando ya hay
- * confianza.
+ * Trabajemos juntos (arquitectura §1). El servicio (colaboraciones, asesorías,
+ * propuestas) como INVITACIÓN, cuando ya hay confianza.
  *
- *  · Va en la zona de pertenencia: un pitch de servicios al principio rompería la
- *    horizontalidad; acá es la consecuencia natural de todo lo anterior (§1). No
- *    gana centralidad: aparece después del aprendizaje y la comunidad, sin nav ni
- *    dominio comercial persistente (§3.3).
+ *  · Bloque 8 · 22ª ola — CAMBIA DE LUGAR: pasa a ser la 4ª sección, inmediatamente
+ *    después de Marcas. La razón es de Delfina: una marca que entra tiene que poder
+ *    llegar acá sin atravesar antes toda la propuesta educativa. No contradice el
+ *    criterio original ("no abrir con un pitch de servicios"): sigue sin ser lo
+ *    primero, sigue llegando después de la presentación y del umbral, y sobre todo
+ *    llega después de la PRUEBA —las marcas que ya confían—, que es lo que la vuelve
+ *    creíble. Antes la sostenía el aprendizaje; ahora la sostienen las colaboraciones,
+ *    que es un apoyo más directo para esta invitación.
+ *  · La sección anterior cierra preguntando "¿Sumamos tu marca a esta cocina?": esta
+ *    banda es la respuesta. Es el par mejor encadenado del recorrido.
+ *  · Sigue sin ganar centralidad: sin dominio comercial persistente (§3.3).
  *  · Ritmo "silencio": aire generoso alrededor de la voz. La solidez la dan el
  *    rigor tipográfico y el aire, no un giro corporativo.
  *  · La invitación (§7.2) se resuelve en el primitivo `InvitacionServicio`: sin

@@ -1722,6 +1722,14 @@ a.colab-handle:hover {
   box-shadow: inset 0 0 0 1.5px rgb(var(--atm-accent, 107 74 31) / 0.55);
 }
 
+/* El PIVOTE de "Lo que te podés llevar" (22ª ola). Con el orden nuevo esta sección llega
+   después del bloque profesional, y una sola línea reencuadra a quién le habla el sitio.
+   Va pegada a la portada y deja aire antes de la próxima fecha: es una bisagra, no un
+   bloque de texto. */
+.llevas-pivote {
+  margin-block-end: clamp(var(--space-lg), 3.4vw, var(--space-2xl));
+}
+
 /* MARCAS de PRESENTE (11ª ola): no una línea de tiempo (pasado) ni una grilla de logos,
    sino las colaboraciones VIGENTES con protagonismo. Cada marca lleva un punto TERRACOTA
    (acento del sistema) que la señala activa. */

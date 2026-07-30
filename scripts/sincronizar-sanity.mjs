@@ -14,9 +14,13 @@
  *   3. CREA/REEMPLAZA las cuatro marcas reales, con sus logotipos a color.
  *   4. CREA las Experiencias que falten (sin pisar las que ya estén cargadas).
  *   5. CREA los textos que falten (sin pisar los que Delfi haya editado).
+ *   6. REORDENA las secciones del recorrido (22ª ola: el orden nuevo).
+ *   7. AMPLÍA el repertorio de Budín (22ª ola: 23 frases + secretas + amistad).
  *
  * Los pasos 4 y 5 usan `createIfNotExists`: lo que ya está en el Studio manda. Los pasos
- * 1 y 2 sí borran, porque ese contenido ya no representa nada del sitio.
+ * 1 y 2 sí borran, porque ese contenido ya no representa nada del sitio. El 6 toca sólo
+ * el campo `orden` (no el nombre del menú) y el 7 reemplaza el documento de Budín, cuyo
+ * humor todavía está pendiente de validación.
  *
  * CÓMO CORRERLO
  *   1. Tener `SANITY_API_WRITE_TOKEN` en `.env.local`.
@@ -60,6 +64,8 @@ const { marcas } = await import("../content/data/marcas.ts");
 const { experiencias } = await import("../content/data/experiencias.ts");
 const { voz } = await import("../content/data/voz.ts");
 const { imagenes } = await import("../content/data/imagenes.ts");
+const { momentos } = await import("../content/data/momentos.ts");
+const { budin } = await import("../content/data/budin.ts");
 
 const subidas = new Map();
 async function subir(src) {
@@ -157,6 +163,33 @@ for (const [i, v] of voz.entries()) {
   });
 }
 resumen.push(`${voz.length} textos asegurados`);
+
+/* 6 · El ORDEN del recorrido (22ª ola). ------------------------------------
+   El CMS gobierna el orden de las secciones, así que reordenar el sitio en el código no
+   alcanza: si el dataset conserva el orden viejo, el MENÚ queda desincronizado con la
+   página. Se hace un `patch` sólo del campo `orden` (y del ritmo, que va de la mano),
+   para no pisar el nombre que Delfi le haya puesto a cada ítem del menú. */
+for (const m of momentos) {
+  tx = tx.patch(`momento-${m.id}`, (p) =>
+    p.set({ orden: m.orden, ritmoPrevisto: m.ritmoPrevisto }),
+  );
+}
+resumen.push(`${momentos.length} secciones reordenadas`);
+
+/* 7 · El repertorio de Budín (22ª ola). ------------------------------------
+   Se amplió de 8 a 23 frases y ganó dos niveles nuevos (`secretas` y `amistad`). Como el
+   documento del CMS manda sobre la semilla, sin esto Budín seguiría con las ocho de
+   antes. Es un `createOrReplace` deliberado: el humor todavía está pendiente de la
+   validación de Delfina, así que acá la semilla es la versión más nueva. */
+tx = tx.createOrReplace({
+  _id: "budin",
+  _type: "budin",
+  saludo: budin.saludo,
+  frases: [...budin.frases],
+  secretas: [...(budin.secretas ?? [])],
+  amistad: budin.amistad,
+});
+resumen.push(`repertorio de Budín ampliado (${budin.frases.length} frases + secretas)`);
 
 await tx.commit();
 

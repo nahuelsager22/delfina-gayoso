@@ -91,6 +91,22 @@ export const voz: readonly VozDelfina[] = [
     pertenece: "quien-cocina",
   },
 
+  /* ---- Lo que te podés llevar — el PIVOTE (Bloque 8 · 22ª ola) ----
+     Con el orden nuevo, esta sección llega después de Marcas y de Trabajemos juntos: el
+     sitio venía hablándole a una marca y acá vuelve a hablarle a la persona que quiere
+     cocinar. Sin una línea que marque ese giro, el salto de "servicios profesionales" a
+     "ebooks y clases" se siente como un cambio de tema. Una sola frase, en su voz, hace
+     de bisagra y nombra las dos mitades del recorrido.
+     COPY PENDIENTE DE VALIDACIÓN DE DELFINA. */
+  {
+    id: "llevas-pivote",
+    texto: "Hasta acá, con quién trabajo. Desde acá, lo que preparé para vos.",
+    registro: "bienvenida",
+    pertenece: "lo-que-te-llevas",
+    // Sin `enfasis`: en la 20ª ola Delfina pidió retirar los subrayados a mano de las
+    // aperturas. La bisagra la lleva la frase, no un adorno.
+  },
+
   /* ---- Página de Experiencias (Bloque 8 · 18ª ola) ----
      Tres piezas cortas: la que abre la página, la que presenta el material visual y la
      que se muestra cuando todavía no hay ninguna fecha publicada. La última existe para

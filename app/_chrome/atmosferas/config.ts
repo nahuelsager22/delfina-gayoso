@@ -58,60 +58,92 @@ export interface Sala {
    El recorrido son BANDAS de color a pleno ancho con cortes claros (ondas), sobre una
    base crema. Alternan claras (salvia, arena, crema · tinta oscura) y profundas (verde,
    terracota · tinta crema). */
+
+/**
+ * LOS SEIS PIGMENTOS DEL MANUAL — punto ÚNICO donde vive cada color (22ª ola).
+ * -----------------------------------------------------------------------------
+ * Antes cada sala repetía su color tres veces a mano (`bg` en hex, `solido` en hex y
+ * `navBg` en RGB): cambiar un color obligaba a acertar en los tres. Ahora se declara
+ * una sola vez acá y las salas lo referencian. Cambiar la arena de todo el sitio =
+ * cambiar una línea de este objeto.
+ *
+ * El crema también existe en `app/globals.css` como `--color-harina` (fondo de página);
+ * son el mismo color y se mantienen en sincronía a mano —son los dos únicos lugares—.
+ */
+export const PIGMENTOS = {
+  crema: { hex: "#F3EEE4", rgb: [243, 238, 228] as RGB },
+  salvia: { hex: "#B1BFAA", rgb: [177, 191, 170] as RGB },
+  arena: { hex: "#DBC9A0", rgb: [219, 201, 160] as RGB },
+  verde: { hex: "#2C4027", rgb: [44, 64, 39] as RGB },
+  marron: { hex: "#413223", rgb: [65, 50, 35] as RGB },
+  /** ACENTO del sistema (líneas, sellos, nodos). Nunca fondo de sección. */
+  terracota: { hex: "#9D301D", rgb: [157, 48, 29] as RGB },
+} as const;
+
 export const SALAS: Record<string, Sala> = {
-  // Entrada: crema (sin banda). El aire de la casa.
+  // El umbral (propuesta de valor): CREMA, sin banda. El aire de la casa: el fondo se
+  // corre para que el plato sea lo único que tiene color.
   bienvenida: {
-    bg: "var(--color-harina)",
-    solido: "#F3EEE4",
+    bg: PIGMENTOS.crema.hex,
+    solido: PIGMENTOS.crema.hex,
     ink: [42, 36, 30],
     inkSoft: [63, 55, 45],
     accent: [107, 74, 31],
-    navBg: [243, 238, 228],
+    navBg: PIGMENTOS.crema.rgb,
     oscura: false,
     banda: false,
   },
   // Quién soy (bienvenida breve): SALVIA clara del manual. Banda cálida, tinta oscura.
   "quien-soy": {
-    bg: "#b1bfaa",
-    solido: "#B1BFAA",
+    bg: PIGMENTOS.salvia.hex,
+    solido: PIGMENTOS.salvia.hex,
     ink: [38, 44, 34],
     inkSoft: [64, 74, 58],
     accent: [44, 64, 39],
-    navBg: [177, 191, 170],
+    navBg: PIGMENTOS.salvia.rgb,
     oscura: false,
     banda: true,
   },
   // Lo que te llevás (ebooks + clases): ARENA cálida. Banda clara, tinta oscura.
   calida: {
-    bg: "#dbc9a0",
-    solido: "#DBC9A0",
+    bg: PIGMENTOS.arena.hex,
+    solido: PIGMENTOS.arena.hex,
     ink: [42, 36, 30],
     inkSoft: [72, 62, 46],
     accent: [107, 74, 31],
-    navBg: [219, 201, 160],
+    navBg: PIGMENTOS.arena.rgb,
     oscura: false,
     banda: true,
   },
-  // Marcas con las que colaboro: crema (respiro). Acento TERRACOTA (10ª ola): el rojo del
-  // manual pasa a ser un color de APOYO —líneas, detalles— y acá marca el recorrido pro.
+  /* Marcas con las que colaboro: ARENA (22ª ola — reemplaza el crema).
+     Al reordenar el recorrido, Marcas quedó justo después del Umbral, que también era
+     crema: dos salas del mismo color seguidas anulan el corte —la onda existe pero no
+     se ve— y el descenso se aplana justo donde el sitio gira de lo personal a lo
+     profesional. La arena es el único pigmento del manual que resuelve las dos cosas a
+     la vez: da un corte legible contra el crema (cambia el tono Y la temperatura) y
+     conserva el contraste que la marquesina salvia necesita para sostener los logotipos
+     —incluido el blanco de Buffalo—. Comparte pigmento con "Lo que te llevás", pero
+     entre las dos está la banda más profunda del sitio (el verde): la arena termina
+     enmarcando la mitad de trabajo del recorrido a ambos lados del verde.
+     El acento sigue siendo TERRACOTA (10ª ola): es la sala del recorrido profesional. */
   marcas: {
-    bg: "var(--color-harina)",
-    solido: "#F3EEE4",
+    bg: PIGMENTOS.arena.hex,
+    solido: PIGMENTOS.arena.hex,
     ink: [42, 36, 30],
-    inkSoft: [63, 55, 45],
-    accent: [157, 48, 29],
-    navBg: [243, 238, 228],
+    inkSoft: [72, 62, 46],
+    accent: PIGMENTOS.terracota.rgb,
+    navBg: PIGMENTOS.arena.rgb,
     oscura: false,
-    banda: false,
+    banda: true,
   },
   // Trabajemos juntos (servicios): VERDE BOSQUE del manual (#2C4027). Banda profunda.
   fresca: {
-    bg: "#2c4027",
-    solido: "#2C4027",
+    bg: PIGMENTOS.verde.hex,
+    solido: PIGMENTOS.verde.hex,
     ink: [244, 240, 228],
     inkSoft: [206, 214, 196],
     accent: [201, 168, 106],
-    navBg: [44, 64, 39],
+    navBg: PIGMENTOS.verde.rgb,
     oscura: true,
     banda: true,
   },
@@ -119,12 +151,12 @@ export const SALAS: Record<string, Sala> = {
   // retira el terracota como fondo (queda para acentos); el marrón cierra cálido y hondo
   // sin repetir el verde de servicios. Acento ARENA para los detalles (lee sobre marrón).
   despedida: {
-    bg: "#413223",
-    solido: "#413223",
+    bg: PIGMENTOS.marron.hex,
+    solido: PIGMENTOS.marron.hex,
     ink: [246, 239, 228],
     inkSoft: [214, 205, 190],
-    accent: [219, 201, 160],
-    navBg: [65, 50, 35],
+    accent: PIGMENTOS.arena.rgb,
+    navBg: PIGMENTOS.marron.rgb,
     oscura: true,
     banda: true,
   },

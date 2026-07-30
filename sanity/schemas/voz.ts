@@ -9,9 +9,9 @@ import { defineField, defineType } from "sanity";
 export const MOMENTOS = [
   { title: "Quién soy (bienvenida)", value: "quien-soy" },
   { title: "El umbral (propuesta)", value: "umbral" },
-  { title: "Lo que te podés llevar", value: "lo-que-te-llevas" },
   { title: "Marcas", value: "marcas" },
   { title: "Trabajemos juntos", value: "trabajemos-juntos" },
+  { title: "Lo que te podés llevar", value: "lo-que-te-llevas" },
   { title: "La clase no termina (cierre)", value: "la-clase-no-termina" },
   { title: "Página de Experiencias", value: "experiencias" },
   { title: "Página de Colaboraciones", value: "colaboraciones" },

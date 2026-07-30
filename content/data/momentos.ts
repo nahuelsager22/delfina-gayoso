@@ -5,17 +5,27 @@ import type { Momento } from "../types";
  *
  * Bloque 8 · 10ª ola — RECORRIDO REESTRUCTURADO (decisión de Delfina). Se acorta a
  * SEIS secciones para una experiencia más breve y directa, con menos texto y más foco
- * en lo que hoy representa su actividad:
+ * en lo que hoy representa su actividad.
  *
- *   1. Umbral               — la entrada.
- *   2. Quién soy            — bienvenida BREVE y cercana ("Hola, soy Delfi"), arriba de
- *                             todo. Ya no es una bio: reemplaza a "Quién cocina" y sube.
- *   3. Lo que te llevás     — toda la propuesta educativa: ebooks + clases (presenciales
- *                             y, próximamente, en vivo online).
- *   4. Marcas con las que colaboro — confianza a través de sus colaboraciones (nueva).
- *   5. Trabajemos juntos    — servicios profesionales para empresas/organizaciones
- *                             (ya NO propuestas educativas: eso vive en "Lo que te llevás").
+ * Bloque 8 · 22ª ola — NUEVO ORDEN (decisión de Delfina, tras ver el sitio). El costado
+ * PROFESIONAL sube: una marca que entra tiene que encontrar las colaboraciones y la
+ * invitación a trabajar juntos sin atravesar antes toda la propuesta educativa.
+ *
+ *   1. Quién soy            — bienvenida BREVE y cercana ("Hola, soy Delfi"), arriba de
+ *                             todo. Ya no es una bio: reemplaza a "Quién cocina".
+ *   2. Umbral               — la propuesta de valor, con el plato que apetece.
+ *   3. Marcas con las que colaboro — la confianza que ya existe (SUBE: antes iba 4ª).
+ *   4. Trabajemos juntos    — servicios profesionales para empresas/organizaciones
+ *                             (SUBE: antes iba 5ª). Es la consecuencia directa de las
+ *                             marcas: primero quién confía, después cómo sumarse.
+ *   5. Lo que te llevás     — toda la propuesta educativa: ebooks + clases (BAJA: antes
+ *                             iba 3ª). Sigue siendo el corazón del sitio para la persona
+ *                             que viene a cocinar; ahora llega después del giro pro.
  *   6. La clase no termina  — el cierre, en su voz.
+ *
+ * El arco se lee en dos mitades con una bisagra: reconocimiento (1–2) → trabajo (3–4) →
+ * aprendizaje (5) → pertenencia (6). El pivote de "para tu marca" a "para vos" ocurre
+ * entre 4 y 5, y lo dice el propio texto que abre "Lo que te llevás".
  *
  * Salen del recorrido (se conservan en el código, no se montan): "La columna del
  * aprendizaje" (con la serie Cocina Nivel 0) y "La cocina compartida". Delfina considera
@@ -48,23 +58,12 @@ export const momentos: readonly Momento[] = [
     atmosfera: "bienvenida",
   },
   {
-    id: "lo-que-te-llevas",
-    nombre: "Lo que te podés llevar",
-    intencionEmocional:
-      'toda la propuesta educativa junta. "Esto es lo que puedo aprender con ella: ebooks y clases."',
-    fase: "descubrimiento",
-    orden: 3,
-    ritmoPrevisto: "denso",
-    navLabel: "Aprender",
-    atmosfera: "calida",
-  },
-  {
     id: "marcas",
     nombre: "Marcas con las que colaboro",
     intencionEmocional:
       'confianza. "Trabaja con marcas de verdad; esto es serio y puedo sumarme."',
     fase: "descubrimiento",
-    orden: 4,
+    orden: 3,
     ritmoPrevisto: "silencio",
     navLabel: "Marcas",
     atmosfera: "marcas",
@@ -74,11 +73,22 @@ export const momentos: readonly Momento[] = [
     nombre: "Trabajemos juntos",
     intencionEmocional:
       'invitación profesional clara. "Esto también se puede hacer con ella, para mi empresa."',
-    fase: "pertenencia",
-    orden: 5,
+    fase: "descubrimiento",
+    orden: 4,
     ritmoPrevisto: "denso",
     navLabel: "Trabajemos",
     atmosfera: "fresca",
+  },
+  {
+    id: "lo-que-te-llevas",
+    nombre: "Lo que te podés llevar",
+    intencionEmocional:
+      'toda la propuesta educativa junta. "Esto es lo que puedo aprender con ella: ebooks y clases."',
+    fase: "pertenencia",
+    orden: 5,
+    ritmoPrevisto: "denso",
+    navLabel: "Aprender",
+    atmosfera: "calida",
   },
   {
     id: "la-clase-no-termina",

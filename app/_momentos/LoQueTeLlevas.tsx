@@ -1,9 +1,16 @@
-import { getExperiencias, getProductos, getProximaExperiencia, estadoDeExperiencia } from "@/content";
+import {
+  getExperiencias,
+  getProductos,
+  getProximaExperiencia,
+  getVozDeMomento,
+  estadoDeExperiencia,
+} from "@/content";
 import { Momento } from "../_patrones/Momento";
 import { FichaProducto } from "../_patrones/FichaProducto";
 import { FichaExperiencia } from "../_patrones/FichaExperiencia";
 import { ProximaExperiencia } from "../_patrones/ProximaExperiencia";
 import { Aparicion } from "../_patrones/Aparicion";
+import { Voz } from "../_patrones/Voz";
 import { EnlaceEditorial } from "../_patrones/EnlaceEditorial";
 import { Adorno } from "../_chrome/adornos/Adorno";
 import { Marquesina } from "../_chrome/adornos/Marquesina";
@@ -24,11 +31,16 @@ import { Marquesina } from "../_chrome/adornos/Marquesina";
  *    repite). Cada una con su propia fotografía (11ª ola · #3).
  */
 export async function LoQueTeLlevas() {
-  const [productos, experiencias, proxima] = await Promise.all([
+  const [productos, experiencias, proxima, voces] = await Promise.all([
     getProductos(),
     getExperiencias(),
     getProximaExperiencia(),
+    getVozDeMomento("lo-que-te-llevas"),
   ]);
+
+  // 22ª ola: la bisagra del recorrido. Con el orden nuevo, acá el sitio deja de hablarle
+  // a una marca y vuelve a hablarle a la persona que vino a cocinar.
+  const pivote = voces.find((v) => v.id === "llevas-pivote");
 
   // 21ª ola: todos los productos son ebooks (las clases son `Experiencia`), así que ya
   // no hay nada que filtrar.
@@ -58,6 +70,17 @@ export async function LoQueTeLlevas() {
       kicker={encabezado.kicker}
       titulo={encabezado.titulo}
     >
+      {/* El pivote: una sola línea que nombra el giro de "para tu marca" a "para vos".
+          Va antes que todo lo demás, porque su función es reencuadrar lo que sigue. */}
+      {pivote && (
+        <Aparicion
+          className="llevas-pivote"
+          style={{ maxInlineSize: "var(--measure-voz)" }}
+        >
+          <Voz texto={pivote.texto} escala="l" enfasis={pivote.enfasis} />
+        </Aparicion>
+      )}
+
       {/* LA PRÓXIMA FECHA: lo primero, porque es lo que vence. */}
       {proxima && <ProximaExperiencia experiencia={proxima} />}
 

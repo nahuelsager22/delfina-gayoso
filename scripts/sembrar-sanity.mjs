@@ -240,6 +240,8 @@ docs.push({
   _type: "budin",
   saludo: budin.saludo,
   frases: [...budin.frases],
+  secretas: [...(budin.secretas ?? [])],
+  amistad: budin.amistad,
 });
 
 console.log(`\nSubiendo ${docs.length} documentos…`);

@@ -92,7 +92,10 @@ export const momento = defineType({
   preview: { select: { title: "nombre", subtitle: "navLabel" } },
 });
 
-/** La voz de Budín: lo que dice al saludar y sus frases al azar. */
+/**
+ * La voz de Budín: lo que dice al saludar y lo que suelta cuando lo tocan.
+ * 22ª ola: tres niveles, de lo que dice siempre a lo que casi nadie va a ver.
+ */
 export const budin = defineType({
   name: "budin",
   title: "Budín",
@@ -107,11 +110,27 @@ export const budin = defineType({
     }),
     defineField({
       name: "frases",
-      title: "Frases al azar",
-      description: "Una por línea. Se elige una distinta cada vez que lo tocan.",
+      title: "Frases de siempre",
+      description:
+        "Las que dice al tocarlo. Se barajan y se usan TODAS antes de repetir ninguna: cuantas más haya, más tarda en repetirse.",
       type: "array",
       of: [defineArrayMember({ type: "string" })],
       validation: (r) => r.min(1),
+    }),
+    defineField({
+      name: "secretas",
+      title: "Frases raras",
+      description:
+        "Aparecen recién después de que alguien lo tocó varias veces, y sólo de vez en cuando. Son el premio para quien se queda jugando.",
+      type: "array",
+      of: [defineArrayMember({ type: "string" })],
+    }),
+    defineField({
+      name: "amistad",
+      title: "La frase de la amistad",
+      description:
+        "Una sola. Aparece después de muchísimos toques y no vuelve a aparecer.",
+      type: "string",
     }),
   ],
   preview: { select: { title: "saludo" } },

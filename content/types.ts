@@ -295,8 +295,22 @@ export type ExperienciaSemilla = Omit<Experiencia, "imagen" | "galeria"> & {
 export interface VozBudin {
   /** Lo que dice al pasar el mouse (invita a tocarlo). */
   readonly saludo: string;
-  /** Frases que suelta al azar. Sumar una es agregar una línea a este arreglo. */
+  /**
+   * Su repertorio de siempre. La interfaz lo baraja y lo AGOTA antes de repetir, así que
+   * cuanto más largo, más tarda en volver una frase. Sumar una es agregar una línea.
+   */
   readonly frases: readonly string[];
+  /**
+   * Frases RARAS (22ª ola). No aparecen hasta que alguien lo tocó varias veces, y aun
+   * entonces salen de vez en cuando. Existen para premiar a quien insiste: son las que
+   * la mayoría no va a ver nunca.
+   */
+  readonly secretas?: readonly string[];
+  /**
+   * La última (22ª ola). Aparece UNA sola vez, después de muchísimos toques, y no vuelve.
+   * Es el final del juego: el momento en que Budín reconoce que ya son amigos.
+   */
+  readonly amistad?: string;
 }
 
 /**
