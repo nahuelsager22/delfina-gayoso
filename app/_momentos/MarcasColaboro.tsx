@@ -29,11 +29,12 @@ import { MarquesinaMarcas } from "../_chrome/adornos/MarquesinaMarcas";
  * se conserva para quien quiera saltar el encabezado, pero la transición ya no depende
  * de él.
  *
- * Bloque 8 · 23ª ola — SALA PROPIA, honda. Al subir dejó de ser una sección de respiro:
- * es la bisagra donde el recorrido pasa de Delfina a su trabajo. La sala pasa a MARRÓN
- * (ver el porqué en `atmosferas/config.ts`), con tinta crema y acento salvia. La
- * marquesina de logotipos, que sigue siendo salvia, ahora es una cinta clara sobre un
- * fondo hondo: los cuatro logos ganan el contraste que antes había que pelear.
+ * Bloque 8 · 23ª–24ª olas — SALA PROPIA, honda. Al subir dejó de ser una sección de
+ * respiro: es la bisagra donde el recorrido pasa de Delfina a su trabajo. La sala es
+ * LADRILLO —el terracota del manual a profundidad de fondo—, con tinta crema y acento
+ * salvia (ver el porqué en `atmosferas/config.ts`). La marquesina de logotipos, que
+ * sigue siendo salvia, es una cinta clara sobre un fondo hondo: los cuatro logos ganan
+ * el contraste que antes había que pelear.
  */
 export async function MarcasColaboro() {
   const marcas = await getMarcas();

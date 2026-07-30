@@ -76,8 +76,23 @@ export const PIGMENTOS = {
   arena: { hex: "#DBC9A0", rgb: [219, 201, 160] as RGB },
   verde: { hex: "#2C4027", rgb: [44, 64, 39] as RGB },
   marron: { hex: "#413223", rgb: [65, 50, 35] as RGB },
-  /** ACENTO del sistema (líneas, sellos, nodos). Nunca fondo de sección. */
+  /**
+   * ACENTO del sistema (líneas, sellos, nodos, subrayados). NUNCA fondo de sección.
+   * La 24ª ola probó llevarlo a fondo —un ladrillo hondo para Marcas— y Delfina lo
+   * descartó al verlo montado: como color protagonista de una banda entera se lee
+   * clásico, y el sitio no lo es. La regla vuelve a su forma original y queda cerrada:
+   * el terracota aporta personalidad en el detalle, no domina la composición.
+   */
   terracota: { hex: "#9D301D", rgb: [157, 48, 29] as RGB },
+  /**
+   * PIEDRA CÁLIDA (24ª ola, dirección de Delfina) — el fondo de Marcas.
+   * No es un color traído de afuera: es exactamente CREMA + 16% MARRÓN, los dos
+   * extremos del recorrido mezclados. Por eso pertenece sin esfuerzo —es el papel de la
+   * casa con algo de la madera del cierre— y por eso funciona donde el manual no tenía
+   * nada: un tono natural y contemporáneo que no es ni el crema del Umbral ni el
+   * dorado de la arena, y sobre el que el acento terracota vuelve a leerse (4.8:1).
+   */
+  piedra: { hex: "#D8D0C5", rgb: [216, 208, 197] as RGB },
 } as const;
 
 export const SALAS: Record<string, Sala> = {
@@ -115,32 +130,29 @@ export const SALAS: Record<string, Sala> = {
     oscura: false,
     banda: true,
   },
-  /* Marcas con las que colaboro: MARRÓN (23ª ola — reemplaza la arena de la 22ª, que a
-     su vez había reemplazado al crema).
+  /* Marcas con las que colaboro: PIEDRA CÁLIDA (24ª ola, dirección de Delfina).
      -------------------------------------------------------------------------------
-     Con el orden nuevo, Marcas dejó de ser una sección de respiro y pasó a ser la
-     BISAGRA del recorrido: donde el sitio deja de hablar de Delfina y empieza a hablar
-     de su trabajo. Una sala clara más, entre otras claras, no marcaba ese cambio de
-     capítulo — y en arena se confundía con "Lo que te llevás".
-     Por qué el marrón y no otro: las cinco tintas del manual estaban tomadas por sus
-     vecinas. Crema es el Umbral, justo arriba (dos salas iguales anulan la onda). Verde
-     es "Trabajemos juntos", justo abajo. Arena es "Lo que te llevás" —el problema que
-     vinimos a resolver—. Y salvia no puede ser: es el color de la marquesina de
-     logotipos que vive DENTRO de esta sección, y la cinta desaparecería. Queda el
-     marrón, que además es el que mejor dice lo que la sección quiere decir: una sala
-     honda, de madera, donde las marcas se ven como en una vitrina.
-     El acento pasa de terracota a SALVIA: el terracota no lee sobre marrón (1.5:1) y la
-     salvia es justamente el color de la cinta de logos —la sala y su marquesina hablan
-     el mismo idioma—. Comparte pigmento con el cierre, pero a tres secciones de
-     distancia, con otra composición y otra escala. */
+     Esta sala buscó su color durante cuatro olas —crema, arena, marrón, ladrillo—
+     porque su ROL cambió: dejó de ser una sección de respiro y pasó a ser la BISAGRA
+     del recorrido, donde el sitio deja de hablar de Delfina y empieza a hablar de su
+     trabajo. Las tres primeras chocaban con una vecina (el crema del Umbral arriba, la
+     arena de "Lo que te llevás", el marrón del cierre); el ladrillo no chocaba con
+     ninguna, pero como protagonista de una banda entera se leía clásico.
+     La piedra resuelve las dos cosas a la vez y por una razón simple: es el ÚNICO tono
+     de la familia que no está tomado por nadie, porque no estaba en el manual —está
+     ENTRE dos de sus tintas—. Corta contra el crema de arriba (1.32:1 más un cambio de
+     temperatura), es luminosa, y devuelve la sección a tinta oscura, que es como se lee
+     un espacio de trabajo.
+     El acento vuelve a ser TERRACOTA, que es donde debía estar: sobre la piedra lee a
+     4.8:1 y aporta personalidad sin dominar nada. */
   marcas: {
-    bg: PIGMENTOS.marron.hex,
-    solido: PIGMENTOS.marron.hex,
-    ink: [246, 239, 228],
-    inkSoft: [214, 205, 190],
-    accent: PIGMENTOS.salvia.rgb,
-    navBg: PIGMENTOS.marron.rgb,
-    oscura: true,
+    bg: PIGMENTOS.piedra.hex,
+    solido: PIGMENTOS.piedra.hex,
+    ink: [42, 36, 30],
+    inkSoft: [70, 62, 53],
+    accent: PIGMENTOS.terracota.rgb,
+    navBg: PIGMENTOS.piedra.rgb,
+    oscura: false,
     banda: true,
   },
   /* Página /colaboraciones: CREMA con acento terracota — lo que era la sala `marcas`
