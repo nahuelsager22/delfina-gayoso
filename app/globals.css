@@ -29,6 +29,10 @@
   --color-perejil: #4e6a3c; /* acento fresco    */
   --color-bosque: #2c4027; /* verde de MARCA (manual, 10ª ola: #2C4027, más profundo). */
   --color-salvia: #b1bfaa; /* verde salvia claro del manual */
+  /* La misma salvia con más cuerpo (25ª ola). Sólo la cinta de logotipos la usa: sobre
+     la piedra de Marcas, la salvia clara quedaba al ras (1.26:1) y la cinta se disolvía
+     en la sección. Ver `.marquesina-marcas`. */
+  --color-salvia-honda: #9dab94;
   --color-arena: #dbc9a0; /* arena cálida del manual */
   --color-terracota: #9d301d; /* terracota del manual — reemplaza el bordó del cierre */
 
@@ -1045,16 +1049,23 @@
    ========================================================================== */
 /* BANDA (21ª ola): salvia a pleno ancho con la guarda de arcos del sistema. Le da a la
    sección su momento y levanta el contraste de los logotipos claros sin tocar sus
-   colores. La escala de los logos se ajusta por dispositivo con `--escala-logo`. */
+   colores. La escala de los logos se ajusta por dispositivo con `--escala-logo`.
+
+   25ª ola — SALVIA HONDA. Con la sección en piedra, la salvia clara quedaba a 1.26:1 del
+   fondo: la cinta dejaba de ser una cinta. Bajarla un paso resuelve las dos cosas que
+   esta banda tiene que resolver: se despega de la sección (1.58:1) y levanta el logotipo
+   más débil del grupo —el blanco de Buffalo pasa de 1.93:1 a 2.42:1—, sin castigar al
+   más oscuro (el negro de 3 Claveles queda en 6.8:1). Es la misma salvia con más
+   cuerpo: la razón de la 21ª ola no cambia, se cumple mejor. */
 .marquesina-marcas {
   position: relative;
   inline-size: 100vw;
   margin-inline: calc(50% - 50vw);
   margin-block: clamp(var(--space-xl), 5vw, var(--space-2xl));
   overflow: hidden;
-  background-color: #b1bfaa; /* salvia del manual */
-  /* Tinta local: los detalles de la cinta se leen sobre la salvia, no sobre la sala. */
-  --mq-ink: 38 44 34;
+  background-color: var(--color-salvia-honda);
+  /* Tinta local: los detalles de la cinta se leen sobre la cinta, no sobre la sala. */
+  --mq-ink: 30 36 27;
   --mq-acc: 157 48 29; /* terracota, el acento del sistema */
   --escala-logo: 0.68;
   /* El aire justo: suficiente para que la cinta respire, sin que los logotipos queden
@@ -1096,11 +1107,14 @@
   display: flex;
   inline-size: max-content;
   will-change: transform;
-  /* Pausada, pero no lenta (23ª ola: 64s → 44s). A 64s había que esperar demasiado para
-     ver las cuatro marcas; a 44s el recorrido completo dura ~22s y la lectura de cada
-     logo sigue siendo cómoda. La sección habla de relaciones que duran, no de novedades:
-     el ritmo acompaña, no apura. */
-  animation: mq-scroll 44s linear infinite;
+  /* 25ª ola: 44s → 28s. Medido antes de tocarlo: la pista recorre 1563px por ciclo, y un
+     ciclo ES la vuelta completa a las cuatro marcas (la pista está duplicada, así que el
+     -50% equivale a un juego entero). A 44s eso daba 35 px/s —por debajo del rango en
+     que una marquesina se lee cómoda, que arranca cerca de los 45— y por eso se sentía
+     lenta aun después de la primera corrección. A 28s son 56 px/s: la vuelta completa
+     pasa de 44s a 28s y cada logotipo sigue estando en pantalla varios segundos. La
+     sección habla de relaciones que duran; el ritmo acompaña, no apura. */
+  animation: mq-scroll 28s linear infinite;
   /* El desvanecido va en la PISTA, no en la banda: así los logos entran y salen del
      encuadre sin cortarse, y el color de la cinta llega entero hasta el borde. */
   -webkit-mask-image: linear-gradient(
