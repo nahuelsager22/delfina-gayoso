@@ -53,6 +53,9 @@ export const marcas: readonly MarcaSemilla[] = [
     nombre: "Ormay Argentina",
     handle: "@ormay_argentina",
     url: "https://instagram.com/ormay_argentina",
-    logo: { src: "/marcas/ormay.svg", ancho: 2810, alto: 1360 },
+    // El SVG viene en milímetros (281×136 mm); acá van sus píxeles reales, que es lo que
+    // también reporta el CMS. La proporción era la misma, así que no se veía distinto:
+    // se corrige para que el respaldo local declare lo mismo que sirve Sanity.
+    logo: { src: "/marcas/ormay.svg", ancho: 797, alto: 386 },
   },
 ];
