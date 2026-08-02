@@ -47,7 +47,10 @@ export type MomentoId =
    */
   | "experiencias"
   /** Bloque 8 · 19ª ola — la página `/colaboraciones`. Misma lógica que `experiencias`. */
-  | "colaboraciones";
+  | "colaboraciones"
+  /** Bloque 8 · 28ª ola — la página `/la-mesa`. Misma lógica: existe para que su copy
+   *  viva en el CMS, no para aparecer en el recorrido. */
+  | "la-mesa";
 
 /* ============================================================================
    A · Voz de Delfina — fragmentos en primera persona (los que van en serif).
@@ -346,7 +349,7 @@ export interface Marca {
   readonly rubro?: string;
   /** Logo real cuando exista; sin él, se muestra el nombre compuesto. */
   readonly logo?: LogoMarca;
-  /** Usuario de Instagram tal como se muestra (ej. "@buffalo.arg"). */
+  /** Usuario de Instagram tal como se muestra (ej. "@3claveles.arg"). */
   readonly handle?: string;
   /** Sitio/redes de la marca, opcional. */
   readonly url?: string;
@@ -421,7 +424,24 @@ export type TipoGesto =
   /** Plato terminado (Bloque 8 · 10ª ola): apetece, ancla la propuesta. */
   | "plato"
   /** Portada de producto (ebook/clase): contenido real, ancla de la ficha (B6.5 · R4). */
-  | "portada";
+  | "portada"
+  /**
+   * Cómo se vive una CLASE (Bloque 8 · 27ª ola). No es un tipo más de foto: es el que
+   * alimenta la banda "Por dentro" de `/experiencias`. Antes esa banda sólo podía
+   * mostrar la galería de una experiencia concreta —material que se carga DESPUÉS de que
+   * la clase sucede—, así que hasta entonces se veía dibujada. Marcando una foto como
+   * `clase`, Delfi puede sumarla desde el Studio sin atarla a una fecha: son las que
+   * cuentan cómo es estar ahí, no las de un día puntual.
+   */
+  | "clase"
+  /**
+   * LA MESA (Bloque 8 · 28ª ola). El material que arma `/la-mesa`, la sección donde la
+   * fotografía deja de ilustrar y pasa a ser el contenido. No es "galería": es lo que
+   * queda sobre la mesa después de cocinar —ella, lo que cocinó y con quién—, y por eso
+   * conviven un retrato y un plato terminado bajo el mismo gesto. Sumar una foto a la
+   * mesa es marcarla así en el Studio; su lugar en la composición lo decide `orden`.
+   */
+  | "mesa";
 export type OrientacionImagen = "vertical" | "horizontal" | "cuadrada";
 
 export interface ImagenReal {
@@ -436,6 +456,13 @@ export interface ImagenReal {
   /** Dimensiones intrínsecas en px, para reservar espacio (evita layout shift). */
   readonly ancho?: number;
   readonly alto?: number;
+  /**
+   * Lugar en una composición ordenada (Bloque 8 · 28ª ola). Menor = antes. Existe por LA
+   * MESA: ahí el orden no es un detalle, es la composición —qué foto es hero, cuál queda
+   * de detalle y cuál se apoya sobre cuál—, y tiene que poder decidirlo Delfi desde el
+   * Studio sin tocar código. Donde no importa (el resto del sitio), se ignora.
+   */
+  readonly orden?: number;
 }
 
 /** Referencia liviana a una ImagenReal (por id) para no acoplar objetos. */

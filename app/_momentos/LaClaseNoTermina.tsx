@@ -2,6 +2,7 @@ import { getRedes, getVozDeMomento, type VozDelfina } from "@/content";
 import { Momento } from "../_patrones/Momento";
 import { Voz } from "../_patrones/Voz";
 import { Aparicion } from "../_patrones/Aparicion";
+import { EnlaceEditorial } from "../_patrones/EnlaceEditorial";
 import { Flecha } from "../_chrome/adornos/Flecha";
 import { LineaEditorial } from "../_chrome/adornos/LineaEditorial";
 import { Adorno } from "../_chrome/adornos/Adorno";
@@ -62,6 +63,25 @@ export async function LaClaseNoTermina() {
               )}
             </Aparicion>
           ))}
+
+          {/* LA PUERTA A LA MESA (29ª ola). Estuvo primero en "Quién soy" y se movió acá,
+              y el lugar no es un detalle: la frase que la antecede es "Así que quedate. La
+              clase sigue abierta". La invitación aterriza justo sobre la única línea del
+              sitio que pide quedarse.
+
+              Además arregla algo que el cierre tenía flojo: hasta ahora, las tres formas
+              de seguir eran irse a Instagram, irse a TikTok o volver al principio. La
+              mesa es la única que lleva a un lugar nuevo DENTRO de la casa. Por eso va
+              antes que las redes y con el tratamiento de las otras puertas del sitio
+              (enlace editorial con su nota), no con el de un enlace social. */}
+          <Aparicion orden={2} className="cierre-mesa">
+            <EnlaceEditorial
+              href="/la-mesa"
+              nota="Lo que va quedando después de cocinar: platos, clases y lindos momentos"
+            >
+              Pasá a la mesa
+            </EnlaceEditorial>
+          </Aparicion>
 
           {/* Formas de seguir, sin jerarquía de embudo: enlaces de igual peso con flecha. */}
           <Aparicion style={{ marginBlockStart: "var(--space-sm)" }}>

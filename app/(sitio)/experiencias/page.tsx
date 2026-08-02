@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import {
   estadoDeExperiencia,
   getExperiencias,
+  getFotosDeClase,
   getProximaExperiencia,
   getVozDeMomento,
   type Experiencia,
@@ -10,7 +11,7 @@ import {
 import { Banda } from "../../_patrones/Banda";
 import { Voz } from "../../_patrones/Voz";
 import { Aparicion } from "../../_patrones/Aparicion";
-import { Mosaico } from "../../_patrones/Mosaico";
+import { Mesa, type PiezaMesa } from "../../_patrones/Mesa";
 import { ProximaExperiencia } from "../../_patrones/ProximaExperiencia";
 import { FichaExperiencia } from "../../_patrones/FichaExperiencia";
 import { EnlaceEditorial } from "../../_patrones/EnlaceEditorial";
@@ -43,32 +44,70 @@ export const metadata: Metadata = {
     "Las clases de cocina con Delfina: las próximas fechas, cómo se vive una clase por dentro y las que ya sucedieron.",
 };
 
-/** Las fotos de todas las experiencias: su foto principal + las de su galería. */
-function fotosDe(experiencias: readonly Experiencia[]): readonly ImagenReal[] {
+/**
+ * Las ESCENAS de la banda "Por dentro" (27ª ola; 28ª ola — dejan de ser loops).
+ * -----------------------------------------------------------------------------
+ * Hasta la 27ª eran recortes de 1,5 segundos reproducidos de ida y de vuelta. Funcionaban,
+ * pero un fragmento tan corto que rebota se lee como un GIF: se percibe el mecanismo antes
+ * que la escena. Ahora son los videos COMPLETOS —12,7s el de la clase de galletitas, 8,4s
+ * el de la clase de pastas— con sus cortes, su cámara moviéndose y su final. El bucle
+ * sigue existiendo, pero pasa tan lejos que deja de notarse: lo que se ve es una escena
+ * real, que es lo que la sección tiene que probar.
+ *
+ * Siguen siendo dirección de arte (viven en el código, no en el CMS) y siguen siendo
+ * MEJORA PROGRESIVA: se emparejan por `id` con una foto del CMS que es un fotograma suyo,
+ * así que si un día se retiran, la composición no cambia. Mismo patrón que el Umbral.
+ */
+const ESCENAS: Record<string, { src: string; tipo: string }[]> = {
+  "clase-decorando": [
+    { src: "/videos/clase-cookies.webm", tipo: "video/webm" },
+    { src: "/videos/clase-cookies.mp4", tipo: "video/mp4" },
+  ],
+  "clase-maquina": [
+    { src: "/videos/clase-adentro.webm", tipo: "video/webm" },
+    { src: "/videos/clase-adentro.mp4", tipo: "video/mp4" },
+  ],
+};
+
+/**
+ * Qué se ve en "Por dentro": las fotos marcadas como "cómo se vive una clase" MÁS las
+ * galerías de cada experiencia. Las primeras cuentan la experiencia en general y están
+ * desde ahora; las segundas son la prueba de un día concreto y se cargan después de que
+ * la clase sucede. Las dos cosas responden a la misma pregunta, así que van juntas.
+ */
+function fotosDeClaseYGalerias(
+  deClase: readonly ImagenReal[],
+  experiencias: readonly Experiencia[],
+): readonly ImagenReal[] {
   const vistas = new Set<string>();
   const fotos: ImagenReal[] = [];
-  for (const e of experiencias) {
-    for (const f of [e.imagen, ...(e.galeria ?? [])]) {
-      if (f && !vistas.has(f.src)) {
-        vistas.add(f.src);
-        fotos.push(f);
-      }
-    }
-  }
+  const sumar = (f: ImagenReal | undefined) => {
+    if (!f || vistas.has(f.src)) return;
+    vistas.add(f.src);
+    fotos.push(f);
+  };
+  for (const f of deClase) sumar(f);
+  for (const e of experiencias) for (const f of e.galeria ?? []) sumar(f);
   return fotos;
 }
 
 export default async function PaginaExperiencias() {
-  const [experiencias, proxima, voces] = await Promise.all([
+  const [experiencias, proxima, voces, fotosClase] = await Promise.all([
     getExperiencias(),
     getProximaExperiencia(),
     getVozDeMomento("experiencias"),
+    getFotosDeClase(),
   ]);
 
   const vozDe = (id: string) => voces.find((v) => v.id === id);
   const apertura = vozDe("experiencias-apertura");
   const vozGaleria = vozDe("experiencias-galeria");
   const sinFechas = vozDe("experiencias-sin-fechas");
+
+  const piezas: readonly PiezaMesa[] = fotosDeClaseYGalerias(
+    fotosClase,
+    experiencias,
+  ).map((foto) => ({ foto, video: ESCENAS[foto.id] }));
 
   const pasadas = experiencias.filter(
     (e) => estadoDeExperiencia(e) === "finalizada",
@@ -138,7 +177,23 @@ export default async function PaginaExperiencias() {
           titulo={vozGaleria?.texto ?? "Así se ve una clase por dentro."}
           aire="silencio"
         >
-          <Mosaico fotos={fotosDe(experiencias)} />
+          {/* 28ª ola: la misma composición que `/la-mesa`, en versión corta y sin las
+              capas gráficas. Que las dos hablen el mismo idioma es la decisión: acá se
+              muestra cómo se vive una clase, allá lo que va quedando de todas; si cada
+              una tuviera su propio sistema de marcos, el sitio tendría dos lenguajes
+              fotográficos y ninguno sería el suyo. */}
+          <div className="mesa-envoltorio">
+            <Mesa piezas={piezas} />
+          </div>
+
+          <Aparicion className="galeria-salida">
+            <EnlaceEditorial
+              href="/la-mesa"
+              nota="Lo que va quedando después de cocinar: platos, clases y lindos momentos"
+            >
+              Pasá a la mesa
+            </EnlaceEditorial>
+          </Aparicion>
         </Banda>
 
         {/* ---- Las que ya sucedieron -------------------------------------- */}

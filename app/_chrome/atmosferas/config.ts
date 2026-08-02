@@ -197,6 +197,43 @@ export const SALAS: Record<string, Sala> = {
     banda: true,
   },
 
+  /* Página /la-mesa: CREMA, el papel de la casa (28ª ola).
+     -------------------------------------------------------------------------------
+     Es la única sala elegida por SUSTRACCIÓN: acá el contenido son 23 fotografías con
+     sus propios colores —violeta de la masa, verde del invernadero, dorado de las
+     medialunas—, y cualquier fondo con carácter competiría con todas a la vez. El crema
+     es el papel sobre el que se apoyan; que no se note es exactamente su trabajo.
+     El acento va en TERRACOTA porque los recursos gráficos de la mesa (la espiga, el
+     hilo del repasador, la escritura de fondo) tienen que leerse sin pelearle a la
+     fotografía: una línea de acento cálido a baja opacidad hace justo eso. */
+  mesa: {
+    bg: PIGMENTOS.crema.hex,
+    solido: PIGMENTOS.crema.hex,
+    ink: [42, 36, 30],
+    inkSoft: [63, 55, 45],
+    accent: PIGMENTOS.terracota.rgb,
+    navBg: PIGMENTOS.crema.rgb,
+    oscura: false,
+    banda: false,
+  },
+
+  /* Banda "Por dentro" de /experiencias: SALVIA del manual. Es la misma salvia de
+     "Quién soy" y no es casualidad: las dos hablan de ella entre gente. Sobre este verde
+     apagado las fotos de clase —mucha madera, mucho glasé de color— se leen cálidas sin
+     competir. (27ª ola: la sala existía desde la 18ª pero había quedado dentro del bloque
+     de archivadas y con el hex escrito a mano; ahora referencia el pigmento, como el
+     resto.) */
+  compartir: {
+    bg: PIGMENTOS.salvia.hex,
+    solido: PIGMENTOS.salvia.hex,
+    ink: [38, 44, 34],
+    inkSoft: [64, 74, 58],
+    accent: [44, 64, 39],
+    navBg: PIGMENTOS.salvia.rgb,
+    oscura: false,
+    banda: true,
+  },
+
   /* --- Salas ARCHIVADAS (componentes fuera del recorrido, no se montan) --- */
   corazon: {
     bg: "#413223",
@@ -217,16 +254,6 @@ export const SALAS: Record<string, Sala> = {
     navBg: [243, 238, 228],
     oscura: false,
     banda: false,
-  },
-  compartir: {
-    bg: "#b1bfaa",
-    solido: "#B1BFAA",
-    ink: [38, 44, 34],
-    inkSoft: [64, 74, 58],
-    accent: [44, 64, 39],
-    navBg: [177, 191, 170],
-    oscura: false,
-    banda: true,
   },
 };
 
@@ -260,7 +287,12 @@ export function datosNavbar(sala: Sala): Record<string, string> {
   };
 }
 
-/** Variables de tinta de una sala, para fijar en el `<section>` (las hereda el contenido). */
+/** Variables de tinta de una sala, para fijar en el `<section>` (las hereda el contenido).
+ *
+ *  `--atm-papel` (27ª ola) es el color SÓLIDO de la sala expuesto como variable. Existe
+ *  para lo que necesita pintar el papel de la habitación en vez de heredarlo: un
+ *  paspartú, o el borde de una pieza que se monta sobre otra y tiene que recortarse
+ *  contra ella. Es `solido` y no `bg` a propósito —`bg` puede ser una expresión CSS—. */
 export function estiloSala(sala: Sala): Record<string, string> {
   return {
     background: sala.bg,
@@ -268,6 +300,7 @@ export function estiloSala(sala: Sala): Record<string, string> {
     "--atm-ink": rgbStr(sala.ink),
     "--atm-ink-soft": rgbStr(sala.inkSoft),
     "--atm-accent": rgbStr(sala.accent),
+    "--atm-papel": sala.solido,
   };
 }
 

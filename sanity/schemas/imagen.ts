@@ -42,6 +42,11 @@ export const imagen = defineType({
         list: [
           { title: "Retrato de Delfi", value: "retrato" },
           { title: "Plato terminado", value: "plato" },
+          // 27ª ola: alimenta la banda "Por dentro" de /experiencias. Marcá acá las
+          // fotos que cuentan cómo se vive una clase, sin atarlas a una fecha.
+          { title: "Cómo se vive una clase", value: "clase" },
+          // 28ª ola: lo que va sobre la mesa (/la-mesa).
+          { title: "La mesa", value: "mesa" },
           { title: "Proceso / manos", value: "proceso" },
           { title: "Vida real", value: "vida-real" },
           { title: "Portada de producto", value: "portada" },
@@ -49,6 +54,14 @@ export const imagen = defineType({
           { title: "Mano", value: "mano" },
         ],
       },
+    }),
+    defineField({
+      name: "orden",
+      title: "Lugar en la mesa",
+      description:
+        "Sólo importa en las fotos de La mesa: el número decide su lugar y su TAMAÑO en la composición (menor = antes). Van de 10 en 10 para poder intercalar.",
+      type: "number",
+      hidden: ({ parent }) => parent?.tipoGesto !== "mesa",
     }),
   ],
   preview: {

@@ -34,7 +34,7 @@ import { MarquesinaMarcas } from "../_chrome/adornos/MarquesinaMarcas";
  * capítulo aparte. Buscó su color durante cuatro olas y aterrizó en la PIEDRA CÁLIDA
  * (dirección de Delfina; el porqué, en `atmosferas/config.ts`): tinta oscura, acento
  * terracota y, sobre todo, un fondo neutro que no compite con lo único que esta sección
- * tiene para mostrar, que son los cuatro logotipos. La cinta que los lleva bajó a salvia
+ * tiene para mostrar, que son los logotipos. La cinta que los lleva bajó a salvia
  * honda para despegarse de la piedra (ver `.marquesina-marcas`).
  */
 export async function MarcasColaboro() {

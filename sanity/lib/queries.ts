@@ -91,6 +91,7 @@ export const IMAGENES = `*[_type == "imagen"] {
   "id": identificador.current,
   "alt": descripcion,
   tipoGesto,
+  orden,
   "url": archivo.asset->url,
   "ancho": archivo.asset->metadata.dimensions.width,
   "alto": archivo.asset->metadata.dimensions.height

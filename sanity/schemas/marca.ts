@@ -31,7 +31,7 @@ export const marca = defineType({
     defineField({
       name: "handle",
       title: "Instagram",
-      description: 'Tal como se escribe, con arroba (ej. "@buffalo.arg").',
+      description: 'Tal como se escribe, con arroba (ej. "@3claveles.arg").',
       type: "string",
     }),
     defineField({

@@ -69,6 +69,13 @@ export async function QuienSoy() {
           />
         </Aparicion>
       </div>
+
+      {/* 29ª ola: acá estuvo un momento la puerta a LA MESA y se movió al CIERRE.
+          El razonamiento, porque vale para lo que venga: la sección es un saludo de dos
+          frases, y una invitación a irse a otra página en el segundo scroll compite con
+          el recorrido en vez de acompañarlo. Un acceso no se ubica donde es pertinente
+          sino donde ya nació la curiosidad, y a esta altura el visitante todavía no sabe
+          lo suficiente de ella como para querer ver su mesa. Ver `LaClaseNoTermina`. */}
     </Momento>
   );
 }

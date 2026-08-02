@@ -55,6 +55,7 @@ export function Banda({
   full = false,
   alFinal = false,
   primero = false,
+  cierre = false,
   alto = "100svh",
   marca,
 }: {
@@ -75,6 +76,25 @@ export function Banda({
   alFinal?: boolean;
   /** La primera banda de la página: no lleva onda de corte arriba (nada que cortar). */
   primero?: boolean;
+  /**
+   * La ÚLTIMA banda de la página (28ª ola). No es `full` con otro alto: es un problema
+   * distinto y por eso tiene su propio modo.
+   *
+   * Una banda de cierre tiene que cumplir dos cosas que se contradicen:
+   *  · **Cubrir el viewport al final del scroll**, para que el navbar herede su color.
+   *    Como en mobile el alto visible CRECE cuando se retrae la barra del navegador, la
+   *    banda tiene que medir `100lvh` (el viewport grande) o queda corta justo ahí.
+   *  · **Que el contenido entre entero**, y eso se mide contra el viewport CHICO
+   *    (`100svh`), que es el más exigente.
+   *
+   * Con una sola caja no se puede: centrar en `lvh` deja el contenido pisado por el
+   * navbar cuando el viewport real es más chico —que es exactamente lo que pasaba—. La
+   * solución son DOS cajas: la banda mide `lvh` y ancla su contenido ABAJO; adentro, una
+   * caja de `svh` centra el contenido y se reserva el alto del navbar. Así, mire donde
+   * mire el viewport entre esos dos extremos, el bloque final cae siempre dentro y
+   * despejado, y el color llega hasta el borde.
+   */
+  cierre?: boolean;
   alto?: string;
   /**
    * Etiqueta del encabezado. En el recorrido cada banda es un `h2`; dentro de una página
@@ -94,31 +114,33 @@ export function Banda({
       data-momento={ancla}
       data-oscura={sala.oscura ? "true" : "false"}
       data-banda={sala.banda ? "true" : "false"}
-      className="sala"
+      className={cierre ? "sala sala-cierre" : "sala"}
       {...datosNavbar(sala)}
       style={
         {
           ...estiloSala(sala),
           position: "relative",
           overflowX: "clip",
-          ...(full
-            ? {
-                minBlockSize: alto,
-                display: "flex",
-                alignItems: alFinal ? "stretch" : "center",
-                paddingBlockStart: alFinal
-                  ? "calc(var(--navbar-h) + var(--space-sm))"
-                  : "calc(var(--navbar-h) + var(--space-xl))",
-                paddingBlockEnd: alFinal ? "var(--space-sm)" : "var(--space-xl)",
-              }
-            : { paddingBlock: aireVertical }),
+          ...(cierre
+            ? {}
+            : full
+              ? {
+                  minBlockSize: alto,
+                  display: "flex",
+                  alignItems: alFinal ? "stretch" : "center",
+                  paddingBlockStart: alFinal
+                    ? "calc(var(--navbar-h) + var(--space-sm))"
+                    : "calc(var(--navbar-h) + var(--space-xl))",
+                  paddingBlockEnd: alFinal ? "var(--space-sm)" : "var(--space-xl)",
+                }
+              : { paddingBlock: aireVertical }),
         } as CSSProperties
       }
     >
       {!primero && <OndaSuperior color={sala.solido} />}
       <div
         className="sala-inner"
-        style={full ? ({ inlineSize: "100%" } as CSSProperties) : undefined}
+        style={full && !cierre ? ({ inlineSize: "100%" } as CSSProperties) : undefined}
       >
         <div id={`seccion-${ancla}`} className="ancla-momento">
           {titulo ? (

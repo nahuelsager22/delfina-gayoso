@@ -80,12 +80,17 @@ export default async function PaginaColaboraciones() {
           <Adorno variante="especias" color="var(--color-terracota)" />
         </Banda>
 
-        {/* Cierre: la invitación, en el verde de "Trabajemos juntos". */}
+        {/* Cierre: la invitación, en el verde de "Trabajemos juntos".
+
+            27ª ola: la banda pasó a medir un viewport, para que el navbar heredara el
+            verde al final del scroll. 28ª ola: `cierre` corrige lo que quedaba —el
+            contenido se centraba contra `lvh` y, cuando el viewport real era más chico,
+            terminaba tocando el navbar—. Ver `Banda.tsx`. */}
         <Banda
           atmosfera="fresca"
           ancla="colaboraciones-cierre"
           tituloOculto="Trabajemos juntos"
-          aire="silencio"
+          cierre
         >
           <Aparicion className="colab-cierre">
             {cierre && <Voz texto={cierre.texto} escala="xl" />}

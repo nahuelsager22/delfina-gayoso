@@ -1,26 +1,36 @@
 /**
- * Sincroniza el dataset con el estado actual del proyecto (Bloque 8 · 21ª ola).
+ * Sincroniza el dataset con el estado actual del proyecto (Bloque 8 · 21ª → 28ª ola).
  * -----------------------------------------------------------------------------
- * Entre la 17ª y la 20ª ola el modelo cambió bastante —las clases dejaron de ser
- * "productos" y pasaron a ser Experiencias, las marcas de ejemplo se reemplazaron por las
- * reales, y aparecieron los textos de dos páginas nuevas—. El dataset quedó atrás.
- *
  * A diferencia de `pnpm sembrar`, que sube TODO y pisa lo editado en el Studio, este
- * script toca únicamente lo que quedó desalineado:
+ * script toca únicamente lo que quedó desalineado. Es el mismo archivo que se viene
+ * usando desde la 21ª ola: cada vez que el proyecto cambia de forma, se actualiza acá qué
+ * hay que alinear. Lo que hace hoy:
  *
- *   1. BORRA los dos productos que eran clases (`producto-clases-presenciales` y
- *      `producto-clases-online`): hoy viven como Experiencias.
- *   2. BORRA los cuatro marcadores de marca de ejemplo de la 14ª ola.
- *   3. CREA/REEMPLAZA las cuatro marcas reales, con sus logotipos a color.
- *   4. CREA las Experiencias que falten (sin pisar las que ya estén cargadas).
- *   5. CREA los textos que falten (sin pisar los que Delfi haya editado).
- *   6. REORDENA las secciones del recorrido (22ª ola: el orden nuevo).
- *   7. AMPLÍA el repertorio de Budín (22ª ola: 23 frases + secretas + amistad).
+ *   1. BORRA los productos que eran clases (hoy viven como Experiencias) y los marcadores
+ *      de marca de ejemplo de la 14ª ola.
+ *   2. BORRA las marcas que ya NO están en la semilla. Antes la lista de borrados era
+ *      fija; ahora se deduce comparando el dataset contra `content/data/marcas.ts`, así
+ *      que retirar una colaboración es borrarla de la semilla y correr esto. (27ª ola:
+ *      así se fue Buffalo, que Delfina confirmó que ya no es una colaboración activa.)
+ *   3. CREA/REEMPLAZA las marcas de la semilla, con sus logotipos a color. Re-sube el
+ *      archivo siempre: es el paso por el que el logotipo REPARADO de Don Yeyo llega al
+ *      sitio, porque el CMS manda sobre la semilla y el asset viejo seguiría sirviéndose.
+ *   4. CREA las fotografías que falten (27ª: las de clase; 28ª: las 23 de la mesa) y
+ *      RE-SUBE las que cambiaron en `public/`, detectándolo por el peso del archivo. Ese
+ *      último detalle importa: sin él, reemplazar una foto en el repo no cambiaba nada en
+ *      el sitio, porque el CMS manda y `createIfNotExists` dejaba la vieja para siempre.
+ *   5. CREA las Experiencias que falten (sin pisar las que ya estén cargadas).
+ *   6. CREA los textos que falten (sin pisar los que Delfi haya editado).
+ *   7. REORDENA las secciones del recorrido (22ª ola: el orden nuevo).
  *
- * Los pasos 4 y 5 usan `createIfNotExists`: lo que ya está en el Studio manda. Los pasos
- * 1 y 2 sí borran, porque ese contenido ya no representa nada del sitio. El 6 toca sólo
- * el campo `orden` (no el nombre del menú) y el 7 reemplaza el documento de Budín, cuyo
- * humor todavía está pendiente de validación.
+ * Los pasos 4, 5 y 6 usan `createIfNotExists`: lo que ya está en el Studio manda. Los
+ * pasos 1 y 2 sí borran, porque ese contenido ya no representa nada del sitio. El 7 toca
+ * sólo el campo `orden` (no el nombre del menú).
+ *
+ * BUDÍN NO SE TOCA (27ª ola). Hasta la 26ª este script reemplazaba su documento entero
+ * para empujar el repertorio nuevo. Ya está cargado y Delfina editó frases a mano en el
+ * Studio: volver a pisarlo sería perder su trabajo. Si algún día hay que empujar frases
+ * nuevas, la semilla respalda por documento y conviene hacerlo desde el Studio.
  *
  * CÓMO CORRERLO
  *   1. Tener `SANITY_API_WRITE_TOKEN` en `.env.local`.
@@ -28,7 +38,7 @@
  */
 import { createClient } from "@sanity/client";
 import { readFile } from "node:fs/promises";
-import { existsSync } from "node:fs";
+import { existsSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -65,7 +75,6 @@ const { experiencias } = await import("../content/data/experiencias.ts");
 const { voz } = await import("../content/data/voz.ts");
 const { imagenes } = await import("../content/data/imagenes.ts");
 const { momentos } = await import("../content/data/momentos.ts");
-const { budin } = await import("../content/data/budin.ts");
 
 const subidas = new Map();
 async function subir(src) {
@@ -89,7 +98,10 @@ const slug = (v) => ({ _type: "slug", current: v });
 let tx = cliente.transaction();
 const resumen = [];
 
-/* 1 y 2 · Lo que ya no representa nada del sitio. -------------------------- */
+/* 1 y 2 · Lo que ya no representa nada del sitio. --------------------------
+   Los marcadores de ejemplo son una lista fija (existieron una sola vez). Las marcas
+   RETIRADAS se deducen: cualquier marca del dataset que ya no esté en la semilla dejó de
+   ser una colaboración activa, y la sección dice "hoy cocino con". */
 const aBorrar = [
   "producto-clases-presenciales",
   "producto-clases-online",
@@ -97,14 +109,34 @@ const aBorrar = [
   "marca-marca-2",
   "marca-marca-3",
   "marca-marca-4",
+  // 29ª ola: el pivote de "Lo que te llevás" se retiró del recorrido (el corte de color
+  // ya hace esa transición). Se borra del dataset para que no quede un texto huérfano en
+  // el Studio, editable pero sin lugar donde salir.
+  "voz-llevas-pivote",
 ];
-for (const id of aBorrar) tx = tx.delete(id);
-resumen.push(`${aBorrar.length} documentos obsoletos borrados`);
 
-/* 3 · Las marcas reales, con sus logotipos. -------------------------------- */
-console.log("\nSubiendo logotipos…\n");
+const vigentes = new Set(marcas.map((m) => `marca-${m.id}`));
+const enDataset = await cliente.fetch(`*[_type == "marca"]._id`);
+const retiradas = enDataset.filter((id) => !vigentes.has(id));
+for (const id of [...aBorrar, ...retiradas]) tx = tx.delete(id);
+resumen.push(
+  `${aBorrar.length} documentos obsoletos borrados` +
+    (retiradas.length ? ` + marcas retiradas: ${retiradas.join(", ")}` : ""),
+);
+
+/* 3 · Las marcas reales, con sus logotipos y su foto. ----------------------
+   28ª ola: se suma `imagen`. Es lo que hace que la primera colaboración con material
+   real (Don Yeyo) llegue al sitio, y el hueco donde entran las otras dos cuando lleguen.
+   Ojo con el `createOrReplace`: pisa lo que haya en el Studio. Hoy se puede porque las
+   marcas todavía no tienen texto cargado ahí; el día que Delfi escriba las historias,
+   este paso tiene que pasar a `patch` de los campos que vienen de la semilla. */
+console.log("\nSubiendo logotipos y fotos de marca…\n");
 for (const [i, m] of marcas.entries()) {
   const logo = await subir(m.logo?.src);
+  const fuenteFoto = m.imagen
+    ? imagenes.find((im) => im.id === m.imagen)
+    : undefined;
+  const foto = await subir(fuenteFoto?.src);
   tx = tx.createOrReplace({
     _id: `marca-${m.id}`,
     _type: "marca",
@@ -118,11 +150,71 @@ for (const [i, m] of marcas.entries()) {
     resultados: m.resultados ? [...m.resultados] : undefined,
     orden: (i + 1) * 10,
     ...(logo ? { logo: { ...logo, alt: m.nombre } } : {}),
+    ...(foto ? { imagen: { ...foto, alt: fuenteFoto?.alt } } : {}),
   });
 }
 resumen.push(`${marcas.length} marcas reales cargadas`);
 
-/* 4 · Las experiencias que falten. ----------------------------------------- */
+/* 4 · Las fotografías que falten (27ª: las de clase; 28ª: las de la mesa). ------
+   `createIfNotExists` y además se saltea las que ya existen: si Delfi reemplazó una foto
+   desde el Studio, manda la suya. El `orden` sí se empuja SIEMPRE en las de la mesa,
+   porque ahí el orden es la composición y la semilla es la versión compuesta a mano;
+   apenas Delfi lo toque en el Studio, conviene sacar esta línea. */
+console.log("\nSubiendo fotografías nuevas…\n");
+
+/* Qué hay hoy en el dataset, con el PESO de cada archivo. El peso es lo que permite
+   detectar que una foto fue reemplazada en `public/` sin llevar una lista a mano: si el
+   archivo local ya no pesa lo mismo que el que sirve la CDN, es otro archivo y hay que
+   volver a subirlo. Sin esto, `createIfNotExists` deja el viejo para siempre —que es
+   exactamente lo que pasó cuando llegaron las fotos tratadas de la 28ª ola—. */
+const yaCargadas = new Map(
+  (
+    await cliente.fetch(
+      `*[_type == "imagen"]{ _id, "peso": archivo.asset->size }`,
+    )
+  ).map((d) => [d._id, d.peso]),
+);
+let reemplazadas = 0;
+
+for (const im of imagenes) {
+  const id = `imagen-${im.id}`;
+  const local = path.join(raiz, "public", im.src.replace(/^\//, ""));
+  const peso = existsSync(local) ? statSync(local).size : undefined;
+
+  if (yaCargadas.has(id)) {
+    const campos = {};
+    if (im.orden !== undefined) campos.orden = im.orden;
+    if (peso !== undefined && peso !== yaCargadas.get(id)) {
+      const archivo = await subir(im.src);
+      if (archivo) {
+        campos.archivo = archivo;
+        reemplazadas++;
+        console.log("  · reemplazada (cambió el archivo):", im.id);
+      }
+    }
+    if (Object.keys(campos).length) tx = tx.patch(id, (p) => p.set(campos));
+    continue;
+  }
+
+  const archivo = await subir(im.src);
+  if (!archivo) continue;
+  tx = tx.createIfNotExists({
+    _id: id,
+    _type: "imagen",
+    identificador: slug(im.id),
+    archivo,
+    descripcion: im.alt,
+    tipoGesto: im.tipoGesto,
+    orden: im.orden,
+  });
+  console.log("  · nueva:", im.id);
+}
+resumen.push(
+  `${imagenes.length} fotografías aseguradas` +
+    (reemplazadas ? ` (${reemplazadas} reemplazadas por versión nueva)` : ""),
+);
+
+/* 5 · Las experiencias que falten. ----------------------------------------- */
 console.log("\nPreparando experiencias…\n");
 for (const e of experiencias) {
   const fuente = e.imagen ? imagenes.find((im) => im.id === e.imagen) : undefined;
@@ -149,7 +241,7 @@ for (const e of experiencias) {
 }
 resumen.push(`${experiencias.length} experiencias aseguradas`);
 
-/* 5 · Los textos que falten (los editados en el Studio no se tocan). ------- */
+/* 6 · Los textos que falten (los editados en el Studio no se tocan). ------- */
 for (const [i, v] of voz.entries()) {
   tx = tx.createIfNotExists({
     _id: `voz-${v.id}`,
@@ -164,7 +256,7 @@ for (const [i, v] of voz.entries()) {
 }
 resumen.push(`${voz.length} textos asegurados`);
 
-/* 6 · El ORDEN del recorrido (22ª ola). ------------------------------------
+/* 7 · El ORDEN del recorrido (22ª ola). ------------------------------------
    El CMS gobierna el orden de las secciones, así que reordenar el sitio en el código no
    alcanza: si el dataset conserva el orden viejo, el MENÚ queda desincronizado con la
    página. Se hace un `patch` sólo del campo `orden` (y del ritmo, que va de la mano),
@@ -176,20 +268,11 @@ for (const m of momentos) {
 }
 resumen.push(`${momentos.length} secciones reordenadas`);
 
-/* 7 · El repertorio de Budín (22ª ola). ------------------------------------
-   Se amplió de 8 a 23 frases y ganó dos niveles nuevos (`secretas` y `amistad`). Como el
-   documento del CMS manda sobre la semilla, sin esto Budín seguiría con las ocho de
-   antes. Es un `createOrReplace` deliberado: el humor todavía está pendiente de la
-   validación de Delfina, así que acá la semilla es la versión más nueva. */
-tx = tx.createOrReplace({
-  _id: "budin",
-  _type: "budin",
-  saludo: budin.saludo,
-  frases: [...budin.frases],
-  secretas: [...(budin.secretas ?? [])],
-  amistad: budin.amistad,
-});
-resumen.push(`repertorio de Budín ampliado (${budin.frases.length} frases + secretas)`);
+/* BUDÍN — deliberadamente FUERA de la sincronización (27ª ola).
+   Hasta la 26ª ola acá había un `createOrReplace` que empujaba el repertorio de la
+   semilla. Ya cumplió su función: el documento está cargado y Delfina editó frases a mano
+   en el Studio. Volver a reemplazarlo perdería su trabajo, que es exactamente lo que este
+   script existe para evitar. Se deja anotado para que nadie lo reponga sin pensarlo. */
 
 await tx.commit();
 

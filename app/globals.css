@@ -638,6 +638,41 @@
   z-index: 1; /* el contenido, sobre la onda de corte */
 }
 
+/* BANDA DE CIERRE (28ª ola) — la última de la página. Dos cajas, porque tiene que
+   cumplir dos medidas que no coinciden: el COLOR llega hasta `lvh` (el viewport grande,
+   con la barra del navegador retraída) para que el navbar lo herede al final del scroll,
+   y el CONTENIDO se compone contra `svh` (el viewport chico), que es el más exigente.
+   La banda ancla su caja interior ABAJO: así, sea cual sea el alto visible real entre
+   esos dos extremos, lo último que se ve es siempre esa caja completa. El porqué largo
+   está en `Banda.tsx`. */
+.sala-cierre {
+  min-block-size: 100lvh;
+  display: flex;
+  align-items: flex-end;
+}
+.sala-cierre > .sala-inner {
+  inline-size: 100%;
+  min-block-size: 100svh;
+  display: flex;
+  align-items: center;
+  /* El navbar es fijo y no ocupa lugar en el flujo: el aire se lo reserva la caja.
+     El resto del aire se mide en `vh` y no en `vw`, que es la corrección de la 29ª ola:
+     con la escala de siempre (`--space-xl`, hasta 80px) el bloque medía 812px de alto en
+     un viewport de 720 y no había centrado que lo salvara —sobraba contenido, no faltaba
+     alineación—. Atado al alto, el aire se achica justo cuando la pantalla lo pide. */
+  padding-block: calc(var(--navbar-h) + clamp(var(--space-sm), 5vh, var(--space-2xl)))
+    clamp(var(--space-sm), 5vh, var(--space-2xl));
+}
+.sala-cierre > .sala-inner > .ancla-momento {
+  inline-size: 100%;
+}
+/* Los adornos traen el margen del RESPIRO entre secciones (160px sumados). Adentro de un
+   cierre que tiene que entrar en una pantalla, ese margen es justo lo que sobra: acá el
+   aire lo pone la composición. */
+.sala-cierre .adorno {
+  margin-block: 0;
+}
+
 /* La onda de corte: se apoya en el borde superior de la sección y sube sobre la
    anterior. Su relleno es el color sólido de ESTA sección (llega por el atributo
    `fill` del path, desde `config`), así el límite es un corte limpio y curvo. */
@@ -939,46 +974,299 @@
   gap: var(--space-sm);
 }
 
-/* MOSAICO: anchos, proporciones y arranques distintos, encadenados cada seis. No es una
-   grilla de miniaturas —se lee como una composición armada a mano—. */
-.mosaico {
+/* =============================================================================
+   LA MESA (Bloque 8 · 28ª ola) — el lenguaje visual de la fotografía.
+   Reemplaza al mosaico. La composición (rectángulos, ángulos, capas) la declara la
+   PARTITURA del componente `Mesa`; acá vive cómo se dibuja cada cosa.
+   ========================================================================== */
+.mesa {
+  /* La fila mide aproximadamente MEDIA COLUMNA. No es un número cómodo: es el que hace
+     que los rectángulos de la partitura caigan en proporciones fotográficas —una pieza de
+     6 columnas por 16 filas da 3:4, una de 4 por 10 da 4:5, un detalle de 2 por 5 da 4:5
+     también—. Con la fila más baja, todo tendía al cuadrado y la mesa se leía como una
+     grilla; con la fila más alta, los heroes se estiran y pierden el encuadre. */
+  --mesa-fila: clamp(22px, 3.9vw, 52px);
+  --mesa-aire: clamp(10px, 1.5vw, 22px);
+  position: relative;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: clamp(var(--space-md), 3vw, var(--space-xl));
+  grid-auto-rows: var(--mesa-fila);
+  gap: 0;
+  margin-block-start: var(--space-2xl);
+  /* La mesa se sale del ancho de lectura: una composición editorial ocupa la página,
+     no la columna de texto. El margen negativo la deja respirar hasta donde puede sin
+     tocar el borde del viewport. */
+  margin-inline: calc(-1 * clamp(0px, 4vw, 96px));
+}
+.mesa-pieza {
+  position: relative;
+  grid-column: var(--col) / span var(--ancho);
+  grid-row: var(--fila) / span var(--alto);
+  z-index: var(--capa, 1);
+  overflow: hidden;
+  border-radius: 2px;
+  /* Cada pieza deja su aire por dentro: así los rectángulos de la retícula pueden
+     tocarse y las fotos igual no se pegan. */
+  margin: var(--mesa-aire);
+  /* Apoyada, no flotando: sombra baja y muy difusa, más una línea de contacto corta. */
+  box-shadow:
+    0 22px 38px -26px rgb(var(--atm-ink, 42 36 30) / 0.42),
+    0 3px 8px -5px rgb(var(--atm-ink, 42 36 30) / 0.26);
+  transform: rotate(var(--giro, 0deg));
+  transition: transform 620ms var(--ease-posar, ease-out);
+}
+/* El margen de papel: el borde blanco de una copia impresa. Es un gesto FOTOGRÁFICO,
+   no un contenedor —por eso es del color del papel de la sala y no una línea de tinta—. */
+.mesa-pieza--papel {
+  border: clamp(6px, 0.7vw, 11px) solid var(--atm-papel, #f3eee4);
+  border-block-end-width: clamp(12px, 1.5vw, 22px);
+}
+.mesa-pieza > img,
+.mesa-pieza > video,
+.mesa-pieza .instante {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+/* Un lugar todavía sin foto: papel apenas sombreado, como una copia dada vuelta. */
+.mesa-vacio {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      rgb(var(--atm-ink, 42 36 30) / 0.045) 0 6px,
+      transparent 6px 14px
+    ),
+    rgb(var(--atm-ink, 42 36 30) / 0.05);
+}
+/* Se puede tocar: al pasar el cursor la pieza se endereza, como cuando uno acomoda una
+   foto sobre la mesa con un dedo. Sólo donde hay cursor de verdad. */
+@media (hover: hover) and (pointer: fine) {
+  .mesa-pieza:hover {
+    transform: rotate(calc(var(--giro, 0deg) * 0.15)) scale(1.012);
+    z-index: 9;
+  }
+}
+/* PROFUNDIDAD: cada pieza deriva a su velocidad con el scroll. Sin JavaScript —animación
+   de scroll de CSS, fuera del hilo principal—. Donde el navegador no la soporta, la
+   composición queda quieta y sigue funcionando: es mejora progresiva, no un requisito.
+   Se anima `translate` y no `transform` a propósito: `transform` ya lleva el ángulo. */
+@keyframes mesa-deriva {
+  from {
+    translate: 0 var(--deriva, 0px);
+  }
+  to {
+    translate: 0 calc(-1 * var(--deriva, 0px));
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .mesa-pieza {
+      animation: mesa-deriva linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mesa-pieza {
+    transition: none;
+  }
+}
+/* Mobile: la retícula sigue siendo de 12, pero cada pieza toma su rectángulo corto y la
+   partitura se apila. Las superposiciones grandes no entran en 375px —quedaría ilegible—;
+   lo que se conserva es lo que hace al gesto: los tamaños distintos y la inclinación. */
+@media (max-width: 780px) {
+  .mesa {
+    /* Media columna, igual que en desktop, pero de una retícula mucho más angosta. */
+    --mesa-fila: clamp(13px, 4.2vw, 22px);
+    --mesa-aire: 6px;
+    margin-inline: 0;
+  }
+  .mesa-pieza {
+    grid-column: var(--col-m, var(--col)) / span var(--ancho-m, var(--ancho));
+    /* `auto` en la fila: las piezas se apilan en el orden del documento en vez de
+       ubicarse en la fila exacta de la partitura. En 390px la retícula de dos ejes no
+       entra —quedarían fotos de 90px—, así que se conserva lo que hace al gesto (los
+       tamaños distintos, la inclinación, el margen de papel) y se suelta la coreografía
+       vertical, que es lo único que necesita ancho para leerse. */
+    grid-row: auto / span var(--alto-m, var(--alto));
+  }
+}
+
+/* EL INSTANTE VIVO: dos tomas del mismo encuadre que se funden. Pausa larga en cada
+   extremo y cruce lento; si fuera rápido se leería como un cambio de diapositiva. */
+.instante {
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+.instante-segunda {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .instante-segunda {
+    animation: instante 11s ease-in-out infinite;
+  }
+}
+@keyframes instante {
+  0%,
+  38% {
+    opacity: 0;
+  }
+  50%,
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* LAS CAPAS: lo que hay debajo y entre las fotos. Nunca reciben eventos ni suben de
+   plano; su trabajo es que la mesa tenga fondo, no que se las vea. */
+.capa-mesa {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  block-size: auto;
+}
+.capa-mesa--receta {
+  inline-size: clamp(210px, 30vw, 420px);
+}
+.capa-mesa--repasador {
+  inline-size: clamp(110px, 15vw, 200px);
+}
+.capa-mesa--hilo {
+  inline-size: clamp(240px, 42vw, 600px);
+}
+/* El envoltorio existe para dos cosas: dar el sistema de coordenadas a las capas (que se
+   posicionan contra TODA la composición, no contra una pieza) y recortar lo que se sale
+   por los costados. `clip` y no `hidden`: no queremos crear un contenedor de scroll. */
+.mesa-envoltorio {
+  position: relative;
+  overflow-x: clip;
+}
+.mesa-espiga {
+  position: absolute;
+  inset-block-start: 42%;
+  inset-inline-start: 2%;
+  z-index: 6;
+  rotate: 14deg;
+  opacity: 0.72;
+}
+.mesa-huellas {
+  position: absolute;
+  inset-block-end: 4%;
+  inset-inline-end: 6%;
+  z-index: 6;
+  rotate: -8deg;
+  opacity: 0.6;
+}
+@media (max-width: 780px) {
+  .mesa-espiga,
+  .mesa-huellas {
+    inset-inline-start: auto;
+    inset-inline-end: 2%;
+  }
+  .mesa-espiga {
+    inset-block-start: 30%;
+  }
+}
+/* El cierre de la mesa: la invitación a sentarse. */
+.mesa-final {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(var(--space-md), 4.5vh, var(--space-xl));
+}
+.mesa-final-enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg) var(--space-2xl);
+}
+
+/* MOSAICO: anchos, proporciones y arranques distintos, encadenados cada seis. No es una
+   grilla de miniaturas —se lee como una composición armada a mano—.
+
+   27ª ola: el ancho y la altura de arranque los declara la PARTITURA del componente
+   (`--pieza-ancho`, `--pieza-salto`), no un `nth-child` acá. Dos razones: la composición
+   se lee de un vistazo en un solo lugar, y cada pieza puede llevar además su MARCO
+   (arco o paspartú) sin multiplicar selectores. La proporción la decide la foto. */
+.mosaico {
+  --mosaico-aire: clamp(var(--space-md), 3vw, var(--space-xl));
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--mosaico-aire);
   margin-block-start: var(--space-2xl);
   align-items: start;
 }
-.mosaico-hueco {
+.mosaico-pieza {
   grid-column: span 6;
+  position: relative;
 }
 @media (min-width: 760px) {
-  .mosaico-hueco:nth-child(6n + 1) {
-    grid-column: span 5;
+  .mosaico-pieza {
+    grid-column: span var(--pieza-ancho, 4);
+    margin-block-start: calc(var(--pieza-salto, 0) * clamp(22px, 4vw, 56px));
   }
-  .mosaico-hueco:nth-child(6n + 2) {
-    grid-column: span 4;
-    margin-block-start: clamp(24px, 4vw, 64px);
+  /* La pieza que se APOYA sobre la anterior: se corre hacia ella y se recorta contra el
+     papel de la sala, como una copia dejada encima de otra sobre la mesa. El anillo es
+     `--atm-papel` (el sólido de la habitación), así que funciona en cualquier sala sin
+     tocar nada. Sólo en desktop: en dos columnas no hay lugar para montar nada. */
+  .mosaico-pieza--monta {
+    /* El desplazamiento tiene que COMERSE el aire de la grilla y además meterse encima:
+       con un valor suelto, la separación se lo tragaba y el montaje quedaba en 14px, que
+       se lee como un error de alineación y no como una decisión. */
+    margin-inline-start: calc(-1 * (var(--mosaico-aire) + clamp(22px, 2.6vw, 46px)));
+    z-index: 2;
   }
-  .mosaico-hueco:nth-child(6n + 3) {
-    grid-column: span 3;
-    margin-block-start: clamp(48px, 8vw, 132px);
-  }
-  .mosaico-hueco:nth-child(6n + 4) {
-    grid-column: span 4;
-  }
-  .mosaico-hueco:nth-child(6n + 5) {
-    grid-column: span 5;
-    margin-block-start: clamp(16px, 3vw, 48px);
-  }
-  .mosaico-hueco:nth-child(6n + 6) {
-    grid-column: span 3;
-    margin-block-start: clamp(36px, 6vw, 96px);
+  .mosaico-pieza--monta .mosaico-marco {
+    box-shadow: 0 0 0 clamp(7px, 0.8vw, 11px) var(--atm-papel, #f3eee4);
   }
 }
 /* Mobile: dos columnas, con la segunda descolgada — el mismo gesto, más simple. */
 @media (max-width: 759px) {
-  .mosaico-hueco:nth-child(even) {
+  .mosaico-pieza:nth-child(even) {
     margin-block-start: clamp(20px, 6vw, 40px);
+  }
+}
+
+/* PASPARTÚ: la foto MONTADA sobre el papel de la sala, con un filo de tinta alrededor.
+   Es la misma familia visual —adentro sigue estando el arco—, pero rompe la lectura de
+   "ocho veces la misma forma" que tenía el mosaico cuando todas las piezas eran iguales.
+   El marco interior pierde su propio borde: dos filos a 3px de distancia se ven sucios. */
+.mosaico-pieza--paspartu {
+  padding: clamp(10px, 1.4vw, 18px);
+  background: var(--atm-papel, #f3eee4);
+  border: 1px solid rgb(var(--atm-ink, 42 36 30) / 0.22);
+  border-radius: var(--radius-min);
+}
+.mosaico-pieza--paspartu .mosaico-marco {
+  border-color: transparent;
+}
+
+/* Micro-movimiento: la imagen se POSA (llega con un 4% de escala de más y lo suelta).
+   Es el mismo gesto "vapor" del recorrido, aplicado a la imagen en vez de al bloque; por
+   eso comparte la curva y dura un poco más, para que se sienta como respiración y no
+   como un zoom. Sólo ocurre una vez, cuando la pieza entra en viewport. */
+.mosaico-marco > img,
+.mosaico-marco > video {
+  transform: scale(1.04);
+  transition: transform 1400ms var(--ease-posar, ease-out);
+}
+.mosaico-pieza[data-shown="true"] .mosaico-marco > img,
+.mosaico-pieza[data-shown="true"] .mosaico-marco > video {
+  transform: scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mosaico-marco > img,
+  .mosaico-marco > video {
+    transform: none;
+    transition: none;
   }
 }
 
@@ -1045,11 +1333,17 @@
 /* =============================================================================
    MARCAS (Bloque 8 · 19ª ola) — marquesina de logotipos a TINTA ÚNICA.
    El archivo aporta la forma (máscara); la paleta aporta el color. Cuatro logos de
-   cuatro marcas distintas dejan de ser cuatro banners y se leen como un sistema.
+   Logotipos de marcas distintas dejan de ser banners sueltos y se leen como un sistema.
    ========================================================================== */
 /* BANDA (21ª ola): salvia a pleno ancho con la guarda de arcos del sistema. Le da a la
    sección su momento y levanta el contraste de los logotipos claros sin tocar sus
    colores. La escala de los logos se ajusta por dispositivo con `--escala-logo`.
+
+   27ª ola: las marcas activas pasaron a ser TRES (Buffalo se retiró). Con ella se fue el
+   PISO que tenía el color de esta cinta —su logotipo blanco era el que pedía una banda
+   oscura—; queda sólo el TECHO del negro de 3 Claveles. La salvia honda se conserva: es
+   la que Delfina vio montada y aprobó, y sigue cumpliendo su función (despegarse de la
+   piedra de la sala). Si algún día se quisiera aclarar, ahora hay margen para hacerlo.
 
    25ª ola — SALVIA HONDA. Con la sección en piedra, la salvia clara quedaba a 1.26:1 del
    fondo: la cinta dejaba de ser una cinta. Bajarla un paso resuelve las dos cosas que
@@ -1077,6 +1371,15 @@
 @media (min-width: 700px) {
   .marquesina-marcas {
     --escala-logo: 1;
+  }
+}
+/* En mobile cada marca ocupa ~un 37% menos de ancho (el logo se achica y el aire se
+   comprime), así que el mismo tiempo por marca da una velocidad mucho más baja: medido,
+   35 px/s contra los 58 de desktop, por debajo del rango en que una marquesina se lee
+   cómoda. El factor devuelve el ritmo a ~55 px/s sin tocar el cálculo del componente. */
+@media (max-width: 699px) {
+  .marquesina-marcas-pista {
+    animation-duration: calc(var(--mq-duracion, 28s) * 0.64);
   }
 }
 /* La guarda: cenefa de arcos arriba y abajo, el mismo motivo de recetario que la
@@ -1108,13 +1411,17 @@
   inline-size: max-content;
   will-change: transform;
   /* 25ª ola: 44s → 28s. Medido antes de tocarlo: la pista recorre 1563px por ciclo, y un
-     ciclo ES la vuelta completa a las cuatro marcas (la pista está duplicada, así que el
-     -50% equivale a un juego entero). A 44s eso daba 35 px/s —por debajo del rango en
-     que una marquesina se lee cómoda, que arranca cerca de los 45— y por eso se sentía
-     lenta aun después de la primera corrección. A 28s son 56 px/s: la vuelta completa
-     pasa de 44s a 28s y cada logotipo sigue estando en pantalla varios segundos. La
-     sección habla de relaciones que duran; el ritmo acompaña, no apura. */
-  animation: mq-scroll 28s linear infinite;
+     ciclo ES la vuelta completa a las marcas (la pista está duplicada, así que el -50%
+     equivale a un juego entero). A 44s eso daba 35 px/s —por debajo del rango en que una
+     marquesina se lee cómoda, que arranca cerca de los 45— y por eso se sentía lenta aun
+     después de la primera corrección. A 28s eran 56 px/s con cuatro marcas: ≈7s por
+     marca. La sección habla de relaciones que duran; el ritmo acompaña, no apura.
+
+     27ª ola: la duración ya no es fija, la calcula el componente a partir de cuántas
+     marcas y cuántas copias lleva la pista (ver `MarquesinaMarcas`). Así el ritmo se
+     mantiene aunque cambie el número de colaboraciones; acá queda el valor de respaldo.
+     Medido después del cambio: 58 px/s en desktop, dentro del rango cómodo. */
+  animation: mq-scroll var(--mq-duracion, 28s) linear infinite;
   /* El desvanecido va en la PISTA, no en la banda: así los logos entran y salen del
      encuadre sin cortarse, y el color de la cinta llega entero hasta el borde. */
   -webkit-mask-image: linear-gradient(
@@ -1181,8 +1488,14 @@
   gap: var(--space-3xl);
   margin-block-start: var(--space-2xl);
 }
+/* 28ª ola — se cambió `max-inline-size` por `inline-size`. Con el máximo, la ficha del
+   zigzag derecho (que lleva `margin-inline-start: auto`) pasaba a ancho de contenido y
+   se encogía: 364px contra los 896 de sus vecinas. Se veía recién ahora, cuando una de
+   las tres tiene foto y las otras no —antes las tres se encogían por igual y parecía
+   deliberado—. Con el ancho fijo, el margen automático hace lo que tenía que hacer:
+   correr la ficha, no achicarla. */
 .colab {
-  max-inline-size: min(56rem, 100%);
+  inline-size: min(56rem, 100%);
 }
 .colab-cuerpo {
   display: grid;
@@ -1276,11 +1589,14 @@ a.colab-handle:hover {
 .colab-resultados li > span:first-child {
   color: rgb(var(--atm-ink-soft, 62 54 45));
 }
+/* 29ª ola: el aire interno también se mide contra el ALTO. Es un bloque que tiene que
+   entrar entero en una pantalla, y en una pantalla baja lo primero que sobra es el aire
+   entre sus tres partes. Ver `.sala-cierre`. */
 .colab-cierre {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-xl);
+  gap: clamp(var(--space-md), 4.5vh, var(--space-xl));
 }
 .colab-cierre-enlaces {
   display: flex;
@@ -1778,10 +2094,6 @@ a.colab-handle:hover {
    después del bloque profesional, y una sola línea reencuadra a quién le habla el sitio.
    Va pegada a la portada y deja aire antes de la próxima fecha: es una bisagra, no un
    bloque de texto. */
-.llevas-pivote {
-  margin-block-end: clamp(var(--space-lg), 3.4vw, var(--space-2xl));
-}
-
 /* MARCAS de PRESENTE (11ª ola): no una línea de tiempo (pasado) ni una grilla de logos,
    sino las colaboraciones VIGENTES con protagonismo. Cada marca lleva un punto TERRACOTA
    (acento del sistema) que la señala activa. */
@@ -2134,4 +2446,15 @@ a.colab-handle:hover {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Salida de la banda "Por dentro" hacia la mesa (28ª ola). */
+.galeria-salida {
+  margin-block-start: var(--space-2xl);
+}
+
+/* La puerta a la mesa dentro del cierre (29ª ola): un respiro propio, para que no se lea
+   pegada a la frase de arriba ni como parte de la lista de redes de abajo. */
+.cierre-mesa {
+  margin-block-start: var(--space-md);
 }

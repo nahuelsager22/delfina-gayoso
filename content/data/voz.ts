@@ -91,21 +91,17 @@ export const voz: readonly VozDelfina[] = [
     pertenece: "quien-cocina",
   },
 
-  /* ---- Lo que te podés llevar — el PIVOTE (Bloque 8 · 22ª ola) ----
-     Con el orden nuevo, esta sección llega después de Marcas y de Trabajemos juntos: el
-     sitio venía hablándole a una marca y acá vuelve a hablarle a la persona que quiere
-     cocinar. Sin una línea que marque ese giro, el salto de "servicios profesionales" a
-     "ebooks y clases" se siente como un cambio de tema. Una sola frase, en su voz, hace
-     de bisagra y nombra las dos mitades del recorrido.
-     COPY PENDIENTE DE VALIDACIÓN DE DELFINA. */
-  {
-    id: "llevas-pivote",
-    texto: "Hasta acá, con quién trabajo. Desde acá, lo que preparé para vos.",
-    registro: "bienvenida",
-    pertenece: "lo-que-te-llevas",
-    // Sin `enfasis`: en la 20ª ola Delfina pidió retirar los subrayados a mano de las
-    // aperturas. La bisagra la lleva la frase, no un adorno.
-  },
+  /* ---- Lo que te podés llevar — el PIVOTE, RETIRADO en la 29ª ola ----
+     Existió entre la 22ª y la 28ª: "Hasta acá, con quién trabajo. Desde acá, lo que
+     preparé para vos." La escribimos para amortiguar el salto de "servicios
+     profesionales" a "ebooks y clases" cuando Delfina reordenó el recorrido.
+
+     Se retiró porque el problema que resolvía ya no existe: el corte cromático entre el
+     verde de Trabajemos y la arena de esta sección, más el cambio de encabezado, hacen
+     ese giro solos. La frase terminaba EXPLICANDO una transición que el diseño ya
+     comunicaba —y una línea que explica lo que ya se ve resta, no suma—. Queda anotado
+     para no volver a agregarla por el mismo motivo.
+*/
 
   /* ---- Página de Experiencias (Bloque 8 · 18ª ola) ----
      Tres piezas cortas: la que abre la página, la que presenta el material visual y la
@@ -150,6 +146,24 @@ export const voz: readonly VozDelfina[] = [
       "Si querés que cocinemos algo juntos, escribime. Siempre tengo ganas de una idea nueva.",
     registro: "cierre",
     pertenece: "colaboraciones",
+  },
+
+  /* ---- LA MESA (28ª ola) — la sección donde la foto ES el contenido. --------
+     PENDIENTE DE VALIDACIÓN DE DELFINA: el nombre de la sección y estos dos textos.
+     El registro buscado es el suyo cuando no está explicando nada: cotidiano, sin
+     grandilocuencia, y sin llamar "galería" a lo que para ella es la sobremesa. */
+  {
+    id: "mesa-apertura",
+    texto:
+      "Acá va quedando todo: lo que cocinamos, con quién, y los días en que valió la pena sacar una foto.",
+    registro: "bienvenida",
+    pertenece: "la-mesa",
+  },
+  {
+    id: "mesa-cierre",
+    texto: "Si algo de esto te dio hambre, la próxima puede ser con vos.",
+    registro: "cierre",
+    pertenece: "la-mesa",
   },
 
   /* ---- M6 · La cocina compartida — la frase que abre la comunidad ----

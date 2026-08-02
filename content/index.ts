@@ -184,6 +184,7 @@ export function getComunidad(): readonly MomentoComunidad[] {
 interface ImagenDoc extends ImagenSanity {
   id: string;
   tipoGesto?: ImagenReal["tipoGesto"] | null;
+  orden?: number | null;
 }
 
 export async function getImagenes(): Promise<readonly ImagenReal[]> {
@@ -191,22 +192,60 @@ export async function getImagenes(): Promise<readonly ImagenReal[]> {
     Q.IMAGENES,
     (filas) =>
       filas
-        .map((f) =>
-          aImagenReal(f, {
+        .map((f): ImagenReal | undefined => {
+          const img = aImagenReal(f, {
             id: f.id,
             altPorDefecto: f.alt ?? "",
             tipoGesto: limpio(f.tipoGesto),
-          }),
-        )
+          });
+          return img && { ...img, orden: limpio(f.orden) };
+        })
         .filter((i): i is ImagenReal => i !== undefined),
     semillaImagenes,
   );
 }
 
+/**
+ * Ordena una tanda de fotos por el `orden` que declaró Delfi, y por identificador las que
+ * no lo tienen (para que la composición no cambie de forma entre dos visitas: la consulta
+ * a Sanity no trae criterio propio). Una foto sin orden va al final, no al principio: lo
+ * recién subido no debería empujar lo ya compuesto.
+ */
+const porOrden = (a: ImagenReal, b: ImagenReal): number =>
+  (a.orden ?? Infinity) - (b.orden ?? Infinity) || a.id.localeCompare(b.id);
+
 export async function getImagen(
   ref: ImagenRealRef,
 ): Promise<ImagenReal | undefined> {
   return (await getImagenes()).find((img) => img.id === ref);
+}
+
+/**
+ * Las fotos que cuentan cómo se vive una clase (27ª ola). Alimentan la banda "Por dentro"
+ * de `/experiencias`, que antes dependía sólo de la galería de cada experiencia —material
+ * que se carga DESPUÉS de que la clase sucede— y por eso se veía dibujada.
+ *
+ * No están atadas a una fecha a propósito: una clase de pasta de marzo y una de galletitas
+ * de agosto cuentan lo mismo, que es cómo es estar ahí. Delfi suma más marcándolas
+ * "Cómo se vive una clase" en el Studio.
+ */
+export async function getFotosDeClase(): Promise<readonly ImagenReal[]> {
+  return [...(await getImagenes())]
+    .filter((img) => img.tipoGesto === "clase")
+    .sort(porOrden);
+}
+
+/**
+ * Lo que está sobre LA MESA (28ª ola). Es el contenido de `/la-mesa`: no ilustra una
+ * sección, la constituye. Va ordenado porque acá el orden ES la composición —la partitura
+ * reparte hero, medianas y detalles según la posición—, así que reordenar en el Studio
+ * cambia qué foto manda. Sin material, la página no se muestra vacía: la mesa dibuja sus
+ * propios huecos, igual que el resto del sistema.
+ */
+export async function getFotosDeLaMesa(): Promise<readonly ImagenReal[]> {
+  return [...(await getImagenes())]
+    .filter((img) => img.tipoGesto === "mesa")
+    .sort(porOrden);
 }
 
 /* ---- Productos: ebooks y clases (tipo D) ---- */
