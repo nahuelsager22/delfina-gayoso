@@ -36,6 +36,7 @@ import { aprendizaje } from "./data/aprendizaje";
 import { serieActual } from "./data/series";
 import { productos as semillaProductos } from "./data/productos";
 import { servicios as semillaServicios } from "./data/servicios";
+import { contacto as semillaContacto } from "./data/contacto";
 import { marcas as semillaMarcas } from "./data/marcas";
 import { imagenes as semillaImagenes } from "./data/imagenes";
 import { comunidad } from "./data/comunidad";
@@ -45,6 +46,7 @@ import { budin as semillaBudin } from "./data/budin";
 import { esFutura } from "./estados";
 
 import type {
+  ContactoProfesional,
   Experiencia,
   ImagenReal,
   ImagenRealRef,
@@ -55,6 +57,8 @@ import type {
   PiezaAprendizaje,
   Producto,
   PropuestaServicio,
+  FraseBudin,
+  GestoBudin,
   RedSocial,
   SerieAprendizaje,
   VozBudin,
@@ -405,10 +409,8 @@ export async function getProximaExperiencia(): Promise<Experiencia | undefined> 
 interface ServicioSanity {
   id: string;
   tipo: string;
-  aQuienLeSirve: string;
-  comoEsTrabajar: string;
-  invitacion?: string | null;
-  canales?: { medio: PropuestaServicio["contacto"]["canales"][number]["medio"]; destino: string }[] | null;
+  descripcion: string;
+  texto: string;
   borrador?: boolean | null;
 }
 
@@ -419,16 +421,23 @@ export async function getServicios(): Promise<readonly PropuestaServicio[]> {
       filas.map((f) => ({
         id: f.id,
         tipo: f.tipo,
-        aQuienLeSirve: f.aQuienLeSirve,
-        comoEsTrabajar: f.comoEsTrabajar,
-        contacto: {
-          invitacion: f.invitacion ?? "",
-          canales: f.canales ?? [],
-        },
+        descripcion: f.descripcion,
+        texto: f.texto,
         borrador: f.borrador ?? undefined,
       })),
     semillaServicios,
   );
+}
+
+/**
+ * El contacto de "Trabajemos juntos" (30ª ola). Es UNO para toda la sección: antes vivía
+ * repetido dentro de cada propuesta. Sin canales cargados no hay contacto que mostrar, así
+ * que se cae a la semilla en vez de dejar una invitación sin salida.
+ */
+export async function getContactoProfesional(): Promise<ContactoProfesional> {
+  const doc = await consultar<Partial<ContactoProfesional> | null>(Q.CONTACTO);
+  if (!doc?.invitacion || !doc.canales?.length) return semillaContacto;
+  return { invitacion: doc.invitacion, canales: doc.canales };
 }
 
 /* ---- Marcas (tipo I) ----------------------------------------------------
@@ -504,13 +513,52 @@ export async function getRedes(): Promise<readonly RedSocial[]> {
    (`secretas` y `amistad`): si el documento del CMS mandara entero, esos niveles
    quedarían vacíos hasta volver a sembrar. Así, lo que Delfi ya editó manda, y lo que
    todavía no existe en el Studio lo completa la semilla. */
+/**
+ * Normaliza una frase de Budín (31ª ola). Acepta las DOS formas a propósito: el campo
+ * pasó de una lista de textos a una lista de {texto, gesto}, y entre que esto se publica
+ * y que corre `pnpm sincronizar` el dataset todavía tiene la forma vieja. Un texto suelto
+ * entra con el gesto de reposo en vez de romper la página.
+ *
+ * Lo mismo vale para un gesto que ya no existe: `curioso` se retiró en la 33ª ola y
+ * cualquier frase del CMS que lo conserve entra con el de reposo hasta que se sincronice.
+ * No es una tolerancia genérica: es que el contenido y el código se despliegan por
+ * separado, y en la ventana entre uno y otro la página tiene que seguir en pie.
+ */
+const GESTOS: readonly GestoBudin[] = ["alegre", "ladeado"];
+const GESTO_POR_DEFECTO: GestoBudin = "ladeado";
+
+function aFrase(v: unknown): FraseBudin | null {
+  if (typeof v === "string") {
+    return v.trim() ? { texto: v, gesto: GESTO_POR_DEFECTO } : null;
+  }
+  if (v && typeof v === "object") {
+    const { texto, gesto } = v as { texto?: unknown; gesto?: unknown };
+    if (typeof texto !== "string" || !texto.trim()) return null;
+    return {
+      texto,
+      gesto: GESTOS.find((g) => g === gesto) ?? GESTO_POR_DEFECTO,
+    };
+  }
+  return null;
+}
+
+const aFrases = (v: unknown): FraseBudin[] =>
+  Array.isArray(v) ? v.map(aFrase).filter((f): f is FraseBudin => f !== null) : [];
+
 export async function getBudin(): Promise<VozBudin> {
-  const doc = await consultar<Partial<VozBudin> | null>(Q.BUDIN);
-  if (!doc?.saludo || !doc.frases?.length) return semillaBudin;
+  const doc = await consultar<{
+    saludo?: string | null;
+    frases?: unknown;
+    secretas?: unknown;
+    amistad?: string | null;
+  } | null>(Q.BUDIN);
+  const frases = aFrases(doc?.frases);
+  if (!doc?.saludo || frases.length === 0) return semillaBudin;
+  const secretas = aFrases(doc.secretas);
   return {
     saludo: doc.saludo,
-    frases: doc.frases,
-    secretas: doc.secretas?.length ? doc.secretas : semillaBudin.secretas,
+    frases,
+    secretas: secretas.length ? secretas : semillaBudin.secretas,
     amistad: limpio(doc.amistad) ?? semillaBudin.amistad,
   };
 }

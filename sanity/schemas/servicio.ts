@@ -1,6 +1,12 @@
-import { defineArrayMember, defineField, defineType } from "sanity";
+import { defineField, defineType } from "sanity";
 
-/** Propuestas profesionales de "Trabajemos juntos" (empresas y organizaciones). */
+/**
+ * Propuestas profesionales de "Trabajemos juntos".
+ *
+ * Bloque 8 · 30ª ola — la ficha pasa a ser **título + descripción + texto** (la forma que
+ * fijó Delfina), y el CONTACTO sale de acá: era el mismo par de enlaces repetido en cada
+ * propuesta y ahora vive una sola vez, en "Contacto profesional".
+ */
 export const servicio = defineType({
   name: "servicio",
   title: "Servicio profesional",
@@ -8,8 +14,8 @@ export const servicio = defineType({
   fields: [
     defineField({
       name: "tipo",
-      title: "Tipo de propuesta",
-      description: 'Ej. "Colaboraciones y contenido".',
+      title: "Título",
+      description: 'Ej. "Asesorías gastronómicas".',
       type: "string",
       validation: (r) => r.required(),
     }),
@@ -21,22 +27,49 @@ export const servicio = defineType({
       validation: (r) => r.required(),
     }),
     defineField({
-      name: "aQuienLeSirve",
-      title: "A quién le sirve",
+      name: "descripcion",
+      title: "Descripción",
+      description:
+        'Una línea que enuncia el servicio, sin explicarlo. Ej. "Cada cocina tiene una forma distinta de funcionar."',
       type: "text",
-      rows: 3,
+      rows: 2,
       validation: (r) => r.required(),
     }),
     defineField({
-      name: "comoEsTrabajar",
-      title: "Cómo es trabajar con vos",
+      name: "texto",
+      title: "Texto",
+      description: "Cómo se trabaja, en tu voz. Dos o tres renglones.",
       type: "text",
       rows: 3,
       validation: (r) => r.required(),
     }),
+    defineField({ name: "orden", title: "Orden", type: "number", initialValue: 10 }),
+    defineField({
+      name: "borrador",
+      title: "Marcar como ejemplo",
+      type: "boolean",
+      initialValue: false,
+    }),
+  ],
+  orderings: [
+    { title: "Orden", name: "orden", by: [{ field: "orden", direction: "asc" }] },
+  ],
+  preview: { select: { title: "tipo", subtitle: "descripcion" } },
+});
+
+/**
+ * El contacto de la sección: una invitación y los accesos directos. Documento único —
+ * si hubiera más de uno, el sitio usa el primero.
+ */
+export const contacto = defineType({
+  name: "contacto",
+  title: "Contacto profesional",
+  type: "document",
+  fields: [
     defineField({
       name: "invitacion",
       title: "Invitación al contacto",
+      description: "La frase que cierra la sección, antes de los enlaces.",
       type: "string",
       validation: (r) => r.required(),
     }),
@@ -45,7 +78,7 @@ export const servicio = defineType({
       title: "Canales de contacto",
       type: "array",
       of: [
-        defineArrayMember({
+        {
           type: "object",
           fields: [
             defineField({
@@ -73,19 +106,10 @@ export const servicio = defineType({
             }),
           ],
           preview: { select: { title: "medio", subtitle: "destino" } },
-        }),
+        },
       ],
-    }),
-    defineField({ name: "orden", title: "Orden", type: "number", initialValue: 10 }),
-    defineField({
-      name: "borrador",
-      title: "Marcar como ejemplo",
-      type: "boolean",
-      initialValue: false,
+      validation: (r) => r.min(1),
     }),
   ],
-  orderings: [
-    { title: "Orden", name: "orden", by: [{ field: "orden", direction: "asc" }] },
-  ],
-  preview: { select: { title: "tipo", subtitle: "aQuienLeSirve" } },
+  preview: { select: { title: "invitacion" } },
 });

@@ -93,8 +93,43 @@ export const momento = defineType({
 });
 
 /**
+ * Las caras de Budín (31ª ola; dos desde la 33ª). Cada frase elige con cuál la dice, y por
+ * eso el personaje parece REACCIONAR a lo que cuenta en vez de cambiar de dibujo.
+ */
+const GESTOS = [
+  { title: "😊 Sonriendo — saludos, cariño, agradecimientos", value: "alegre" },
+  { title: "😐 Serio — chistes, observaciones e invitaciones a seguir viendo", value: "ladeado" },
+];
+
+/** Una frase suya + la cara con la que la dice. */
+const fraseBudin = {
+  type: "object",
+  fields: [
+    defineField({
+      name: "texto",
+      title: "Frase",
+      type: "text",
+      rows: 2,
+      validation: (r) => r.required(),
+    }),
+    defineField({
+      name: "gesto",
+      title: "Cómo lo dice",
+      description:
+        "La cara que pone al decirla. Si la frase es un chiste o una observación, va con cara seria: ahí está la gracia.",
+      type: "string",
+      initialValue: "ladeado",
+      options: { list: GESTOS, layout: "radio" },
+      validation: (r) => r.required(),
+    }),
+  ],
+  preview: { select: { title: "texto", subtitle: "gesto" } },
+};
+
+/**
  * La voz de Budín: lo que dice al saludar y lo que suelta cuando lo tocan.
  * 22ª ola: tres niveles, de lo que dice siempre a lo que casi nadie va a ver.
+ * 31ª ola: cada frase declara SU CARA (ver `fraseBudin`).
  */
 export const budin = defineType({
   name: "budin",
@@ -104,7 +139,7 @@ export const budin = defineType({
     defineField({
       name: "saludo",
       title: "Saludo",
-      description: "Lo que dice al pasar el mouse.",
+      description: "Lo que dice al pasar el mouse. Siempre lo dice sonriendo.",
       type: "string",
       validation: (r) => r.required(),
     }),
@@ -112,9 +147,9 @@ export const budin = defineType({
       name: "frases",
       title: "Frases de siempre",
       description:
-        "Las que dice al tocarlo. Se barajan y se usan TODAS antes de repetir ninguna: cuantas más haya, más tarda en repetirse.",
+        "Las que dice al tocarlo. Se barajan y se usan TODAS antes de repetir ninguna: cuantas más haya, más tarda en repetirse. Cada una elige con qué cara la dice.",
       type: "array",
-      of: [defineArrayMember({ type: "string" })],
+      of: [defineArrayMember(fraseBudin)],
       validation: (r) => r.min(1),
     }),
     defineField({
@@ -123,13 +158,13 @@ export const budin = defineType({
       description:
         "Aparecen recién después de que alguien lo tocó varias veces, y sólo de vez en cuando. Son el premio para quien se queda jugando.",
       type: "array",
-      of: [defineArrayMember({ type: "string" })],
+      of: [defineArrayMember(fraseBudin)],
     }),
     defineField({
       name: "amistad",
       title: "La frase de la amistad",
       description:
-        "Una sola. Aparece después de muchísimos toques y no vuelve a aparecer.",
+        "Una sola. Aparece después de muchísimos toques y no vuelve a aparecer. La dice sonriendo, como el saludo.",
       type: "string",
     }),
   ],

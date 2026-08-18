@@ -4,7 +4,7 @@ import { producto } from "./producto";
 import { experiencia } from "./experiencia";
 import { marca } from "./marca";
 import { voz } from "./voz";
-import { servicio } from "./servicio";
+import { contacto, servicio } from "./servicio";
 import { budin, momento, red } from "./varios";
 
 /**
@@ -19,6 +19,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   voz,
   imagen,
   servicio,
+  contacto,
   red,
   momento,
   budin,

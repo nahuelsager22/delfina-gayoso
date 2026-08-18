@@ -515,24 +515,37 @@ contador regresivo, card de catálogo. **Si dos fichas se ven idénticas salvo e
 **Intención:** que colaborar con Delfina se lea como *"esto también se hace con ella"*, una invitación
 entre iguales, no un pitch de agencia. Resuelve el medio de contacto del M6 (B3 §9).
 
-**Consume:** contenido tipo **E** (tipo de propuesta, a quién le sirve, cómo es trabajar con ella,
-cómo iniciar contacto).
+**Consume:** contenido tipo **E** (título de la propuesta, descripción, texto) + el **contacto de la
+sección** (invitación + canales), que es uno solo y no de cada propuesta.
 
 **Reglas visuales:**
 
-- **Su voz en serif** lleva el qué y el cómo (colaboraciones en redes, asesorías, *"cualquier tipo de
-  propuesta"*). La solidez la dan el **rigor tipográfico y el aire**, no un giro corporativo (B3 §3.2).
+- **Su voz en serif** lleva la descripción y el texto. La solidez la dan el **rigor tipográfico y el
+  aire**, no un giro corporativo (B3 §3.2).
 - **Sin tarifario, sin paquetes, sin lenguaje de agencia, sin logos de clientes en grilla, sin métricas
   de éxito.** Nada que la vuelva una empresa impersonal.
-- **Contacto = invitación abierta**, no formulario de captación de leads. Forma concreta: una frase suya
-  (*"si tenés una idea, escribime"*) + un único medio directo (enlace de mail o mensaje). **Sin campos
-  de empresa/presupuesto, sin dropdowns de "tipo de consulta".** Si en v1 hay formulario, es mínimo
-  (nombre + mensaje) y suena a ella; el default es el enlace directo.
+- **Forma de la ficha (Bloque 8 · 30ª ola, fijada por Delfina): título + descripción + texto.** El
+  título va como rótulo quieto en sans; la **descripción** es UNA línea que enuncia el servicio sin
+  explicarlo (*"Cada cocina tiene una forma distinta de funcionar"*) y es la que sostiene la
+  invitación; el **texto** cuenta cómo se trabaja, en dos o tres renglones. Reemplaza al par
+  "a quién le sirve / cómo es trabajar con ella": enumerar destinatarios sonaba a catálogo y la forma
+  nueva enuncia en vez de listar.
+- **Contacto = invitación abierta**, no formulario de captación de leads. **Uno por SECCIÓN, no por
+  propuesta** (30ª ola): una frase suya + los accesos directos, centrados, después de la última
+  propuesta. Repetirlo en cada ficha —con dos propuestas ya era discutible; con tres, los mismos dos
+  enlaces seis veces— lo volvía un formulario disfrazado. La simetría del bloque de contacto, contra
+  la asimetría de las propuestas, alcanza para que no se lea como una propuesta más. **Sin campos de
+  empresa/presupuesto, sin dropdowns de "tipo de consulta".**
+- **Cuántas propuestas.** No hay número fijo, pero sí una regla: **la sección no gana centralidad
+  comercial** (§3.3). Si una propuesta nueva se superpone con otra, la que estaba **suelta** el
+  territorio en vez de que la sección se estire — es lo que hace que la nueva no se lea como un
+  agregado posterior. El ORDEN es un descenso de escala (marca → negocio → mesa), y su último escalón
+  prepara el pivote hacia "Lo que te llevás".
 - Misma paleta cálida, mismo aire generoso alrededor del texto. Aparece tarde, en pertenencia; no
   compite con el aprendizaje.
 
 **Qué se evita:** casos de éxito con números, "portfolio corporativo", promesas de resultados, tono de
-propuesta comercial.
+propuesta comercial, y **repetir el contacto tantas veces como propuestas haya**.
 
 ### 7.3 Bloque de voz en primera persona
 
@@ -857,6 +870,21 @@ Indicaciones directas de Delfina, con prioridad sobre decisiones previas (ver la
 - **Ficha de producto — plataforma de venta agnóstica (§7.1).** `Producto.destino` (antes `destinoHotmart`) es una URL cualquiera; micro-texto "Se abre en una página externa". Migrar de plataforma = cambiar la URL.
 - **Verificado en vivo** (dev server, DOM + capturas): las 3 galaxias profundas (chocolate/verde/vino) con tinta crema legible; las 4 luminosas con tinta oscura; navbar y **menú mobile** heredando cada paisaje; conectores/adornos/marcos en acento; cero overflow-x en mobile; sin errores de consola. Tres gates en verde.
 - **Pendiente de Delfina:** fotografía/video/dibujitos propios (para integrar en los paisajes y aligerar texto), más recursos gráficos (texto en trayectoria, marcos orgánicos, detalles en botones) a seguir sumando, qué copy resumir/quitar, y las URLs de venta definitivas. La calibración fina de cada galaxia se hace con ella.
+
+### Continuación — Bloque 8 · olas 30–33 (2026-08-18)
+
+> **BUDÍN TIENE CARA (patrón nuevo).** Deja de ser un retrato fijo y pasa a tener un repertorio de **dos** expresiones —😊 alegre, 😐 ladeado—. Llegó ahí por sustracción, en tres pasos, y el recorrido es la parte que sirve: la 30ª montó cuatro (el retrato original como reposo más tres stickers nuevos), la 31ª sacó el retrato original y la 33ª sacó una tercera cara. Las reglas que quedaron:
+>
+> - **Un personaje, y además un mismo DIBUJO.** El retrato viejo y los stickers no comparten escala, proporción ni edad aparente, así que alternarlos no leía como un cambio de expresión sino como un cambio de perro. La misma objeción, más fina, se llevó después a `curioso`: gama de tonalidades y proporciones apenas distintas, y aun así se percibía de otra serie. La regla final: **menos variaciones con una identidad consistente valen más que una expresión de más que rompe la continuidad**. Al sumar material, la pregunta no es sólo *¿es el mismo personaje?* sino *¿es el mismo dibujo?*.
+> - **La expresión PERSISTE.** Con una que volvía sola al reposo, el cambio se percibía como una animación momentánea. Ahora la que aparece es "el Budín de ahora" y sólo cambia con la interacción siguiente. No hay temporizador que la deshaga: lo que se dijo caduca (el globo se va), la expresión con la que quedó no.
+> - **La cara la elige la FRASE, no el gesto ni el puntero.** Cada frase declara su registro en el CMS: sonríe cuando saluda o agradece, y las observaciones, los chistes y las invitaciones a seguir mirando van con cara seria —decirlas serio *es* el chiste—. En la 30ª ola esto se descartó por el motivo equivocado: se pensó en calzar caras contra el TEXTO de cada frase, y eso sí se rompe en cuanto se corrige una coma en el Studio. Atarla a un **campo** de la frase no tiene ese problema, y pone la decisión donde corresponde: la elige quien escribe el humor, no el código. El HOVER, en cambio, no toca la cara (32ª ola): bastaba pasar el mouse por encima para deshacer la expresión, y así la cara terminaba respondiendo al puntero y no a lo que dice.
+> - **Se saluda solo.** Al entrar, Budín aparece en su cara de reposo y el globo de bienvenida sale sin que nadie lo toque; a los pocos segundos se retira y ahí empieza el comportamiento normal. En escritorio ESPERA a que se vaya la pantalla de carga: saludar debajo de ella es gastar el saludo contra un fondo opaco.
+> - **Se alinean por los OJOS, no por la caja.** Normalizadas sobre un lienzo común, con la misma distancia interocular y el mismo punto medio: al intercambiarlas cambia la expresión y no el personaje. Lo que sí cambia es cuánto ocupan hacia abajo (una trae collar, otra es sólo cabeza) y eso es correcto: es lo que hace un perro que levanta la cabeza.
+> - **Se montan apiladas y se cruzan por opacidad**, todas con carga inmediata: montadas pero invisibles quedaban esperando, y la primera vez que Budín cambiaba de expresión la cara llegaba tarde —justo el parpadeo que apilarlas venía a evitar—. El cruce es lento (420ms): así se percibe el cambio, no el corte. Con `prefers-reduced-motion` la expresión igual cambia —es otro dibujo, no un movimiento—, sólo que sin cruce.
+>
+> **PANTALLA DE CARGA — un intercambio.** El logotipo y Budín ocupan **la misma casilla** y se turnan: entra el logotipo, se sostiene y le deja el sitio a Budín. Reemplaza al *asomo* de la 30ª ola —Budín saliendo por detrás del disco—, que leía como un truco de escondite y no como la identidad presentándose. Criterios: (a) **una sola vuelta**, porque alcanza con que el relevo se perciba una vez y repetirlo convierte la pantalla en el spinner que evita; (b) **termina en Budín**, no vuelve al logotipo — lo último antes del sitio es el personaje, así la pantalla se lo entrega al recorrido; (c) **el solape es corto** (~0,25s): sin solape se leen como dos apariciones sueltas, con más como un fundido de presentación, con éste como un relevo; (d) **los archivos van livianos**, porque están en el HTML inicial y no pasan por el optimizador (WebP a medida: 27 y 44 KB, contra los 947 KB del PNG que se usaba antes); (e) apenas empieza a irse **deja de interceptar el clic**. Total medido: 2,2s.
+>
+> El Budín de la carga es **el retrato original** (33ª ola), no una de las expresiones del recorrido: es el dibujo más tierno de los que hay, y el primer contacto tiene que ser con la versión más cálida del personaje. Ahí no compite con ninguna otra cara, así que la objeción que lo sacó de la interacción no aplica.
 
 ---
 

@@ -1,6 +1,7 @@
-import { getServicios } from "@/content";
+import { getContactoProfesional, getServicios } from "@/content";
 import { Momento } from "../_patrones/Momento";
 import { InvitacionServicio } from "../_patrones/InvitacionServicio";
+import { ContactoProfesional } from "../_patrones/ContactoProfesional";
 import { Adorno } from "../_chrome/adornos/Adorno";
 
 /**
@@ -25,10 +26,23 @@ import { Adorno } from "../_chrome/adornos/Adorno";
  *    abierta con un medio directo (Instagram del contenido — PENDIENTE de confirmar
  *    el usuario), NO formulario de captación de leads.
  *
+ *  · Bloque 8 · 30ª ola — TRES propuestas (entra "chef privado y catering para eventos",
+ *    indicación de Delfina) y UN contacto. Dos cosas que se decidieron juntas:
+ *      (a) la segunda propuesta soltó los eventos —se llamaba "Asesorías y eventos"— para
+ *          que la tercera no se leyera como un duplicado pegado al final. La sección le
+ *          hace lugar en vez de estirarse;
+ *      (b) el contacto bajó de cada propuesta al CIERRE de la sección: repetido tres
+ *          veces dejaba de ser una invitación abierta y pasaba a leerse como formulario.
+ *    El descenso resultante —marca → negocio → mesa— además prepara el pivote hacia "Lo
+ *    que te llevás": la tercera ya habla de gente que se sienta a comer, no de empresas.
+ *
  * Las propuestas se leen vía `@/content`; el copy queda pendiente de validación.
  */
 export async function TrabajemosJuntos() {
-  const servicios = await getServicios();
+  const [servicios, contacto] = await Promise.all([
+    getServicios(),
+    getContactoProfesional(),
+  ]);
 
   return (
     <Momento
@@ -50,6 +64,9 @@ export async function TrabajemosJuntos() {
             ancla={i % 2 === 1 ? "der" : "izq"}
           />
         ))}
+
+        {/* Las tres desembocan acá. Centrado, para que no se lea como una cuarta. */}
+        <ContactoProfesional contacto={contacto} />
       </div>
 
       {/* 13ª ola: el batidor (gesto de repostería) no dialogaba con una sección de

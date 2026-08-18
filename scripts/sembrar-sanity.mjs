@@ -57,6 +57,7 @@ const { voz } = await import("../content/data/voz.ts");
 const { productos } = await import("../content/data/productos.ts");
 const { experiencias } = await import("../content/data/experiencias.ts");
 const { servicios } = await import("../content/data/servicios.ts");
+const { contacto } = await import("../content/data/contacto.ts");
 const { marcas } = await import("../content/data/marcas.ts");
 const { imagenes } = await import("../content/data/imagenes.ts");
 const { redes } = await import("../content/data/redes.ts");
@@ -199,18 +200,24 @@ for (const [i, s] of servicios.entries()) {
     _type: "servicio",
     identificador: slug(s.id),
     tipo: s.tipo,
-    aQuienLeSirve: s.aQuienLeSirve,
-    comoEsTrabajar: s.comoEsTrabajar,
-    invitacion: s.contacto.invitacion,
-    canales: s.contacto.canales.map((c, j) => ({
-      _key: `canal-${j}`,
-      medio: c.medio,
-      destino: c.destino,
-    })),
+    descripcion: s.descripcion,
+    texto: s.texto,
     borrador: s.borrador ?? false,
     orden: (i + 1) * 10,
   });
 }
+
+// El contacto de "Trabajemos juntos": uno para toda la sección (30ª ola).
+docs.push({
+  _id: "contacto-profesional",
+  _type: "contacto",
+  invitacion: contacto.invitacion,
+  canales: contacto.canales.map((c, j) => ({
+    _key: `canal-${j}`,
+    medio: c.medio,
+    destino: c.destino,
+  })),
+});
 
 for (const [i, r] of redes.entries()) {
   docs.push({
@@ -239,8 +246,10 @@ docs.push({
   _id: "budin",
   _type: "budin",
   saludo: budin.saludo,
-  frases: [...budin.frases],
-  secretas: [...(budin.secretas ?? [])],
+  // 31ª ola: cada frase es {texto, gesto}. El `_key` lo pide Sanity para los arrays de
+  // objetos (es cómo identifica cada ítem al reordenar o editar).
+  frases: budin.frases.map((f, i) => ({ _key: `frase-${i}`, ...f })),
+  secretas: (budin.secretas ?? []).map((f, i) => ({ _key: `secreta-${i}`, ...f })),
   amistad: budin.amistad,
 });
 

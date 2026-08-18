@@ -8,7 +8,7 @@ import {
   useAnimationControls,
   useReducedMotion,
 } from "motion/react";
-import type { VozBudin } from "@/content";
+import type { FraseBudin, GestoBudin, VozBudin } from "@/content";
 
 /**
  * Budín — el compañero del recorrido (Bloque 8 · 13ª ola; JUEGO en la 22ª).
@@ -58,10 +58,104 @@ import type { VozBudin } from "@/content";
  * La escala del gesto no cambia: saltito de 12–18px, giro de 6–9°, desplazamientos de
  * 7–24px. El juego se nota en el RITMO, no en la amplitud.
  *
+ * LAS TRES CARAS (31ª ola) — Budín REACCIONA a lo que dice
+ * -----------------------------------------------------------------------------
+ * La 30ª ola le dio cuatro expresiones: el retrato viejo como reposo más tres stickers
+ * nuevos. Verlo funcionando dejó dos conclusiones, las dos del usuario y las dos exactas.
+ *
+ * **Primero: parecían dos perros.** El retrato original y los stickers nuevos no
+ * comparten escala, proporción ni edad aparente —en los nuevos Budín es más grande y
+ * mucho más expresivo—, así que alternarlos no leía como un cambio de expresión sino
+ * como un cambio de personaje. Se resolvió por sustracción: el retrato viejo SALE de la
+ * interacción. (Sigue vivo en el sitio, en dos lugares donde no compite con nadie: el
+ * cuerpo entero de la banda del cierre y —desde la 33ª ola— la pantalla de carga, donde
+ * Delfina lo prefiere justamente por ser el más tierno de todos.)
+ *
+ * **Y la misma objeción, más fina, se llevó una tercera (33ª ola).** De los tres stickers
+ * nuevos, `curioso` tiene una gama de tonalidades y unas proporciones apenas distintas:
+ * mirado al lado de los otros dos, también pertenece a otro dibujo. Quedan `ladeado` y
+ * `alegre`, que se leen sin discusión como la misma serie. La regla que deja: **menos
+ * variaciones con una identidad consistente valen más que una expresión de más que rompe
+ * la continuidad.** Y el corolario práctico: al sumar material nuevo, la pregunta no es
+ * sólo "¿es el mismo personaje?" sino "¿es el mismo dibujo?".
+ *
+ * **Segundo: la cara volvía sola al reposo** y el cambio se percibía como una animación
+ * momentánea. Ahora la expresión PERSISTE: la que aparece es "el Budín de ahora" y sólo
+ * cambia cuando hay una interacción nueva. No hay temporizador que la deshaga.
+ *
+ * Y el cambio de fondo: **la cara la elige la FRASE, no el gesto**. Cada frase declara su
+ * registro en el CMS (ver `FraseBudin`), así que Budín pone la cara de lo que está
+ * diciendo:
+ *
+ *      😊 `alegre`   → saludo, cariño, agradecimientos, entusiasmo
+ *      👀 `curioso`  → cuando invita a seguir recorriendo o señala algo
+ *      😐 `ladeado`  → los chistes y las observaciones (decirlas serio ES el chiste)
+ *
+ * En la 30ª ola esto se descartó por un motivo que resultó ser el equivocado: se pensó
+ * en calzar caras contra el TEXTO de cada frase, y eso sí se rompe en cuanto Delfi
+ * corrige una coma en el Studio. Atarla a un CAMPO de la frase no tiene ese problema —la
+ * categoría viaja con ella— y además pone la decisión donde corresponde: la elige quien
+ * escribe el humor, no el código.
+ *
+ * Las tres siguen ALINEADAS POR LOS OJOS sobre un lienzo común: al intercambiarlas la
+ * cara no se mueve de lugar, cambia la expresión. Lo que sí cambia es cuánto ocupan hacia
+ * abajo (la de boca abierta trae collar; la ladeada es sólo cabeza), y eso es correcto:
+ * es lo que hace un perro que levanta la cabeza.
+ *
+ * Se montan apiladas y se cruzan por opacidad: no hay carga diferida en el momento del
+ * cambio (no parpadea) ni reflow (no salta). Con `prefers-reduced-motion` la expresión
+ * igual cambia —es un dibujo distinto, no un movimiento—, sólo que sin cruce.
+ *
  * DOS CAPAS DE MOVIMIENTO, a propósito: el contenedor lleva el DESPLAZAMIENTO y el botón
  * lleva el SALTO. Así el globo viaja con Budín —su punta lo sigue apuntando— mientras la
  * cabeza salta por su cuenta.
  */
+
+/**
+ * Las caras: los stickers que mandó Delfina, recortados y alineados por los ojos. Las
+ * claves son los mismos valores que `GestoBudin` en el contenido, así que la categoría de
+ * una frase ES el nombre de su cara.
+ *
+ * 33ª ola — quedaron DOS. Se retiró `curioso` porque pertenece a otro dibujo (ver el
+ * bloque de abajo). El archivo sigue en `public/ilustraciones/`: la decisión fue "por el
+ * momento", no definitiva.
+ */
+const CARAS: Record<GestoBudin, string> = {
+  alegre: "/ilustraciones/budin-alegre.png",
+  ladeado: "/ilustraciones/budin-ladeado.png",
+};
+
+/** El lienzo común de las tres. La caja no cambia de tamaño al cambiar de cara. */
+const LIENZO = { ancho: 473, alto: 512 };
+
+/**
+ * La cara con la que espera antes de que pase nada. Va la seria: es la más quieta de las
+ * tres y la que menos pide atención, que es lo que corresponde a alguien que todavía no
+ * dijo nada.
+ */
+const CARA_EN_REPOSO: GestoBudin = "ladeado";
+
+/**
+ * La frase de la amistad es la única que no elige cara desde el CMS: es un campo suelto,
+ * no un ítem de la lista, y su registro no admite dudas.
+ */
+const CARA_DE_AMISTAD: GestoBudin = "alegre";
+
+/** Cuánto se queda puesto el saludo de bienvenida antes de retirarse solo. */
+const SALUDO_MS = 5000;
+
+/**
+ * Cuánto espera el Budín de escritorio antes de saludar (32ª ola).
+ *
+ * Saluda solo al cargar, sin que nadie lo toque, y eso choca con la pantalla de carga: si
+ * el globo apareciera en el momento del montaje, los primeros 2,2 segundos del saludo
+ * pasarían tapados y el visitante vería el final de algo que nunca vio empezar. Espera a
+ * que la pantalla termine y arranca apenas después.
+ *
+ * Está atado a la duración de la pantalla de carga en globals.css: si aquélla cambia,
+ * este número cambia con ella. En el menú mobile no aplica: se abre mucho después.
+ */
+const ESPERA_PANTALLA_CARGA_MS = 2400;
 
 /** Toques a partir de los cuales pueden aparecer las frases raras. */
 const TOQUES_PARA_SECRETAS = 10;
@@ -80,7 +174,7 @@ const entre = (min: number, max: number) =>
   min + Math.floor(Math.random() * (max - min + 1));
 
 /** Mezcla (Fisher-Yates). La bolsa se consume desde el final. */
-function barajar(items: readonly string[]): string[] {
+function barajar(items: readonly FraseBudin[]): FraseBudin[] {
   const bolsa = [...items];
   for (let i = bolsa.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -97,8 +191,9 @@ function barajar(items: readonly string[]): string[] {
  * dejar de estar protegida contra repetirse al rebarajar.
  */
 interface Bolsa {
-  restantes: string[];
-  ultima: string | null;
+  restantes: FraseBudin[];
+  /** La última que salió. Se compara por TEXTO: al rebarajar, el objeto es otro. */
+  ultima: FraseBudin | null;
 }
 
 const bolsaVacia = (): Bolsa => ({ restantes: [], ultima: null });
@@ -122,13 +217,24 @@ export function Budin({
 
   const [mensaje, setMensaje] = useState<string | null>(null);
   /**
-   * En desktop Budín saluda al pasar el mouse. En mobile no hay hover, así que el saludo
-   * se perdía y había que descubrirlo tocándolo de casualidad (21ª ola). Ahora arranca
-   * saludando: como sólo existe dentro del menú abierto, montarse ES el momento de
-   * saludar. Se inicializa en el estado —no en un efecto— para que el globo esté en el
-   * primer render y no aparezca con un parpadeo.
+   * La cara de AHORA. Se queda puesta: no hay temporizador que la devuelva al reposo, y
+   * SÓLO la cambia una frase nueva —ni el saludo, ni el hover, ni el saltito de reposo—.
+   * Ésa es toda la diferencia entre que Budín parezca haber cambiado de expresión y que
+   * parezca haber hecho una animación. Arranca en la de reposo en las dos variantes.
+   */
+  const [cara, setCara] = useState<GestoBudin>(CARA_EN_REPOSO);
+  /**
+   * Si el globo del saludo está a la vista. Es independiente de la cara: el saludo se
+   * MUESTRA, no se pone (32ª ola).
+   *
+   * En el menú mobile arranca en true —abrirlo ES el momento de saludar, y hacerlo desde
+   * el estado y no desde un efecto evita que el globo aparezca con un parpadeo—. En
+   * escritorio arranca en false y lo enciende el efecto de abajo, que espera a que se
+   * retire la pantalla de carga.
    */
   const [saludando, setSaludando] = useState(variante === "menu");
+  /** Si ya lo tocaron. El saludo automático no interrumpe a alguien que ya está jugando. */
+  const yaHabloRef = useRef(false);
   const ocultarRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   /* --- La partida. Todo en refs: es memoria del juego, no estado de la vista. --- */
@@ -186,24 +292,47 @@ export function Budin({
     [],
   );
 
-  /* El saludo de bienvenida del menú se retira solo, como se retira el del hover al
-     sacar el mouse. Si tocan a Budín antes, `hablar` ya lo reemplaza por una frase. */
+  /* EL SALUDO DE BIENVENIDA (32ª ola). Budín se presenta SOLO, sin que nadie lo toque ni
+     le pase el mouse por encima, y a los pocos segundos el globo se retira: recién ahí
+     empieza el comportamiento normal del personaje.
+
+     En el menú mobile ya está a la vista desde el primer render —abrirlo es el momento de
+     saludar— y acá sólo se programa su retiro. En escritorio hay que ESPERAR a que se vaya
+     la pantalla de carga: saludar debajo de ella sería gastar el saludo contra un fondo
+     opaco. Y si lo tocaron antes de que llegue su turno, no saluda: ya está conversando. */
   useEffect(() => {
-    if (variante !== "menu") return;
-    const t = setTimeout(() => setSaludando(false), 4200);
-    return () => clearTimeout(t);
+    let retiro: ReturnType<typeof setTimeout> | undefined;
+    const programarRetiro = () => {
+      retiro = setTimeout(() => setSaludando(false), SALUDO_MS);
+    };
+
+    if (variante === "menu") {
+      programarRetiro();
+      return () => clearTimeout(retiro);
+    }
+
+    const entrada = setTimeout(() => {
+      if (yaHabloRef.current) return;
+      setSaludando(true);
+      programarRetiro();
+    }, ESPERA_PANTALLA_CARGA_MS);
+
+    return () => {
+      clearTimeout(entrada);
+      clearTimeout(retiro);
+    };
   }, [variante]);
 
   /** Saca de una bolsa, rellenándola barajada cuando se agota. */
   const sacar = useCallback(
-    (bolsa: { current: Bolsa }, items: readonly string[]): string | null => {
+    (bolsa: { current: Bolsa }, items: readonly FraseBudin[]): FraseBudin | null => {
       if (items.length === 0) return null;
       const b = bolsa.current;
       if (b.restantes.length === 0) {
         const nueva = barajar(items);
         // Que la última de una vuelta no sea la primera de la siguiente.
         const proxima = nueva.length - 1;
-        if (nueva.length > 1 && nueva[proxima] === b.ultima) {
+        if (nueva.length > 1 && nueva[proxima]!.texto === b.ultima?.texto) {
           const tmp = nueva[proxima]!;
           nueva[proxima] = nueva[0]!;
           nueva[0] = tmp;
@@ -216,14 +345,21 @@ export function Budin({
     [],
   );
 
-  const decir = useCallback((texto: string) => {
+  /**
+   * Dice algo y PONE LA CARA DE ESO. El globo se retira solo a los 5,2s; la cara no: se
+   * queda hasta la interacción siguiente. Esa asimetría es a propósito — lo que se dijo
+   * caduca, la expresión con la que quedó no.
+   */
+  const decir = useCallback((texto: string, gesto: GestoBudin) => {
     setSaludando(false);
+    setCara(gesto);
     setMensaje(texto);
     if (ocultarRef.current) clearTimeout(ocultarRef.current);
     ocultarRef.current = setTimeout(() => setMensaje(null), 5200);
   }, []);
 
   const hablar = useCallback(() => {
+    yaHabloRef.current = true;
     const n = (toquesRef.current += 1);
 
     if (!sinMotion) {
@@ -273,12 +409,15 @@ export function Budin({
           transition: { duration: 0.5, ease: "easeOut" },
         });
       }
+
     }
 
-    /* 4 · Qué dice. De lo más raro a lo más común. SIEMPRE dice algo. */
+    /* 4 · Qué dice, y con qué cara. De lo más raro a lo más común; SIEMPRE dice algo, y
+       la expresión sale de la frase (31ª ola). El saludo y la frase de la amistad no
+       eligen: las dos son cariño y van sonriendo. */
     if (!amistadDichaRef.current && amistad && n >= metaAmistadRef.current) {
       amistadDichaRef.current = true;
-      decir(amistad);
+      decir(amistad, CARA_DE_AMISTAD);
       return;
     }
     if (
@@ -288,12 +427,12 @@ export function Budin({
     ) {
       const rara = sacar(bolsaSecretasRef, secretas);
       if (rara) {
-        decir(rara);
+        decir(rara.texto, rara.gesto);
         return;
       }
     }
     const frase = sacar(bolsaRef, frases);
-    if (frase) decir(frase);
+    if (frase) decir(frase.texto, frase.gesto);
   }, [
     amistad,
     controles,
@@ -309,6 +448,11 @@ export function Budin({
   // El saludo del hover sólo tiene sentido con puntero (en el menú mobile se toca).
   const conHover = variante === "flotante";
   const globo = mensaje ?? (saludando ? saludo : null);
+  /* EL HOVER NO TOCA LA CARA (32ª ola). Hasta acá el saludo ponía la sonrisa, y el efecto
+     era que bastaba con pasar el mouse por encima para deshacer la expresión con la que
+     Budín había quedado: la cara terminaba respondiendo al puntero y no a lo que dice.
+     Ahora el hover sólo muestra el globo. */
+  const mostrarSaludo = useCallback(() => setSaludando(true), []);
 
   return (
     <motion.div className={`budin budin-${variante}`} animate={controlesPos}>
@@ -340,20 +484,36 @@ export function Budin({
         className="budin-boton"
         animate={controles}
         onClick={hablar}
-        onMouseEnter={conHover ? () => setSaludando(true) : undefined}
+        onMouseEnter={conHover ? mostrarSaludo : undefined}
         onMouseLeave={conHover ? () => setSaludando(false) : undefined}
-        onFocus={conHover ? () => setSaludando(true) : undefined}
+        onFocus={conHover ? mostrarSaludo : undefined}
         onBlur={conHover ? () => setSaludando(false) : undefined}
         aria-label="Budín, el perro de Delfina. Tocalo para que te diga algo."
       >
-        <Image
-          src="/ilustraciones/budin-cabeza.png"
-          alt=""
-          width={909}
-          height={932}
-          sizes="120px"
-          style={{ inlineSize: "100%", blockSize: "auto", display: "block" }}
-        />
+        {/* Las tres caras montadas a la vez. Apilarlas resuelve dos cosas de una: no hay
+            una carga que empiece recién en el momento del cambio (no parpadea) ni un
+            reflow al cambiar de archivo (no salta). El cruce lo hace la opacidad.
+
+            `loading="eager"` en las tres, y no sólo en la de reposo: montadas pero con
+            opacidad 0, las otras dos quedaban esperando y la primera vez que Budín cambiaba
+            de expresión la cara llegaba tarde —justo el parpadeo que apilarlas venía a
+            evitar—. Se comprobó leyendo el `currentSrc` de las tres: dos venían vacías.
+            `priority` sólo va en la de reposo: es la única que se ve al entrar, y precargar
+            las otras en el <head> competiría con la imagen grande del hero. */}
+        {(Object.keys(CARAS) as GestoBudin[]).map((c) => (
+          <Image
+            key={c}
+            className="budin-cara"
+            data-visible={c === cara ? "" : undefined}
+            src={CARAS[c]}
+            alt=""
+            width={LIENZO.ancho}
+            height={LIENZO.alto}
+            sizes="130px"
+            loading="eager"
+            priority={c === CARA_EN_REPOSO}
+          />
+        ))}
       </motion.button>
 
       {/* La frase también se anuncia a lectores de pantalla. */}

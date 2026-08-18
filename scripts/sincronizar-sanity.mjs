@@ -22,15 +22,22 @@
  *   5. CREA las Experiencias que falten (sin pisar las que ya estén cargadas).
  *   6. CREA los textos que falten (sin pisar los que Delfi haya editado).
  *   7. REORDENA las secciones del recorrido (22ª ola: el orden nuevo).
+   8. REEMPLAZA los servicios (30ª ola: la ficha cambió de forma —título, descripción,
+      texto— y el contacto salió del documento), borra los que ya no estén en la semilla
+      y CREA el documento de contacto profesional si falta.
+   9. DEJA AL DÍA las frases de Budín, sin tocar sus textos: las convierte a
+      {texto, gesto} si venían sueltas (31ª ola) y reasigna las que quedaron con una cara
+      retirada (33ª: se fue `curioso`). Y actualiza su SALUDO (32ª) sólo si nadie lo
+      editó en el Studio.
  *
  * Los pasos 4, 5 y 6 usan `createIfNotExists`: lo que ya está en el Studio manda. Los
  * pasos 1 y 2 sí borran, porque ese contenido ya no representa nada del sitio. El 7 toca
  * sólo el campo `orden` (no el nombre del menú).
  *
- * BUDÍN NO SE TOCA (27ª ola). Hasta la 26ª este script reemplazaba su documento entero
- * para empujar el repertorio nuevo. Ya está cargado y Delfina editó frases a mano en el
- * Studio: volver a pisarlo sería perder su trabajo. Si algún día hay que empujar frases
- * nuevas, la semilla respalda por documento y conviene hacerlo desde el Studio.
+ * BUDÍN NO SE PISA (27ª ola, sigue vigente). Hasta la 26ª este script reemplazaba su
+ * documento entero para empujar el repertorio nuevo. Ya está cargado y Delfina editó
+ * frases a mano en el Studio: volver a pisarlo sería perder su trabajo. Lo único que se
+ * hace sobre él es la MIGRACIÓN de forma del paso 9, que conserva sus textos.
  *
  * CÓMO CORRERLO
  *   1. Tener `SANITY_API_WRITE_TOKEN` en `.env.local`.
@@ -75,6 +82,9 @@ const { experiencias } = await import("../content/data/experiencias.ts");
 const { voz } = await import("../content/data/voz.ts");
 const { imagenes } = await import("../content/data/imagenes.ts");
 const { momentos } = await import("../content/data/momentos.ts");
+const { servicios } = await import("../content/data/servicios.ts");
+const { contacto } = await import("../content/data/contacto.ts");
+const { budin } = await import("../content/data/budin.ts");
 
 const subidas = new Map();
 async function subir(src) {
@@ -268,11 +278,138 @@ for (const m of momentos) {
 }
 resumen.push(`${momentos.length} secciones reordenadas`);
 
-/* BUDÍN — deliberadamente FUERA de la sincronización (27ª ola).
-   Hasta la 26ª ola acá había un `createOrReplace` que empujaba el repertorio de la
-   semilla. Ya cumplió su función: el documento está cargado y Delfina editó frases a mano
-   en el Studio. Volver a reemplazarlo perdería su trabajo, que es exactamente lo que este
-   script existe para evitar. Se deja anotado para que nadie lo reponga sin pensarlo. */
+/* 8 · SERVICIOS y CONTACTO (30ª ola). ---------------------------------------
+   Único paso del script que REEMPLAZA contenido editable, y conviene entender por qué es
+   la excepción y no el criterio nuevo. La ficha de servicio cambió de forma: los campos
+   `aQuienLeSirve`/`comoEsTrabajar` pasaron a `descripcion`/`texto`, y `invitacion`/
+   `canales` salieron del documento. Con la forma cambiada no hay merge posible —los
+   valores viejos quedarían en campos que el sitio ya no lee— y además el copy de esta ola
+   es una decisión de Delfina, no una semilla provisoria. Por eso se reemplaza.
+
+   Se borran, además, los servicios que ya no están en la semilla, deduciéndolos del
+   dataset igual que con las marcas: así "Asesorías y eventos" se retira solo al haber
+   sido reemplazado por "Asesorías gastronómicas". */
+const serviciosVigentes = new Set(servicios.map((s) => `servicio-${s.id}`));
+const serviciosEnDataset = await cliente.fetch(`*[_type == "servicio"]._id`);
+for (const id of serviciosEnDataset.filter((id) => !serviciosVigentes.has(id))) {
+  tx = tx.delete(id);
+}
+for (const [i, s] of servicios.entries()) {
+  tx = tx.createOrReplace({
+    _id: `servicio-${s.id}`,
+    _type: "servicio",
+    identificador: slug(s.id),
+    tipo: s.tipo,
+    descripcion: s.descripcion,
+    texto: s.texto,
+    borrador: s.borrador ?? false,
+    orden: (i + 1) * 10,
+  });
+}
+resumen.push(`${servicios.length} servicios actualizados`);
+
+// El contacto sí es `createIfNotExists`: es contenido nuevo, no una migración de forma.
+tx = tx.createIfNotExists({
+  _id: "contacto-profesional",
+  _type: "contacto",
+  invitacion: contacto.invitacion,
+  canales: contacto.canales.map((c, j) => ({
+    _key: `canal-${j}`,
+    medio: c.medio,
+    destino: c.destino,
+  })),
+});
+resumen.push("contacto profesional asegurado");
+
+/* 9 · BUDÍN — MIGRACIÓN de forma, no reemplazo (31ª ola). -------------------
+   Desde la 27ª ola el documento de Budín estaba deliberadamente fuera de este script:
+   Delfina editó frases a mano en el Studio y pisarlo sería perder su trabajo. Ese
+   criterio SIGUE valiendo y por eso lo que sigue no reemplaza nada.
+
+   Lo que cambió es la forma: cada frase pasó de ser un texto suelto a ser {texto, gesto},
+   porque ahora la cara con la que Budín dice algo la elige la frase. Así que hay que
+   convertir lo que ya está cargado, conservando SUS textos:
+
+     · si la frase ya es un objeto, no se toca (la migración ya corrió, o la escribió
+       ella con su cara elegida);
+     · si es un texto suelto, se busca ese texto exacto en la semilla para recuperar el
+       gesto que le corresponde;
+     · y si no aparece —porque la escribió ella— entra con la cara seria, que es el
+       registro de la mayoría de su humor y el default del Studio.
+
+   El documento se toca con un `patch` de los dos campos, no con un `createOrReplace`:
+   el saludo y la frase de la amistad quedan como estén. */
+const GESTO_POR_DEFECTO = "ladeado";
+/** Las caras que existen hoy. Cualquier otra que quede en el dataset hay que reasignarla. */
+const GESTOS_VIGENTES = new Set(["alegre", "ladeado"]);
+const gestoDeSemilla = new Map(
+  [...budin.frases, ...(budin.secretas ?? [])].map((f) => [f.texto, f.gesto]),
+);
+
+/**
+ * Deja cada frase en la forma vigente. Dos conversiones, y ninguna toca el texto:
+ *   · TEXTO SUELTO → {texto, gesto} (31ª ola), con el gesto que le corresponde en la
+ *     semilla; si la escribió ella y no está, entra con la cara seria.
+ *   · GESTO RETIRADO → el que le corresponde hoy (33ª ola: se fue `curioso`). Se busca
+ *     por texto en la semilla para respetar la recategorización que se hizo a mano, y si
+ *     no aparece, cae en la cara seria, que es el default del Studio.
+ */
+const migrarFrases = (lista, prefijo) =>
+  (lista ?? []).map((f, i) => {
+    if (typeof f === "string") {
+      return {
+        _key: `${prefijo}-${i}`,
+        texto: f,
+        gesto: gestoDeSemilla.get(f) ?? GESTO_POR_DEFECTO,
+      };
+    }
+    if (!GESTOS_VIGENTES.has(f.gesto)) {
+      return { ...f, gesto: gestoDeSemilla.get(f.texto) ?? GESTO_POR_DEFECTO };
+    }
+    return f;
+  });
+
+/* EL SALUDO (32ª ola). Cambió de texto por indicación del usuario, y como Budín está
+   fuera de la sincronización hay que empujarlo a mano — pero sólo si nadie lo tocó. Se
+   compara contra el valor que tenía la semilla anterior: si coincide, el documento nunca
+   se editó y se puede actualizar sin perder nada; si no coincide, alguien lo escribió en
+   el Studio y ese texto manda. Es la misma lógica que protege a las frases. */
+const SALUDO_ANTERIOR = "Hola, soy Budín!";
+
+const budinDoc = await cliente.fetch(
+  `*[_type == "budin"][0]{ _id, saludo, frases, secretas }`,
+);
+if (budinDoc) {
+  const cambios = {};
+
+  const todas = [...(budinDoc.frases ?? []), ...(budinDoc.secretas ?? [])];
+  const sueltas = todas.filter((f) => typeof f === "string").length;
+  const conGestoViejo = todas.filter(
+    (f) => typeof f === "object" && f && !GESTOS_VIGENTES.has(f.gesto),
+  ).length;
+
+  if (sueltas > 0 || conGestoViejo > 0) {
+    cambios.frases = migrarFrases(budinDoc.frases, "frase");
+    cambios.secretas = migrarFrases(budinDoc.secretas, "secreta");
+    if (sueltas > 0) resumen.push(`${sueltas} frases de Budín migradas a {texto, gesto}`);
+    if (conGestoViejo > 0) {
+      resumen.push(`${conGestoViejo} frases de Budín con una cara retirada, reasignadas`);
+    }
+  } else {
+    resumen.push("frases de Budín ya al día (no se tocan)");
+  }
+
+  if (budinDoc.saludo === SALUDO_ANTERIOR && budin.saludo !== budinDoc.saludo) {
+    cambios.saludo = budin.saludo;
+    resumen.push("saludo de Budín actualizado");
+  } else if (budinDoc.saludo !== budin.saludo) {
+    resumen.push(`saludo de Budín NO se toca (editado en el Studio: "${budinDoc.saludo}")`);
+  }
+
+  if (Object.keys(cambios).length > 0) {
+    tx = tx.patch(budinDoc._id, (p) => p.set(cambios));
+  }
+}
 
 await tx.commit();
 

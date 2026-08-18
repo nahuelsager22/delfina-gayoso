@@ -295,23 +295,60 @@ export type ExperienciaSemilla = Omit<Experiencia, "imagen" | "galeria"> & {
    acompaña la navegación: saluda al pasar el mouse y suelta una frase al azar al
    tocarlo. Su voz vive acá (contenido), no en la interfaz.
    ========================================================================= */
+/**
+ * La EXPRESIÓN de Budín (Bloque 8 · 31ª ola; reducida a DOS en la 33ª). Cada una tiene
+ * su registro:
+ *
+ *   · `alegre`  — sonriendo. Saludos, cariño, agradecimientos, entusiasmo.
+ *   · `ladeado` — serio. Los chistes, las observaciones y las invitaciones a seguir
+ *                  mirando. Es donde vive su humor: decirlas con cara seria ES el chiste.
+ *
+ * No es una etiqueta decorativa: es lo que hace que Budín parezca REACCIONAR a lo que
+ * dice, en vez de cambiar de dibujo. Por eso viaja con la frase y no con el gesto.
+ *
+ * 33ª ola — SE RETIRA `curioso` (decisión de Delfina, editorial). De los tres stickers,
+ * ése tiene una gama de tonalidades y unas proporciones apenas distintas: pertenece a otro
+ * dibujo. Es la misma objeción que en la 31ª ola sacó al retrato viejo, aplicada con más
+ * finura. **Menos variaciones con una identidad consistente valen más que una tercera
+ * expresión que rompe la continuidad**, y ese criterio queda como regla del personaje. Las
+ * frases que eran `curioso` —las que invitan a seguir viendo— pasaron a `ladeado`: un
+ * perro preguntando "¿ya viste los ebooks?" con cara seria funciona igual de bien.
+ */
+export type GestoBudin = "alegre" | "ladeado";
+
+/**
+ * Una frase suya y la cara con la que la dice.
+ *
+ * 31ª ola — antes las frases eran `string`. La expresión se decidía en la interfaz, a
+ * partir del gesto (si saltaba más alto, si caminaba), y eso tenía un techo: Budín
+ * cambiaba de cara por lo que HACÍA, no por lo que DECÍA. Atarla al texto exacto no era
+ * opción —Delfi edita las frases en el Studio y cualquier calce por texto se rompe a la
+ * primera corrección—, pero atarla a un CAMPO de la frase sí: la categoría viaja con
+ * ella, sobrevive a que la reescriba y la elige quien escribe el humor.
+ */
+export interface FraseBudin {
+  readonly texto: string;
+  readonly gesto: GestoBudin;
+}
+
 export interface VozBudin {
-  /** Lo que dice al pasar el mouse (invita a tocarlo). */
+  /** Lo que dice al pasar el mouse (invita a tocarlo). Siempre lo dice sonriendo. */
   readonly saludo: string;
   /**
    * Su repertorio de siempre. La interfaz lo baraja y lo AGOTA antes de repetir, así que
    * cuanto más largo, más tarda en volver una frase. Sumar una es agregar una línea.
    */
-  readonly frases: readonly string[];
+  readonly frases: readonly FraseBudin[];
   /**
    * Frases RARAS (22ª ola). No aparecen hasta que alguien lo tocó varias veces, y aun
    * entonces salen de vez en cuando. Existen para premiar a quien insiste: son las que
    * la mayoría no va a ver nunca.
    */
-  readonly secretas?: readonly string[];
+  readonly secretas?: readonly FraseBudin[];
   /**
    * La última (22ª ola). Aparece UNA sola vez, después de muchísimos toques, y no vuelve.
-   * Es el final del juego: el momento en que Budín reconoce que ya son amigos.
+   * Es el final del juego: el momento en que Budín reconoce que ya son amigos. Como el
+   * saludo, su registro es fijo —es un agradecimiento— y lo dice sonriendo.
    */
   readonly amistad?: string;
 }
@@ -377,13 +414,19 @@ export type MarcaSemilla = Omit<Marca, "imagen"> & {
    ========================================================================= */
 export interface PropuestaServicio {
   readonly id: string;
-  /** Tipo (ej. "colaboración en redes", "asesoría gastronómica"). */
+  /** El TÍTULO de la propuesta (ej. "Asesorías gastronómicas"). */
   readonly tipo: string;
-  readonly aQuienLeSirve: string;
-  /** Cómo es trabajar con ella, en su voz. */
-  readonly comoEsTrabajar: string;
-  /** Cómo iniciar el contacto: invitación abierta, accesos directos claros. */
-  readonly contacto: ContactoServicio;
+  /**
+   * La DESCRIPCIÓN: una línea que enuncia el servicio sin explicarlo (ej. "Cada cocina
+   * tiene una forma distinta de funcionar"). Es la que sostiene la invitación.
+   *
+   * Bloque 8 · 30ª ola — el campo se llamaba `aQuienLeSirve` y describía destinatarios.
+   * Delfina fijó otra forma para las tres propuestas: título + descripción + texto, y el
+   * nombre viejo dejó de decir lo que el campo contiene.
+   */
+  readonly descripcion: string;
+  /** El TEXTO: cómo se trabaja, en su voz. Dos o tres renglones, nunca un pliego. */
+  readonly texto: string;
   /** Contenido de EJEMPLO (ver `Producto.borrador`). */
   readonly borrador?: boolean;
 }
@@ -398,11 +441,17 @@ export interface CanalContacto {
 }
 
 /**
- * Contacto del servicio: invitación abierta + accesos directos claros (Bloque 6.5
- * · R8 — antes era "un único medio"; ahora admite varios, p. ej. Instagram + email).
- * No es un formulario de captación de leads.
+ * Contacto profesional: invitación abierta + accesos directos claros (Bloque 6.5 · R8 —
+ * antes era "un único medio"; ahora admite varios, p. ej. Instagram + email). No es un
+ * formulario de captación de leads.
+ *
+ * Bloque 8 · 30ª ola — DEJA DE SER DE CADA PROPUESTA Y PASA A SER DE LA SECCIÓN. Con dos
+ * servicios, repetir "Instagram / Mail" ya era discutible; con tres, los mismos dos
+ * enlaces aparecían seis veces en una sola sección, y eso se lee como formulario y no
+ * como invitación. Ahora aterrizan una sola vez, al cierre. De paso, Delfi mantiene sus
+ * enlaces en un solo lugar en vez de en tres.
  */
-export interface ContactoServicio {
+export interface ContactoProfesional {
   /** Frase suya que invita. */
   readonly invitacion: string;
   /** Accesos directos (uno o varios). */

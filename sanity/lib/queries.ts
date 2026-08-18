@@ -100,11 +100,15 @@ export const IMAGENES = `*[_type == "imagen"] {
 export const SERVICIOS = `*[_type == "servicio"] | order(orden asc) {
   "id": identificador.current,
   tipo,
-  aQuienLeSirve,
-  comoEsTrabajar,
-  invitacion,
-  "canales": canales[]{ medio, destino },
+  descripcion,
+  texto,
   borrador
+}`;
+
+/** El contacto de "Trabajemos juntos": uno solo para toda la sección (30ª ola). */
+export const CONTACTO = `*[_type == "contacto"][0] {
+  invitacion,
+  "canales": canales[]{ medio, destino }
 }`;
 
 export const REDES = `*[_type == "red"] | order(orden asc) {
