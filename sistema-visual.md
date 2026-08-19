@@ -547,21 +547,40 @@ sección** (invitación + canales), que es uno solo y no de cada propuesta.
 **Qué se evita:** casos de éxito con números, "portfolio corporativo", promesas de resultados, tono de
 propuesta comercial, y **repetir el contacto tantas veces como propuestas haya**.
 
-### 7.2 bis — El rótulo de la propuesta (Bloque 8 · 34ª ola)
+### 7.2 bis — El nombre de la propuesta (Bloque 8 · 34ª ola)
 
-**Problema.** El nombre del servicio iba en `--text-meta` (14–15px) y en tinta SUAVE, mientras la línea que le sigue va en serif a `--text-voz-l` (22–34px) y tinta plena. No era que el título fuera discreto: estaba **dos escalones por debajo de su propio subtítulo**, y el ojo entraba por la descripción. Con tres propuestas eso cuesta caro — el nombre es justo lo que alguien necesita leer de un vistazo para saber qué hace Delfina.
+**Problema, en dos tiempos.** Primero el nombre del servicio estaba en `--text-meta` y tinta suave, **dos escalones por debajo de su propio subtítulo**: el ojo entraba por la descripción. Se subió a `--text-titulo` en caja alta, tinta plena y con un filete, y ganó jerarquía — pero no identidad: seguía siendo Karla en mayúsculas, o sea **el mismo gesto que el rótulo de la sección** un cuerpo más grande. Se leía como un kicker de segundo nivel.
 
-**Regla que queda: en un bloque de dos voces, la que nombra tiene que ganarle ópticamente a la que enuncia.** No por tamaño nominal —el serif puede seguir siendo más grande en px— sino por **altura de mayúscula contra altura de x**, que es lo que el ojo compara. Sube por tres vías que se refuerzan:
+**Lo que el sistema reserva para cada cosa** (la evidencia que decidió la solución):
 
-- **Cuerpo y peso:** de `--text-meta` a `--text-titulo` (19–26px) en peso medio, en sans y caja alta. Medido a 1280: mayúscula del título **17,9px** contra x de la descripción **15,5px**. El título gana sin subir de escala tipográfica.
-- **Tinta plena** en vez de suave. Sobre el verde hondo de la sala, el contraste pasa de **7,51:1 a 9,86:1**; es la vía que más presencia agrega por sí sola.
-- **Una marca que lo ancla:** filete corto (40×2px) en el acento de la sala, encima del nombre. Mismo recurso que ordena la serie de capítulos, acortado para que lea como señal y no como separador. Bajando por la sección quedan tres marcas: eso es lo que se recorre de un vistazo.
+| Tratamiento | Qué nombra hoy |
+|---|---|
+| `voz-display` (Fraunces, WONK on) | Lo que **tiene nombre propio**: títulos de sección, marcas de la cinta, colaboraciones, clases pasadas, el monograma |
+| Karla medium `text-titulo` | **Ítems de catálogo**: ebooks, capítulos, próximas experiencias |
+| El acento como tinta | **Rótulos y metadatos**: `.proxima-rotulo`, `.bloque-clases-rotulo`, `.pagina-rotulo`, modalidad, sello de estado |
 
-**El acento va en el filete, no en la tipografía.** Un título entintado en el acento se leería como enlace y pelearía con el botón de compra, que es lo único en este sistema con derecho al acento de relleno.
+Un servicio no es un SKU —son las tres cosas que hace Delfina—, así que pertenece a la primera fila. Por lo mismo se **descartó diferenciarlo por color**: pintar el nombre con el acento lo devuelve a la categoría de la que se lo quiere sacar, un escalón más arriba. Y se descartó una **tercera familia**: §2.1 fija dos familias con dos funciones semánticas, y los ejes de Fraunces dan lo que hacía falta.
 
-**Espaciado:** el rótulo respira `--space-sm` contra su descripción y `--space-md` separa descripción de texto; el bloque entero contra el siguiente conserva `--space-3xl`. El nombre y su enunciado son UNA unidad, y el aire lo dice.
+**Solución: el nombre es su voz, dicha con firmeza.** Fraunces `voz-display`, caja baja, y el **peso** haciendo la jerarquía en lugar del tamaño.
 
-**Verificado:** títulos en una línea a 1280 (los tres) y a 390 (salvo el más largo, en dos); sin overflow en ninguno; el título de la sección (55,5px) sigue muy por encima, así que la jerarquía de la sala no se toca.
+- **`--font-weight-nombre`, un token nuevo.** El eje `wght` de Fraunces está entero y disponible desde el Bloque 5 (`fonts.ts` lo conserva a propósito) y **nunca se había usado**: todo el serif del sitio es regular. Por eso es a la vez del sistema y distinto de todo lo que hay.
+- **El cuerpo BAJA.** El nombre queda en `--text-titulo`, por debajo de la descripción que le sigue, y aun así manda: lo que el ojo compara es el trazo.
+- **Caja baja.** Todos los rótulos del sitio son mayúsculas; salir de la caja alta corta de raíz el parecido con el kicker. Efecto colateral: en 390px los tres nombres entran en UNA línea, cosa que en mayúsculas no pasaba.
+- **WONK on**, las terminaciones irregulares que Fraunces sólo permite en cuerpos de display. Es lo más de ella que da la tipografía.
+- **El filete y la tinta plena se conservan** de la primera mitad de la ola: el filete es la señal de escaneo y el acento ahí es color de marca, no de tinta.
+
+**LA REGLA QUE DEJA — la escalera de TRAZO.** En una sala, el orden de lectura se mide por grosor de trazo, no por cuerpo, y **ningún nombre puede pesar más que la habitación que lo contiene**. Medido (ancho del palo de la «l», normalizado al cuerpo real):
+
+| | 390px | 768px | 1440px |
+|---|---|---|---|
+| título de sección | 2,44 | 3,29 | 4,80 |
+| **nombre del servicio** | **2,29** | **2,59** | **3,90** |
+| descripción | 1,77 | 2,12 | 2,72 |
+| rótulo de sección | 1,12 | 1,15 | 1,20 |
+
+Esa escalera es lo que obligó a que **el peso sea responsive** (600 abajo, 700 desde 900px): el título de sección encoge más rápido que el nombre —su clamp arranca en 30px y el del nombre en 19—, así que con 700 fijo el nombre pasaba a tener más trazo que la sala en mobile (2,85 contra 2,44). También es lo que descartó subir el nombre a `--text-voz-l`: ahí su trazo habría llegado a 4,84 contra los 4,44 de la sección, invirtiendo la jerarquía de la habitación.
+
+**Verificado** en 390, 768, 1280 y 1440: escalera correcta en los cuatro, los tres nombres en una línea, sin overflow. El eje `wght` se comprobó sirviéndose de verdad (Fraunces llega con rango `100 900` y el ancho del texto varía con el peso).
 
 ### 7.3 Bloque de voz en primera persona
 

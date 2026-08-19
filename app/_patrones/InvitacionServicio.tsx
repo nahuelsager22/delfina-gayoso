@@ -11,13 +11,13 @@ import { MarcaEjemplo } from "./MarcaEjemplo";
  *    tipográfico y el aire, no un giro corporativo. Ancla sin foto: la voz hace el
  *    trabajo (§8).
  *  · SIN tarifario, SIN paquetes, SIN lenguaje de agencia, SIN logos/métricas.
- *  · EL TÍTULO MANDA (34ª ola). Sigue siendo un rótulo en sans y en caja alta —no un
- *    titular de venta—, pero al frente de su bloque: cuerpo `--text-titulo` en peso
- *    medio, tinta plena y un filete corto en el acento que lo ancla. Antes iba en
- *    `--text-meta` y tinta suave, dos escalones POR DEBAJO de la línea que le sigue, y el
- *    ojo entraba por la descripción en vez de por el nombre del servicio. Con tres
- *    propuestas, ese nombre es lo que alguien necesita leer de un vistazo. El detalle de
- *    por qué cada decisión está en `.servicio-titulo` (globals.css).
+ *  · EL TÍTULO ES UN NOMBRE, NO UN RÓTULO (34ª ola). Deja de ser una etiqueta en sans y
+ *    caja alta —que se leía como el rótulo de la sección un cuerpo más grande— y pasa a
+ *    la familia con la que este sistema nombra lo que tiene nombre propio: Fraunces
+ *    `voz-display`, en caja baja, con el PESO haciendo la jerarquía en vez del tamaño.
+ *    Queda incluso más chico que la descripción que le sigue y aun así manda, porque lo
+ *    que el ojo compara es el trazo. El razonamiento completo —y la evidencia de qué
+ *    reserva el sistema para cada cosa— está en `.servicio-titulo` (globals.css).
  *  · Si es contenido de EJEMPLO (`borrador`), lo marca visiblemente (R Oferta).
  *  · Aparición "vapor", heredando la temperatura del pasillo.
  *
@@ -46,7 +46,7 @@ export function InvitacionServicio({
       <div>
         {/* El nombre del servicio, al frente + marca de ejemplo (si corresponde). */}
         <div className="servicio-rotulo">
-          <p className="servicio-titulo">{tipo}</p>
+          <p className="servicio-titulo voz-display">{tipo}</p>
           {borrador && <MarcaEjemplo />}
         </div>
 

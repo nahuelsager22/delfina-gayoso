@@ -76,6 +76,17 @@
   /* ---- Pesos (§2.3) ---- */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
+  /* 34ª ola. Fraunces se carga SIN fijar `weight`, así que su eje `wght` está entero y
+     disponible desde el Bloque 5 — y hasta acá no se había usado nunca: todo el serif del
+     sitio es regular. Este peso existe para UNA cosa, nombrar: es lo que separa un nombre
+     de la voz que lo rodea sin cambiar de familia ni de tamaño.
+
+     BAJA EN PANTALLAS CHICAS, y no es una preferencia. El título de sección encoge más
+     rápido que este (su clamp arranca en 30px y el del nombre en 19), así que con 700 fijo
+     el nombre de un servicio pasaba a tener MÁS trazo que el título de la sala: 2,85
+     contra 2,44 en 390px. Un nombre no puede pesar más que la habitación que lo contiene.
+     Con 600 el trazo baja a 2,28 y la escalera se endereza. Medido, no estimado. */
+  --font-weight-nombre: 600;
 
   /* ---- Radios (§6.2) ---- */
   --radius-none: 0; /* fotos: una foto es una foto, no una card */
@@ -2295,20 +2306,35 @@ a.colab-handle:hover {
    propuestas eso cuesta caro — es justo lo que alguien necesita para saber de un vistazo
    qué hace Delfina.
 
-   Sube por TRES vías que se refuerzan, ninguna a costa del registro editorial:
-    · TAMAÑO Y PESO: de `--text-meta` a `--text-titulo` (19–26px) en peso medio. En caja
-      alta y en sans, a ese cuerpo la altura de mayúscula iguala ópticamente a la x del
-      serif de 34px que tiene debajo: el título deja de perder sin necesidad de gritar.
-    · TINTA PLENA en vez de suave. Sobre el verde hondo de esta sala, el paso de
-      `--atm-ink-soft` a `--atm-ink` es el que más presencia agrega por sí solo.
-    · UNA MARCA que lo ancla: un filete corto en el ACENTO de la sala, encima del nombre.
-      Es el mismo recurso que ya ordena la serie de capítulos, acortado para que no lea
-      como separador sino como señal. Bajando por la sección quedan tres marcas: eso es lo
-      que se recorre de un vistazo.
+   La 34ª ola subió el cuerpo, la tinta y le puso una marca, y con eso ganó jerarquía pero
+   NO identidad: seguía siendo Karla en caja alta, o sea el mismo gesto que el rótulo de la
+   propia sección ("SERVICIOS PROFESIONALES") un escalón más grande. Se leía como un kicker
+   de segundo nivel, no como un nombre.
 
-   El color del acento va en el FILETE y no en la tipografía: un título entintado en el
-   acento se leería como un enlace, y además pelearía con el botón de compra, que es lo
-   único que en este sistema tiene derecho al acento de relleno. */
+   LO QUE EL SISTEMA RESERVA PARA CADA COSA (la evidencia que decidió esto):
+    · `voz-display` (Fraunces con WONK) nombra lo que TIENE NOMBRE: los títulos de sección,
+      las marcas de la cinta, las colaboraciones, las clases pasadas, el monograma.
+    · Karla medium en `--text-titulo` nombra ÍTEMS DE CATÁLOGO: ebooks, capítulos,
+      próximas experiencias.
+    · El acento como tinta significa RÓTULO: `.proxima-rotulo`, `.bloque-clases-rotulo`,
+      `.pagina-rotulo`, la modalidad, el sello de estado.
+   Un servicio no es un SKU —son las tres cosas que hace Delfina—, así que pertenece a la
+   primera fila. Y por lo mismo se descartó diferenciarlo por COLOR: pintar el nombre con el
+   acento lo devuelve a la categoría de la que se lo quiere sacar, un escalón más arriba.
+
+   ASÍ QUE EL NOMBRE PASA A SER SU VOZ, DICHA CON FIRMEZA: Fraunces `voz-display`, en caja
+   BAJA, y el peso haciendo el trabajo que venía haciendo el tamaño.
+    · PESO, no cuerpo. `--font-weight-nombre` (600/700) contra el regular de la voz. El
+      eje `wght` estaba disponible desde el Bloque 5 y no se había usado nunca, así que es a
+      la vez del sistema y distinto de todo lo que hay. El cuerpo BAJA respecto de la ola
+      anterior y queda por debajo de la descripción: la jerarquía la sostiene el trazo.
+    · CAJA BAJA. Todos los rótulos del sitio son mayúsculas; salir de la caja alta es lo que
+      corta de raíz el parecido con el kicker.
+    · WONK on: las terminaciones irregulares de Fraunces, que sólo se permiten en cuerpos de
+      display. Es lo más de ella que da la tipografía, y un nombre es el lugar.
+    · TINTA PLENA (se conserva de la 34ª): sobre el verde hondo, 9,86:1.
+    · EL FILETE se conserva: es la señal de escaneo —tres marcas bajando por la sección— y
+      no compite con un serif crema, porque el acento acá es color de MARCA, no de tinta. */
 .servicio-rotulo {
   display: flex;
   align-items: baseline;
@@ -2317,13 +2343,22 @@ a.colab-handle:hover {
   /* Más cerca de su descripción que del párrafo: nombre y enunciado son UNA unidad. */
   margin-block-end: var(--space-sm);
 }
+/* Desde 900px el título de sección ya creció lo suficiente como para sostener el peso
+   pleno debajo suyo (trazo 3,64 contra 3,36). Es el mismo corte que usan el zigzag de la
+   serie y el hero. */
+@media (min-width: 900px) {
+  :root {
+    --font-weight-nombre: 700;
+  }
+}
 .servicio-titulo {
-  font-family: var(--font-mundo);
+  /* La familia y los ejes (opsz/SOFT/WONK) los pone `voz-display` en el marcado. */
   font-size: var(--text-titulo);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.18;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-weight: var(--font-weight-nombre);
+  line-height: 1.14;
+  /* El serif en cuerpo de display ya viene apretado; sólo se afloja lo justo para que el
+     peso no cierre las contras. */
+  letter-spacing: 0.002em;
   color: rgb(var(--atm-ink, 42 36 30));
   text-wrap: balance;
 }
