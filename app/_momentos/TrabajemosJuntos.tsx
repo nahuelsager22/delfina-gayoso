@@ -26,7 +26,7 @@ import { Adorno } from "../_chrome/adornos/Adorno";
  *    abierta con un medio directo (Instagram del contenido — PENDIENTE de confirmar
  *    el usuario), NO formulario de captación de leads.
  *
- *  · Bloque 8 · 30ª ola — TRES propuestas (entra "chef privado y catering para eventos",
+ *  · Bloque 8 · 30ª ola — TRES propuestas (entra "chef privada y catering para eventos",
  *    indicación de Delfina) y UN contacto. Dos cosas que se decidieron juntas:
  *      (a) la segunda propuesta soltó los eventos —se llamaba "Asesorías y eventos"— para
  *          que la tercera no se leyera como un duplicado pegado al final. La sección le

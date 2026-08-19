@@ -10,9 +10,9 @@ import type { PropuestaServicio } from "../types";
  *
  * Bloque 8 · 30ª ola — TRES propuestas, y una forma nueva de escribirlas.
  * -----------------------------------------------------------------------------
- * Delfina sumó **chef privado y catering para eventos**. Dos decisiones alrededor de eso:
+ * Delfina sumó **chef privada y catering para eventos**. Dos decisiones alrededor de eso:
  *
- *  1. **Son tres, no cuatro.** Ella lo nombró como UN servicio ("chef privado y catering
+ *  1. **Son tres, no cuatro.** Ella lo nombró como UN servicio ("chef privada y catering
  *     para eventos"); partirlo en dos sería reinterpretarla. Y la sección tiene una regla
  *     vieja que sigue vigente: no gana centralidad comercial (§3.3). Con cuatro bloques
  *     "Trabajemos juntos" pasaba a ser la sección más larga del sitio.
@@ -61,8 +61,8 @@ export const servicios: readonly PropuestaServicio[] = [
       "Desde una receta hasta una carta completa, trabajamos juntos para que cada decisión tenga sentido y pueda sostenerse en el día a día.",
   },
   {
-    id: "chef-privado-catering",
-    tipo: "Chef privado y catering para eventos",
+    id: "chef-privada-catering",
+    tipo: "Chef privada y catering para eventos",
     descripcion: "Comidas pensadas para compartir, disfrutar y recordar.",
     texto:
       "Diseñamos juntos una experiencia gastronómica para ese momento especial, cuidando cada detalle del menú y de la cocina.",

@@ -56,7 +56,12 @@ import type { VozBudin } from "../types";
  *
  * Agregar una frase es sumar una línea acá con su gesto; no se toca la interfaz. Después
  * hay que correr `pnpm sincronizar`: el documento del CMS manda sobre esta semilla.
- * PENDIENTE: validación del humor —y ahora también de las caras— con Delfina.
+ *
+ * VALIDADO por Delfina (33ª ola): **las frases y las interacciones de Budín quedan
+ * aprobadas.** Dejan de ser una interpretación a confirmar y pasan a ser estado aprobado
+ * del proyecto: el repertorio, el humor y el modo en que reacciona no se reformulan salvo
+ * que ella lo pida. Lo que sigue abierto no es si funciona, sino cuánto crece: sumar
+ * frases es sumar líneas acá.
  */
 export const budin: VozBudin = {
   saludo: "🐶 ¡Hola! Soy Budín",

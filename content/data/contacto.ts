@@ -11,7 +11,9 @@ import type { ContactoProfesional } from "../types";
  * Sigue siendo lo que era (Bloque 6.5 · R8): accesos directos, no captación de leads. Sin
  * campos de empresa ni presupuesto, sin "tipo de consulta".
  *
- * El mail es el definitivo. El usuario de Instagram sigue PENDIENTE de confirmar.
+ * VALIDADO por Delfina (33ª ola): **Instagram queda confirmado como canal de contacto**,
+ * con este usuario. Deja de ser un pendiente y pasa a ser estado aprobado del proyecto: no
+ * se cambia salvo que ella lo pida. El mail ya era el definitivo.
  */
 export const contacto: ContactoProfesional = {
   invitacion: "Contame qué tenés en mente y lo armamos juntos.",
