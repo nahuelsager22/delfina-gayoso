@@ -11,7 +11,13 @@ import { MarcaEjemplo } from "./MarcaEjemplo";
  *    tipográfico y el aire, no un giro corporativo. Ancla sin foto: la voz hace el
  *    trabajo (§8).
  *  · SIN tarifario, SIN paquetes, SIN lenguaje de agencia, SIN logos/métricas.
- *  · El título de la propuesta va como rótulo quieto en sans (no un titular de venta).
+ *  · EL TÍTULO MANDA (34ª ola). Sigue siendo un rótulo en sans y en caja alta —no un
+ *    titular de venta—, pero al frente de su bloque: cuerpo `--text-titulo` en peso
+ *    medio, tinta plena y un filete corto en el acento que lo ancla. Antes iba en
+ *    `--text-meta` y tinta suave, dos escalones POR DEBAJO de la línea que le sigue, y el
+ *    ojo entraba por la descripción en vez de por el nombre del servicio. Con tres
+ *    propuestas, ese nombre es lo que alguien necesita leer de un vistazo. El detalle de
+ *    por qué cada decisión está en `.servicio-titulo` (globals.css).
  *  · Si es contenido de EJEMPLO (`borrador`), lo marca visiblemente (R Oferta).
  *  · Aparición "vapor", heredando la temperatura del pasillo.
  *
@@ -37,39 +43,18 @@ export function InvitacionServicio({
         alignSelf: ancla === "der" ? "flex-end" : "flex-start",
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "var(--space-md)",
-        }}
-      >
-        {/* Rótulo del título + marca de ejemplo (si corresponde). */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "var(--space-sm)",
-            flexWrap: "wrap",
-          }}
-        >
-          <p
-            className="text-meta"
-            style={{
-              fontFamily: "var(--font-mundo)",
-              color: "rgb(var(--atm-ink-soft, 62 54 45))",
-              letterSpacing: "0.02em",
-              textTransform: "uppercase",
-            }}
-          >
-            {tipo}
-          </p>
+      <div>
+        {/* El nombre del servicio, al frente + marca de ejemplo (si corresponde). */}
+        <div className="servicio-rotulo">
+          <p className="servicio-titulo">{tipo}</p>
           {borrador && <MarcaEjemplo />}
         </div>
 
         {/* Su voz en serif: la descripción enuncia, el texto cuenta cómo. Ancla (§8). */}
-        <Voz texto={descripcion} escala="l" />
-        <Voz texto={texto} escala="cuerpo" />
+        <div className="servicio-cuerpo">
+          <Voz texto={descripcion} escala="l" />
+          <Voz texto={texto} escala="cuerpo" />
+        </div>
       </div>
     </Aparicion>
   );

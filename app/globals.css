@@ -2286,6 +2286,61 @@ a.colab-handle:hover {
   color: rgb(var(--atm-ink, 42 36 30));
   line-height: 1.12;
 }
+/* EL RÓTULO DE CADA PROPUESTA (Bloque 8 · 34ª ola).
+   -----------------------------------------------------------------------------
+   El nombre del servicio estaba en `--text-meta` (14–15px) y en tinta SUAVE, mientras la
+   línea que le sigue está en serif a `--text-voz-l` (22–34px) y tinta plena. No era que el
+   título fuera discreto: estaba dos escalones por debajo de su propio subtítulo, así que
+   el ojo entraba por la descripción y el nombre del servicio quedaba de etiqueta. Con tres
+   propuestas eso cuesta caro — es justo lo que alguien necesita para saber de un vistazo
+   qué hace Delfina.
+
+   Sube por TRES vías que se refuerzan, ninguna a costa del registro editorial:
+    · TAMAÑO Y PESO: de `--text-meta` a `--text-titulo` (19–26px) en peso medio. En caja
+      alta y en sans, a ese cuerpo la altura de mayúscula iguala ópticamente a la x del
+      serif de 34px que tiene debajo: el título deja de perder sin necesidad de gritar.
+    · TINTA PLENA en vez de suave. Sobre el verde hondo de esta sala, el paso de
+      `--atm-ink-soft` a `--atm-ink` es el que más presencia agrega por sí solo.
+    · UNA MARCA que lo ancla: un filete corto en el ACENTO de la sala, encima del nombre.
+      Es el mismo recurso que ya ordena la serie de capítulos, acortado para que no lea
+      como separador sino como señal. Bajando por la sección quedan tres marcas: eso es lo
+      que se recorre de un vistazo.
+
+   El color del acento va en el FILETE y no en la tipografía: un título entintado en el
+   acento se leería como un enlace, y además pelearía con el botón de compra, que es lo
+   único que en este sistema tiene derecho al acento de relleno. */
+.servicio-rotulo {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  /* Más cerca de su descripción que del párrafo: nombre y enunciado son UNA unidad. */
+  margin-block-end: var(--space-sm);
+}
+.servicio-titulo {
+  font-family: var(--font-mundo);
+  font-size: var(--text-titulo);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.18;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--atm-ink, 42 36 30));
+  text-wrap: balance;
+}
+.servicio-titulo::before {
+  content: "";
+  display: block;
+  inline-size: 2.5rem;
+  block-size: 2px;
+  margin-block-end: var(--space-xs);
+  background-color: rgb(var(--atm-accent, 157 48 29));
+}
+/* El cuerpo de la propuesta: la descripción y el texto respiran entre sí, pero menos de
+   lo que respira el bloque entero contra el siguiente. */
+.servicio-cuerpo .voz + .voz {
+  margin-block-start: var(--space-md);
+}
+
 /* EL CONTACTO DE "TRABAJEMOS JUNTOS" (Bloque 8 · 30ª ola).
    Las tres propuestas se apoyan alternando de lado; el contacto va CENTRADO, y esa es
    toda la diferencia que necesita para no leerse como una cuarta propuesta: es el punto
