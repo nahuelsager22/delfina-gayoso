@@ -1905,24 +1905,20 @@ a.colab-handle:hover {
   }
 }
 
-/* PANTALLA DE CARGA (Bloque 8 · 6ª ola; EL INTERCAMBIO en la 31ª).
-   Sin `@layer` (para ganar a las utilidades sin depender del orden).
+/* PANTALLA DE CARGA (Bloque 8 · 6ª ola; simplificada en la 35ª).
+   Medallón sobre `Harina` que entra, se sostiene y se disuelve solo. Animación CSS en el
+   HTML inicial → sin flash de hidratación, sin JS. Sin `@layer` (para ganar a las
+   utilidades sin depender del orden).
 
-   El logotipo y Budín ocupan LA MISMA CASILLA y se turnan: entra el logotipo, se sostiene
-   y le deja el sitio a Budín. Reemplaza al asomo de la 30ª ola, que sacaba a Budín por
-   detrás del disco y leía como un truco de escondite en vez de como la identidad
-   presentándose.
+   35ª ola — VUELVE A SER SÓLO EL LOGOTIPO (indicación del usuario). Entre la 30ª y la 34ª
+   la pantalla probó dos formas de sumar a Budín: primero asomándose por detrás del disco y
+   después turnándose con él en la misma casilla. Las dos funcionaban técnicamente y ninguna
+   quedó: la entrada al sitio es donde la marca se presenta sola, y el personaje ya tiene
+   todo el recorrido para aparecer. Queda anotado para no volver a proponerlo.
 
-   Números, para que se entienda de dónde salen. Todo cuelga de una sola duración (2,2s) y
-   se expresa en porcentajes de ella, así que cambiar el total no descoloca el relevo:
-     · logotipo   aparece 0–16% (0–0,35s), se sostiene hasta 43% y se va en 59% (1,30s);
-     · Budín      entra en 48% (1,06s) y está entero en 64% (1,41s);
-     · el SOLAPE entre los dos es de ~0,25s: es corto a propósito. Sin solape se leen como
-       dos apariciones sueltas; con más, como un fundido cruzado de presentación. Con este
-       se lee como un relevo.
-     · la pantalla se sostiene hasta 79% (1,74s) y termina en 2,2s.
-   Budín queda solo en pantalla ~0,8s, que es de sobra para percibir el intercambio una
-   vez, que es lo único que hace falta. */
+   La duración total (2,2s) no cambia respecto de la versión con el intercambio: lo que se
+   fue es el segundo tiempo, no el tiempo. El logotipo entra en 0,9s y se queda hasta que la
+   pantalla se retira. */
 .pantalla-carga {
   position: fixed;
   inset: 0;
@@ -1932,33 +1928,13 @@ a.colab-handle:hover {
   background-color: var(--color-harina);
   animation: carga-salida 2.2s var(--ease-suave) forwards;
 }
-/* Una sola casilla de grilla para los dos: se turnan en el mismo lugar, sin correrse ni
-   cruzarse. Es el gesto más simple que existe para decir que son lo mismo. */
-.pantalla-carga-escena {
-  display: grid;
-  place-items: center;
-  inline-size: clamp(116px, 22vw, 176px);
-  aspect-ratio: 400 / 397;
-}
-.pantalla-carga-logo,
-.pantalla-carga-budin {
-  grid-area: 1 / 1;
+.pantalla-carga-logo {
   display: block;
+  inline-size: clamp(116px, 22vw, 176px);
   block-size: auto;
   transform-origin: center;
-}
-.pantalla-carga-logo {
-  inline-size: 100%;
-  animation: carga-logo 2.2s var(--ease-suave) forwards;
-}
-/* 82% y no 100%: el retrato llena su archivo de borde a borde, mientras que el logotipo
-   es un disco con aire adentro. A igual ancho, Budín pesaba más que la marca. El número se
-   eligió componiendo las dos imágenes reales fuera del navegador: con menos, la cabeza
-   queda chica al lado del disco; con más, las orejas rozan el borde de la escena. */
-.pantalla-carga-budin {
-  inline-size: 82%;
-  opacity: 0;
-  animation: carga-budin 2.2s var(--ease-suave) forwards;
+  /* Entrada FINITA: crece y se asienta. No queda nada animando en segundo plano. */
+  animation: carga-logo 0.9s var(--ease-suave) forwards;
 }
 /* Apenas empieza a irse, deja de interceptar el clic: antes bloqueaba el sitio los
    segundos completos, incluso ya casi transparente. `pointer-events` es una propiedad
@@ -1987,33 +1963,15 @@ a.colab-handle:hover {
     opacity: 0;
     transform: scale(0.94);
   }
-  16% {
+  46% {
     opacity: 1;
-    transform: scale(1);
   }
-  43% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  59%,
-  100% {
-    opacity: 0;
-    transform: scale(1);
-  }
-}
-@keyframes carga-budin {
-  0%,
-  48% {
-    opacity: 0;
-    transform: scale(0.94);
-  }
-  64%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
 }
-/* Con `prefers-reduced-motion` no hay intercambio: queda el logotipo solo y la pantalla se
+/* Con `prefers-reduced-motion` no hay entrada: el logotipo ya está puesto y la pantalla se
    retira enseguida. La salida NO se puede quitar —es la animación la que deja la pantalla
    oculta (`forwards`)—, así que se acorta al mínimo. */
 @media (prefers-reduced-motion: reduce) {
@@ -2023,10 +1981,6 @@ a.colab-handle:hover {
   }
   .pantalla-carga-logo {
     animation: none;
-  }
-  .pantalla-carga-budin {
-    animation: none;
-    display: none;
   }
 }
 
@@ -2384,13 +2338,21 @@ a.colab-handle:hover {
    otro ítem de la lista. */
 .contacto-pro {
   align-self: center;
-  text-align: center;
   max-inline-size: var(--measure-cuerpo);
   margin-block-start: clamp(var(--space-lg), 3vw, var(--space-2xl));
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
   align-items: center;
+}
+/* El centrado hay que declararlo SOBRE el párrafo, no heredarlo (35ª ola). La regla base
+   de §2.6 —"tipografía a la izquierda, nunca justificada"— alcanza a `p` y le corta la
+   herencia a cualquier `text-align` del contenedor. El bloque se veía centrado en desktop
+   sólo de casualidad: la frase llenaba casi toda su caja. En mobile, con dos renglones,
+   quedaba en evidencia. No contradice §2.6: esa regla existe para que el texto corrido no
+   se justifique, y esta es una invitación de una línea, no texto corrido. */
+.contacto-pro .voz {
+  text-align: center;
 }
 .contacto-pro-canales {
   display: flex;

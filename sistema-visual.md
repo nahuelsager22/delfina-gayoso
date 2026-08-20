@@ -532,7 +532,10 @@ sección** (invitación + canales), que es uno solo y no de cada propuesta.
   nueva enuncia en vez de listar.
 - **Contacto = invitación abierta**, no formulario de captación de leads. **Uno por SECCIÓN, no por
   propuesta** (30ª ola): una frase suya + los accesos directos, centrados, después de la última
-  propuesta. Repetirlo en cada ficha —con dos propuestas ya era discutible; con tres, los mismos dos
+  propuesta. **El centrado hay que declararlo sobre el párrafo, no heredarlo** (35ª ola): la regla
+  base de §2.6 —"a la izquierda, nunca justificado"— alcanza a `p` y corta la herencia de cualquier
+  `text-align` del contenedor. Se veía centrado en desktop sólo de casualidad, porque la frase
+  llenaba casi toda su caja; en mobile, con dos renglones, quedaba en evidencia. Repetirlo en cada ficha —con dos propuestas ya era discutible; con tres, los mismos dos
   enlaces seis veces— lo volvía un formulario disfrazado. La simetría del bloque de contacto, contra
   la asimetría de las propuestas, alcanza para que no se lea como una propuesta más. **Sin campos de
   empresa/presupuesto, sin dropdowns de "tipo de consulta".**
@@ -918,9 +921,9 @@ Indicaciones directas de Delfina, con prioridad sobre decisiones previas (ver la
 > - **Se alinean por los OJOS, no por la caja.** Normalizadas sobre un lienzo común, con la misma distancia interocular y el mismo punto medio: al intercambiarlas cambia la expresión y no el personaje. Lo que sí cambia es cuánto ocupan hacia abajo (una trae collar, otra es sólo cabeza) y eso es correcto: es lo que hace un perro que levanta la cabeza.
 > - **Se montan apiladas y se cruzan por opacidad**, todas con carga inmediata: montadas pero invisibles quedaban esperando, y la primera vez que Budín cambiaba de expresión la cara llegaba tarde —justo el parpadeo que apilarlas venía a evitar—. El cruce es lento (420ms): así se percibe el cambio, no el corte. Con `prefers-reduced-motion` la expresión igual cambia —es otro dibujo, no un movimiento—, sólo que sin cruce.
 >
-> **PANTALLA DE CARGA — un intercambio.** El logotipo y Budín ocupan **la misma casilla** y se turnan: entra el logotipo, se sostiene y le deja el sitio a Budín. Reemplaza al *asomo* de la 30ª ola —Budín saliendo por detrás del disco—, que leía como un truco de escondite y no como la identidad presentándose. Criterios: (a) **una sola vuelta**, porque alcanza con que el relevo se perciba una vez y repetirlo convierte la pantalla en el spinner que evita; (b) **termina en Budín**, no vuelve al logotipo — lo último antes del sitio es el personaje, así la pantalla se lo entrega al recorrido; (c) **el solape es corto** (~0,25s): sin solape se leen como dos apariciones sueltas, con más como un fundido de presentación, con éste como un relevo; (d) **los archivos van livianos**, porque están en el HTML inicial y no pasan por el optimizador (WebP a medida: 27 y 44 KB, contra los 947 KB del PNG que se usaba antes); (e) apenas empieza a irse **deja de interceptar el clic**. Total medido: 2,2s.
+> **PANTALLA DE CARGA — sólo el logotipo (35ª ola).** La marca entra, se sostiene y la pantalla se retira. Total 2,2s; apenas empieza a irse **deja de interceptar el clic**; el archivo va liviano porque está en el HTML inicial y no pasa por el optimizador (WebP a medida, 27 KB, contra los 947 KB del PNG original).
 >
-> El Budín de la carga es **el retrato original** (33ª ola), no una de las expresiones del recorrido: es el dibujo más tierno de los que hay, y el primer contacto tiene que ser con la versión más cálida del personaje. Ahí no compite con ninguna otra cara, así que la objeción que lo sacó de la interacción no aplica.
+> **Y la regla que dejaron los dos intentos descartados.** Entre la 30ª y la 34ª la pantalla probó sumar a Budín de dos maneras: asomándose por detrás del disco del logotipo y, después, turnándose con él en la misma casilla. Las dos funcionaban técnicamente —medidas, calibradas, sin costo de tiempo— y ninguna quedó. **La entrada al sitio es donde la marca se presenta sola**, y el personaje ya tiene todo el recorrido para aparecer. Que una composición esté bien resuelta no es razón para que exista: la pregunta sigue siendo si el lugar la pide.
 
 ---
 
