@@ -61,11 +61,16 @@ import type {
   GestoBudin,
   RedSocial,
   SerieAprendizaje,
+  TipoGesto,
   VozBudin,
   VozDelfina,
 } from "./types";
 
 export type * from "./types";
+
+/** Cómo se le pide a la CDN del CMS un asset en el tamaño en que se muestra. */
+export { srcServido } from "./assets";
+
 /** Reglas de estado de las experiencias: son del contenido, se leen desde `@/content`. */
 export {
   admiteCalendario,
@@ -77,9 +82,51 @@ export {
 } from "./estados";
 
 /* ============================================================================
-   Utilidad: consultar el CMS y, si no hay nada, devolver la semilla local.
+   Consultar el CMS, con la semilla local detrás.
+
+   DOS RESPUESTAS QUE NO SIGNIFICAN LO MISMO (Bloque 10 · E3). Hasta acá las dos caían
+   en la semilla:
+
+     · `null`  — el CMS no respondió. Es una falla, y la semilla es la red de seguridad
+                 que mantiene la web en pie. Se conserva tal cual.
+     · `[]`    — el CMS respondió, y lo que dijo es que no hay ninguno. Es una respuesta
+                 legítima, y tratarla como falla tenía una consecuencia grande:
+                 **borrar desde el Studio no borraba**. Si Delfina eliminaba las tres
+                 marcas, la home volvía a mostrar las tres de la semilla, y ella no tenía
+                 forma de vaciar una sección sin pedirlo al estudio.
+
+   El costo, dicho: mientras el dataset estuvo vacío, el sitio se veía idéntico al de la
+   semilla. Esa propiedad fue deliberada y acá se reformula, porque el dataset ya está
+   cargado y es el que manda (`docs/contenido.md`). Se comprobó antes de aplicarlo que
+   ningún tipo estuviera vacío en el dataset, para no hacer desaparecer nada que hoy se ve.
    ========================================================================= */
+
+/**
+ * Contenido que Delfina administra: el CMS manda, incluso cuando dice que no hay nada.
+ * Vaciar una colección desde el Studio es una operación legítima y el sitio la obedece.
+ */
 async function conRespaldo<Crudo, Salida>(
+  query: string,
+  mapear: (filas: Crudo[]) => Salida[],
+  semilla: readonly Salida[],
+): Promise<readonly Salida[]> {
+  const filas = await consultar<Crudo[]>(query);
+  if (!filas) return semilla;
+  if (filas.length === 0) return [];
+  try {
+    return mapear(filas);
+  } catch {
+    return semilla;
+  }
+}
+
+/**
+ * Estructura del recorrido: la define la semilla y el CMS sólo la ajusta (orden, nombre
+ * de menú). Un dataset sin secciones no significa "un sitio sin secciones" —significa que
+ * todavía no se cargaron—, así que acá la lista vacía sí cae en la semilla. Es la
+ * diferencia entre contenido que se administra y estructura que se configura.
+ */
+async function conRespaldoDeEstructura<Crudo, Salida>(
   query: string,
   mapear: (filas: Crudo[]) => Salida[],
   semilla: readonly Salida[],
@@ -87,7 +134,8 @@ async function conRespaldo<Crudo, Salida>(
   const filas = await consultar<Crudo[]>(query);
   if (!filas || filas.length === 0) return semilla;
   try {
-    return mapear(filas);
+    const mapeadas = mapear(filas);
+    return mapeadas.length > 0 ? mapeadas : semilla;
   } catch {
     return semilla;
   }
@@ -97,6 +145,66 @@ async function conRespaldo<Crudo, Salida>(
 const limpio = <T>(v: T | null | undefined): T | undefined => v ?? undefined;
 const lista = (v: readonly string[] | null | undefined): readonly string[] =>
   v ?? [];
+
+/* ----------------------------------------------------------------------------
+   Los valores de lista que llegan del CMS se COMPRUEBAN acá (Bloque 10 · E3).
+
+   El tipo de TypeScript afirma que `estado` es un `EstadoExperiencia`, pero nadie lo
+   verificaba: lo que dijera el dataset entraba y se propagaba. Y contenido y código se
+   despliegan por separado, así que un valor que el esquema ya tiene y el código todavía
+   no —o uno que se retiró y quedó cargado— es una situación normal, no un accidente.
+
+   Lo que estaba en juego no era cosmético: un estado desconocido hacía que
+   `admiteReserva` diera `false` y **desaparecía el botón de reservar**, sin ninguna
+   señal. Alguien que quería anotarse a una clase abierta no encontraba cómo.
+
+   El patrón ya existía en el proyecto —`aFrase`, para los gestos de Budín, con el mismo
+   razonamiento escrito al lado—; acá se aplica al resto de los bordes.
+   ---------------------------------------------------------------------------- */
+
+/** Acepta el valor del CMS sólo si el código lo conoce; si no, el que se pase por defecto. */
+function deLista<T extends string>(
+  conocidos: readonly T[],
+  valor: unknown,
+): T | undefined;
+function deLista<T extends string>(
+  conocidos: readonly T[],
+  valor: unknown,
+  porDefecto: T,
+): T;
+function deLista<T extends string>(
+  conocidos: readonly T[],
+  valor: unknown,
+  porDefecto?: T,
+): T | undefined {
+  return conocidos.find((c) => c === valor) ?? porDefecto;
+}
+
+/**
+ * Los únicos estados que Delfina declara a mano. El resto —nueva, abierta, finalizada—
+ * los deduce el sitio de la fecha, y "automatico" es justamente la ausencia de
+ * declaración: entra como `undefined`, que es lo que significa.
+ */
+const ESTADOS_DECLARABLES = [
+  "proximamente",
+  "ultimos-lugares",
+  "completa",
+] as const satisfies readonly Experiencia["estado"][];
+
+const MODALIDADES = ["presencial", "online"] as const;
+const DISPONIBILIDADES = ["disponible", "proximamente"] as const;
+const REGISTROS = ["bienvenida", "reflexion", "humor", "cierre"] as const;
+const TIPOS_DE_GESTO = [
+  "mano",
+  "proceso",
+  "comunidad",
+  "vida-real",
+  "retrato",
+  "plato",
+  "portada",
+  "clase",
+  "mesa",
+] as const satisfies readonly TipoGesto[];
 
 /* ---- Momentos (tipo B) ----------------------------------------------------
    El CMS gobierna el ORDEN y el nombre del menú; la ATMÓSFERA (color, ritmo visual)
@@ -111,7 +219,7 @@ interface MomentoSanity {
 }
 
 export async function getMomentos(): Promise<readonly Momento[]> {
-  const momentos = await conRespaldo<MomentoSanity, Momento>(
+  const momentos = await conRespaldoDeEstructura<MomentoSanity, Momento>(
     Q.MOMENTOS,
     (filas) =>
       filas.flatMap((f): Momento[] => {
@@ -142,7 +250,16 @@ export async function getMomento(id: MomentoId): Promise<Momento | undefined> {
    los pide el sitio por id: cuando una sección nueva estrena su copy, ese texto todavía
    no existe en Sanity y la sección quedaría muda hasta re-sembrar (y re-sembrar pisa lo
    editado). Así, el CMS manda siempre sobre el texto que ya tiene, y la semilla sólo
-   completa los que aún no subieron. */
+   completa los que aún no subieron.
+
+   POR ESO LA VOZ NO OBEDECE EL VACIADO, y es la única excepción (Bloque 10 · E3). Borrar
+   un texto en el Studio no lo saca del sitio: la semilla lo repone, porque no hay forma
+   de distinguir "Delfina lo borró" de "el código estrena un texto que el CMS todavía no
+   tiene", y la segunda es la que rompe una página. Para quitar un texto del sitio se
+   quita del componente, que es donde vive la decisión de que exista.
+
+   Lo que sí tiene que valer, y vale, es que la ausencia de un texto NUNCA rompa la
+   composición: cada consumidor lo trata como opcional. */
 export async function getVoz(): Promise<readonly VozDelfina[]> {
   const delCms = await conRespaldo<VozDelfina, VozDelfina>(
     Q.VOCES,
@@ -150,7 +267,7 @@ export async function getVoz(): Promise<readonly VozDelfina[]> {
       filas.map((f) => ({
         id: f.id,
         texto: f.texto,
-        registro: f.registro,
+        registro: deLista(REGISTROS, f.registro, "reflexion"),
         pertenece: f.pertenece,
         enfasis: limpio(f.enfasis),
       })),
@@ -200,7 +317,7 @@ export async function getImagenes(): Promise<readonly ImagenReal[]> {
           const img = aImagenReal(f, {
             id: f.id,
             altPorDefecto: f.alt ?? "",
-            tipoGesto: limpio(f.tipoGesto),
+            tipoGesto: deLista(TIPOS_DE_GESTO, f.tipoGesto),
           });
           return img && { ...img, orden: limpio(f.orden) };
         })
@@ -291,7 +408,7 @@ export async function getProductos(): Promise<readonly Producto[]> {
         precio: limpio(f.precio),
         ctaLabel: limpio(f.ctaLabel),
         destino: limpio(f.destino),
-        disponibilidad: limpio(f.disponibilidad),
+        disponibilidad: deLista(DISPONIBILIDADES, f.disponibilidad),
         borrador: f.borrador ?? undefined,
         imagen: aImagenReal(f.imagen, {
           id: `producto-${f.id}`,
@@ -355,7 +472,7 @@ export async function getExperiencias(): Promise<readonly Experiencia[]> {
       filas.map((f) => ({
         id: f.id,
         nombre: f.nombre,
-        modalidad: f.modalidad,
+        modalidad: deLista(MODALIDADES, f.modalidad, "presencial"),
         inicio: limpio(f.inicio),
         fin: limpio(f.fin),
         lugar: limpio(f.lugar),
@@ -365,7 +482,7 @@ export async function getExperiencias(): Promise<readonly Experiencia[]> {
         precio: limpio(f.precio),
         ctaLabel: limpio(f.ctaLabel),
         destino: limpio(f.destino),
-        estado: limpio(f.estado),
+        estado: deLista(ESTADOS_DECLARABLES, f.estado),
         publicada: limpio(f.publicada),
         historia: limpio(f.historia),
         video: limpio(f.video),

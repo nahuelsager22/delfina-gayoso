@@ -1,915 +1,229 @@
-# Project Journal — North-Studio × Delfina Gayoso
+# project-journal.md · Delfina Gayoso
 
-> Memoria viva del proyecto. No reemplaza a Midfield (conocimiento permanente del estudio).
-> Contiene el conocimiento específico de este proyecto. Se actualiza solo cuando el usuario indica "Actualiza la memoria".
-
-Última actualización: 2026-08-17 — **Cambio de contexto de trabajo (decisión de North-Studio).** (1) **La lectura completa del Playbook deja de ser obligatoria** al iniciar bloques/chats: su destilación permanente vive ahora en **`north-studio-principles.md`** (contexto operativo compacto, studio-level). Los chats nuevos parten de ese archivo + `project-journal.md`; el Playbook original sigue siendo la fuente de verdad y sólo se relee ante una modificación importante de la filosofía de North-Studio. (2) **Criterio permanente de infraestructura** (ver §10 e §11): código de negocio independiente del hosting; evitar acoplarse a Netlify/Vercel/otros cuando haya alternativa portable; **dominio en Cloudflare Domains**; poder migrar entre proveedores compatibles con Next.js cambiando sólo config/infra, nunca el código. — Anterior: 2026-08-01 — **Bloque 8 — Personalización con la clienta: olas 27–29 (LA MESA: la fotografía deja de ilustrar).** **El estado vigente está en §9.septdecies** (manda sobre §9.sexdecies y todo lo anterior donde haya contradicción). Titulares: (1) **LA MESA es el titular único**: el sitio dejó de "mostrar fotos" y pasó a tener un lenguaje visual alrededor del material fotográfico. Los marcos-contenedor se retiraron del proyecto (`Mosaico` ya no existe). En su lugar, una **retícula modular de 12 columnas donde cada pieza declara su rectángulo** —lo que permite superponer de verdad, en dos ejes— con un **movimiento de ocho piezas que se repite espejado**, sombra de algo apoyado, inclinación de ±2,4°, margen de papel en algunas y **parallax con animaciones de scroll de CSS (cero JS)**. La imagen mental: una mesa de cocina vista desde arriba después de cocinar, nunca su textura literal. (2) **Página nueva `/la-mesa`** (crema por sustracción: el contenido son 23 fotos con sus propios colores) con su puerta **en el CIERRE del recorrido**, no antes — *un acceso se ubica donde ya nació la curiosidad, no donde es pertinente*. **Nombre y textos PENDIENTES de Delfina.** (3) **El instante vivo**: dos tomas del mismo retrato que se funden, sin estado ni temporizador ni JS. (4) **Los videos pasaron de loop a ESCENA** (12,7s y 8,4s completos): un fragmento tan corto que rebota se lee como GIF. (5) **Don Yeyo reparado de verdad** con recorte **geométrico** (el damero es indistinguible del blanco del logo por color); **Buffalo se retiró** y las colaboraciones son tres. (6) **Favicon** con el monograma DG en Fraunces real dentro de la insignia del manual. (7) **Los cierres de página tienen modo propio**: el color mide `lvh` y el contenido se compone contra `svh`, en dos cajas —con una sola es imposible—. (8) **Trampa cara descubierta**: `pnpm sincronizar` no resubía un asset reemplazado en `public/`; ahora compara el peso contra la CDN. Y **el CSS de Turbopack se queda viejo**: ante una medición que no coincide con el disco, parar el server y borrar `.next`. — Anterior: 2026-08-01 — **olas 22–26 (reorden del recorrido, sistema de color y el juego de Budín).** **El estado vigente estaba en §9.sexdecies.** Titulares: (1) **RECORRIDO REORDENADO** por decisión de Delfina —Quién soy → Umbral → **Marcas** → **Trabajemos juntos** → **Lo que te llevás** → La clase no termina—: una marca que entra encuentra las colaboraciones sin atravesar antes la propuesta educativa. El orden vive en DOS lugares que se mueven juntos (el JSX de `page.tsx` y el campo `orden` de `momentos.ts`, que además **gobierna el CMS** → hay que `pnpm sincronizar`). (2) **Dos transiciones nuevas**: Marcas cierra con "¿Sumamos tu marca a esta cocina?" y la sección siguiente ES esa invitación; y una sola línea (`llevas-pivote`) hace de bisagra de "para tu marca" a "para vos". (3) **`PIGMENTOS`**: cada color se declara UNA vez en `atmosferas/config.ts`; cambiar un color del sitio es cambiar una línea. (4) **La sala Marcas cambió cuatro veces** (crema → arena → marrón → ladrillo → **piedra cálida `#D8D0C5`**) porque su rol cambió: es la bisagra del recorrido. **Quedó cerrado que el TERRACOTA es acento y nunca fondo de sección**: se probó como fondo (ladrillo) y Delfina lo descartó por "clásico". (5) **La cinta de logotipos bajó a salvia honda `#9DAB94`**: es la única palanca que mueve el contraste de los logos, y tiene techo y piso (el negro de 3 Claveles pide banda clara; el blanco de Buffalo, oscura). (6) **BUDÍN es un personaje con juego**: bolsa que se agota antes de repetir, siempre contesta, dos capas de movimiento (contenedor = desplazamiento, botón = salto), deriva libre en mobile, tres niveles de frases (32 + 6 secretas + 1 de amistad) y globo rediseñado con punta. (7) **Don Yeyo reparado** —el recorte se había comido el blanco de las letras— y **marquesina a 28s** (medida: 1563px por ciclo, y un ciclo es la vuelta completa). (8) **`/colaboraciones` tiene sala propia** (crema): ahí los logos van sueltos en cada ficha. Tres gates en verde. — Anterior: 2026-07-29 — **Bloque 8 — Personalización con la clienta: olas 17–21 (Experiencias, Colaboraciones y auditoría del CMS).** **El estado vigente estaba en §9.quindecies** (manda sobre §9.quaterdecies, §9.terdecies y todo lo anterior donde haya contradicción). Titulares: (1) **Las clases dejaron de ser `Producto` y pasaron a un tipo propio, `Experiencia`**: una fecha concreta con lugar, cupo, estado, galería y video. `Producto` quedó sólo para EBOOKS (se retiró `familia`). (2) **Estados inteligentes** (`content/estados.ts`): el sitio deriva lo que puede —finalizada por fecha, nueva por antigüedad— y Delfi sólo declara lo que nadie más sabe (últimos lugares / completa / próximamente). (3) **Módulo "La próxima experiencia"** abriendo "Lo que te podés llevar": una sola fecha, como invitación; sin ninguna futura, no se muestra nada. (4) **"Guardá la fecha"**: el sitio infiere el calendario del dispositivo (Apple → `.ics` propio en `/api/calendario/[id]`; resto → Google) y ofrece las otras opciones en chico. Sin dependencias nuevas. (5) **DOS PÁGINAS NUEVAS** dentro del grupo `(sitio)`: `/experiencias` y `/colaboraciones`, construidas con el mismo primitivo visual que el recorrido (`Banda`, extraído de `Momento`). (6) **Marcas REALES con sus logotipos a color** (Buffalo, Don Yeyo, 3 Claveles, Ormay) en una **marquesina-banda salvia con guarda de arcos**. (7) **Navegación editorial** (`EnlaceEditorial`, flecha ↘) como patrón único para "Ver todas las experiencias" / "Ver colaboraciones" / "Volver al recorrido". (8) **Auditoría del CMS**: esquemas alineados, campos obsoletos retirados y dataset sincronizado con `pnpm sincronizar`. Tres gates en verde. — Anterior: 2026-07-28 — **Bloque 8 — Personalización con la clienta: olas 15–16.** **El estado vigente estaba en §9.quaterdecies** (manda sobre §9.terdecies y todo lo anterior donde haya contradicción). Titulares nuevos: (1) **Webhook de revalidación** (`app/api/revalidar/route.ts`): publicar en el Studio refleja el cambio casi al instante — un `revalidateTag("contenido","max")` disparado por webhook FIRMADO de Sanity; el `revalidate:60` queda de red de seguridad. Falta sólo la config al desplegar (env `SANITY_REVALIDATE_SECRET` + webhook en sanity.io/manage). (2) **Primeros VIDEOS del sitio**, con criterio editorial: **Umbral** abre con un loop del **cheese pull** de la croqueta (ping-pong, apetece) vía el componente **`VideoMarco`** = mejora progresiva (la foto del CMS es poster/respaldo, respeta `prefers-reduced-motion`, carga al entrar en viewport; MP4+WebM en `public/videos/`). **Quién soy se MANTIENE con la FOTO original** (se probó video y Delfina prefirió la foto, a reevaluar más adelante). **La clase no termina queda SIN video** (una despedida contradice "la clase no termina"; el cierre gana por sustracción). Videos = dirección de arte en código; el contenido editable sigue en el CMS. Tres gates en verde. — Anterior: 2026-07-24 — **Bloque 8 — Personalización con la clienta: 14 olas + integración de CMS.** **El estado vigente estaba en §9.terdecies** (manda sobre §9.duodecies y todo lo anterior donde haya contradicción). Titulares desde la 8ª ola: (1) **Recorrido reestructurado a SEIS secciones** (decisión de Delfina): Quién soy (bienvenida "Hola, soy Delfi", **abre el sitio**) → Umbral (propuesta de valor) → Lo que te podés llevar (ebooks + clases presenciales/online) → Marcas con las que colaboro (**sección nueva**) → Trabajemos juntos (**sólo** servicios profesionales) → La clase no termina (cierre). Salieron del recorrido pero **se conservan en el código** (no se montan): La columna del aprendizaje (serie Cocina Nivel 0) y La cocina compartida. (2) **Paleta nueva del manual** (`images/paleta.jpg`): verde bosque `#2C4027`, salvia `#B1BFAA`, marrón `#413223`, crema `#F3EEE4`, arena `#DBC9A0`, **terracota `#9D301D`** (reemplaza el bordó del cierre; el terracota pasa a **ACENTO** del sistema —líneas, dibujos, nodos—, no fondo de sección). (3) **Modelo visual = BANDAS de color a pleno ancho con CORTES por ONDA**: reemplaza tanto la disolución por difuminado de la 9ª ola como los bloques contenidos `.sala-panel` de la 7ª. Cada sección es su color sólido; las curvas conectan y cortan limpio, **sin degradados que mezclan colores**. (4) **Navbar de herencia CONTINUA** (`AtmosferaProvider` = motor): promedia varias alturas del bar + suavizado por frame → el color acompaña el scroll sin saltos; la tinta conmuta por umbral con halo en la franja ambigua. (5) **Budín** (el perro de Delfi) es un **PERSONAJE interactivo**: fijo abajo-izquierda en desktop, dentro del menú en mobile; saluda en hover, frase al azar al tocarlo, saltito periódico; foto de la **cabeza** recortada a su bbox. (6) **Fotografía real integrada** (retrato, plato, proceso, ambiente) en los marcos del sistema. (7) Marquesina **ondulada** a pleno ancho con la tipografía **sobre la curva** y en movimiento continuo. (8) **INTEGRACIÓN CON SANITY CMS — el sitio deja de ser una web de contenido fijo.** Studio embebido en `/studio`; la capa de acceso `content/index.ts` ahora **consulta Sanity con RESPALDO automático a la semilla local** (`content/data/*`); 37 documentos + 8 imágenes cargados con `pnpm sembrar`; **páginas siguen prerenderizadas** (revalidate 60s), imágenes por CDN de Sanity. **Separación contenido↔diseño**: textos/imágenes/productos/clases/marcas/redes → CMS editable; identidad visual, composición, animaciones, atmósferas y dirección de arte → **código**. Tres gates en verde; verificado que la web se ve idéntica leyendo del CMS. — Anterior: 2026-07-19 — **Bloque 8 (Personalización con la clienta)**, 8 olas realizadas (superadas por §9.terdecies en lo que contradiga). **El estado vigente del sistema visual estaba en §9.duodecies** (manda sobre §9, §9.decies y §9.undecies donde haya contradicción). Titulares: (1) Delfina aportó **manual de marca** (referencia, no literal), **logotipos oficiales**, **5 referencias visuales** y audios; su indicación tiene prioridad. (2) **Paleta reencuadrada sobre el manual**: crema + arena/marrón/taupe/**verde bosque #39532A**/vino; **se retiró el oro-naranja saturado**; CTA de compra en verde de marca. (3) **El Sistema de Atmósferas (campo continuo) fue eliminado**: hoy es **fondo crema + bloques de color contenidos** (`.sala-panel`), sin ondas ni uniones color-a-color. (4) Navbar con tinta fija sobre crema; `AtmosferaProvider` neutro. (5) Lenguaje gráfico ampliado: sellos con texto en trayectoria, marcos curvos en portadas, guardas en marquesinas, líneas editoriales, flechas, adornos en los respiros. (6) **Logotipo oficial** integrado en el cierre, el loading y Open Graph. (7) **Plataforma de venta agnóstica** (`Producto.destino`). (8) Hero como spread horizontal con espacio de foto que respira; cierre que llena el viewport; La Serie con más aire y sin desplazamiento en mobile; Clase en vivo diferenciada. Contraste medido ≥AA (mayoría AAA). Tres gates en verde. Pendiente de ella: fotos/videos/dibujitos, textos a recortar, plataforma+URLs, validar paleta y logotipo. — Anterior: 2026-07-13 — **Bloque 7 (Refinamiento — cierre de la v1)** realizado. Recorrido completo y vivo en los cinco formatos (dev server; en este bloque el preview fue estrictamente necesario). **Decisión de forma: la experiencia encontró su forma; sin cambios de código.** Titulares: (1) el arco reordenado (propuesta de valor al frente + historia acompañando) sostiene reconocimiento→descubrimiento→pertenencia como experiencia, no por momentos; el fork "ebooks antes que la serie NIVEL 0" se **mantiene** (M2 abre con su voz en serif, fichas-habitación con portada real → se lee "esto me llevo", no tienda; el arco igual aterriza en pertenencia sin venta). (2) **Contraste validado con medición real al máximo de presencia** (meseta HOLD, leyendo las vars que escribe el motor): `Hierro` ≥AA en todas las atmósferas —7.7:1 en chocolate (el más hondo), ~6.4 en vino, ≥5.6 en un solapamiento total imposible— → AAA en la lectura real; los focos hondos NO ubican texto secundario encima; **no se bajó ninguna intensidad** (hacerlo debilitaría una dirección del 6.5 sin que la lectura lo pida). (3) **Responsive validado** en 360/390/768/1440/1920: cero overflow-x (barrido de todos los momentos por DOM), la ficha reinterpreta (2 columnas → portada arriba + texto), menú de utensilios = hoja opaca full-viewport, aterrizaje a navbar+respiro (80px) con Lenis; **sin correcciones necesarias**. (4) **Pase de sustracción**: nada gana su lugar para ser quitado; el enriquecimiento no satura (un adorno por silencio, dos acentos a mano, un aura); los placeholders "Ejemplo" y la `ManchaHarina` son dirección deliberada del 6.5 (sirven a la validación de Delfina / cargan un motivo), no inercia → quitarlos sería revertir dirección, que es de ella. (5) **Backlog triado** en `backlog-refinamiento.md` (Resuelto / →Delfina / Descartado-v1). Lo genuinamente abierto es de Delfina, no del diseño: voz/copy, handles de redes, contenido de ejemplo→real, forma exacta de los utensilios, intensidad del aura/bloom, sección personal, tiempos de la intro del nombre. Tres gates en verde (typecheck+lint+build). Síntesis en **9.undecies**. — **Bloque 6.5 (Auditoría y Validación de la Experiencia — refinamiento intermedio entre Implementación y Refinement)** realizado en varias olas de indicaciones del usuario, con prioridad explícita sobre decisiones previas cuando hubo contradicción (se preservó sólo la filosofía Midfield). **Reorganización profunda del recorrido y su dirección de arte.** Titulares: (1) **reorden del arco** — la propuesta de valor pasa al frente y la historia la acompaña: M1 El umbral (propuesta de valor) → M2 Lo que te podés llevar (ebooks/clases) → M3 La columna del aprendizaje (serie "Cocina Nivel 0") → M4 Quién está cocinando → M5 Trabajemos juntos (servicios) → M6 La cocina compartida (comunidad) → M7 La clase no termina (cierre + redes). (2) **Tono** cálido-profesional, sin la autocrítica constante; cada frase con función. (3) **Navbar de orientación** que hereda la atmósfera y disuelve su frontera con el contenido; marca **DG** (monograma serif) con intro "Delfina Gayoso"→"DG" y re-presentación al abrir el menú mobile; menú mobile = hoja atmosférica **opaca**. (4) **Sistema de Atmósferas** (nuevo): campo continuo de luz por momento, ancladas con transición (Opción C), con identidades cromáticas distintas del universo gastronómico (manteca/oro/chocolate/piedra/verde/terracota/vino) y aura roja de MasterChef integrada al campo. (5) **Aprendizaje como serie** con apertura de caption tipo recetario (Leer más + Ver el reel). (6) **Ebooks con portadas reales** y **ecosistema completo** con contenido de ejemplo marcado. (7) **Enriquecimiento**: adornos SVG del universo animados con Motion, ilustraciones de la vida real (mate, huellas de Budín…), acentos a mano (círculo/subrayado), menciones @ → enlaces IG, CSS mask (harina). (8) **Librerías incorporadas**: Lenis, Motion. Se **reformularon criterios** de bloques 1–4 y se **reescribieron en sus documentos** (`arquitectura-de-experiencia.md`, `concepto-experiencia.md`, `direccion-de-arte.md`, `sistema-visual.md`, cada uno con secciones "Actualización — Bloque 6.5"). Backlog de lo no implementado en `backlog-refinamiento.md`. Gates (typecheck+lint+build) en verde en cada ola; verificación por DOM + capturas. Síntesis completa en **9.decies**. — Sub-bloque 6c (Implementación: M5 La cocina compartida + M6 Trabajemos juntos + M7 La clase no termina) realizado. **Bloque 6 completo: el recorrido queda cerrado M1→M7.** Un primitivo nuevo (`InvitacionServicio` §7.2) y tres momentos completos encadenados en la columna existente sin tocar la estructura: M5 (comunidad/vida real tipo G como puente a la pertenencia, racimo cálido sin muro), M6 (servicio como invitación tardía y no dominante, §7.2) y M7 (cierre en su voz, sin CTA/footer, dos formas de seguir sin embudo). Silencio deliberado 4→5 materializado cambiando `cocina-compartida` a `ritmoPrevisto: "silencio"` (única edición de la semilla B3). Dos registros de voz nuevos (puente M5 + cierre M7) en `content/data/voz.ts`. Ninguna librería nueva (decisión de 6a sostenida). Tres gates en verde + verificación del HTML prerenderizado. Síntesis en 9.nonies. — Sub-bloque 6b (Implementación: M3 La columna del aprendizaje + M4 Lo que te podés llevar) realizado. Dos primitivos nuevos (`Numeral` §7.4 hito de capítulo, `FichaProducto` §7.1 habitación de producto) y dos momentos completos encadenados en la columna existente sin tocar la estructura: M3 (centro de gravedad, los 6 capítulos NIVEL 0 como progresión de hitos en zigzag, cálido sin foto) y M4 (los 2 ebooks como continuación del enseñar, habitaciones no grilla, CTA `Yema`→Hotmart). Wayfinding ligado al numeral del capítulo actual (no navegable). Transición 3→4 sin quiebre (ambos `denso`, mismo ritmo). Ninguna librería nueva (decisión de 6a sostenida). Tres gates en verde + verificación del HTML prerenderizado. Alcance respetado: NO se construyeron M5–M7. Síntesis en 9.octies. — Sub-bloque 6a (Implementación: shell del recorrido + contenido real + M1/M2) realizado. Sandbox reemplazado por el recorrido vivo: columna vertical continua, wayfinding discreto, M1 El umbral y M2 Quién está cocinando completos; todo el contenido real cargado en `content/data/*` (voz, 6 capítulos NIVEL 0, 2 productos de Hotmart con precio, servicio, comunidad), pendiente de validación de Delfina. Decisión de librerías fijada: ninguna (Motion/tailwind-merge/Lenis no se instalan; razón en 9.septies). Tres gates en verde. Síntesis en 9.septies. — Bloque 5 (Setup Técnico) realizado. Fundación Next 16 + TS 6.0 strict + Tailwind v4 + pnpm montada y validada (typecheck + lint + build, los tres en verde). Tokens de B4 cableados a `@theme`, fuentes variables Fraunces/Karla vía `next/font`, modelo de contenido desacoplado (7 tipos tipados, archivos locales) y sandbox de fundación. Cambio de stack aplicado por indicación del usuario: **TypeScript 7.0 → 6.0** (razón técnica en sección 9.sexies). Síntesis en sección 9.sexies. — Bloque 4 (Sistema Visual) aprobado. Entregable: `sistema-visual.md` (tokens, escalas, specs de patrones, contraste WCAG verificado). Resuelve los tres puntos abiertos de B3: wayfinding discreto, mecánica de habitaciones de producto, medio de contacto del M6. Bloque 3 (Arquitectura de Experiencia) aprobado (`arquitectura-de-experiencia.md`). Bloque 2 (Dirección de Arte) aprobado + aclaración sobre venta ("nada de tienda" = evitar ecommerce genérico, no la comercialización). `Investigacion Discovery.md` sincronizado con Bloques 1–2 (ver su sección 12).
-
----
-
-## 1. Filosofía del proyecto
-
-North-Studio no construye una web: construye una experiencia digital que representa auténticamente a una persona. Para Delfina, esa representación gira alrededor de una idea central:
-
-> **Aprender cocina junto a Delfina.**
-
-No "aprender cocina". No "conocer a Delfina". La experiencia debe transmitir la sensación de recorrer el universo de alguien que disfruta aprender, enseñar y compartir ese proceso con otras personas.
-
-La identidad tiene prioridad sobre la venta. Enseñar debe sentirse más importante que vender. La cercanía prevalece sobre la autoridad.
+> **Estado del proyecto, no su historia.** Un chat nuevo lee esto para entender dónde
+> está el proyecto ahora y qué no debe romper — sin recorrer cómo llegó hasta acá.
+>
+> Se actualiza cuando el usuario indica **"Actualiza la memoria"**.
+>
+> Última actualización: 2026-08-30 · cierre del Bloque 8.
 
 ---
 
-## 2. Síntesis de identidad (Discovery)
+## 1. Identidad y objetivo
 
-Delfina no construye su marca alrededor de la gastronomía, sino alrededor del **aprendizaje**. La cocina es el medio. Su autoridad no se proclama: se demuestra a través del recorrido personal (cocina desde chica → MasterChef Argentina 2023 → estudia Profesional Gastronómico en el IAG → crea contenido → da clases → publica ebooks).
+**La intención emocional, en una frase:** que el visitante sienta que entró a la cocina
+de alguien que **sigue aprendiendo y lo invita a aprender con ella**, no al sitio de una
+chef que exhibe lo que ya sabe.
 
-El mensaje de fondo no es "mirá lo que sé hacer", sino **"vení, te muestro cómo lo aprendí"**.
+**El arco no es de secciones, es de confianza:** reconocimiento ("esto es real") →
+descubrimiento acompañado (la autoridad aparece por acumulación de evidencia, nunca
+proclamada) → pertenencia ("quiero cocinar algo", nunca "me quieren vender").
 
-### Cinco ejes del universo
-1. **Aprendizaje** — el patrón más consistente. Enseñar aparece como forma natural de comunicarse, no como producto.
-2. **Cercanía** — nunca construye distancia ni tono solemne. Habla como alguien que sigue aprendiendo.
-3. **Cotidianidad** — cocinas reales, utensilios reales, manos, procesos, errores. La experiencia se siente alcanzable.
-4. **Evolución** — narrativa implícita, no verbalizada. Cada etapa construye la siguiente, sin ruptura.
-5. **Comunidad** — cocinar aparece ligado a compartir, acompañar y enseñar. No al reconocimiento individual.
+**Las cinco sensaciones, cada una con evidencia de Discovery:**
 
----
+| | Evidencia |
+|---|---|
+| **Cercanía sin distancia** — habla de igual a igual | Su bio real: *"cocino, doy clases, me choco todo, estuve en MasterChef"*. Se presenta como *"me gusta aprender y enseñar"*, no como chef profesional |
+| **Honestidad / alcanzable** — "esto lo puedo hacer yo" | Comida real, manos amasando, luz natural, cocinas usadas. Sin sobreproducción |
+| **Aprendizaje como columna vertebral** | El patrón más fuerte: series numeradas ("CAPÍTULO #01…"), "COCINA NIVEL 0", talleres |
+| **Calidez con humor** — hay una persona, no una empresa | Budín, el mate, el Konex, autoironía, trends con la mamá |
+| **Comunidad** — cocinar es estar con otros | Mesas largas, talleres con chicos, colaboraciones, amigos probando |
 
-## 3. Validación independiente del material visual (2026-07-09)
+**Metáfora rectora:** el recorrido como *una clase abierta que nunca termina* — se entra
+a mitad del aprendizaje de Delfina y uno se suma. Es brújula de sensación, **no un layout
+de curso con módulos**: eso institucionalizaría la marca.
 
-Se revisó nuevamente Instagram (@delfinagayoso, 201 mil), TikTok (@gayosodelfi, 143K / 1.5M likes) y los ebooks (Hotmart). **La evidencia confirma íntegramente la interpretación de Discovery.** No se detectaron contradicciones importantes ni oportunidades superiores que modifiquen la dirección estratégica.
+**Tono:** joven, cálido, informal, primera persona, con humor y autoironía; **nunca
+desprolijo** — la honestidad no es lo mismo que el desorden. La tensión —profesional pero
+accesible, autoridad pero humildad— se resuelve siempre hacia el lado humano: cercanía
+sobre autoridad, enseñar sobre vender.
 
-### Evidencia que refuerza cada eje
-- **Aprendizaje / Educación:** series numeradas explícitas ("CAPÍTULO #01 Huevo frito → #06 Salsa Pomodoro"), playlist "COCINA NIVEL 0", "Taller de Cocina", "Clase de Pastas", "La clase de chocolatería". El ecosistema entero converge en enseñar.
-- **Cotidianidad / honestidad visual:** primeros planos de comida real, manos, procesos, luz natural, colores cálidos, cocinas vividas. Sin dirección de arte sobreproducida. La credibilidad viene de la honestidad visual.
-- **Comunidad / evolución:** talleres con chicos, colaboraciones (marcas, Cocina con Valentino), mesas compartidas, contenido con su mamá, su perro (Budín).
-- **Producto como extensión del enseñar:** los ebooks ("Masas Quebradas", "Desayunos y Meriendas Saludables" junto a una nutricionista) se presentan con textos en primera persona sobre compartir lo aprendido — no como catálogo de tienda.
+**Qué se muestra y qué se descubre.** Se muestra que acá se cocina y se aprende, y cómo
+sumarse. Se descubre solo: que tiene autoridad (por el hacer, no por un cartel), que
+equivocarse es parte, y que MasterChef es origen y no eje. **Guiar sin dictar la emoción**:
+la foto y el ritmo anticipan, el texto confirma.
 
-### Matiz que enriquece la interpretación (a fijar en Experience)
-Discovery menciona "humor ocasional" y "naturalidad". La evidencia muestra que esto es **más fuerte y más definitorio** de lo que el término "cercanía" sugiere: el tono de Delfina es **joven, informal, autoirónico y desprejuiciado**.
-- Bio TikTok literal: *"cocino puteo doy clases me choco todo estuve en masterchef"*.
-- Ebook: *"cocino desde que tengo memoria… seguir aprendiendo con errores y aciertos es lo más importante"*.
-- Contenido de vida real intercalado: trends con la mamá, el perro, humor cotidiano, espontaneidad.
+**Qué NO debe sentirse:** estética de tienda · elitismo o lujo · institucionalidad ·
+urgencia comercial · sobreproducción · docente solemne.
 
-**Implicancia:** la experiencia no debe leerse como "docente institucional" ni como marca pulida y distante. Debe sentirse **humana, joven y con humor cálido**, sin caer en lo desprolijo. Esta es la tensión central a sostener: *profesional pero accesible, autoridad pero humildad, influencer pero docente, marca personal pero servicio.*
+**Contexto de negocio** — indicación directa de la clienta, y la única funcional que dio:
+pensó el sitio para **vender productos** (ebooks, tickets a clases) y para **publicitar su
+servicio** (colaboraciones en redes, asesorías gastronómicas, propuestas).
 
----
-
-## 4. Qué comunica sin decirlo
-- Cocinar es aprender.
-- Cualquiera puede mejorar.
-- Equivocarse forma parte del proceso.
-- Seguir estudiando nunca termina.
-- Compartir conocimiento tiene valor.
-- La gastronomía puede acercar personas.
-
-## 5. Qué evita comunicar (límites del universo)
-Lujo, exclusividad, alta cocina como estatus, elitismo, lenguaje excesivamente técnico, branding corporativo, comunicación agresiva, urgencia comercial, sofisticación artificial.
+**La web sí vende, y esa función es central.** Lo que se evita es la estética y la lógica
+del ecommerce genérico, no la comercialización.
 
 ---
 
-## 6. Riesgos a vigilar
-- **Estética/lógica de ecommerce genérico (no la venta).** Aclaración de la clienta (2026-07-10): la web sí puede y debe vender, con fichas cuidadas de producto y servicio (descripción, precio, CTA hacia Hotmart, etc.). El riesgo NO es comercializar, sino que la web se sienta como una tienda tradicional: grillas de productos iguales, precio como protagonista, urgencia de "comprá ahora", lógica de vidriera. Una ficha es bienvenida si lleva la voz de Delfina y forma parte natural del recorrido.
-- **Apoyarse demasiado en MasterChef.** Explica el origen, no quién es hoy. Es parte del recorrido, no el eje.
-- **Recursos creativos sin intención.** Easter eggs / motion / microinteracciones son bienvenidos solo si nacen del universo de Delfina. El criterio no es cuánto innova, sino por qué existe.
-- **Institucionalizar la marca.** La cercanía es su mayor activo; no volverla una empresa impersonal.
+## 2. Estado actual
+
+El sitio está **completo y funcionando** en su versión con contenido real. Discovery,
+Experience y Refinement cerrados; el trabajo en curso es de personalización con la
+clienta, por iteraciones cortas.
+
+- **Home**: seis secciones. **Páginas**: `/experiencias`, `/colaboraciones`, `/la-mesa`.
+  Detalle en `docs/recorrido.md`.
+- **CMS**: Sanity con Studio en `/studio`, respaldo local, webhook de revalidación.
+  Delfina puede editar textos, fichas, fotos, orden y las frases de Budín.
+- **Material real integrado**: 42 fotografías, 2 videos, 3 marcas con logotipo, 2 ebooks,
+  3 experiencias.
+- **Sin desplegar todavía.** El sitio corre en desarrollo; la configuración de despliegue
+  está aislada y pendiente (ver §5).
 
 ---
 
-## 7. Oportunidades estratégicas
-- Convertir la web en el **centro del ecosistema** (hoy disperso: contenido gratuito, ebooks, clases, asesorías, colaboraciones).
-- Reforzar el **posicionamiento educativo** (ya existe; la web puede hacerlo visible).
-- Reducir la **dependencia de redes sociales** (la web como activo principal de la marca).
-- Construir una **experiencia coherente y continua** (hoy la identidad está distribuida entre plataformas).
+## 3. Decisiones vigentes
+
+Las que un chat necesita conocer para no reabrirlas ni romperlas. Las que describen
+funcionamiento viven en `docs/`.
+
+**D1 · El recorrido son seis secciones, con el costado profesional arriba.** Marcas y
+"Trabajemos juntos" van antes que la propuesta educativa: una marca que entra tiene que
+llegar sin atravesarla, y la invitación llega después de la prueba. *Decisión de Delfina.*
+
+**D2 · La paleta sale del manual de marca de la clienta.** Seis pigmentos en un punto
+único. El terracota es acento y **nunca fondo** — se probó como banda y ella lo descartó
+al verlo montado.
+
+**D3 · No se adopta la tipografía del manual.** El manual es referencia, no verdad
+literal. Las dos familias del sitio tienen funciones semánticas (ver
+`docs/direccion-de-arte.md`).
+
+**D4 · El contenido editable vive en el CMS; el diseño, en código.** Trade-off: cada
+funcionalidad nueva cuesta cuatro pasos en vez de uno. Se paga porque la alternativa es
+que Delfina dependa del estudio para cambiar una fecha.
+
+**D5 · La plataforma de venta es agnóstica.** El destino de compra es una URL cualquiera
+y la interfaz no nombra la plataforma. Migrar es cambiar la URL.
+
+**D6 · Las clases son `Experiencia`, no `Producto`.** Tienen fecha, cupo y estado; un
+ebook no. El estado se deriva de la fecha, no se carga a mano.
+
+**D7 · La independencia del proveedor de hosting es criterio permanente.** Migrar debe ser
+cambiar configuración, nunca código. Dominio en Cloudflare Domains.
+
+**D8 · "Trabajemos juntos" son tres propuestas y un solo contacto.** Colaboraciones ·
+Asesorías gastronómicas · Chef privada y catering para eventos. Los canales aterrizan una
+vez al cierre: repetidos en cada ficha se leen como formulario. La segunda propuesta
+soltó los eventos para que la tercera no fuera un duplicado.
+
+**D9 · Budín tiene dos expresiones y la elige la frase.** La categoría viaja con la frase
+en el CMS, no con el gesto ni con el puntero. La expresión persiste hasta la interacción
+siguiente.
+
+**D10 · La pantalla de carga es sólo el logotipo.** Ver descartes.
+
+**D11 · `/la-mesa` no se llama "galería"**, y su puerta vive en el cierre del recorrido,
+no en "Quién soy": un acceso se ubica donde ya nació la curiosidad.
 
 ---
 
-## 8. Principios que guían Experience
-- La identidad tiene prioridad sobre la venta.
-- Enseñar debe sentirse más importante que vender.
-- La cercanía debe prevalecer sobre la autoridad.
-- El recorrido debe sentirse humano antes que comercial.
-- La cocina debe aparecer como experiencia compartida.
-- La interfaz nunca debe competir con el contenido.
-- La fotografía sostiene gran parte de la narrativa.
-- Cada decisión visual debe reforzar confianza, aprendizaje y autenticidad.
+## 4. Decisiones descartadas
+
+Se conservan **para que no se vuelvan a proponer por desconocimiento**.
+
+| Qué se descartó | Por qué |
+|---|---|
+| **Terracota como fondo de sección** | Como color protagonista de una banda entera se lee clásico. Delfina lo descartó al verlo montado. Queda como acento |
+| **Budín en la pantalla de carga** | Dos versiones —asomándose por detrás del logotipo, y turnándose con él—; las dos funcionaban y ninguna quedó. La entrada es donde la marca se presenta sola |
+| **Una tercera expresión de Budín** (`curioso`) | Tonalidades y proporciones de otro dibujo: no leía como cambio de expresión sino como otro perro. El archivo sigue en `public/ilustraciones/`, retirado "por el momento" |
+| **El retrato original de Budín en la interacción** | Misma razón, un nivel más arriba. Sigue vivo en la banda del cierre |
+| **La frase puente entre las secciones 4 y 5** | Explicaba una transición que el corte cromático y el cambio de encabezado ya comunican |
+| **Marcos contenedores para la fotografía** | Transmiten *fotografía seleccionada*, no composición editorial |
+| **Loops de video de 1,5s** | Un fragmento tan corto que rebota se lee como GIF: se percibe el mecanismo antes que la escena |
+| **`rough-notation`** | Reposicionaba mal con el scroll. Reemplazada por SVG propio |
+| **Metáfora "del error al plato"** | Reduce a Delfina a su torpeza simpática y deja afuera el eje real. Aportaba tono, no dirección |
+| **Buffalo como colaboración** | Delfina confirmó que ya no está activa |
+| **Separar chef privado y catering en dos servicios** | Ella lo nombró como uno solo; partirlo sería reinterpretarla |
 
 ---
 
-## 9. Dirección de arte (Bloque 2 — aprobado 2026-07-10)
-Entregable completo en `direccion-de-arte.md`. La hipótesis inicial quedó confirmada y detallada. Síntesis para recuperar contexto:
-> ⚠ **Reformulado en parte por el Bloque 6.5** (§9.decies y "Actualización — Bloque 6.5" en `direccion-de-arte.md`): el **rojo** vuelve como aura de MasterChef integrada a la atmósfera; las **portadas de producto** de `images/` sí se usan (contenido real); el **color gana presencia** (Sistema de Atmósferas, temperaturas distintas por momento); el **motion** se habilita con Lenis/Motion; el **tono** deja la autocrítica constante.
-> ⚠⚠ **PALETA SUPERADA por el Bloque 8 (§9.duodecies).** La paleta de esta sección (`Harina`/`Masa`/`Hierro`/`Piedra` + acentos `Yema`/`Corteza`/`Perejil`, "paleta de interfaz deliberadamente pobre") fue **reencuadrada sobre el manual de marca**: crema + **arena `#DCCBA6`**, **marrón `#4A3527`**, **taupe `#AEA391`**, **verde bosque `#39532A`**, **vino `#4E2630`**, acento **ocre `#6B4A1F`**. Se retiró el oro/naranja saturado. Siguen vigentes de esta sección: la **tipografía** (Fraunces + Karla y su regla semántica), el rol de la fotografía, la textura, el motion y la composición.
+## 5. Pendientes
 
-- **Tesis rectora:** la interfaz aporta silencio, no carácter. El carácter nace de Delfina (comida, voz, proceso). Filtro operativo de cada decisión: *¿esto hace que la comida y el proceso se vean más reales, o hace que la web se vea más diseñada?*
-- **Fotografía (eje de identidad):** manos como firma (sostener/partir/amasar → dan escala y autoría), proceso sobre resultado, distancia corta y horizontal, luz natural sin corregir, comida real con defectos, cocinas vividas. Se evita: emplatado de restaurante, filtros/grading de marca, foto de estudio, cenital simétrico repetido, superficies de lujo.
-- **Color (hipótesis, no sistema cerrado):** extraído de sus fotos, no de una paleta impuesta. Fondo `Harina` `#F7F2EA` (blanco roto cálido, NO blanco puro ni negro) + `Masa` `#EDE5D8`. Texto `Hierro` `#2A241E` (marrón muy oscuro, NUNCA negro puro) + `#6B6156`. Acentos: `Yema` `#E8A13A` (principal; justificado en que *CAPÍTULO #01 Huevo Frito* es su video más visto, 2.1M), `Corteza` `#B4611F`, `Perejil` `#4E6A3C` (mínimo). Proporción ~70% fondo / 20% foto / 7% texto / 3% acento. **Excluidos:** rojo MasterChef (origen, no eje), rosa/violeta (outlier), negro/blanco puros, gradientes/traslúcidos.
-- **Tipografía (dos familias, función semántica no jerárquica):** Serif humanista **Fraunces** (ejes SOFT/WONK ≈ "errores y aciertos") = voz de Delfina en primera persona; alt. Literata. Sans humanista **Karla** (legible sin sonar a SaaS) = contenido/navegación; alt. Work Sans. Regla: serif = ella hablando, sans = el mundo alrededor. Numerales de capítulo (`#01`) en serif como hito. Descartadas: manuscritas/brush (sería actuar la cercanía), mayúsculas sostenidas, justificado.
-- **Textura:** la imperfección vive en la foto; la interfaz es prolija ("honesto, nunca desprolijo"). Permitido: grano de papel sutil solo en fondos, bordes rectos/radio mínimo, fotos sin contenedor. Prohibido: sombras marcadas, glassmorphism, gradientes, duotonos/overlays, grano de film, scrapbook/cinta/polaroid.
-- **Motion:** carácter de *vapor* (algo que se posa, no que entra). Sí: aparición por opacidad + desplazamiento corto, aproximación lenta en hover, continuidad entre momentos. No: bounce/spring, parallax/scroll-jacking, texto letra por letra, cursores custom. `prefers-reduced-motion` = versión honesta del sitio.
-- **Composición y aire:** su feed es un grid uniforme forzado por la plataforma; la web existe para darle lo que ese grid le niega (escala, ritmo, jerarquía). El tamaño lo decide el contenido, no la fila; la estructura sostiene la lectura y la fotografía la desborda; asimetría con ancla (nada centrado por defecto); el aire rodea al texto, no a las imágenes; cambios de ritmo; el número como hito de progresión.
+**De Delfina** — no se fabrican:
 
-### Condiciones de v1 fijadas en este bloque (importantes)
-- **`images/` es evidencia, NO banco de assets.** La web no reutiliza esas imágenes; sirvieron para comprender identidad, lenguaje y ritmo.
-- **v1 no tendrá fotografía producida para la web** (sin hero de alta producción). Coherente con la identidad (una hero sobreproducida traicionaría su honestidad). Consecuencia: **la experiencia no depende de un banco hero**; color, tipografía, composición, ritmo y aire cargan más trabajo estructural sin volverse más ruidosos. Debe funcionar incluso en momentos sin fotografía. Video de proceso solo si Delfina aporta footage real propio, nunca como pilar.
+- Rubro, historia y resultados de las tres marcas; y la foto de colaboración de 3 Claveles
+  y Ormay. *La de Don Yeyo ya está y sirve de referencia de qué pedir: la colaboración
+  misma, no un packshot.*
+- Su próxima fecha real de clase.
+- El nombre de `/la-mesa` y sus dos textos (`mesa-apertura`, `mesa-cierre`).
+- Fotos de clases pasadas y el texto ampliado de cada clase.
+- Validación del copy de voz que sigue siendo interpretación. *Ya validados: los handles
+  de Instagram y TikTok, Instagram como canal de contacto, y las frases e interacciones
+  de Budín.*
 
----
+**De infraestructura** — al desplegar:
 
-## 9.quater Arquitectura de Experiencia (Bloque 3 — aprobado 2026-07-10)
-Entregable completo en `arquitectura-de-experiencia.md`. Síntesis para recuperar contexto:
-> ⚠ **Reformulado en parte por el Bloque 6.5** (§9.decies y "Actualización — Bloque 6.5" en `arquitectura-de-experiencia.md`): **cambió el orden** de los momentos (la propuesta de valor va al frente; el mapa M1→M7 de abajo es el original de B3, hoy reordenado — ver cabecera y §9.decies); "comercio tardío" ya **no** sostiene la jerarquía; se **incorporó un navbar** de orientación (antes descartado); las transiciones ahora las gobierna el **Sistema de Atmósferas**; de "Fuera de v1" salieron **Lenis** y el **ecosistema completo** (con ejemplos). Se mantiene "modo oscuro fuera de v1".
+- Configurar el webhook de revalidación en el proveedor.
+- CORS del dominio en Sanity.
+- `metadataBase` y OG apuntan hoy a un dominio de previsualización.
 
-- **Filtro operativo del bloque:** *¿este momento hace sentir que entré a una clase que ya venía sucediendo y me sumé, o que llegué a un sitio que me presenta a alguien y me quiere vender algo?* Si es lo segundo, está mal ubicado.
-- **Mapa del recorrido — 7 momentos (no secciones), ordenados por cómo se conoce a Delfina en la vida real (por el hacer, no por la placa):**
-  1. *El umbral* (reconocimiento) — entra a mitad de un gesto; sin bienvenida, sin hero, sin CTA, sin proclamar autoridad.
-  2. *Quién está cocinando* (reconoc.→descub.) — voz en primera persona; NO es un About; autoridad deducida, no proclamada. **MasterChef vive acá y sólo de paso**, un escalón entre otros, nunca momento propio.
-  3. *La columna del aprendizaje* (descubrimiento) — **centro de gravedad del recorrido**; su serie numerada `#01…#06`, `NIVEL 0`; numerales como hito, no temario.
-  4. *Lo que te podés llevar* (descubrimiento) — el **producto** (ebooks, tickets) como continuación del enseñar, no como tienda.
-  5. *La cocina compartida* (descub.→pertenencia) — comunidad, humor, vida real (Budín, mate, mesas, mamá).
-  6. *Trabajemos juntos* (pertenencia) — el **servicio** (colaboraciones, asesorías, propuestas) como invitación, tarde, cuando ya hay confianza.
-  7. *La clase no termina* (pertenencia) — salida sin cierre de venta; "quiero seguir esto".
-- **Modelo de navegación — HÍBRIDO:** columna vertical continua (el pasillo de la clase) + **habitaciones dedicadas** para cada ficha de producto/servicio (para que no caigan en grilla). Se descartó página única pura (apretaría las fichas → catálogo) y rutas múltiples con menú (fragmentaría la continuidad → sitio corporativo). Scroll libre, sin scroll-jacking/parallax (el visitante controla el ritmo). Entrada "a mitad del aprendizaje" **literal** (M1 in medias res) y **estructural** (el recorrido funciona entrado desde el medio; una ficha nunca es callejón sin salida: ofrece "entrar a la clase"). Numerales = hito de progresión, **nunca** índice navegable / barra de progreso / módulos.
-- **Integración del negocio:**
-  - **Productos** en M4: ficha cuidada en su propia habitación, modelo = su carta de Hotmart. Descripción en su voz (serif), precio en sans sin gritarlo, imagen real como ancla (o sin foto, sostenida por voz + aire en v1). **CTA lleva a Hotmart; sin carrito propio.** Se evita grilla, aspect ratios uniformes, precio protagonista, "comprá ahora", card de catálogo.
-  - **Servicio** en M6: invitación a trabajar juntos, en su voz; sin tarifario, sin lenguaje de agencia, sin logos/métricas. Contacto = invitación abierta, no formulario de leads. Solidez por rigor tipográfico y aire, no por giro corporativo.
-  - **Jerarquía "enseñar > vender" sostenida por 4 palancas:** posición (aprendizaje al centro, comercio tardío y no-central), peso (aprendizaje/comunidad pesan más que lo comercial), ausencia de dominio persistente (sin nav "Shop" fija, sin carrito flotante), tono (todo lo comercial hereda la voz de la enseñanza, sin urgencia).
-- **Modelo de contenido desacoplado — 7 tipos con campos conceptuales (no esquema técnico, eso es Bloque 5):** A Voz de Delfina · B Momento del recorrido · C Pieza de aprendizaje/capítulo · D Producto · E Propuesta de servicio · F Imagen real · G Comunidad/vida real. **Ausencia deliberada de campos de catálogo** (SKU, stock, categorías, filtros) en Producto: fabricarían la lógica de tienda. Principio: agregar contenido no rediseña; la interfaz interpreta y no depende de un contenido fijo (clave para v1 con foto escasa).
-- **Transiciones y ritmo:** continuidad heredando temperatura entre momentos; punto más delicado **3→4** (producto entra sin cambio de registro); **silencio deliberado 4→5** para limpiar el registro comercial. Ritmo alterna densidad y vacío ("se explica, se hace, se para"); los silencios cargan peso extra en v1 (el aire, no la foto, sostiene).
-- **Responsive a nivel de recorrido:** **mobile es forma NATIVA, no versión reducida** (Delfina es creadora nativa de vertical; su audiencia vive en el teléfono). Desktop/MacBook = amplitud, zigzag, desborde, hover como aproximación a la foto. Tablet = táctil, sin hover, más contenido. iPhone/Android = descenso íntimo full-bleed **sin reconstruir la grilla de Instagram**; voz en primera persona ≈ mensaje directo. Paridad iPhone/Android con atención a rendimiento en Android bajo; **degrada con dignidad** porque v1 no depende de motion ni foto pesada. En todos: se conservan arco y jerarquía; sólo cambia el modo de atravesarlos.
-- **Fuera de v1 (justificado por identidad, no por alcance):** carrito/checkout propios (compra en Hotmart), login/cuentas/LMS con progreso, plataforma de curso con módulos, buscador/filtros, FAQ, muro de testimonios/logos/métricas/contador de seguidores, blog, newsletter como mecanismo central/popup, modo oscuro (su universo es luminoso, fondo `Harina`), fotografía producida/hero (heredado de DA), multi-idioma. Regla: lo que no entra alejaría el recorrido de quién es Delfina.
-- **Puntos abiertos para bloques 4–5:** forma fina del wayfinding discreto; mecánica de apertura/cierre de las habitaciones de producto; medio de contacto del M6; esquema técnico del modelo de contenido (CMS); densidad y cambios de ritmo a nivel de maquetado; validar el orden de momentos recorriéndolo (Refinamiento).
+*Los dos handles de redes quedaron **validados y corregidos** en el cierre de esta tanda.*
 
 ---
 
-## 9.quinquies Sistema Visual (Bloque 4 — aprobado 2026-07-10)
-Entregable completo en `sistema-visual.md`. Especificación (tokens, escalas, specs de patrones), no implementación. Síntesis para recuperar contexto:
-> ⚠ **Ampliado/reformulado por el Bloque 6.5** (§9.decies y "Actualización — Bloque 6.5" en `sistema-visual.md`): nuevos subsistemas y patrones — **Sistema de Atmósferas** (tokens `--atm-*`), **navbar** de orientación (dissolve + marca DG), **serie** de aprendizaje (§7.4 ampliado), **portadas de capítulo**, **caption tipo recetario**, **ficha con portada** (§7.1/§8), **contacto multicanal** (§7.2), **aura de MasterChef** en el campo, **enriquecimiento** (adornos/ilustraciones/acentos a mano/CSS mask). El **wayfinding** perdió el marcador "#".
+## 6. Postergaciones vivas
 
-- **Regla rectora del bloque:** la interfaz aporta silencio, no carácter; cada token se deriva de B2/B3, ninguno por convención. En v1 (foto escasa) el color/tipografía/espaciado/ritmo cargan más trabajo estructural sin gritar más; la ausencia de foto se resuelve como silencio (`Harina` + aire), nunca como hueco a decorar.
-- **Color como tokens semánticos:** `--color-harina #F7F2EA` (fondo), `--color-masa #EDE5D8` (superficie sec.), `--color-hierro #2A241E` (texto primario), `--color-piedra #6B6156` (texto secundario — el `#6B6156` sin nombre de B2 se bautizó **`Piedra`**, la mesada de granito), `--color-yema #E8A13A` (acento relleno), `--color-corteza #B4611F` (acento cálido / texto de acento grande), `--color-perejil #4E6A3C` (acento fresco mínimo). Proporción ~70/20/7/3 con matiz de v1: **el 20% de foto ausente cede a fondo, no a color de interfaz.**
-- **Contraste WCAG verificado (luminancia real calculada).** Hallazgos duros que el sistema fija como reglas no negociables:
-  - `Hierro`/`Harina` **13.8:1 AAA** (par de lectura por defecto); `Hierro`/`Masa` 12.3:1 AAA.
-  - `Hierro`/`Yema` **≈7.0:1** → par correcto del botón de acento (texto oscuro sobre relleno amarillo).
-  - **`Yema`/`Harina` 2.0:1 → FALLA como texto y como borde.** `Yema` es relleno, no tinta: nunca numeral legible, nunca foco.
-  - `Corteza` como texto **solo en grande** (`Corteza`/`Harina` 4.0:1, AA-grande/UI); `Piedra`/`Harina` 5.4:1 AA; `Perejil`/`Harina` 5.5:1 AA.
-  - **Foco e indicadores en `Hierro` o `Corteza`, nunca `Yema`.** `Masa` vs `Harina` = 1.12:1 → separación estética, no funcional (la separación real la dan aire y ritmo).
-  - Regla operativa: si `Yema`/`Corteza` se ajustan contra foto real (esperado, B2 §9), **recalcular contraste** antes de fijar.
-- **Tipografía como sistema:** `--font-voz` = **Fraunces** (alt. Literata) = voz de Delfina en primera persona; `--font-mundo` = **Karla** (alt. Work Sans) = el mundo/contenido/navegación. Stacks con fallback definidos (FOUT + render Android). Escala **fluida** de 7 pasos con `clamp()` reales (375→1440px): `--fs-numeral` 44→110, `--fs-voz-xl` 30→60, `--fs-voz-l` 22→34, `--fs-titulo` 19→26, `--fs-cuerpo` 17→19 (no baja de 17), `--fs-meta` 14→15, `--fs-micro` 12.5→13. Pesos 400/500 (sin bold agresivo). Ejes Fraunces: `WONK` on en display / **off en párrafo largo** (prioriza lectura). Interlineado 1.0 numeral / 1.5–1.6 lectura. Medida 34–46ch voz, 60–68ch cuerpo. Izquierda, **nunca justificado**. Numeral-hito: serif grande en `Hierro`/`Corteza`, `#` opcional en `Yema`; **no es índice ni barra de progreso.**
-- **Aire y espaciado:** escala única del gesto al silencio; pasos grandes fluidos. `--space-silencio clamp(120,20vw,260)`. Principio operativo: **el aire rodea al texto (voz con `--space-2xl`), las imágenes se tocan/empujan (gutter mínimo o 0).** Ritmo alterna densidad y vacío; el silencio se materializa como banda de `Harina` vacía (crítico en v1). La transición 3→4 no cambia el espaciado; la 4→5 es un silencio deliberado.
-- **Retícula y composición:** **no** hay grid rígido de 12 col; hay **carriles** (`--track-texto`/`--track-media` 62%/`--track-ancho` 85%) + niveles de **bleed** (`--bleed-full` 100vw). El contenido decide el tamaño; asimetría con ancla, zigzag, la foto desborda la estructura (nunca al revés). Responsive = reinterpretación: **mobile nativo** (un carril, full-bleed, sin reconstruir la grilla de Instagram), hover solo desktop, degrada con dignidad en Android bajo.
-- **Motion como tokens:** *vapor* (algo que se posa). Una sola familia: duraciones `--dur-xs..xl` (200–900ms), curvas `--ease-posar cubic-bezier(0.22,0.61,0.36,1)` (sin overshoot) y `--ease-suave`. Recetas: aparición (opacity+translateY 12px, stagger 75ms), aproximación hover (scale 1.03, solo puntero), imagen que viaja entre momentos (900ms), apertura de habitación (sin wipe/modal). `prefers-reduced-motion` = versión honesta (fades ≤200ms o nada).
-- **Textura, radios, bordes:** grano de papel **solo sobre `Harina`** (~2–4%, imperceptible; se valida viéndolo), nunca sobre foto/`Masa`/texto/fichas. `--radius-none 0` (fotos, sin contenedor) / `--radius-min 2px` (funcionales). Separación por aire antes que borde; hairline si hace falta. **Prohibidos reafirmados:** sombras marcadas, glassmorphism, neumorphism, gradientes, duotonos/overlays, grano de film, scrapbook, rebote/spring, parallax, scroll-jacking, texto letra por letra, cursores custom.
-- **Specs de 6 patrones (spec, NO React):** (1) **Ficha/habitación de producto M4** — habitación no card; descripción en serif (su voz), precio en sans sin gritarlo, CTA relleno `Yema`+texto `Hierro` que invita (no "comprá ahora") hacia Hotmart, salida siempre al pasillo, apertura por aparición sin modal/overlay. (2) **Invitación de servicio M6** — su voz en serif, sin tarifario/agencia/métricas; contacto = invitación abierta con medio directo, no captación de leads. (3) **Bloque de voz 1ª persona** — serif, línea corta, anclado, rodeado de aire; carga el mayor peso en v1; humor en el texto, nunca en la tipografía. (4) **Marca de capítulo/numeral** — hito grande y solo, no temario. (5) **Contenedor de momento** — sin caja/borde/fondo propio; separación por ritmo y aire; hereda temperatura. (6) **Wayfinding discreto** — señal de progreso tenue ligada al numeral, no navegable, sin dominio comercial (nada de "Shop"/carrito fijo).
-- **Comportamiento sin foto (v1):** tabla por patrón de cómo se sostiene con tipografía+color+aire. Regla: si un patrón solo funciona con foto grande, está mal diseñado; el sistema se lee completo y cálido con `Harina`+`Hierro`+voz serif+aire como únicos protagonistas.
-- **Puntos abiertos que este bloque resolvió (eran de 9.quater):** wayfinding discreto (spec 7.6), mecánica de habitaciones de producto (spec 7.1), medio de contacto del M6 (spec 7.2).
-- **Puntos abiertos que quedan:** validar `Yema`/`Corteza` y Fraunces+Karla contra foto real (y recalcular contraste si cambian); intensidad exacta del grano; **mapeo de tokens a `@theme` de Tailwind v4, carga de fuentes variables, esquema técnico del CMS → Bloque 5**; densidad fina de maquetado → Bloque 6.
+**Ninguna con vencimiento pendiente.** Las dos que hubo se cerraron: el sistema visual
+esperaba el recorrido completo (llegó), y la dirección de arte esperaba la fotografía
+real (llegó, y obligó a rehacer la paleta — ver A3).
 
 ---
 
-## 9.sexies Setup Técnico (Bloque 5 — realizado 2026-07-10)
-Fundación de código lista para el Bloque 6. Entregables en el repo (no en un `.md`): proyecto Next 16 + estructura + tokens + fuentes + modelo de contenido + sandbox. Documentación de setup en `README.md` (raíz) y `content/README.md`. Síntesis para recuperar contexto:
+## 7. Aprendizajes
 
-- **Stack montado y validado:** Next.js 16.2.10 (App Router) · React 19.2.7 · **TypeScript 6.0.3 strict** · Tailwind CSS v4.3.2 · pnpm. Los tres gates en verde: `pnpm typecheck` (tsc --noEmit), `pnpm lint` (eslint-config-next flat), `pnpm build` (página `/` prerenderizada estática).
-- **Cambio de stack — TypeScript 7.0 → 6.0 (indicación del usuario, permanente):** TS 7.0 es el compilador nativo (port en Go); expone `tsc` pero su API programática vive bajo `./unstable/*`, no en la clásica `lib/typescript.js`. El chequeo TS embebido de `next build` y `typescript-eslint` (peer `typescript <6.1.0`) **no la soportan todavía** → con TS 7 el build y el lint no corren (verificado: `ts.Extension` undefined crashea `typescript-estree` al cargar; peer de typescript-eslint 8.63 excluye 7.x). Se fija **TS 6.0** (última línea con API clásica) para que TypeScript, build y lint funcionen con el resto del stack obligatorio. Migrar a 7.0 cuando Next y typescript-eslint lo soporten será cambiar una versión, no la arquitectura. `sistema-visual.md`/`arquitectura` no se ven afectados; la sección 10 de este journal (stack) queda con esta salvedad.
-- **Estructura (clara, para evolucionar):** `app/` (interfaz: `layout.tsx`, `page.tsx` sandbox, `fonts.ts`, `globals.css`) separado de `content/` (contenido: `types.ts`, `index.ts` capa de acceso, `data/*` fuente). Config en raíz (`next.config.ts`, `tsconfig.json` strict + `noUncheckedIndexedAccess`, `postcss.config.mjs`, `eslint.config.mjs`). `next lint` fue removido en Next 16: el lint corre con `eslint .`.
-- **Tokens de B4 cableados a `@theme` de Tailwind v4 (1:1 con `sistema-visual.md`):** regla única y documentada — lo que tiene namespace de Tailwind genera utilidades (`--color-*`→`bg-harina`/`text-hierro`; `--font-voz`/`--font-mundo`; `--text-*` = la escala fluida de 7 pasos con los `clamp()` reales, `text-numeral`…; `--radius-*`; `--ease-posar`/`--ease-suave`); lo bespoke conserva su nombre literal del documento y se usa vía `var()` (escala `--space-*` incl. `--space-silencio`, carriles/bleed `--track-*`/`--bleed-full`/`--measure-*`, motion `--dur-*`/`--stagger`, ejes `--fraunces-*`, `--grano-opacidad`). **Único renombre: `--fs-*` → `--text-*`** (el cableado a Tailwind que B4 §0 delegó a este bloque); escala, sufijos semánticos y valores idénticos.
-- **Fuentes variables (control de FOUT + render Android, B3 §6):** Fraunces (`--font-voz`, ejes `opsz`/`SOFT`/`WONK` incluidos y **configurables** vía tokens `--fraunces-*` y clases `.voz-display` [WONK on] / `.voz-texto` [WONK off]) y Karla (`--font-mundo`), autohospedadas por `next/font` (sin request en runtime), `display: swap` + `size-adjust` en el fallback. Stack de fallback completo (Literata/Georgia…, Work Sans/system-ui…) compuesto en `globals.css`.
-- **Estilos globales:** fondo `Harina` + texto `Hierro` (par de lectura 13.8:1 AAA) como base; cuerpo desde 17px, izquierda, nunca justificado; `prefers-reduced-motion` global como **versión honesta** del sitio; **grano de papel** imperceptible (`--grano-opacidad` 0.03, feTurbulence) solo sobre `Harina` (en B6 hay que excluirlo de fotos/`Masa`/fichas); **foco visible siempre** en `Hierro`, nunca suprimido, nunca en `Yema`.
-- **Modelo de contenido desacoplado — decisión: archivos tipados locales (TypeScript), NO headless CMS.** Justificación (la solución más simple que mantiene calidad): alcance de v1 chico y sin catálogo, un CMS sería dependencia por costumbre (infra/auth/red/costo); el tipado da calidad desde el inicio (contenido inválido no compila); agregar no rediseña. **Desacople real:** la interfaz importa siempre desde `content/index.ts` (capa de acceso = el límite); cambiar a CMS mañana = reescribir esa capa, no la interfaz. Los **7 tipos de B3 §4 tipados** (`content/types.ts`): A `VozDelfina` · B `Momento` (sembrado con los 7, es estructura de B3) · C `PiezaAprendizaje` (numeral `#01`) · D `Producto` (**sin SKU/stock/categorías/filtros**; `precio` es dato de presentación; CTA `destinoHotmart`, sin carrito) · E `PropuestaServicio` (invitación, sin tarifario) · F `ImagenReal` (`tipoGesto` gobierna el desborde) · G `MomentoComunidad`. `data/*` con los 7 momentos sembrados y el resto como colecciones vacías tipadas (el copy real se carga en B6).
-- **Sandbox de fundación (`app/page.tsx`):** hoja técnica que confirma tokens, fuentes, escala tipográfica, color/contraste y build. **Etiquetada explícitamente como NO un momento del recorrido**; queda como banco de pruebas y se reemplaza en B6.
-- **Librerías opcionales — diferidas al Bloque 6 (no instaladas):** Motion (los tokens de motion ya existen en CSS; las recetas se implementan con los momentos que las necesiten; muchas se resuelven con CSS/transitions), Lenis (B3 pide scroll libre sin scroll-jacking; el smooth-scroll de librería sería contrario salvo justificación clara), tailwind-merge (recién útil con composición real de `className` en componentes de B6). Ninguna por costumbre.
-- **Git:** no se generaron commits/ramas/PRs (gestión exclusiva del usuario).
+Enunciados como regla, para que sirvan a otro caso.
 
----
+**A1 · Un acceso no se ubica donde es pertinente sino donde ya nació la curiosidad.**
 
-## 9.septies Implementación — Sub-bloque 6a (realizado 2026-07-10)
-> ⚠ **9.septies/9.octies/9.nonies son el registro histórico de la Implementación (Bloque 6)**, con el orden y las decisiones de entonces (M1 umbral → M2 quién cocina → M3 aprendizaje → M4 ebooks → M5 comunidad → M6 servicios → M7 cierre; "ninguna librería"; wayfinding con "#"). El **Bloque 6.5 reordenó el arco y reformuló varias de esas decisiones** — el estado vigente está en §9.decies y en la cabecera.
+**A2 · Una decisión no se conserva por haber sido aprobada antes.** Si deja de
+representar a la persona, se reformula y se reescribe en su documento de origen.
 
-Espina del recorrido + contenido real completo + M1 y M2 completos. El sandbox de fundación quedó reemplazado por el recorrido vivo. Los tres gates en verde (`typecheck`, `lint`, `build`; `/` prerenderizada estática) y verificación adicional: el HTML prerenderizado contiene toda la voz y los encabezados sr-only (nada importante depende de JS ni de una animación). Alcance respetado: **NO** se construyeron M3–M7 ni las fichas de producto/servicio (son 6b/6c). Síntesis para recuperar contexto:
+**A3 · Diseñar alrededor de material prometido y ausente es una postergación**, y hay que
+escribirla como tal. La dirección asumía que la fotografía traería el color; no llegó a
+tiempo y hubo que rehacer la paleta un bloque después.
 
-- **Shell del recorrido (`app/page.tsx` → `Recorrido`):** la columna vertical continua = el pasillo de la clase (B3 §2). Fondo `Harina` continuo (de globals), scroll libre, sin scroll-jacking/parallax. `<main>` con `max-inline-size 80rem`, centrado, `padding-inline --space-lg`; los momentos se encadenan sin caja. M3–M7 se agregan sumando `<Momento>` a esta misma columna, sin tocar la estructura. h1 sr-only ("Delfina Gayoso — aprender cocina, juntos") da título de página sin instalar un hero visible (entrada in medias res).
-- **Estructura de archivos nueva:** `app/_patrones/` (primitivos reutilizables) y `app/_momentos/` (los momentos). Carpetas con prefijo `_` = privadas de rutas en App Router (el build confirma solo `/` y `/_not-found`; no generan rutas). Los momentos son server components; los primitivos con interacción (`Aparicion`, `Wayfinding`) son `"use client"`. Los momentos importan contenido siempre vía `@/content` (nunca `content/data/*`).
-- **Patrones implementados (spec de B4 → código):**
-  - **Contenedor de momento (§7.5) — `_patrones/Momento.tsx`:** `<section>` sin borde/caja/fondo propio; separación por ritmo y aire, no por contenedor. Interpreta `ritmoPrevisto` como aire vertical (`silencio`→`--space-silencio`, `denso`→`--space-3xl`), no como plantilla. Encabezado `h2` sr-only con el nombre del momento (estructura para lectores de pantalla sin chrome visual; no es navegación).
-  - **Bloque de voz 1ª persona (§7.3) — `_patrones/Voz.tsx`:** serif, línea corta (`--measure-voz`), color `Hierro` (13.8:1 AAA), sin comillas/barra de cita. `escala` `xl`|`l`→`.voz-display` (WONK on), `cuerpo`→`.voz-texto` (WONK off, párrafo largo). El humor vive en el texto, nunca en la tipografía.
-  - **Wayfinding discreto (§7.6) — `_patrones/Wayfinding.tsx` (cliente):** medidor vertical fino (2px) y corto, anclado a la izquierda dentro del margen, se llena con el avance del descenso. No navegable (no lista momentos, no deja saltar), sin dominio comercial (nada de Shop/carrito), `aria-hidden` + `pointer-events:none`. Baja opacidad en reposo, sube al desplazarse y se retira al quedar quieto; con `prefers-reduced-motion` queda en presencia mínima estable. Cuando existan los capítulos (M3) podrá ligarse al numeral (hoy refleja el avance).
-  - **Motion "vapor" (§5.3-1) — `_patrones/Aparicion.tsx` (cliente):** opacity + translateY 12px, `--dur-lg`, `--ease-posar`, disparado por IntersectionObserver + transición CSS (clases `.aparicion[data-armed][data-shown]` en globals). Progresivo y honesto: **sin JS/SSR el hijo se ve completo** (el estado oculto `data-armed` lo agrega el cliente); con `prefers-reduced-motion` no se arma (visible, sin transform). Escalonado opcional vía `--reveal-delay = calc(var(--stagger) * orden)`.
-- **M1 El umbral (`_momentos/Umbral.tsx`) — completo:** in medias res, sin hero/bienvenida/CTA, sin proclamar autoridad (reemplaza el patrón Hero+CTA prohibido). Dos beats de voz leídos del contenido (gesto grande `voz-xl` + segundo beat `voz-l`), ritmo silencio (mucho aire), un carril anclado a la izquierda (`--measure-voz`). Aparición al cargar. Mobile nativo.
-- **M2 Quién está cocinando (`_momentos/QuienCocina.tsx`) — completo:** su voz en 1ª persona, **no un About**; autoridad deducida del hacer (estudia en el IAG, da clases), no proclamada; **MasterChef solo de paso**, dentro de una frase que fluye, nunca momento propio. Ritmo denso con aire alrededor de la voz (§3.2); zigzag con ancla (`alignSelf` alterna izq/der; el layout se resuelve por id de contenido, no por índice). Aparición al entrar en viewport. Cierra en la frase-columna "sigo aprendiendo con errores y aciertos" (`voz-xl`, detención).
-- **Contenido real cargado en `content/data/*` (leído vía `content/index.ts`) — todo marcado PENDIENTE DE VALIDACIÓN DE DELFINA en cabecera de cada archivo:**
-  - **voz (A):** fragmentos de M1 (`umbral-gesto` humor, `umbral-quedate`) y M2 (`quien-desde-siempre`, `quien-recorrido` [MasterChef de paso], `quien-primera-tanda` humor, `quien-errores-aciertos`). Voz acotada a su momento (nada `"libre"`: aparecería en todos, porque `getVozDeMomento` suma la voz libre).
-  - **aprendizaje (C):** los 6 capítulos NIVEL 0. Documentados: `#01` Huevo frito, `#04` Corte de vegetales, `#05` Masa de pasta, `#06` Salsa pomodoro. Interpretados (no documentados, pendientes de confirmar título): `#02` Arroz, `#03` Salsa blanca. `medio: "video-propio"`, `nivel: "nivel 0"`.
-  - **productos (D):** los 2 reales de Hotmart (evidencia `e-book (1|2).png`). Masas Quebradas **$15.000**; Desayunos y Meriendas Saludables **$10.000** con **Florencia Depaoli, nutricionista** (`colaboradores`, descripción en 1ª persona plural). `formato: "ebook en PDF"`. **PENDIENTE: los `destinoHotmart` son placeholders — faltan los enlaces reales de Hotmart.**
-  - **servicios (E):** una propuesta (colaboraciones y asesorías), invitación en su voz, contacto por Instagram (`https://instagram.com/delfinagayoso` — confirmar usuario). Sin tarifario.
-  - **comunidad (G):** Budín (perro), mate, talleres con chicos, mesas compartidas, trends con la mamá.
-  - **imagenes (F):** queda vacío. v1 sin fotografía producida; `images/` es evidencia, no assets.
-- **Estilos globales agregados (`app/globals.css`):** `.sr-only` (nombre accesible sin chrome visual) y las clases de la aparición `.aparicion[data-armed]/[data-shown]` (transición vapor con `--ease-posar` y `--reveal-delay`).
-- **Decisión de librerías opcionales — FIJADA para 6b/6c (ninguna instalada):**
-  - **Motion — NO.** El único gesto de 6a (aparición "vapor") se resuelve con transición CSS + IntersectionObserver; no supera lo que resuelven CSS/transitions. Se reevalúa solo si una receta futura (p. ej. imagen que viaja entre momentos con orquestación real) lo justifica.
-  - **tailwind-merge — NO.** La composición de `className` en 6a es trivial (utilidades de color/fuente/tamaño + estilos inline con `var()` para spacing/layout bespoke, mismo idioma que B5). No hay conflictos de clases que fusionar.
-  - **Lenis — NO (default).** Contradice el scroll libre sin scroll-jacking de B3; el smooth-scroll de librería sería el efecto que el recorrido evita.
-  - Registrada además en código (`Aparicion.tsx`). Si en 6b/6c aparece una necesidad concreta, se incorpora con intención y se registra acá.
-- **Accesibilidad (desde el inicio):** h1 (página) + h2 (por momento) sr-only para estructura; foco en `Hierro` (heredado de globals); `Yema` nunca como texto/foco; grano solo sobre `Harina`; `prefers-reduced-motion` = versión honesta (la voz queda visible sin transform); wayfinding decorativo (`aria-hidden`).
-- **Git:** no se generaron commits/ramas/PRs (gestión exclusiva del usuario).
+**A4 · Que una pieza esté bien resuelta no es razón para que exista.** Varias piezas
+medidas y calibradas se descartaron enteras. El costo ya pagado no es argumento.
+
+**A5 · Una queja visual que puede medirse deja de ser una preferencia.** Y medir puede
+desmentirla.
+
+**A6 · En una sala, el orden de lectura se mide por grosor de trazo, no por cuerpo — y
+ningún nombre puede pesar más que la habitación que lo contiene.**
+
+**A7 · La fuente no es evidencia del resultado.** Dos veces el archivo en disco era
+correcto y la página estaba mal: una caché de build y una CDN de contenido.
+
+**A8 · Antes de mezclar material ilustrado de dos tandas, verificar que sea el mismo
+dibujo**, no sólo el mismo personaje.
+
+**A9 · Un dato que se muestra y el enlace que lo acompaña son dos campos, y pueden
+mentir por separado.** Un handle se veía distinto del que abría su propia URL y nadie lo
+notó durante meses, porque cada campo por su lado parecía correcto. Cuando un dato tiene
+una forma visible y una accionable, se comparan entre sí.
+
+*Los que resultaron universales ya subieron al Playbook y se sacaron de acá.*
 
 ---
 
-## 9.octies Implementación — Sub-bloque 6b (realizado 2026-07-10)
-M3 (La columna del aprendizaje) + M4 (Lo que te podés llevar) completos, más sus dos primitivos nuevos y la transición 3→4. Se encadenaron a la columna de 6a sin tocar su estructura (sólo se sumaron dos `<Momento>` en `app/page.tsx`). Los tres gates en verde (`typecheck`, `lint`, `build`; `/` prerenderizada estática) y verificación del HTML prerenderizado (los 6 numerales, las 2 fichas con precio/descripción/CTA a Hotmart y las salidas al pasillo están en el `index.html`: nada importante depende de JS). Alcance respetado: **NO** se construyeron M5–M7. Síntesis para recuperar contexto:
-
-- **Primitivo nuevo — Marca de capítulo / numeral (§7.4) — `_patrones/Numeral.tsx`:** hito grande y solo. Serif display (`.voz-display`, WONK on) a `--text-numeral`; la cifra en `Hierro` (default) o `Corteza` (`tono`), el `#` en `Yema` como acento (`aria-hidden`, porque `Yema` falla como texto legible; la cifra comunica sin él). El primitivo sólo renderiza el hito; que sea progresión (no fila/temario) lo garantiza el momento que lo compone. NO es índice, barra de progreso ni módulo.
-- **Primitivo nuevo — Ficha / habitación de producto (§7.1) — `_patrones/FichaProducto.tsx`:** habitación, no card. Descripción en serif (su voz, vía el primitivo `Voz` escala `cuerpo`) como **ancla que reemplaza a la foto** (§8); título en sans (`--text-titulo`); qué te llevás (lista sans meta, con "—" en Piedra, sin iconografía), formato y **precio juntos en una línea meta, sin gritar** (dato al lado de la voz, nunca protagonista). Colaboración en **primera persona plural** ("Lo hicimos con Florencia…"). **CTA** relleno `Yema` + texto `Hierro` (7.0:1) con copy que **invita** ("Llevátelo", nunca "comprá ahora"), `target="_blank" rel="noopener noreferrer"`, `aria-label` con el título; nota micro "Se abre en Hotmart" (honestidad de que se sale del sitio; la web no cobra). Apertura por **`Aparicion` "vapor"**, SIN modal/overlay. **Salida SIEMPRE al pasillo:** ancla "Entrar a la clase" → `#seccion-columna-aprendizaje` (para quien llega por un link de Hotmart). Estilo del CTA como clase reutilizable `.cta-producto` en `globals.css` (junto a `.voz`/`.aparicion`), con hover de opacidad leve (sin rebote); el foco lo da la regla global en `Hierro`.
-- **M3 La columna del aprendizaje (`_momentos/ColumnaAprendizaje.tsx`) — completo:** **centro de gravedad** (más peso que lo comercial). Los 6 capítulos NIVEL 0 leídos vía `@/content` (`getAprendizaje`) como **progresión de hitos**, no temario: cada uno es una estación (numeral grande + título sans h3 + su voz `queEnsena` en serif), agrupada internamente y separada de la siguiente por **`--space-2xl`** (ritmo con aire); **zigzag con ancla** (`alignSelf` alterna por índice, `--measure-voz`). **Rótulo de serie "Nivel 0"** derivado del contenido (`capitulos[0].nivel` + `text-transform: capitalize`, no se inventa etiqueta), serif en `Corteza`, quieto, sin competir con los numerales. **Cálido y completo sin foto** (numeral tipográfico + voz + aire). Aparición "vapor" por capítulo al descender (escalonado por el propio scroll, sin coreografía impuesta; no se usa `orden` entre capítulos para no retardar los de más abajo). Responsive nativo.
-- **M4 Lo que te podés llevar (`_momentos/LoQueTeLlevas.tsx`) — completo:** los 2 ebooks reales (`getProductos`) como **continuación del enseñar**. **Sin grilla, sin aspect ratios uniformes, sin precio protagonista:** cada ficha es una habitación separada de la otra por **`--space-3xl`** (cuartos, no celdas), alternando lado (`ancla`). Difieren en contenido real (colaboradores, qué te llevás) → no son idénticas salvo el título.
-- **Transición 3→4 sin quiebre (§3.3):** M3 y M4 son ambos `ritmoPrevisto: "denso"` → el contenedor de momento les da el mismo aire vertical (`--space-3xl`); no se inserta banda de silencio ni título de sección visible (el h2 de M4 es sr-only). Lo primero que se lee en M4 es su voz en serif (la descripción), de modo que "acá empieza lo comercial" no se delata. Hereda la temperatura del pasillo.
-- **Wayfinding ligado al numeral (§7.6) — `_patrones/Wayfinding.tsx` actualizado:** al descender por M3, sobre el medidor aparece una **marca mínima con el numeral del capítulo actual** (`#03`), en `Piedra` (AA; el numeral va todo en Piedra, sin `Yema`, para que sea legible). Se resuelve con un segundo `IntersectionObserver` sobre `[data-capitulo]` con `rootMargin: "-50% 0px -50% 0px"` (sólo el capítulo que cruza el centro del viewport queda activo); fuera de M3 la marca desaparece. **Sigue sin ser navegable:** texto decorativo `aria-hidden`, sin eventos, `pointer-events: none`; orienta, no deja saltar. Con `prefers-reduced-motion` queda en presencia mínima estable (igual que el medidor).
-- **Anclaje estructural:** `_patrones/Momento.tsx` ahora expone `id="seccion-{id}"` en la `<section>` (en flujo normal, a diferencia del h2 sr-only que está `position:absolute`), para que la salida al pasillo de la ficha ancle de forma fiable. Cambio inocuo para M1/M2.
-- **Contenido:** no se creó ni modificó contenido. Todo se leyó vía `@/content` (capítulos, productos). Los `destinoHotmart` **siguen siendo placeholders**; el CTA ya queda listo para funcionar cuando lleguen los enlaces reales, sin tocar la interfaz.
-- **Librerías:** ninguna nueva (decisión de 6a sostenida). El único motion (aparición) se resuelve con `Aparicion` (CSS + IntersectionObserver); el wayfinding-por-capítulo también es IntersectionObserver puro.
-- **Accesibilidad:** orden de encabezados h1→h2(sr-only)→h3 (títulos de capítulo y de producto) sin saltos; CTA con `aria-label`; salida "Entrar a la clase" con texto descriptivo; `#` del numeral y marca del wayfinding fuera del árbol accesible (`aria-hidden`); `Yema` nunca como texto/foco; foco heredado en `Hierro`.
-- **Git:** no se generaron commits/ramas/PRs (gestión exclusiva del usuario).
-
----
-
-## 9.nonies Implementación — Sub-bloque 6c (realizado 2026-07-10)
-M5 (La cocina compartida) + M6 (Trabajemos juntos) + M7 (La clase no termina) completos, más el primitivo nuevo `InvitacionServicio` (§7.2) y el silencio deliberado 4→5. **Con esto el Bloque 6 queda completo: el recorrido está cerrado M1→M7 con temperatura heredada de momento a momento.** Se encadenaron a la columna de 6a/6b sin tocar su estructura (sólo se sumaron tres `<Momento>` en `app/page.tsx`). Los tres gates en verde (`typecheck`, `lint`, `build`; `/` prerenderizada estática) y verificación del HTML prerenderizado (la frase-puente de M5, las viñetas de comunidad, la invitación de M6 con su enlace directo y el cierre de M7 con sus dos enlaces están en el `index.html`; nada importante depende de JS). Alcance respetado: no se descubrió dirección nueva; el copy sigue pendiente de validación de Delfina. Síntesis para recuperar contexto:
-
-- **Silencio deliberado 4→5 (§3.4) — materializado por el `ritmoPrevisto` de M5, sin código de transición:** se cambió `cocina-compartida` de `"denso"` a `"silencio"` en `content/data/momentos.ts` (**única edición de la semilla de momentos de B3** — alinea la semilla, que se sembró antes de diseñar M5, con la arquitectura §3.4). El contenedor de momento (§7.5) le da entonces `padding-block: var(--space-silencio)` → una banda de `Harina` vacía arriba de M5 que limpia el registro comercial de M4. Es el **único quiebre de ritmo explícito** del recorrido (denso→silencio); M6 y M7 ya venían `"silencio"` en la semilla (calma sostenida de la zona de pertenencia, no un nuevo quiebre). Verificado en el HTML: `seccion-cocina-compartida` sale con `padding-block:var(--space-silencio)`.
-- **Primitivo nuevo — Invitación de servicio (§7.2) — `_patrones/InvitacionServicio.tsx`:** consume una `PropuestaServicio` (tipo E). Su voz en serif lleva el qué y el cómo (`aQuienLeSirve` en `voz-l`, `comoEsTrabajar` en `voz-cuerpo`), ancla sin foto (§8). El `tipo` va como **rótulo quieto en sans** (meta, Piedra, uppercase), no un titular de venta. Contacto = **invitación abierta + un único medio directo**: la `invitacion` en serif + un **enlace de texto** (no el botón `Yema`; ese acento de relleno queda reservado a la compra en Hotmart — escribirle es invitación, no transacción). Etiqueta del enlace derivada del `medio` (instagram/whatsapp/email); `target="_blank" rel="noopener noreferrer"` sólo si es externo (el mail no). SIN tarifario/paquetes/agencia/logos/métricas/formulario de leads. Aparición "vapor".
-- **M5 La cocina compartida (`_momentos/CocinaCompartida.tsx`) — completo:** puente hacia la pertenencia. Abre con la **frase-puente del silencio 4→5** (voz nueva `cocina-no-sola`, registro reflexión, `voz-xl`, sola y anclada, rodeada del aire del momento) que devuelve el foco a lo humano. Sigue el **racimo de vida real** (tipo G vía `getComunidad`: Budín, mate, talleres con chicos, mesas, trends con la mamá) como **pensamientos suyos en primera persona** (serif `voz-l`), zigzag con ancla (mapa por id, no por índice) y `--space-2xl` entre viñetas. **NO es un muro**: nada de grilla de tarjetas, testimonios, logos ni contador de seguidores (Fuera de v1). El humor se documenta, no se ilustra (vive en el texto, no en la tipografía). Aparición por viñeta; responsive nativo.
-- **M6 Trabajemos juntos (`_momentos/TrabajemosJuntos.tsx`) — completo:** el servicio (colaboraciones y asesorías, `getServicios`) como **invitación tardía y no dominante**, en la zona de pertenencia (un pitch al principio rompería la horizontalidad). Ritmo `"silencio"` (aire generoso; solidez por rigor tipográfico y aire, no giro corporativo). Renderiza vía el primitivo `InvitacionServicio`, alternando ancla. **Instagram del contenido, sin inventar dato** — `destino` del contacto (PENDIENTE de confirmar el usuario).
-- **M7 La clase no termina (`_momentos/LaClaseNoTermina.tsx`) — completo:** salida en su voz, **sin cierre de venta, sin CTA comercial, sin footer corporativo, sin newsletter/popup**. Dos beats de voz nuevos (registro `"cierre"`: `cierre-no-termina` en `voz-xl` + `cierre-quedate` en `voz-l`) llevan el final con humor y calidez → deja "quiero seguir esto / quiero cocinar". Ritmo `"silencio"`. Las **formas de seguir van reunidas sin jerarquía de embudo**: un `<nav aria-label="Seguir la clase">` con **dos enlaces de texto de igual peso** (`text-titulo`, Hierro, sin botón `Yema`): "Volver al principio" (`#seccion-umbral`, hace literal el bucle de la clase abierta) y "Seguime cocinando" (Instagram del contenido — **se reutiliza el único Instagram cargado, el del contacto de M6, sin duplicar la URL ni inventar un handle**; si no hubiera Instagram, queda sólo el regreso, degrada con dignidad).
-- **Contenido:** dos piezas de voz nuevas en `content/data/voz.ts` (puente M5 + cierre M7; el registro `"cierre"` del tipo A se usó por primera vez). El resto se leyó vía `@/content` (comunidad, servicios ya cargados en 6a). No se crearon productos/capítulos. Los `destinoHotmart` **siguen siendo placeholders**; el Instagram (contacto M6 = seguir M7) **sigue pendiente de confirmar**.
-- **Encadenado (`app/page.tsx`):** se importaron y sumaron `<CocinaCompartida>`, `<TrabajemosJuntos>`, `<LaClaseNoTermina>` a la columna, después de M4. Sin tocar M1–M4 ni el shell.
-- **Librerías:** ninguna nueva (decisión de 6a sostenida en 6b y 6c). El único motion (aparición) se resuelve con `Aparicion` (CSS + IntersectionObserver).
-- **Accesibilidad:** orden de encabezados h1→h2(sr-only, uno por momento)→h3 sin saltos (M5/M6/M7 no introducen h3 fuera de orden: M6 usa `<p>` para el `tipo`, M7 no lleva h3); `nav` de M7 con `aria-label`; enlaces de contacto/seguir con texto descriptivo; `Yema` nunca como texto/foco (el contacto y el cierre no lo usan); foco heredado en `Hierro`; wayfinding sigue decorativo (`aria-hidden`) y su marca de capítulo sólo existe en M3 (M5–M7 no tienen `data-capitulo`).
-- **Git:** no se generaron commits/ramas/PRs (gestión exclusiva del usuario).
-
----
-
-## 9.decies Bloque 6.5 — Auditoría y Validación de la Experiencia (2026-07-11)
-> ⚠ **Superado en parte por el Bloque 8 (§9.duodecies):** el **Sistema de Atmósferas** (campo continuo `.campo-atmosferico` + motor de interpolación) **ya no existe**; hoy el color vive en **bloques contenidos sobre crema**. La paleta (R10, oro/corteza/rojo) fue reemplazada por la del manual de marca. El resto del 6.5 (arco, tono, navbar, serie, ecosistema) sigue vigente.
-
-Etapa intermedia entre Implementación (Bloque 6) y Refinement. El usuario aportó **evidencia nueva en varias olas**; esas indicaciones tuvieron **prioridad explícita** sobre decisiones previas ante contradicción. Se preservó sólo la **filosofía Midfield**; las decisiones específicas (interpretación, concepto, DA, arquitectura, sistema visual, implementación) se revisaron cuando la evidencia lo justificó. **Todo cambio de criterio se reescribió también en el documento de origen** (no sólo acá): cada entregable de B1–B4 tiene ahora secciones "Actualización — Bloque 6.5" (continuaciones por ola). Lo no implementado quedó en `backlog-refinamiento.md`. Los tres gates en verde en cada ola; verificación por DOM + capturas.
-
-### Indicaciones nuevas (fuente de verdad del bloque, por tema)
-- **Narrativa/recorrido:** el recorrido era demasiado autobiográfico; comunicar antes qué puede hacer Delfina por el visitante; priorizar temprano ebooks/clases/asesorías/colaboraciones; la historia acompaña, no retrasa; revisar el orden.
-- **UX writing:** mantener joven/cálido/cercano/con humor, pero el humor no debe apoyarse en la autocrítica constante ("me quemo"); registro un poco más profesional; cada frase con función, menos relleno.
-- **Navegación:** incorporar navbar; mobile con hamburguesa = dos utensilios que se cruzan; luego, disolver la frontera navbar↔contenido y que el menú herede la atmósfera (opaco, sin transparencias); el logo re-presenta el nombre al abrir el menú.
-- **Redes:** integrar Instagram + TikTok de forma natural (no "Seguime cocinando").
-- **Motion/Lenis:** habilitarlos con intención; preferir una implementación rica antes que conservadora (SVG+Motion, Rough Notation, CSS mask/clip-path, Lottie sólo si es necesario).
-- **Aprendizaje:** replantear como SERIE ("Cocina Nivel 0"); cada capítulo nº + título + descripción + acceso al contenido; apertura del caption tipo recetario que se despliega.
-- **Quién soy:** actualizar el párrafo de MasterChef (ya es profesional, recibida); reforzar ese momento con un aura roja **integrada a la atmósfera** (no un fondo con bordes).
-- **Servicios:** contacto multicanal (Instagram + email `gayosodelfina@gmail.com`); CTAs de cada propuesta con intención propia (no repetir la misma frase).
-- **Oferta profesional:** mostrar el ecosistema completo en v1 con contenido ficticio claramente marcado y reemplazable (clases, tickets, asesorías, propuestas educativas, colaboraciones).
-- **Ebooks:** más presencia; usar las portadas reales de `images/` como contenido.
-- **Sección personal (comunidad):** las tres últimas viñetas sonaban a relleno; enriquecer visualmente (mate, huellas de Budín, dibujos del día a día).
-- **Jerarquía:** los grandes momentos (ebooks, serie, servicios) se parecían demasiado; que cada uno se sienta un capítulo con identidad propia.
-- **Presentación del nombre:** falta un momento claro con el nombre completo; Opción B — al cargar aparece "Delfina Gayoso" y se reduce a "DG".
-- **Sistema de Atmósferas:** incorporar la filosofía atmosférica de North-Studio (proyecto Brenda como referencia, **no** su estética/colores/partículas): riqueza cromática, profundidad, sensación de luz, continuidad, identidad emocional por momento. Subir presencia; cada capítulo un recuerdo visual distinto. Evaluar arquitectura (campo continuo vs atmósferas ancladas).
-
-### Hallazgos, separados por vía
-- **Conceptuales:** el arco retrasaba la propuesta de valor (M1/M2 puro clima/autobiografía); el humor autocrítico sobreactuaba un rasgo (evidencia real de Hotmart: voz cálida-profesional, no autocrítica); relleno narrativo; ebooks con baja presencia; redes incompletas (sin TikTok); atmósferas demasiado uniformes (familia crema; repetición Yema/Corteza); secciones grandes poco diferenciadas; comunidad genérica en sus últimas viñetas; faltaba presentación explícita del nombre.
-- **Técnicas:** salto del "#" del wayfinding (montaje/desmontaje empujaba el layout); ficha sin renderizar la portada; caption con Motion height inestable (rompía composición, cap #02); Rough Notation se desincronizaba con el scroll; overflow horizontal en mobile (ancho fijo `64ch` en `CapituloSerie`); aterrizaje de navegación desfasado (ancla al borde con aire, no al contenido); menú mobile con fondo transparente dejaba ver el contenido; descendente de la "y" recortado y ritmo asimétrico del colapso del logo.
-
-### Criterios reformulados (regla vieja → nueva · dónde se reescribió)
-- **R1 · Orden y jerarquía "enseñar > vender"** (arquitectura §1 y §4-palancas; concepto §2; DA orden): ya no se sostiene por **posición** (retrasar el comercio); la propuesta de valor va al frente y la historia acompaña. Se sostiene por **peso, ausencia de dominio comercial persistente y tono/encuadre**. Orden nuevo M1→M7 (ver cabecera).
-- **R2 · Tono** (concepto §5; DA 1.1; Discovery §12): joven/cálido/cercano/con humor, **sin autocrítica constante**; un poco más profesional; cada frase con función.
-- **R3 · Librerías** (§10; journal 9.sexies/9.septies): se **incorporan Lenis y Motion** (antes "ninguna"); luego **rough-notation** se probó y se **quitó** (reposicionaba mal con scroll → reemplazada por SVG inline propio). Lottie no se incorporó. Enriquecimiento intencional habilitado.
-- **R4 · Fotografía/assets** (DA "Condiciones de v1"; sistema-visual §8): sigue sin fotografía **producida** para el sitio y las fotos de IG en `images/` no se reutilizan, **pero las portadas de producto son contenido real** y sí se usan (movidas a `/public/productos/`, tipo F).
-- **R5 · Redes** (arquitectura "Fuera de v1"): Instagram + TikTok integrados como contenido (tipo H, `redes.ts`), en navbar y cierre.
-- **R6 · Navegación** (arquitectura "Modelo de navegación"; sistema-visual §7.6): se incorpora **navbar de orientación** (antes descartado) sin lógica comercial; wayfinding pierde el marcador "#"; el navbar **hereda la atmósfera y disuelve su frontera** (gradiente sin borde); menú mobile = **hoja opaca** con la atmósfera activa.
-- **R7 · Aprendizaje como serie** (arquitectura §M3; sistema-visual §7.4): encabezado de serie + `CapituloSerie` (nº/título/breve + "Leer más" que despliega el caption real como una hoja de recetario + "Ver el reel" a Instagram). Corrige títulos: **#02 Caldo Vegetal**, **#03 Arroz Pilaf**.
-- **R8 · Contacto de servicio** (sistema-visual §7.2): de "un único medio" a **multicanal** (Instagram + email); una invitación **propia por sección**.
-- **R9 · Ecosistema en v1** (arquitectura "Fuera de v1: no fabricar clases"): la web muestra el ecosistema completo con **contenido de ejemplo marcado** (`borrador` + marca "Ejemplo").
-- **R10 · Color / atmósferas** (DA §color "rojo excluido / universo luminoso crema"): el rojo vuelve **sólo** como aura de MasterChef integrada al campo; el universo sigue luminoso pero **cada momento tiene una temperatura cromática distinta**, con más presencia donde construye emoción (ver Sistema de Atmósferas). "Modo oscuro fuera de v1" se mantiene (las atmósferas son cálidas/luminosas, no dark mode).
-- **R11 · Portadas de capítulo / presentación del nombre** (arquitectura "no es una colección de secciones / sin placa"): los grandes momentos **anuncian su entrada** con encabezado visible; y se resuelve el "momento claro del nombre" (DG intro/menú). No se instala menú/placa corporativa; es señalización dentro del pasillo.
-
-### Sistema de Atmósferas (nuevo subsistema — arquitectura y decisiones)
-- **Qué es:** el aire del proyecto. Una **única capa fija continua** (`app/_chrome/atmosferas/` — `config.ts` + `AtmosferaProvider.tsx`; CSS `.campo-atmosferico`) que un motor interpola por scroll. **Desacoplado:** cada momento **declara** `atmosfera` (en `momentos.ts`); los colores/intensidades/posiciones viven **sólo** en `config.ts` (reutilizable en otros proyectos cambiando esa config). Variables `--atm-*` que el CSS consume.
-- **Modelo:** tres capas por atmósfera — **luz** (fuente cálida), **color** (identidad emocional) y **profundidad** (tono hondo hacia un borde) — más un **lavado vertical** que da volumen. Cada una se interpola por canal.
-- **Arquitectura (decisión A/B/C):** se evaluó campo continuo (A) vs atmósferas ancladas por sección (B, filosofía Brenda). Se eligió **Opción C** (ancladas con transición): cada atmósfera se sostiene a **fuerza plena** en su sección (meseta `HOLD=0.36`) y cruza suave en los bordes → cada capítulo deja un recuerdo distinto, sin cortes, con la implementación más simple (remapear el factor de interpolación).
-- **Paleta por momento (temperaturas distintas):** bienvenida = manteca; oferta = oro (Yema); aprendizaje = **chocolate/café** (el horno); quién soy = **piedra fría**; servicios = **verde** (perejil/oliva); comunidad = **terracota/especias**; cierre = **vino/atardecer**. Comportamiento variado (algunas abrazan casi todo el ancho, otras sutiles). Legibilidad verificada (texto `Hierro` ≥AA; validación al máximo de presencia queda en backlog).
-- **Aura de MasterChef:** foco rojo del **propio campo** (`--atm-emo-*`) que el motor enciende cuando el párrafo cruza el centro del viewport y apaga al alejarse (sin bordes; parte del aire). Marcado con `[data-emocion="masterchef"]`.
-- **Navbar y menú:** heredan `--atm-navbar-rgb` (Harina teñida por la atmósfera). Menú mobile = superficie opaca coloreada por la atmósfera activa.
-- **Accesibilidad/rendimiento:** una sola capa; un rAF por frame; anclas cacheadas; defaults en `:root` (degrada sin JS); sin animación autónoma (compatible con `prefers-reduced-motion`).
-
-### Cambios implementados (código y contenido)
-- **Recorrido/orden:** `content/data/momentos.ts` (orden, fase, ritmo, `navLabel`, `atmosfera`), `app/page.tsx` (reencadenado + adornos entre momentos).
-- **Copy:** `content/data/voz.ts` (reescritura de tono; entrada con propuesta de valor + `enfasis` "conmigo"; quien-recorrido actualizado; cierre; puente M6), `content/data/aprendizaje.ts` (títulos reales #02/#03, `caption` + `enlaceReel`), `content/data/series.ts` (nuevo), `content/data/comunidad.ts` (ilustraciones + copy), `content/data/servicios.ts` (multicanal + CTAs propios + ejemplos), `content/data/productos.ts` (portadas + clase de ejemplo), `content/data/redes.ts` (nuevo, IG+TikTok), `content/data/imagenes.ts` (portadas reales tipo F).
-- **Chrome/atmósferas:** `app/_chrome/Navbar.tsx` (utensilios que se cruzan, activo, monograma DG con intro/menú), `app/_chrome/LenisProvider.tsx` (scroll suave + anclas con offset), `app/_chrome/atmosferas/*` (config + motor + campo), `app/_chrome/adornos/*` (`Adorno` con motivos y deriva al scroll, `CirculoAnotado`, `SubrayadoAnotado`, `ManchaHarina` CSS mask, `IlustracionComunidad`).
-- **Patrones/momentos:** `Momento.tsx` (portada de capítulo + ancla al contenido), `CapituloSerie.tsx` (Opción C + caption "recetario"), `FichaProducto.tsx` (portada + categoría + ejemplo), `InvitacionServicio.tsx` (multicanal + ejemplo), `TextoConMenciones.tsx` (menciones IG), `Voz.tsx` (`enfasis`), `Wayfinding.tsx` (sin "#"), `MarcaEjemplo.tsx` (nuevo). `globals.css` (tokens `--atm-*`/`--navbar-h`, campo, navbar dissolve, portada, papel de recetario, aura→campo, mancha, monograma DG, fixes de overflow y descendente).
-- **Tipos** (`content/types.ts`): `RedSocial`/`Plataforma` (H), `SerieAprendizaje` (C.bis), campos `caption`/`enlaceReel` (C), `atmosfera`/`navLabel` (B), `ilustracion` (G), `borrador`/`ctaLabel` (D), `enfasis` (A), `CanalContacto` (E multicanal), `tipoGesto:"portada"` (F).
-- **Librerías:** `lenis`, `motion` instaladas; `rough-notation` instalada y luego **removida**.
-
-### Datos reales corregidos / confirmados en el bloque
-- Títulos reales de la serie (#02 Caldo Vegetal, #03 Arroz Pilaf) + captions y enlaces de reel reales. `destinoHotmart` reales (los cargó el usuario). Email de contacto **`gayosodelfina@gmail.com`** (definitivo). IG `@delfinagayoso` / TikTok `@gayosodelfi` (de evidencia; confirmar). Delfina **20 años**; Florencia Depaoli "mamá de Genaro y Helena, nutricionista".
-
-### Pendiente / backlog (`backlog-refinamiento.md`)
-Validar todo el copy y las atmósferas vivas con Delfina; **contraste con la paleta ampliada al máximo de presencia** (prioridad alta); reemplazar el contenido de ejemplo por datos reales; responsive en los cinco formatos; afinar meseta de atmósferas, aura, intro del nombre; seguir explorando CSS mask/clip-path, más adornos y Lottie (si aporta). La **lectura holística del recorrido** (¿encontró su forma?, ¿detenerse?) es de Refinement, no de este bloque.
-
----
-
-## 9.undecies Bloque 7 — Refinamiento (cierre de la v1, 2026-07-13)
-> ⚠ **Reabierto por el Bloque 8 (§9.duodecies):** la conclusión "la experiencia encontró su forma / es momento de detenerse" cerró la v1 **a la espera de la validación de Delfina**; esa validación pidió evolucionar (color, composición editorial, recursos gráficos, logotipo). Las mediciones de contraste y responsive de B7 quedaron obsoletas: las vigentes son las de §9.duodecies.
-
-Fase V (Refinement) de Midfield. Volver a mirar el proyecto como un todo con más comprensión que al construirlo; refinar es sustraer lo que no pertenece, no agregar. Se recorrió el proyecto **completo y vivo** en los cinco formatos. Método: dev server + verificación por DOM (JS) + medición de contraste + capturas. **Resultado central: la experiencia encontró su forma; el pase no produjo cambios de código** (sólo el triaje de `backlog-refinamiento.md`). Los tres gates quedaron en verde (typecheck+lint+build). No se tocó dirección ni se agregaron features (eso fue 6.5): las ideas de esa clase quedaron en el backlog.
-
-### Lectura de conjunto (experiencia como todo)
-- **El arco funciona como recorrido.** Reconocimiento (M1 invita + M2 lo que te llevás) → descubrimiento (M3 *cómo* enseña —la serie gratis, centro de gravedad—; M4 quién es, MasterChef como origen con el aura roja) → pertenencia (M5 trabajar juntas, M6 la cocina compartida, M7 la clase que no termina, sin venta). Se lee como experiencia, no momento por momento.
-- **Fork "ebooks antes que la serie": se mantiene.** Con el recorrido en la mano: M2 "Lo que te podés llevar" abre con la voz de Delfina en serif (la descripción), no con precio ni grilla; las fichas son habitaciones que alternan lado y llevan la portada real. La propuesta de valor al frente se lee "esto me llevo", no como tienda, y el arco igual cierra en pertenencia. No se reordena.
-- **Observación de conjunto (no cambio, de dirección/Delfina):** el tramo comercial temprano es el más denso —M2 encadena **tres** habitaciones (2 ebooks reales + 1 clase de EJEMPLO) antes de mostrar cómo enseña—. Hoy lo sostienen la voz, el aire y la ausencia de nav/carrito. Al reemplazar el ejemplo, mirar si dos o tres es el número justo.
-- **Atmósferas:** cada momento tiene su temperatura distinta (crema→oro→chocolate→piedra→verde→terracota→vino) pero **sutil** —soft tints, no campos saturados—, coherente con "la interfaz aporta silencio". La meseta (HOLD 0.36) sostiene cada una y los cruces caen en los respiros; ningún cruce se sintió rápido ni lento. El aura de MasterChef florece al centrar el párrafo y se apaga al alejarse, sin bordes, integrada al campo.
-
-### Contraste (prioridad alta del backlog) — VALIDADO, sin bajar intensidad
-Medición real componiendo cada atmósfera sobre `Harina` al máximo de presencia (se confirmó leyendo en vivo las `--atm-*` que escribe el motor en la meseta: p. ej. chocolate = color 78,48,40 @0.36 + luz @0.18 + prof @0.22, idénticas a `config.ts`). Contraste de `Hierro` (la lectura, todo el contenido y su voz):
-- chocolate (corazón, el más hondo): **7.7:1** (dominante) · vino (despedida): **8.8 / 6.4** · oro (cálida): 11.0 · verde (fresca): 8.9 · piedra + aura MasterChef (peor solapamiento real): **6.1**.
-- En un solapamiento total imposible (todas las capas al pico sobre el mismo píxel): `Hierro` ≥ **5.6** en todas.
-- **`Hierro` se mantiene ≥AA en todas y AAA en la lectura real.** Los focos más hondos (chocolate, vino) **no** ubican texto secundario encima (M3 usa `Hierro`/`Yema`; el rótulo "LA SERIE" en `Piedra` va arriba, fuera del foco). Los kickers en `Piedra` (M2 oro, M5 verde) caen lejos de sus focos. **Ninguna intensidad compromete la lectura → no se bajó nada.** `Piedra`/`Corteza` como rótulos chicos ya eran borderline sobre `Harina` por decisión de DA previa; la atmósfera no los pone en su peor punto.
-
-### Responsive (prioridad alta) — VALIDADO, sin correcciones
-Barrido 360/390/768/1440/1920 con verificación por DOM: **cero overflow horizontal** en todos los momentos (`scrollWidth == clientWidth`; el `overflow-x: clip` + el cap `min(--measure-cuerpo, 100vw − 2·--space-lg)` de `CapituloSerie` aguantan). La ficha reinterpreta (2 columnas en desktop → portada arriba + texto en tablet/mobile; portada full-width en mobile). Navbar: enlaces desktop ≥720px, utensilios <720px (44×44), menú = hoja opaca `fixed inset:0` full-viewport (verificado 0,0,390,844) que hereda la atmósfera y re-presenta "Delfina Gayoso". Aterrizaje de navegación: cae a `--navbar-h` + `--space-md` (56+24=80px) con Lenis; reduced-motion usa `scroll-padding-top`. El zigzag de la columna de aprendizaje es visible en desktop (chapters alternan ~120/583px) y se comprime en anchos chicos (natural: el capítulo casi llena el carril). Sin defectos.
-
-### Sustracción y coherencia — nada gana su lugar para ser quitado
-- Meseta de atmósferas, navbar (persistente pero de borde disuelto, nunca intruso), densidad del enriquecimiento (no satura), aura de MasterChef: todo justifica su presencia. No hay elemento puramente inercial que se pueda quitar sin revertir una decisión deliberada del 6.5.
-- **Observaciones anotadas (no cambios):** (a) `Yema` (CTA de compra, único acento de relleno) sobre el campo oro de M2 pierde algo de separación —sigue legible, texto `Hierro` 7:1—; (b) `ManchaHarina` es el elemento más puramente decorativo y en mobile se lee algo más marcado —tiene intención (harina sobre la mesada) y no satura; primer candidato a quitar si alguna vez se busca sustraer—; (c) **deriva de comentarios internos**: tras el reorden de 6.5, algunos encabezados de `app/_momentos/*.tsx` citan el número viejo del momento (p. ej. "Momento 4 — Lo que te podés llevar" cuando hoy es el 2; también QuienCocina "2"→es 4, TrabajemosJuntos "6"→es 5, CocinaCompartida "5"→es 6). No afecta la experiencia (son comentarios); queda para una limpieza futura. (d) `Adorno` define motivos `batidor`/`especias` no usados en `page.tsx` (variantes opcionales; sin costo).
-- **Rendimiento (Android bajo):** conviven varios sistemas ligados al scroll (motor de atmósferas rAF, Lenis, deriva de adornos con Motion, wayfinding). Fluido en emulador; validación en gama baja real queda como observación. Degrada con `prefers-reduced-motion` (Lenis y adornos se apagan; el campo sólo refleja el scroll). Sin errores de consola.
-
-### Triaje del backlog (`backlog-refinamiento.md`)
-Cada ítem quedó marcado con su disposición:
-- **Resuelto (validado en Refinamiento, sin ajuste):** recorrer el arco / fork; responsive 5 formatos; overflow horizontal; contraste al máximo de presencia; atmósferas en 5 formatos; aterrizaje de navegación; afinar Lenis (se mantiene `duration 1.1`); grano sobre portadas; meseta HOLD 0.36; color del navbar por atmósfera; intensidad del grano; recalcular `Yema`/`Corteza` (la paleta no cambió).
-- **→ Delfina (diferido a la clienta, no se fabrica):** todo el copy de voz; handles de redes; contenido de ejemplo→real; captions #04/#06 (recorte); forma exacta de los utensilios; intensidad del aura y del bloom MasterChef; sección personal (copy + ilustraciones); tiempos de la intro del nombre; datos disponibles sin usar (20 años, Florencia); gusto de paleta contra sus portadas.
-- **Descartado (v1), con razón (refinar es sustraer):** transiciones Motion momento-a-momento (sería espectáculo); auto-ocultar navbar (no mejora claro); más CSS mask/clip-path; más adornos SVG; más acentos a mano; Lottie; caption revelado línea por línea; serie embed (Opción B).
-
-### Decisión de forma
-**La experiencia encontró su forma.** Cada decisión que permanece vuelve a representar a Delfina: "enseñar > vender" se sostiene por tono y encuadre, no por omisión; la interfaz acompaña sin competir; la tecnología (atmósferas, Lenis, Motion) sostiene sin hacerse ver; el conjunto funciona mejor que la suma de partes ("una clase que sigue"). Es momento de detenerse en el código. **Lo que queda genuinamente abierto es de Delfina, no del diseño** (voz/copy, datos reales, y los afinados de sensación —utensilios, aura, atmósferas, intro— que sólo tienen sentido con ella). Nada de eso se puede ni se debe fabricar.
-
-### Aprendizajes (Bloque 7)
-- **Detenerse también es una decisión.** Llegar a Refinamiento y encontrar que el 6.5 dejó la experiencia con su forma —y que el pase honesto es sin cambios de código— no es no hacer nada: es reconocer que seguir modificando sería cambiar, no mejorar (Playbook V y VIII). El valor del bloque fue *validar el todo, medir y triar*, no producir diffs.
-- **El contraste se mide, no se supone.** La duda "atmósfera más presente vs. legibilidad" se cerró con medición real (componiendo las capas y leyendo las vars vivas): `Hierro` queda ≥AA/AAA en todas. La riqueza cromática NO se pagó con legibilidad porque los focos hondos y el texto secundario no coinciden en el espacio — es una propiedad del diseño, no una casualidad.
-- **La subtracción tiene un límite: no revertir dirección.** Los candidatos a quitar (placeholders "Ejemplo", `ManchaHarina`) son decisiones deliberadas del 6.5 que sirven a la validación de Delfina o cargan un motivo. Sustraer no es deshacer lo que otro bloque decidió con intención: eso vuelve al backlog/clienta, no al código.
-- **Las atmósferas viven en la sutileza.** Los tonos hondos (chocolate 0.36, vino 0.30) sobre `Harina` con la luz encima dan tints suaves, no campos saturados: cada capítulo deja un recuerdo *gentil*, no dramático. Esa mesura es coherente con "la interfaz aporta silencio" y es lo que mantiene a `Hierro` a salvo — subir la presencia hasta que se "note" rompería ambas cosas.
-
----
-
-## 9.duodecies Bloque 8 — Personalización con la clienta (2026-07-17 → 2026-07-19) · olas 1–8
-> ⚠ **SUPERADA por §9.terdecies (olas 9–14 + CMS).** Lo vigente hoy: recorrido de 6 secciones con "Quién soy" abriendo; paleta nueva del manual (`images/paleta.jpg`, terracota como acento); **bandas de color a pleno ancho con cortes por onda** (ya NO `.sala-panel` contenidos ni fondo crema continuo); navbar de herencia continua; Budín interactivo; Sanity CMS. Esta sección se conserva como historia de las olas 1–8.
-Co-creación con la propia Delfina, que recorrió la v1 y aportó evidencia de primera mano. **Su indicación explícita tiene prioridad sobre cualquier decisión anterior**; se preservó la filosofía Midfield, evolucionó la representación concreta. Trabajado en **8 olas** de indicaciones.
-
-### Materiales recibidos (fuente de verdad del bloque)
-- **Manual de marca** (`Manual de marca Delfina Gayoso.pdf`, 5 pág.). Hecho por *Pixelarte Vinilos* (cartelería local) → **referencia, no verdad literal** (lo aclaró ella). Aporta: paleta **verde #39532A** (primario), **taupe #AEA391**, **crema #F7F4F0**, **marrón #573C23**; tipografía Montserrat Thin/Medium (**no adoptada**: ella elogió la tipografía actual); **isotipo** (mujer recostada con canasto de verduras + "DELFINA GAYOSO"); moodboard botánico (bosque, margaritas, mesa natural).
-- **Logotipos oficiales** en `public/logotipo/logotipo-1..5.png` (variantes: verde sobre crema, crema sobre verde, crema sobre taupe, etc.).
-- **5 referencias visuales** (`images/inspiracion1..5.jpeg`): Bake Today, Anna Bradshaw, Maria Mack, Haus, AVEC. Principios extraídos (no copiados): **crema de base + bloques/superficies de color contenidos**, curvas, sellos, texto en trayectoria, anotaciones a mano, marcos, líneas/divisores, composiciones asimétricas, tipografía integrada al diseño, fotografía que rompe el grid.
-- **Mensajes y audios de Delfina** (citas literales relevantes): *"la verdad que el diseño que usaste me re gusta"*; *"parece q lo escribí yo"*; *"le agregaría algo un poco más interactivo o alguna foto… algún video"*; *"la veo capaz un poco cargada de texto"*; *"solo sumaría un color más como el verde"*; *"me gustaría que cada sección tenga más intensidad de color para que se diferencien más"*; *"me gustan las curvas, los dibujitos, los detalles así en colores q resalten"*; y sobre los ebooks: **Hotmart no le funciona para cobrar**, quiere pasarlos a **Tienda Nube u otra** y **poder administrarlo ella**.
-
-### Evidencia organizada
-- **CONSERVAR:** tipografía Fraunces + Karla; la voz/tono cálido-profesional (ella la validó con entusiasmo); base crema; "enseñar > vender"; cercanía; MasterChef como origen; curvas/dibujitos/acentos a mano (ampliarlos).
-- **AJUSTAR:** más color y diferenciación por sección; sumar el verde; aligerar la carga de texto; más interactividad/foto/video; más curvas, dibujos y detalles en colores que resalten.
-- **NUEVO:** sacar los productos de Hotmart (plataforma agnóstica); integrar su logotipo oficial; loading screen; Open Graph con su identidad.
-
-### Criterios reformulados (regla vieja → nueva)
-- **R12 · Paleta.** DA §2.2–2.3 ("paleta de interfaz deliberadamente pobre", Yema/Corteza acentos, `Perejil` mínimo, rojo excluido) → **paleta reencuadrada sobre el MANUAL**: crema + **arena `#DCCBA6`**, **marrón `#4A3527`**, **taupe `#AEA391`**, **verde bosque `#39532A`**, **vino apagado `#4E2630`**; acento **ocre `#6B4A1F`**; tinta clara `#F5EFE3` / oscura `#2A241E`. **Se retiró el oro/naranja saturado** (leía "lúdico/ilustrativo", no editorial). El **CTA de compra** deja el `Yema` y pasa al **verde de marca** con tinta crema. Razón: identidad sofisticada, coherente y atemporal, anclada en su manual.
-- **R13 · Sistema de color (reemplaza el Sistema de Atmósferas de §9.decies).** El **campo continuo fijo** (`.campo-atmosferico` + motor de interpolación por scroll) **fue eliminado**. Trayectoria: campo continuo → "galaxias" full-bleed con tinta adaptativa → **estado final: fondo CREMA + BLOQUES de color contenidos** (`.sala-panel`). Motivo del cambio final: las referencias y el pedido de "no todas las secciones con fondo completo de color". Ya **no hay ondas entre secciones** ni uniones color-a-color.
-- **R14 · Legibilidad adaptativa.** Cada sala declara su tinta (`ink`/`inkSoft`/`accent`) y el contenido la hereda por variables scopeadas. El color **no se limita por miedo al contraste**: se implementa y la tinta se adapta. Contraste medido del estado final: tinta principal **6.2–11.2 (≥AA, mayoría AAA)**.
-- **R15 · Plataforma de venta agnóstica.** "CTA → Hotmart" → `Producto.destino` es una URL cualquiera; migrar de plataforma es cambiar la URL, sin tocar arquitectura. La UI no nombra plataforma ("Se abre en una página externa").
-- **R16 · Fotografía.** Se mantiene "sin fotografía producida" **hasta que llegue el material de ella**; la estructura ya la espera (`EspacioFoto`, hero en arco 4/5 que respira). `images/` sigue siendo evidencia; `public/logotipo/*` y `public/productos/*` sí son assets.
-- **R17 · Refinement reabierto.** La decisión de §9.undecies ("la experiencia encontró su forma, detenerse") **quedó superada**: la clienta reabrió la dirección. No es contradicción metodológica: Refinement cerró la v1 *a la espera de su validación*, y su validación pidió evolucionar.
-
-### Estado final del sistema (lo que hay hoy en el código)
-- **`app/_chrome/atmosferas/config.ts` = SALAS.** Cada sala: `bg`, `ink`, `inkSoft`, `accent`, `navBg`, `oscura`, **`panel`** (si es bloque de color o vive sobre crema). Helpers `getSala`, `estiloSala`. Mapeo: bienvenida/hero → crema (sin panel) · calida/ebooks → **arena** · corazon/aprendizaje → **marrón** · intima/quién soy → crema (sin panel) · fresca/servicios → **verde** · compartir/comunidad → **taupe** · despedida/cierre → **vino**.
-- **`app/_patrones/Momento.tsx`**: pinta crema, y si `sala.panel` envuelve el contenido en `.sala-panel` (rectángulo contenido, radio 8px, marco fino, márgenes crema). Props `full` (hero/cierre a 100svh) y `alFinal` (el cierre **estira** para ocupar el alto disponible: de debajo del navbar al borde inferior, sin vacío).
-- **Navbar**: tinta fija Hierro sobre `Harina` (vive siempre sobre crema). `AtmosferaProvider` quedó como **envoltura neutra**.
-- **Marquesinas** (`Marquesina.tsx`): banda **recta** con **guarda** (cenefa de arcos) arriba/abajo; texto recto en marquee CSS; tonos `marron` | `verde` | `vino` | `taupe`.
-- **Recursos gráficos**: `Sello` (texto en trayectoria), `MarcoFoto` (curvas alrededor de portadas), `LineaEditorial`, `Flecha`, `Adorno` (dibujos en los respiros de crema), `CirculoAnotado`, `SubrayadoAnotado`, `IlustracionComunidad` (usa `--atm-ink-soft` para leerse sobre los bloques), `EspacioFoto` (espacios reservados para la foto real).
-- **La Serie**: `.serie-capitulos` con más aire, filete divisorio entre capítulos y **zigzag sólo ≥900px** (en mobile todos alinean a la izquierda).
-- **Clase en vivo**: separada de los ebooks en su propia superficie (`.bloque-clases`) con rótulo propio.
-- **Hero**: spread horizontal (texto | foto en arco 4/5 generosa) + sello superpuesto; sin subrayado en "conmigo" (lo aporta la línea ilustrada).
-- **Cierre**: bloque vino contenido con el **logotipo oficial** (`logotipo-1`) protagónico, compacto, que llena el viewport.
-- **Loading**: `.pantalla-carga` con el logotipo sobre crema, entrada finita y auto-dismiss por CSS (en el HTML inicial, sin flash). **Open Graph**: `logotipo-3` + `metadataBase`.
-
-### Documentos actualizados
-`direccion-de-arte.md` y `sistema-visual.md` (secciones "Actualización — Bloque 8", una por ola, 1ª→8ª); `arquitectura-de-experiencia.md` (plataforma agnóstica); líneas puntuales en `concepto-experiencia.md`, `README.md`, `content/README.md`.
-
-### Pendientes con Delfina (no se fabrican)
-Fotografías, videos e **ilustraciones/dibujitos propios** (sesión de fotos pendiente); **qué textos resumir o quitar**; **decisión de plataforma de venta + URLs reales**; **validar la paleta nueva** y cuál logotipo prefiere; y lo heredado: copy/voz, handles de redes, contenido de ejemplo → real.
-
-### Deuda técnica anotada
-Código sin uso del sistema anterior (`escribirNavbar` en config; tokens `--color-yema`/`--color-corteza`; componentes `Conector`/`ManchaHarina` si no vuelven a usarse). El cache `.next` puede servir CSS vieja tras editar `globals.css`: si un cambio no se refleja, reiniciar el dev server (o `rm -rf .next`). Animaciones **infinitas** bloquean las capturas del navegador: preferir animaciones finitas.
-
----
-
-## 9.terdecies Bloque 8 — olas 9–14 + Integración de CMS (2026-07-20 → 2026-07-24)
-> ⚠ **Superada en parte por §9.quindecies** (y, hoy, por §9.septdecies, que es el ESTADO VIGENTE). Lo que cambió: las **clases** salieron de "Lo que te podés llevar" como `Producto` y son `Experiencia`, un tipo propio con fecha; el sitio dejó de ser una sola ruta (`/experiencias` y `/colaboraciones`); las **marcas** son las reales, con sus logotipos a color. Sigue vigente todo lo demás: recorrido de 6 secciones, paleta, bandas + cortes por onda, navbar de herencia continua, Budín, y la arquitectura del CMS con su respaldo local.
-Continuación del Bloque 8, siempre con la regla de que **la indicación explícita de Delfina manda sobre decisiones previas** (se preservó la filosofía Midfield). **Donde contradiga a cualquier sección anterior, manda ésta.** El titular de la etapa: **el sitio dejó de ser una web de contenido fijo y pasó a ser una plataforma administrable desde Sanity, sin cambiar la experiencia.**
-
-### Recorrido actual — SEIS secciones (reemplaza el M1→M7 de bloques previos)
-Orden y atmósfera (clave de `momento.atmosfera` → sala en `app/_chrome/atmosferas/config.ts`):
-1. **Quién soy** (`quien-soy`, salvia) — bienvenida BREVE "Hola, soy Delfi", **abre el sitio** (11ª ola: se invirtió con el umbral; es un primer contacto más cálido). `full`, con su retrato real.
-2. **Umbral** (`umbral`, crema) — la propuesta de valor. `full`, con el plato (croquetas) en el marco en arco.
-3. **Lo que te podés llevar** (`lo-que-te-llevas`, arena) — TODA la propuesta educativa: ebook(s) + **clases** (presencial real; online "Próximamente"). Cada clase con su propia foto. Aviso "Nuevos ebooks en camino" con un libro dibujado. Marquesina ondulada entre ebooks y clases.
-4. **Marcas con las que colaboro** (`marcas`, crema; acento terracota) — **sección nueva**. Narrativa de PRESENTE ("marcas con las que trabajo hoy"), con protagonismo y punto terracota de "vigente"; cierra como carta de presentación que enlaza a Trabajemos juntos.
-5. **Trabajemos juntos** (`trabajemos-juntos`, verde) — **sólo** servicios profesionales para empresas (colaboraciones/contenido, asesorías/eventos). Toda la parte educativa se mudó a "Lo que te podés llevar".
-6. **La clase no termina** (`la-clase-no-termina`, **marrón**) — cierre en su voz + redes. Sin logotipo (se quitó). `full alto="118svh"` para que el navbar tome el marrón desde el arranque; composición calibrada para entrar en un viewport (huellitas de Budín fuera del flujo vertical).
-
-**Fuera del recorrido, conservadas en código** (no se montan): `ColumnaAprendizaje` (serie "Cocina Nivel 0") y `CocinaCompartida`; sus datos (`aprendizaje.ts`, `series.ts`, `comunidad.ts`) y sus accessors locales siguen. El logo `DG` y "Volver al principio" ahora llevan a `#seccion-quien-soy`.
-
-### Paleta (nueva, del manual `images/paleta.jpg` — reemplaza la de §9.duodecies)
-crema `#F3EEE4` · salvia `#B1BFAA` · arena `#DBC9A0` · verde bosque `#2C4027` · marrón `#413223` · **terracota `#9D301D`**. La terracota **reemplazó el bordó** del cierre y pasó a ser **color de ACENTO del sistema** (líneas, dibujos, nodos de Marcas, detalles), nunca fondo de sección. Contraste medido ≥AA en todas las bandas (mayoría AAA). Tokens en `app/globals.css` (`--color-harina/salvia/arena/bosque/terracota`, etc.).
-
-### Modelo visual — BANDAS + CORTES POR ONDA (reemplaza disolución 9ª y paneles 7ª)
-- Cada sección con color es una **banda a pleno ancho de color SÓLIDO** (`sala.banda` en config). Las de descanso viven sobre crema.
-- El corte entre atmósferas es una **ONDA nítida** del color de la sección entrante, superpuesta a la anterior (`OndaSuperior` en `Momento.tsx` → `.onda-sup`). **Sin degradados que mezclan colores** (Delfina lo pidió: cortes limpios, curvas como unión). Reemplaza a la disolución por difuminado (`.sala-campo`, eliminada) y a los bloques contenidos `.sala-panel` (eliminados).
-- `Momento.tsx`: props `full`, `alFinal`, `primero` (la 1ª sección no lleva onda), `alto` (alto mínimo de una `full`).
-
-### Navbar — herencia CONTINUA de color (`AtmosferaProvider`)
-`AtmosferaProvider` volvió a ser un **motor** (12ª ola), pero **sólo LEE**: cada sección declara su color/tinta con `datosNavbar` (atributos `data-nav-*`); el motor sondea **varias alturas del bar y promedia** el color real detrás (el borde efectivo es el tope de sección menos media onda), y **suaviza por frame** → el color acompaña el scroll sin saltos. La **tinta** sí conmuta por umbral (una tinta interpolada pasaría por un gris de mal contraste); en la franja ambigua entra `--nav-halo`. El fondo del navbar es un **solo color** (`--nav-bg`) desvanecido hacia abajo — se quitó el segundo muestreo `--nav-bg-pie` que colaba el color anterior. Menú mobile: congela el color al abrir.
-
-### Budín — personaje interactivo (`app/_chrome/Budin.tsx`)
-El perro de Delfi. **Desktop**: fijo abajo-izquierda (~90px, z-index 9), acompaña todo el recorrido; **saltito periódico** (6–11s, animación finita) para invitar al clic; hover → globo "Hola, soy Budín!"; clic → **frase al azar** (no repite la anterior). **Mobile**: NO flota; aparece dentro del **menú abierto**, abajo-derecha, y responde igual. Foto de la **cabeza** recortada a su bbox (`public/ilustraciones/budin-cabeza.png`, 909×932; se descartó el cuerpo entero: la cara se reconoce más rápido). Accesible (`<button>`, `aria-live`, respeta `prefers-reduced-motion`). Su voz vive en el CMS / `content/data/budin.ts` (tipo J `VozBudin`). Es **client component**: recibe la voz por props desde el layout servidor.
-
-### Ilustraciones (adornos) y su color
-`Adorno` (`app/_chrome/adornos/Adorno.tsx`): line-art con **gesto propio por dibujo** (vapor asciende, espiga/hierba se mecen, cuchara revuelve, batidor bate, especias caen, libro se hojea, **huellas** de Budín). Regla de color (13ª ola): **terracota `#9D301D` en las secciones claras** (crema/salvia/arena, donde contrasta) y **oro adaptativo en las bandas hondas** (`--adorno-oro`, conmutado por `[data-oscura]`). Distribuidos: espiga (umbral), libro+cuchara (Lo que te llevás), especias (Marcas), vapor (Trabajemos), huellas (cierre). La ilustración PNG de Budín (`budin.png`) NO se usa como pieza fija: Budín es el personaje flotante.
-
-### Fotografía real integrada
-Primer material propio en `public/fotos/` (retrato `delfina-hola`, plato `croquetas-corte`, proceso `manos-masa`, ambiente `cocina-al-fuego`, `croquetas-fuente`). Selección editorial (no todas), en los marcos en arco del sistema. La estructura las toma por `id`; sumar/reemplazar es contenido, no diseño. (Ahora viven en Sanity; `images/` sigue siendo evidencia de Discovery.)
-
-### INTEGRACIÓN CON SANITY CMS (14ª ola) — lo más importante para las próximas iteraciones
-- **Project ID `a7nwe5rn`**, dataset `production`. Dependencias: `sanity`, `next-sanity`, `@sanity/client`, `@sanity/image-url`, `@sanity/vision`, `styled-components`.
-- **Studio embebido** en `/studio` (`app/studio/[[...tool]]/page.tsx` + `sanity.config.ts`), en español, ordenado por lo que administra Delfi (Ebooks y clases · Marcas · Textos · Fotografías · Servicios · Redes · Secciones · Budín). Esquemas en `sanity/schemas/*` — **espejan** `content/types.ts`.
-- **Capa de acceso `content/index.ts`** (único punto de contacto con datos): cada accessor **consulta Sanity y, si no hay respuesta o el dataset está vacío, cae en la SEMILLA local** (`content/data/*`). Esa semilla es también la fuente del script de carga. GROQ en `sanity/lib/queries.ts`; cliente/`consultar()` tolerante a fallos en `sanity/lib/client.ts` (useCdn, revalidate 60s, `tags:["contenido"]`); traducción de imágenes en `sanity/lib/imagen.ts`.
-- **Accessors ahora ASÍNCRONOS.** Los momentos son server components (sólo agregan `await`). Las dos piezas de CLIENTE (`Navbar`, `Budin`) reciben el contenido **por props** desde un layout servidor: `app/(sitio)/layout.tsx` (route group `(sitio)` que NO aparece en la URL) resuelve `getMomentos/getRedes/getBudin` y los inyecta. `app/layout.tsx` quedó mínimo (sólo el `<html>`), para que el Studio de `/studio` no herede el chrome del sitio.
-- **Performance intacta**: `/` sigue prerenderizada estáticamente (`○ Static`, revalidate 1m); imágenes por `cdn.sanity.io` (permitidas en `next.config.ts`) y optimizadas por Next. El Studio es ruta aparte con su propio bundle (no pesa en el recorrido).
-- **`Producto.imagen` llega YA RESUELTA** desde la capa de acceso (`ImagenReal`, no una referencia): la semilla la resuelve contra las imágenes locales; el CMS la arma desde el asset. La interfaz recibe siempre lo mismo.
-- **Carga inicial**: `pnpm sembrar` (`scripts/sembrar-sanity.mjs`, con `--experimental-strip-types`) sube toda la semilla + imágenes. **Ejecutada 2026-07-24: 37 documentos + 8 imágenes.** Idempotente (`createOrReplace`), pero **re-correrlo PISA lo editado en el Studio** con la semilla local → es para carga inicial, no uso cotidiano. Requiere `SANITY_API_WRITE_TOKEN` en `.env.local` (ver `.env.example`).
-- **Verificado**: el sitio lee 100% del CMS (imágenes desde CDN) y se ve **idéntico**; tres gates en verde.
-- **Regla de separación (criterio permanente)**: **contenido editable → CMS** (textos, imágenes, productos, clases, marcas, redes, secciones: orden y nombre de menú, voz de Budín); **diseño → código** (paleta y atmósferas en `config.ts`/`globals.css`, composición, animaciones, dirección de arte). Se dejó deliberadamente la ATMÓSFERA de cada sección fuera del CMS: es diseño, no debe poder romperse desde el panel.
-
-### Cómo trabajar de acá en más (para las próximas olas)
-- **Toda funcionalidad/sección nueva se diseña sobre esta arquitectura.** Si incorpora contenido que Delfi podría querer cambiar, **va a Sanity** (esquema en `sanity/schemas/`, consulta en `sanity/lib/queries.ts`, accessor en `content/index.ts` con respaldo local), no fijo en el código.
-- **Mantener el desacople**: la interfaz (`app/`) importa SIEMPRE desde `@/content`, nunca desde `content/data/*` ni `sanity/*`. Un componente de cliente que necesite contenido lo recibe por props desde un server component.
-- Actualizar SIEMPRE los tres artefactos juntos al sumar un tipo de contenido: esquema Sanity + consulta GROQ + accessor (con su tipo y su respaldo) + campo en el script de carga.
-
-### Pendientes con Delfina / de infraestructura
-- **CORS + producción**: agregar el dominio real a los CORS origins de Sanity; el **webhook de revalidación** (publicar en Studio → sitio al instante) ya está **IMPLEMENTADO en la 15ª ola (§9.quaterdecies)** — falta sólo su config al desplegar. `metadataBase`/OG siguen apuntando a `delfina-gayoso.vercel.app` (revisar al desplegar).
-- **Contenido real de Delfina** (sigue pendiente): marcas reales (nombres, logos, links) — hoy 4 de ejemplo; handles de redes (IG `@delfinagayoso` / TikTok pendiente; email `gayosodelfina@gmail.com` definitivo); validar/afinar copy y el humor de Budín; material fotográfico definitivo + **videos verticales** (la estructura los espera); URLs reales de venta.
-- **Deuda técnica**: comentarios internos con números de momento viejos; `content/data/*` mantiene entradas archivadas (aprendizaje/serie/comunidad, ebook de Flor en imágenes) — no molestan, son la red de respaldo y semilla.
-
----
-
-## 9.quaterdecies Bloque 8 — olas 15–16 · Webhook de revalidación + Material audiovisual (2026-07-28)
-> ⚠ **Superada en parte por §9.quindecies**: el patrón de video se AMPLIÓ (ahora `Experiencia` y `Marca` tienen su campo de video opcional en el CMS, servido con el mismo `VideoMarco` sobre la foto-poster), y el pendiente "campo de video para la clase presencial" quedó RESUELTO. Todo lo demás de esta sección sigue vigente.
-> Continúa §9.terdecies (que sigue vigente en todo lo que aquí no se contradiga). Regla del bloque intacta: la indicación de Delfina manda. Dos entregables: (1) revalidación instantánea del CMS por webhook; (2) los PRIMEROS videos del sitio, elegidos con criterio editorial.
-
-### Webhook de revalidación (15ª ola) — resuelve el pendiente de §9.terdecies
-- **Ruta `app/api/revalidar/route.ts`** (POST, `runtime = "nodejs"`). Cuando Delfi PUBLICA en el Studio, Sanity llama a esta ruta y el sitio se regenera casi al instante (se elimina la espera de hasta 1m; el `revalidate: 60` de `consultar()` queda como red de seguridad).
-- **Mecanismo (la pieza clave ya existía)**: TODA consulta a Sanity está etiquetada con el tag `"contenido"` (`sanity/lib/client.ts` → `consultar()`), así que un único **`revalidateTag("contenido", "max")`** invalida el caché de datos de todo el sitio — no hay que enumerar rutas ni tipos. *(Next 16 cambió la firma: `revalidateTag` exige 2º argumento; `"max"` = purga completa, equivale a la revalidación bajo demanda clásica.)*
-- **Seguridad**: el cuerpo viene FIRMADO por Sanity (HMAC). Se valida con `parseBody` de `next-sanity/webhook` contra `SANITY_REVALIDATE_SECRET`; sin firma válida → 401. **No agrega dependencias** (usa `next-sanity`, ya presente).
-- **Config PENDIENTE al desplegar (la hace el usuario, requiere dominio)**: (a) generar un secreto (`openssl rand -hex 32`); (b) Vercel → env var `SANITY_REVALIDATE_SECRET` (Production + Preview) + redeploy; (c) sanity.io/manage → API → Webhooks → URL `https://DOMINIO/api/revalidar`, método POST, dataset `production`, trigger create/update/delete, **mismo Secret**. Documentado en `.env.example`. En local no llega (localhost).
-
-### Material audiovisual (15ª–16ª olas) — primeros videos del sitio
-Delfina envió 6 clips (todos **horizontales 16:9, sin audio**): 4 iniciales (`images/VID-…-WA0002/0008/0009/0010.mp4`) + 2 recortes nuevos del material de WA0002 (`WA0002_1` despedida, `WA0002_2` presencia). Se analizaron con criterio editorial (¿aporta?, ¿qué sección?, ¿qué emoción?); **no se usan enteros**: se editan los mejores segundos como loops.
-
-**Decisiones (estado final del recorrido):**
-- **Umbral → VIDEO `umbral-croquetas` (IN).** `WA0009`: macro del **cheese pull** de la croqueta, loop **ping-pong** ~8s (se estira y vuelve, sin corte). El plano más apetecible → el antojo de la propuesta de valor. La foto `croquetas-corte` queda de **poster/respaldo**.
-- **Quién soy → FOTO original (video DESCARTADO por ahora).** Se probaron dos loops de `WA0002_2` (ventana calma; luego el clip completo tal como Delfi lo dejó, sólo adaptado a vertical) y quedó cableado, pero **Delfina decidió MANTENER el RETRATO original** (`delfina-hola`, su risa con el queso) "para verla así y más adelante evaluar video". Los archivos `public/videos/quien-soy-hola.*` se **borraron**; reactivar = cambiar el `<Image>` de `QuienSoy.tsx` por `<VideoMarco>` (Umbral es la referencia). *(Nota editorial: ese retrato repite el motivo del cheese pull que ahora ancla el Umbral; tenerlo en cuenta si se retoma el video acá.)*
-- **La clase no termina → SIN video (DESCARTADO).** `WA0002_1` (saluda y se retira) se evaluó para el cierre y se descartó: (1) **contradice el concepto** ("la clase NO termina" vs una despedida que se va); (2) recargaría una composición mínima **calibrada a un viewport** (voz + formas de seguir + huellas de Budín); (3) aplana el arco cara(apertura)→voz(cierre). El cierre gana por **sustracción**.
-- **Fuera del recorrido**: `WA0008` (pela huevo / muele especia — redundante con 0002/0010, encuadre más "set"). `WA0010` (manos mezclando crema — bueno, pero su lugar natural es la ficha de la **clase presencial** "con las manos en la masa": requiere sumar un **campo de video opcional al modelo `Producto`** → queda **recomendado a futuro**, no montado).
-
-**Componente `app/_chrome/adornos/VideoMarco.tsx` (client)** — mejora PROGRESIVA dentro del marco en arco existente (`EspacioFoto`), sin rediseñar la composición:
-- La **foto del CMS es el poster** (pinta al instante = sostiene el LCP, y es el respaldo). El **video se funde encima** sólo cuando puede reproducirse; **carga sólo al acercarse al viewport** (IntersectionObserver, `rootMargin: 200px`) → protege datos y rendimiento en mobile.
-- `prefers-reduced-motion` → el video **ni se carga**, se ve la foto. `muted + loop + playsInline + autoplay` (patrón que iOS permite reproducir solo). Las `<source>` se insertan al entrar en viewport → requieren `video.load()`.
-
-**Pipeline de edición (ffmpeg, local)**: recorte a **4:5 vertical** (crop centrado en el sujeto) → escala 600×750 → loop (**ping-pong** para el cheese pull). Salida en **MP4 (H.264, faststart) + WebM (VP9)**, sin audio; muy livianos (Umbral: 231 KB mp4 / 134 KB webm). Assets en **`public/videos/`**. Los `.mp4` originales siguen en `images/` como evidencia.
-
-**Decisión arquitectónica (para próximas olas)**: los loops editados viven en `public/videos/` como **assets de dirección de arte** (edición a mano, como adornos/atmósferas), cableados en código; el **contenido editable —la foto/poster— sigue en el CMS**. Respeta la separación contenido↔diseño sin meter binarios de video pesados en Sanity. Si más adelante se quiere que Delfi cambie un video desde el Studio, ahí sí se modela como contenido (esquema + GROQ + accessor con respaldo + semilla), p. ej. el campo de video opcional en `Producto` para la clase presencial.
-
-**Verificado**: tres gates en verde. Webhook por build/tipos (`/api/revalidar` sale como ruta dinámica `ƒ`; `/` sigue `○ Static`). Videos por **medición DOM/canvas + capturas** (el pane de preview a veces no compone frames → la medición es la fuente de verdad): reproducen, loop, 4:5, mobile 375px sin overflow-x, cero errores de consola.
-
-### Pendientes (actualizado sobre §9.terdecies)
-- **Webhook**: implementado; falta sólo la **config en el deploy** (3 pasos de arriba) cuando haya dominio — la hace el usuario.
-- **Videos**: `WA0010` recomendado para la clase presencial (necesita campo de video en `Producto`); `WA0002_1` y `WA0008` descartados; el clip de Quién soy queda como opción futura (fuente en `images/`).
-- Sigue lo de §9.terdecies: contenido real de Delfina (marcas, redes, copy/Budín, fotos/videos definitivos, URLs); CORS del dominio en Sanity; `metadataBase`/OG al desplegar.
-
----
-
-## 9.quindecies Bloque 8 — olas 17–21 · Experiencias, Colaboraciones y auditoría del CMS (2026-07-29)
-> ⚠ **Superada en parte por §9.sexdecies** (y por §9.septdecies, el ESTADO VIGENTE hoy). Lo que cambió: el **orden del recorrido** (Marcas y Trabajemos suben; Lo que te llevás baja al 5º lugar), el **color de la sala Marcas** (ya no es crema) y el de la **cinta de logotipos** (salvia honda), la **velocidad de la marquesina**, el **archivo de Don Yeyo** y el **repertorio de Budín**. Sigue vigente todo lo demás: `Experiencia` vs `Producto`, estados inteligentes, "La próxima experiencia", `GuardarFecha`, `Banda`, las dos páginas, `EnlaceEditorial`, `EspacioFoto`, el respaldo de la voz por identificador y `pnpm sincronizar`.
-> Continúa §9.quaterdecies y §9.terdecies, que siguen vigentes en todo lo que aquí no se contradiga. Regla del bloque intacta: la indicación de Delfina manda. El titular: **el sitio dejó de ser un solo recorrido y pasó a ser una casa con dos habitaciones más**, sin que ninguna se sienta ajena.
-
-### Decisión de fondo: las CLASES salen de `Producto` y nacen como `Experiencia` (tipo K)
-Una clase es una **fecha concreta** —con lugar, horario, cupo, estado y, después, fotos—; un ebook no. Tenerlas en el mismo tipo obligaba a que la fecha viviera como frase dentro de `formato` (`"Martes 28/7 | 16:00hs | 9 de Julio"`): no se podía ordenar, no vencía sola, no generaba un archivo de calendario.
-- **`Producto` quedó sólo para EBOOKS.** En la 21ª ola se retiró `familia` (ya no distinguía nada) y el tipo del Studio pasó a llamarse "Ebook".
-- **`Experiencia`**: `nombre`, `modalidad`, `inicio`/`fin` (ISO **con zona horaria**), `lugar`, `direccion`, `descripcion`, `queTeLlevas`, `precio`, `ctaLabel`, `destino`, `estado`, `imagen`, `historia`, `galeria`, `video`, `publicada`.
-- Los cuatro lugares de siempre: `sanity/schemas/experiencia.ts` + `EXPERIENCIAS` en `queries.ts` + `getExperiencias/getExperiencia/getProximaExperiencia` en `content/index.ts` + semilla `content/data/experiencias.ts` + script de carga.
-
-### Estados inteligentes (`content/estados.ts`)
-**El sitio deduce todo lo que puede deducir; Delfi declara sólo lo que nadie más sabe.**
-- Derivados: **finalizada** (su fin ya pasó; sin `fin` se asumen 2 h), **nueva** (publicada hace menos de 12 días), **abierta** (neutro, sin sello).
-- Declarados en el Studio: **últimos lugares**, **completa**, **próximamente**. Valor por defecto: `automatico`.
-- Precedencia: lo que ya ocurrió manda sobre todo; después lo declarado; al final lo derivado.
-- La interfaz responde sola: completa y finalizada no ofrecen reservar; sin fecha no hay calendario. `SelloEstado` reusa el punto de "vigente" de Marcas —una sola forma para cinco significados—; **"últimos lugares" es el único que empuja** (terracota).
-- Frescura sin trabajo: como las páginas revalidan cada 60s (+ webhook), una experiencia vencida sale sola del módulo y entra al archivo.
-
-### "La próxima experiencia" — una invitación, no una agenda
-`app/_patrones/ProximaExperiencia.tsx`, **abriendo "Lo que te podés llevar"** (no una 7ª sección: el recorrido de 6 no se toca). Muestra **una sola**: la de fecha futura más cercana. Orden de lectura pensado sobre *"la gente no lee nada"*: foto → **día como pieza gráfica** (número grande en serif, no una tabla) → nombre → una línea → dos acciones. Sin ninguna experiencia con fecha futura, **el módulo no existe** (ni título, ni hueco, ni cartel de "no hay clases").
-
-### Guardar la fecha sin elegir plataforma (20ª ola)
-`GuardarFecha` **infiere el calendario del dispositivo**: iPhone/iPad/Mac → el `.ics` que genera el propio sitio en `app/api/calendario/[id]/route.ts`; Android, Windows y el resto → Google Calendar (denominador común). Debajo, en chico, dice a qué calendario va y ofrece "¿Usás otro?" con las otras dos. Sin dependencias (el `.ics` son líneas de texto, RFC 5545 con escapes y plegado). La detección se lee con `useSyncExternalStore` —el dispositivo es un dato del navegador, no un estado— para no romper el render del servidor.
-
-### `Banda`: el primitivo visual, extraído de `Momento` (18ª ola)
-`app/_patrones/Banda.tsx` es la franja de color con corte por onda y herencia de color en el navbar. `Momento` es esa misma banda con nombre, ritmo y atmósfera resueltos desde el CMS. **Que las páginas nuevas no se sientan otro sitio no es cosmético: usan literalmente el mismo componente.**
-
-### Página `/experiencias` (18ª ola)
-Tres bandas, un arco corto: **arena** (la próxima destacada + las demás fichas con su texto ampliado) → **salvia** (cómo se ve una clase por dentro) → **crema** (las que ya sucedieron + salida al recorrido). Con navbar heredando color, Budín, Wayfinding y adornos.
-- **`Mosaico`**: anchos, proporciones y alturas de arranque distintos, encadenados cada seis. No es una grilla de miniaturas y **no abre lightbox** (una capa modal sería una interfaz ajena).
-- **`FichaExperiencia`** con `ampliada` para el texto largo; **`medioExperiencia.tsx`** decide qué va en el marco: foto + loop (`VideoMarco`), sólo foto, o nada (y el marco se dibuja a sí mismo).
-
-### Página `/colaboraciones` (19ª ola)
-Dos bandas: las colaboraciones sobre crema con acento terracota, y un cierre en **verde** —el mismo color de "Trabajemos juntos"— para que la invitación aterrice donde vive el costado profesional. `FichaColaboracion` pone la fotografía y la relación adelante; el logo va chico, porque ya cumplió su función en la marquesina.
-`Marca` ganó: `handle`, `descripcion`, `historia`, `resultados[]`, `imagen`, `video`, y `logo` pasó de URL suelta a **`LogoMarca` con dimensiones** (el sitio necesita la proporción para escalarlo).
-
-### Marcas reales y su marquesina (19ª–21ª olas)
-- **Las cuatro marcas de Delfina**: Buffalo (@buffalo.arg), Don Yeyo Argentina (@donyeyoargentina), 3 Claveles (@3claveles.arg), Ormay Argentina (@ormay_argentina). Reemplazaron los marcadores de ejemplo.
-- **COLORES OFICIALES, sin tintes ni filtros** (indicación de Delfina, 20ª ola; corrige la decisión de tinta única de la 19ª). Al revisar los archivos: Buffalo y 3 Claveles **sí tenían canal alfa** —lo que parecía fondo era el compositing del visor—; el único sin alfa era **Don Yeyo**, que traía un damero pintado y se le quitó con `ffmpeg` conservando rojo, azul y blanco. Versiones recortadas en `public/marcas/`; originales en `images/`.
-- **La marquesina es una BANDA SALVIA a pleno ancho con la guarda de arcos del sistema** (21ª ola). No es decoración: le da su momento a una sección de respiro y **levanta el contraste de los cuatro logotipos** —sobre crema, el amarillo y el blanco de Buffalo casi desaparecían—. Movimiento lento (64s): la sección habla de relaciones que duran.
-- **Tamaño óptico**: la altura se deriva de la proporción para igualar el ÁREA percibida (con altura fija, un logo cuadrado aplasta a uno apaisado). El componente entrega el alto en px y el CSS lo escala por dispositivo (`--escala-logo`).
-- **Lección**: los logos deben venir con AIRE en los cuatro bordes. Un recorte ajustado al bbox se ve como recorte durante la animación (le pasó a Don Yeyo). Se verifica midiendo el alfa de franjas de 6 px con `ffmpeg`.
-
-### Navegación editorial (`EnlaceEditorial`)
-Un patrón único —texto + flecha diagonal ↘ que baja al hover + trazo que se dibuja— en vez de inventar un botón por sección. Hereda tinta y acento de la sala, así que funciona sobre crema, salvia, arena, verde y marrón. Se usa en "Ver todas las experiencias", "Ver colaboraciones", "Volver al recorrido" y "Trabajemos juntos".
-
-### Espacios sin foto: composición terminada, nunca placeholder
-`EspacioFoto` dejó de anunciar una ausencia (fuera el ícono de cámara y la palabra "foto") y ahora dibuja **tres composiciones que rotan** —arcos concéntricos con horizonte, arco con estantes, arco con un plato—, para que varios huecos juntos se lean como una guarda gráfica. La superficie se tiñe con la **TINTA** de la sala, no con el acento: con el acento, un hueco grande en Marcas (terracota) se leía como un panel rosa.
-
-### Navbar consciente de dónde está
-Sus destinos son secciones de la home. Con `usePathname()`, fuera de `/` los enlaces salen como `/#seccion-…`; dentro de `/` siguen siendo anclas puras, para que Lenis los intercepte.
-
-### Respaldo de la VOZ por identificador (18ª ola) — cambio en la capa de acceso
-`getVoz` es el **único accessor con respaldo por id**, no por colección. El resto son listas (las marcas del CMS son *todas* las marcas), pero los textos el sitio los pide por identificador: sin esto, cada sección nueva quedaría muda hasta re-sembrar, y re-sembrar pisa lo editado. **El CMS manda sobre cada texto que ya tiene; la semilla sólo completa los que aún no subieron.** Efecto secundario asumido: si Delfi borra un texto en el Studio, vuelve desde la semilla.
-
-### Auditoría del CMS (21ª ola)
-- **Retirados por obsoletos**: `producto.familia`; `borrador` en `marca` y `experiencia` (nunca tuvo efecto en la interfaz — se conserva en `producto` y `servicio`, donde sí lo tiene).
-- **`marca.rubro`** llegaba del CMS y no se mostraba en ningún lado: ahora aparece en la ficha de colaboración.
-- **Textos**: la lista de secciones del esquema `voz` incorporó las dos páginas nuevas y también las archivadas (`quien-cocina`, `columna-aprendizaje`, `cocina-compartida`), que mostraban un valor huérfano.
-- **Studio**: "Experiencias (clases con fecha)" primero —es lo que más cambia—, "Ebook", y "Marcas y colaboraciones".
-- **`pnpm sincronizar`** (`scripts/sincronizar-sanity.mjs`): alinea el dataset sin pisar lo editado. Borra los 2 productos-clase y las 4 marcas de ejemplo; hace `createOrReplace` de las marcas reales con sus logos; y `createIfNotExists` de experiencias y textos. **Ejecutado 2026-07-29.** Se eliminó `sembrar-marcas.mjs`, que quedó subsumido.
-
-### Ajustes finales (20ª–21ª olas, indicaciones de Delfina)
-- **Subrayados a mano retirados** de las aperturas de Experiencias y Colaboraciones: queda sólo la línea editorial que cierra el bloque.
-- **Copy nuevo** de Experiencias: *"Cocinar juntos es otra cosa. Se aprende con las manos, se comparte la mesa y cada encuentro deja algo distinto."* Y la nota de "Ver colaboraciones": *"Historias que seguimos construyendo junto a marcas que confían en mi trabajo."*
-- **Título dinámico de la sección** (21ª ola, decisión del usuario tras presentarle la alternativa de dejarlo estable): con una experiencia al frente, **"Cocinemos juntos" / "Clases y ebooks"**; con un ebook al frente, **"Lo que te podés llevar" / "Ebooks y clases"**. El ancla y el destino del navbar NO cambian: sigue siendo el mismo lugar.
-- **Budín saluda en mobile**: al abrir el menú aparece "Hola, soy Budín!" y se retira solo a los ~4 s. El saludo se inicializa en el estado (no en un efecto) para que esté en el primer render sin parpadeo; como sólo existe dentro del menú abierto, montarse *es* el momento de saludar. Desktop intacto.
-- **Clase de EJEMPLO** en la semilla ("Pastas frescas, de cero", 15/8, `ultimos-lugares`) para poder evaluar el módulo mientras Delfina no dé su próxima fecha. Es ficticia y está marcada como tal en el archivo.
-
-### Verificado
-Tres gates en verde en cada ola. Medición por DOM y muestreo de píxeles (el pane de preview compone frames en blanco durante el scroll —trampa conocida—, así que la medición es la fuente de verdad). `/`, `/experiencias` y `/colaboraciones` prerenderizadas estáticas con revalidate 1m; `/api/calendario/[id]` dinámica. Sin overflow-x en 1280 ni en 375. `.ics` validado (`DTSTART` en UTC correcto, escapes y plegado de línea).
-
-### Pendientes
-- **De Delfina, y es lo que da sentido a las páginas nuevas**: su próxima fecha real; rubro, qué hacen juntos, historia, resultados y fotos/videos de cada marca; fotos de clases pasadas para la galería; el texto ampliado de cada clase.
-- **Logo de Buffalo**: el archivo es la versión para FONDO OSCURO (toro amarillo, "BUFFALO" en blanco). Sobre salvia mejoró mucho, pero conviene pedirle la versión para fondo claro.
-- Sigue lo de §9.quaterdecies y §9.terdecies: config del webhook al desplegar, CORS del dominio, `metadataBase`/OG.
-
----
-
-## 9.sexdecies Bloque 8 — olas 22–26 · Reorden del recorrido, sistema de color y el juego de Budín (2026-08-01)
-> ⚠ **Superada en parte por §9.septdecies** (el ESTADO VIGENTE hoy). Lo que cambió: **Buffalo se retiró** (las colaboraciones son tres, y con ella se fue el piso que tenía el color de la cinta de logotipos); el **archivo de Don Yeyo** se rehízo por completo con recorte geométrico; la **marquesina** ya no tiene duración fija (se deriva de cuántas marcas hay); el **pivote `llevas-pivote` se eliminó**. Sigue vigente todo lo demás: el orden del recorrido, `PIGMENTOS`, la sala Marcas en piedra, el terracota como acento y nunca fondo, la salvia honda de la cinta, y Budín como personaje con juego.
-> Continúa §9.quindecies, §9.quaterdecies y §9.terdecies, vigentes en todo lo que acá no se contradiga. Regla del bloque intacta: la indicación de Delfina manda. Dos titulares: **el recorrido cambió de orden** —el costado profesional sube— y **el color dejó de improvisarse**: cada pigmento vive en un solo lugar y apareció una sala que el manual no tenía.
-
-### RECORRIDO — orden nuevo (22ª ola, decisión de Delfina)
-    1. Quién soy  ·  2. Umbral  ·  3. Marcas  ·  4. Trabajemos juntos  ·  5. Lo que te llevás  ·  6. La clase no termina
-
-Motivo de Delfina: **una marca que entra al sitio tiene que encontrar las colaboraciones sin atravesar antes toda la propuesta educativa.** Marcas sube del 4º al 3º lugar, Trabajemos del 5º al 4º, y "Lo que te llevás" baja del 3º al 5º.
-- El orden vive en **DOS lugares que hay que mover juntos**: el JSX de `app/(sitio)/page.tsx` (el descenso real) y el campo `orden` de `content/data/momentos.ts` (de donde el navbar deriva su menú). **El CMS gobierna `orden`**, así que además hay que correr `pnpm sincronizar` o el menú queda con el orden viejo mientras la página ya cambió. Pasó en esta ola.
-- `fase` quedó: reconocimiento (1–2) → descubrimiento (3–5) → pertenencia (6).
-- **Trabajemos juntos dejó de ser "la invitación tardía"** y no por eso contradice el criterio original: sigue sin ser lo primero y ahora llega justo después de la PRUEBA (las marcas que ya confían), que es un apoyo más directo que el aprendizaje.
-
-### Las dos transiciones que el orden nuevo pedía
-- **Marcas → Trabajemos** quedó siendo el mejor encadenado del sitio: la sección cierra preguntando *"¿Sumamos tu marca a esta cocina?"* y la banda siguiente ES esa invitación. El enlace se conservó, pero la transición ya no depende de él.
-- **Trabajemos → Lo que te llevás** era el salto que no cerraba (el sitio venía hablándole a una marca y de golpe ofrecía ebooks). Se resolvió con **una sola línea en su voz** que abre la sección y nombra el giro: *"Hasta acá, con quién trabajo. Desde acá, lo que preparé para vos."* (`voz` → `llevas-pivote`, renderizada en `LoQueTeLlevas` con clase `.llevas-pivote`). Sin `enfasis`: en la 20ª ola Delfina pidió retirar los subrayados a mano de las aperturas. **PENDIENTE de su validación.**
-- El ritmo denso/silencio se agrupó (tres airosas, dos densas, una airosa) y eso está bien: lo que antes separaba a las dos densas ahora lo hace el corte cromático más fuerte del recorrido (verde → arena).
-
-### SISTEMA DE COLOR — `PIGMENTOS`, el punto único (22ª ola)
-`app/_chrome/atmosferas/config.ts` abre con un objeto `PIGMENTOS` donde cada color se declara **una sola vez** (hex + rgb). Antes cada sala lo repetía tres veces a mano (`bg`, `solido`, `navBg`) y cambiar un color obligaba a acertar en los tres. Hoy **cambiar un color del sitio es cambiar una línea**. Única duplicación que queda: el crema también es `--color-harina` en `globals.css` (fondo de página); se sincronizan a mano y son los dos únicos lugares.
-
-| # | Sección | Color | Sala | Pigmento |
-|---|---|---|---|---|
-| 1 | Quién soy | `#B1BFAA` salvia | `quien-soy` | `salvia` |
-| 2 | Umbral | `#F3EEE4` crema | `bienvenida` | `crema` |
-| 3 | Marcas | `#D8D0C5` **piedra cálida** | `marcas` | `piedra` |
-| 4 | Trabajemos juntos | `#2C4027` verde bosque | `fresca` | `verde` |
-| 5 | Lo que te llevás | `#DBC9A0` arena | `calida` | `arena` |
-| 6 | La clase no termina | `#413223` marrón | `despedida` | `marron` |
-| — | página /colaboraciones | `#F3EEE4` crema | `colaboraciones` | `crema` |
-| — | acento del sistema | `#9D301D` terracota | — | `terracota` |
-| — | cinta de logotipos | `#9DAB94` salvia honda | — | `--color-salvia-honda` (CSS) |
-
-### La sala Marcas cambió CUATRO veces, y el porqué importa
-Al subir al 3er lugar dejó de ser una sección de respiro y pasó a ser la **bisagra** del recorrido: donde el sitio deja de hablar de Delfina y empieza a hablar de su trabajo. Cada intento chocó con algo distinto, y el registro sirve para no repetir el camino:
-1. **crema** → chocaba con el Umbral, justo arriba. Dos salas del mismo color anulan la onda: el corte existe pero no se ve.
-2. **arena** (22ª) → resolvía el corte, pero Delfina la vio junto a "Lo que te llevás" y las leyó como el mismo bloque.
-3. **marrón** (23ª) → era el único pigmento hondo libre, pero quedaba igual al cierre.
-4. **ladrillo** `#7A2E1D`, el terracota a profundidad de fondo (24ª) → no chocaba con nadie, pero **Delfina lo descartó al verlo montado: "más clásico" de lo que busca el sitio.**
-5. **piedra cálida `#D8D0C5`** (25ª, dirección de Delfina) → la definitiva.
-
-**REGLA QUE QUEDÓ (y que conviene no volver a discutir): el terracota es ACENTO, nunca fondo de sección.** Se probó como fondo y se descartó por evidencia. Como color protagonista de una banda entera domina la composición; en el detalle aporta personalidad.
-
-**Por qué la piedra funciona donde el manual no tenía nada:** es casi exactamente **crema + 16% marrón** —los dos extremos del recorrido mezclados—, así que pertenece sin esfuerzo. Es el único tono de la familia que no estaba tomado, porque está ENTRE dos tintas del manual. Se distingue del crema por VALOR y del arena por CROMA (la piedra es casi neutra; el arena, dorada). Devuelve la sección a tinta oscura y al acento terracota (4.8:1), y sobre todo es **neutra: no compite con los cuatro logotipos, que son el contenido de la sección.**
-
-**Dato a vigilar:** piedra y arena están a **1.07:1** de luminancia — sólo las separa el croma. Verificado que se leen como habitaciones distintas (ayuda el verde profundo entre ambas). Si alguna vez vuelven a sonar parecidas, el ajuste es enfriar la piedra un punto.
-
-### La cinta de logotipos bajó a SALVIA HONDA (25ª ola)
-La marquesina es una banda a pleno ancho DENTRO de la sección Marcas. Era salvia clara (`#B1BFAA`), elegida en la 21ª ola para despegarse del crema. Sobre la piedra caía a **1.26:1** y dejaba de leerse como cinta. Bajarla un paso (`#9DAB94`) resuelve las dos cosas que esta banda tiene que resolver:
-- se despega de la sección: 1.26 → **1.58:1**;
-- el logotipo más débil, el blanco de Buffalo, sube de **1.93 a 2.42:1**, sin castigar al más oscuro (el negro de 3 Claveles queda en 6.7:1).
-
-**La cinta es la única palanca que mueve el contraste de los logos**, porque ellos viven sobre ella y no sobre el fondo de la sección. Y su color tiene un techo y un piso: el negro de 3 Claveles pide una banda clara y el blanco de Buffalo pide una oscura — la salvia es el punto donde ambos sobreviven. **No se puede llevar a un tono hondo sin matar a 3 Claveles.**
-
-### `filo`: se introdujo y se retiró en la misma sesión
-Cuando Marcas era marrón, dos bandas hondas se tocaban y el corte quedaba en **1.10:1** — la onda se disolvía, que es justo lo que el sistema evita. Se agregó un `filo` a `Banda`: una línea del acento siguiendo la curva. **Con Marcas en piedra no queda ningún borde honda-sobre-honda y el recurso se retiró completo** (queda anotado en `Banda.tsx` por si vuelve a hacer falta). Aprendizaje: dos salas hondas adyacentes son un problema real del modelo de bandas, no una molestia menor.
-
-### `/colaboraciones` tiene sala propia
-Usaba la misma sala que la sección Marcas y se habría ido a fondo hondo con ella. **No podía:** ahí los logotipos van SUELTOS dentro de cada ficha, no sobre la cinta salvia, y sobre un fondo hondo el de 3 Claveles desaparece; además es la superficie de lectura larga del sitio. Sala `colaboraciones`, crema con acento terracota. **La sección es un capítulo del recorrido; la página, un lugar donde uno se queda a leer.**
-
-### BUDÍN — de componente a personaje (23ª y 26ª olas)
-**El juego** (`app/_chrome/Budin.tsx`):
-- **BOLSA, no sorteo.** El repertorio se baraja y se AGOTA antes de repetir, con memoria POR BOLSA (no global) para que la última de una vuelta no sea la primera de la siguiente. Medido: 39 toques, 39 frases distintas.
-- **SIEMPRE CONTESTA** (23ª, corrige la versión anterior). El toque en que se movía era mudo; Delfina lo probó y concluyó lo contrario: un toque sin respuesta se siente como que no registró el toque. Hoy toda interacción devuelve gesto + frase.
-- **DOS CAPAS DE MOVIMIENTO, a propósito:** el contenedor lleva el DESPLAZAMIENTO y el botón el SALTO. Así el globo viaja con Budín —su punta lo sigue apuntando— mientras la cabeza salta por su cuenta.
-- **Desktop:** cada 4–8 toques (al azar) se corre dos pasos y el siguiente lo trae de vuelta. **Mobile:** más libertad — cada toque lo corre 7–24px alternando lado, con un paso largo en la gracia. Alejarse cuesta 55% menos avance que volver: sin ese sesgo se quedaba viviendo de un lado (medido: media 0.0, rango ±10). Tope ±26px.
-- Inclinación alterna de lado; cada cuatro toques salta más alto; con `prefers-reduced-motion` no hay juego ni saltos, sólo frases.
-- **Tres niveles:** `frases` (siempre) · `secretas` (recién a los 10 toques, 16% de probabilidad) · `amistad` (una sola vez, entre el toque 30 y 40, distinto cada visita).
-
-**El globo** se rehízo entero (23ª): tenía esquinas de widget, sombra de material y un 🐶 adelante. Hoy: **punta** que sale hacia Budín (y se da vuelta en mobile, donde él está a la derecha), radio asimétrico que la acompaña, filo de tinta en vez de borde gris, sombra en dos capas cortas sobre la tinta de la casa, y **aparición desde la punta** (`originX/originY`, así crece desde él en vez de aparecer al lado). **Se retiró el emoji de prefijo: el sitio no usa emoji en su interfaz —sólo dentro de las frases, que son voz— y la punta ya dice quién habla.**
-
-**El repertorio** (`content/data/budin.ts`): **32 frases + 6 secretas + la de la amistad = 39.** Delfina editó varias a mano.
-**CRITERIO DE ESCRITURA fijado en la 26ª ola** (está escrito en el encabezado del archivo):
-- emoji **siempre con un espacio antes** (`las recetas 📝`, no `las recetas📝`): pegado forma un token que el navegador no puede cortar y, en un globo angosto, empuja el renglón entero;
-- **como mucho un emoji por frase, y al final**: remata, no decora;
-- **sin punto final**; exclamación o pregunta sí, cuando la frase lo pide;
-- **menos de la mitad con emoji** (hoy 41%): si lo llevaran todas, dejaría de significar algo.
-
-### Don Yeyo — el logotipo reparado (23ª ola)
-**Diagnóstico medido, no a ojo:** de los 3508 píxeles semitransparentes del archivo, **3507 eran BLANCOS y ninguno rojo ni azul**. No era antialias: el recorte se había comido el blanco de las letras. La causa: **el damero del archivo original es blanco y casi blanco (`#FEFEFE` / `#F5F5F5`)**, a uno o dos puntos del blanco del logotipo, así que ninguna clave de color podía distinguirlos.
-- **Se intentó** reconstruir desde el original con relleno por contorno: **falló**, porque el damero llega a 255 por ruido de compresión y no hay umbral que lo separe del halo blanco del logo.
-- **Lo que funcionó:** devolverle opacidad plena a los blancos a medio borrar del archivo ya recortado, agregarle antialias al contorno (venía con corte duro en todos lados, por eso el paso de sangrado de color ANTES de suavizar el alfa) y volver a montarlo con **aire parejo en los cuatro bordes** (venía 14/19/17/11). Resultado: `534×352`.
-- Verificado componiendo el PNG contra salvia y contra marrón con `ffmpeg`, **offline** — las imágenes del CDN de Sanity contaminan el canvas y no se pueden muestrear en el navegador.
-- **Técnica que conviene reusar:** volcar el PNG a RGBA crudo con `ffmpeg -f rawvideo -pix_fmt rgba` y medirlo con un script de Node. Delata en segundos lo que a ojo parece un problema de "compresión".
-
-### Marquesina — la velocidad y un error de cálculo corregido
-`64s → 44s → 28s`. **La medición que lo destrabó:** la pista recorre 1563px por ciclo y **un ciclo ES la vuelta completa a las cuatro marcas** (la pista está duplicada, así que el `-50%` equivale a un juego entero). A 44s eso daba **35 px/s**, por debajo del rango en que una marquesina se lee cómoda (arranca cerca de 45) — por eso seguía sintiéndose lenta después de la primera corrección. Hoy: **28s ≈ 48–56 px/s** según el ancho. *(En la 23ª ola se informó "el recorrido completo dura ~22s": era erróneo, la duración del ciclo es la vuelta entera.)*
-
-### Auditoría del dataset — patrón nuevo, SÓLO LECTURA
-El error recurrente de este bloque es tocar la semilla y olvidar que **el CMS manda sobre ella por colección**. Se resolvió con un script de sólo lectura que compara semillas contra dataset y responde "¿qué está desalineado?": budin (campo a campo), momentos (`orden`), voz (ids existentes) y marcas (dimensiones del logo). Se corrió antes y después de cada sincronización. **No quedó en el repo** (se ejecutó desde la raíz como archivo temporal, porque necesita resolver `@sanity/client`); si el patrón se repite, vale la pena volverlo `pnpm auditar`.
-- Encontró, además de lo esperado, que **la semilla de Ormay declaraba `2810×1360`**: el SVG viene en milímetros (281×136 mm) y alguien los multiplicó por 10. Los píxeles reales son `797×386`. Misma proporción, así que no se veía distinto —el componente sólo usa la proporción—, pero el respaldo local declaraba una medida inexistente. Corregido.
-
-### Verificado en estas olas
-Tres gates en verde en cada una. Medición por DOM y por contraste calculado como fuente de verdad (el pane de preview compone frames en blanco: pasó varias veces, y se destraba redimensionando la ventana o haciendo click en un enlace del navbar). Sin overflow-x en 375, 390, 768 ni 1280. Contraste en Marcas: título 10.0:1, rótulo 6.9:1, acento terracota 4.8:1. Emojis verificados **leyéndolos de vuelta desde Sanity** a través del sitio: 39 frases distintas, cero mojibake.
-
-### Pendientes
-- **De Delfina:** validar el copy del pivote (`llevas-pivote`) y el humor de las frases nuevas de Budín. Sigue todo lo de §9.quindecies: su próxima fecha real, material de las marcas (rubro, historia, resultados, fotos, videos), fotos de clases pasadas, texto ampliado de cada clase.
-- **Logo de Buffalo para fondo claro:** sobre la salvia honda ya no urge, pero el archivo sigue siendo la versión para fondo oscuro.
-- **Infraestructura (sin cambios):** config del webhook al desplegar, CORS del dominio en Sanity, `metadataBase`/OG.
-
----
-
-## 9.septdecies Bloque 8 — olas 27–29 · LA MESA: la fotografía deja de ilustrar (2026-08-01) · **ESTADO VIGENTE**
-> Continúa §9.sexdecies, §9.quindecies, §9.quaterdecies y §9.terdecies, vigentes en todo lo que acá no se contradiga. Regla del bloque intacta: la indicación de Delfina (y del usuario) manda. **El titular es uno solo: el sitio dejó de "mostrar fotos" y pasó a tener un lenguaje visual alrededor del material fotográfico.** El resto de las olas fue preparar el terreno para eso.
-
-### LA MESA — el lenguaje visual nuevo (28ª ola)
-El diagnóstico fue del usuario y es exacto: *"algunos marcos todavía se sienten demasiado contenedores; los marcos en forma de línea me transmiten una fotografía seleccionada, no una composición editorial"*. Tenía razón, y el problema no se arreglaba con otro marco: había que sacar el marco.
-
-**LA IMAGEN MENTAL es una mesa de cocina vista desde arriba, después de cocinar.** No la mesa literal —ninguna textura de madera, eso rompería la identidad—: su GESTO. Cosas apoyadas, apenas torcidas, de tamaños muy distintos, con espacios vacíos entre medio. La propuesta la trajo el usuario y encaja con Delfina porque su tema no es la comida sino el encuentro alrededor de ella.
-
-**Cómo está hecha** (`app/_patrones/Mesa.tsx` + `.mesa*` en `globals.css`):
-- **Retícula modular, no grilla de fotos.** 12 columnas y una fila de altura fija (`--mesa-fila`); cada pieza declara su RECTÁNGULO (columna, ancho, fila, alto). Eso es lo que permite lo que una grilla de tarjetas no puede: que dos piezas ocupen celdas comunes y **se superpongan de verdad, en dos ejes**. La proporción sale del rectángulo, así que la misma foto puede ser un retrato grande o un detalle apaisado según dónde caiga — que es cómo se compone una doble página.
-- **`--mesa-fila` ≈ MEDIA COLUMNA.** No es un número cómodo, es el que hace que los rectángulos caigan en proporciones fotográficas (6×16 → 3:4; 4×10 → 4:5). Con la fila más baja todo tiende al cuadrado y la mesa se lee como grilla; con la fila más alta los heroes se estiran. Se calibró midiendo, no a ojo.
-- **Un MOVIMIENTO de ocho piezas que se repite ESPEJADO.** Componer 23 rectángulos a mano envejece mal (si Delfi sube una foto más, se rompe). Uno bueno reflejado en cada vuelta da variedad real sin partitura infinita: el ojo no reconoce el patrón porque nunca ve dos veces el mismo lado.
-- **Nada de marcos.** Lo único que sostiene una pieza es su SOMBRA —baja y difusa, de algo apoyado— y, en algunas, un **margen de papel**: el borde blanco de una copia impresa, que es un gesto fotográfico y no un contenedor.
-- **Inclinación de ±2,4°**, fija (viene de la partitura, no del azar: servidor y cliente tienen que dibujar lo mismo).
-- **Profundidad por capas**: cada pieza deriva a su velocidad con el scroll. Resuelto con **animaciones de scroll de CSS** (`animation-timeline: view()`): cero JavaScript, fuera del hilo principal, y donde el navegador no las soporta simplemente no pasa nada. Mejora progresiva, no requisito.
-- **Se puede tocar**: al pasar el cursor la pieza se endereza, como cuando uno acomoda una foto con un dedo. Es el detalle que la convierte en objeto.
-
-**Las CAPAS** (`app/_chrome/adornos/CapasMesa.tsx`): una anotación a mano de fondo que **no dice nada** —son trazos de escritura, no letras, y eso es deliberado: un texto real sería contenido inventado—, un repasador que entra apenas desde un costado (nunca completo: lo que se ve es el borde de algo que sigue fuera de la página) y un hilo que cruza por detrás de dos piezas. Más la espiga y las huellas de Budín, que ya vivían en el sistema.
-
-### DOS BUGS DE COMPOSICIÓN que valen como regla
-1. **`ALTO_MOVIMIENTO` tiene que ser mayor que la fila donde termina la última pieza.** Estaba en 27 cuando el movimiento se extendía hasta la 38: la primera pieza de la vuelta siguiente caía encima de las últimas de la anterior y lo que se veía era amontonamiento, no composición. Corregido a 41. Los solapes quedaron entre **16% y 43% de la pieza chica**, de esquina y nunca tapando.
-2. **Espejar una pieza que llega a la última columna la manda a la columna 0**, que no existe, y el navegador la dibuja como una tira de 12px. Se acota con `enRango()`. Pasaba en desktop y en mobile.
-
-### `/la-mesa` — la tercera habitación (28ª ola)
-Página nueva en el grupo `(sitio)`. Dos bandas: la mesa puesta (crema) y el cierre (arena) que sale a `/experiencias`.
-- **POR QUÉ NO SE LLAMA "GALERÍA".** Una galería es un contenedor de archivos; esto es la sobremesa. La mesa además ya vive en el universo del sitio (Budín dice "en esta casa la mesa siempre tiene un lugar de más"). **El nombre y sus dos textos siguen PENDIENTES de Delfina.**
-- **La sala es la única elegida por SUSTRACCIÓN**: el contenido son 23 fotografías con sus propios colores, y cualquier fondo con carácter competiría con todas a la vez. El crema es el papel sobre el que se apoyan; que no se note es exactamente su trabajo.
-- **Dónde vive la puerta** (29ª ola, después de moverla una vez): en el **CIERRE del recorrido**, no en "Quién soy". Dos razones. (a) La frase que la antecede es *"Así que quedate. La clase sigue abierta"*: la invitación aterriza sobre la única línea del sitio que pide quedarse. (b) Arregla algo que el cierre tenía flojo — hasta ahora las tres formas de seguir eran irse a Instagram, irse a TikTok o volver al principio; **la mesa es la única que lleva a un lugar nuevo dentro de la casa**, y por eso va antes que las redes y con el tratamiento de las otras puertas (enlace editorial con su nota), no con el de un enlace social.
-- **La regla que dejó**: un acceso no se ubica donde es pertinente sino **donde ya nació la curiosidad**. En "Quién soy" el visitante todavía no sabe lo suficiente de ella como para querer ver su mesa.
-
-### EL INSTANTE VIVO (28ª ola)
-Llegaron dos tomas casi idénticas del mismo retrato: mismo encuadre, misma luz, y entre una y otra Delfina cierra los ojos y sonríe. Juntas hacen algo que ninguna hace sola. `InstanteVivo.tsx`: dos imágenes apiladas y un cruce de opacidades en CSS, **sin estado, sin temporizador, sin hidratación**. No es un carrusel porque no hay flechas, ni puntos, ni orden que seguir: no se está pasando contenido, es la misma imagen respirando. El cruce es lento y con pausa larga en cada extremo (11s); si fuera rápido se leería como cambio de diapositiva.
-
-### VIDEOS: de loop a ESCENA (28ª ola)
-Los ping-pong de 1,5s se retiraron. **Un fragmento tan corto que rebota se lee como GIF: se percibe el mecanismo antes que la escena.** Hoy van los videos completos —`clase-cookies` 12,7s (el que ya venía editado, con su título quemado) y `clase-adentro` 8,4s— con sus cortes, su cámara moviéndose y su final. El bucle sigue existiendo pero pasa tan lejos que deja de notarse. Siguen siendo dirección de arte en código y mejora progresiva sobre una foto del CMS que es un fotograma suyo.
-
-### EL LOGOTIPO DE DON YEYO — reparado de verdad (27ª ola)
-La reparación de la 23ª ola no había alcanzado: **5.930 píxeles claros con alfa < 240** (posterizada en 9 escalones). Por eso el blanco seguía viéndose comido en desktop y en `/colaboraciones`, y no en la marquesina mobile —donde es más chico—.
-- **El recorte NO puede ser cromático.** El damero del original es blanco (254) y casi blanco (246), a uno o dos puntos del blanco del logotipo: ninguna clave de color puede separarlos. Es **GEOMÉTRICO**: el núcleo rojo+azul manda, y el blanco del logo es el contorno que vive a **≤14px** del núcleo o queda **encerrado** por él (relleno de las letras). Los 14px se midieron con una transformada de distancia: los píxeles de celda oscura del damero recién empiezan a aparecer a d≈14.
-- Se sangra el color hacia la zona transparente antes de reescalar (si no, el gris del damero entra por el filtro de reescalado). Resultado: alfa binaria con 1px de antialias real y **6.574 píxeles de blanco recuperados**.
-- Verificado componiendo contra salvia y contra verde con `ffmpeg`, **offline**: las imágenes del CDN de Sanity contaminan el canvas.
-
-### BUFFALO SE RETIRÓ (27ª ola, confirmado por Delfina)
-Las colaboraciones activas son **tres**: 3 Claveles, Ormay y Don Yeyo. Con ella se fue el PISO que tenía el color de la cinta de logotipos (su logotipo blanco era el que pedía una banda oscura); queda sólo el TECHO del negro de 3 Claveles. **La salvia honda se conserva** —es la que Delfina vio montada y aprobó—, pero ahora hay margen para aclararla si alguna vez se quiere.
-- Efecto colateral que había que atender: con tres marcas la marquesina dejaba un hueco visible al cerrar el ciclo. **La pista ahora repite lo necesario para cubrir cualquier pantalla y la duración se deriva de cuántas marcas pasan** (≈7s por marca). Medido: 58 px/s en desktop. En mobile cada marca ocupa ~37% menos de ancho, así que el mismo tiempo daba 35 px/s: se corrige con un factor propio (0.64) y vuelve a ≈55.
-
-### FAVICON (27ª ola)
-El mismo monograma del navbar —D en tinta, G en terracota, compuestas en **Fraunces real** con su kerning natural— dentro de la insignia circular del manual (círculo crema con filo verde bosque). `app/icon.png` (32px, el tamaño real de una pestaña), `app/icon1.png` (512) y `app/apple-icon.png` (180, con el crema **horneado en un cuadrado** porque iOS no respeta la transparencia).
-- **Técnica reusable**: se bajó una instancia estática de Fraunces (opsz 144, wght 500) desde Google Fonts con un User-Agent viejo, se dibujaron las letras con `drawtext` de ffmpeg, se midieron sus cajas de tinta con un script de Node y se compusieron. No quedó ninguna fuente en el repo: sólo los PNG.
-- **Trampa**: kernear "DG" restando el `letter-spacing` sobre las cajas de TINTA lo aprieta el doble (las cajas ya son más chicas que los avances) y la G se monta sobre la D. Se resuelve dibujando "DG" de una sola vez y tapando la D con otra pasada del color correcto.
-
-### LOS CIERRES DE PÁGINA — un modo propio (29ª ola)
-Una banda de cierre tiene que cumplir dos medidas que **no coinciden**: el COLOR llega hasta `100lvh` (viewport grande, barra del navegador retraída) para que el navbar lo herede al final del scroll, y el CONTENIDO se compone contra `100svh`, que es el más exigente. **Con una sola caja es imposible**: centrar en `lvh` deja el contenido pisado por el navbar cuando el viewport real es más chico. Son DOS cajas — la banda mide `lvh` y ancla su interior abajo; adentro, una caja de `svh` centra y se reserva el alto del navbar (`cierre` en `Banda`, `.sala-cierre` en globals).
-- **Pero el bug no era de centrado.** El bloque medía **812px en un viewport de 720**: sobraba contenido, no faltaba alineación. De esos 812, **160 eran márgenes del adorno** —los adornos traen el margen del respiro *entre secciones*, y adentro de un cierre eso es justo lo que sobra—. Se neutralizan en `.sala-cierre .adorno` y el aire interno pasó a medirse en `vh` y no en `vw`.
-- Medido después: banda = viewport exacto, contenido con **162/161px de aire** en 1280×720 y **213/213** en 390×844, navbar heredando el color en los dos.
-
-### MATERIAL — qué entró y con qué criterio
-- **8 fotos de clase** (`tipoGesto: "clase"`) para "Por dentro" de `/experiencias`, elegidas de ~58 con un criterio único: que ayuden a imaginar cómo es estar en una clase. Quedaron afuera casi todos los platos terminados: hay de sobra y no cuentan la experiencia.
-- **23 fotos de mesa** (`tipoGesto: "mesa"`), elegidas de 38 preguntando *¿esto podría estar apoyado sobre la mesa después de cocinar?* Por eso conviven un retrato y un plato. Afuera: una captura de pantalla sin recortar, una foto de un programa de televisión (composición débil + derechos) y un upscale por IA de un fotograma que ya está en el video.
-- **La primera colaboración con material real**: la foto de Don Yeyo es la colaboración misma —una hamburguesa armada con sus panes, con los paquetes atrás—, no un packshot. **Sirve de referencia de qué pedir para las otras dos.**
-- Los HEIC/MOV salieron de `public/` (se despliega entero y ningún navegador los abre) a `images/galeria/`. `public/galería` se renombró a `public/galeria`: el acento se percent-encodea en las URLs.
-
-### LAS FOTOS TRATADAS y la trampa que destapó (28ª ola)
-El usuario reemplazó las fotos por versiones con **mejor tratamiento y menos píxeles**, y pidió priorizar el resultado visual sobre la resolución nominal. **Regla que queda: se prioriza el resultado visual.**
-- **Lo importante es por qué "no se veían".** El sitio sirve desde Sanity, y `pnpm sincronizar` sólo creaba lo que faltaba: un archivo reemplazado en `public/` **nunca llegaba**. Ahora el script **compara el peso del archivo local contra el del asset en la CDN** y resube lo que cambió. Es la solución general del problema, no un parche para esta tanda.
-- Corolario para el futuro: cada vez que se reemplace un asset en el repo hay que correr `pnpm sincronizar`, y las dimensiones declaradas en la semilla hay que **volver a medirlas** (si no, la caja reservada no coincide y aparece salto de layout).
-
-### CONTENIDO — lo que cambió en el modelo
-- `TipoGesto` sumó `"clase"` (27ª) y `"mesa"` (28ª). `ImagenReal` sumó `orden`, opcional: existe por la mesa, donde **el orden ES la composición** (la partitura reparte hero / medianas / detalles según la posición), y tiene que poder decidirlo Delfi desde el Studio. Va de 10 en 10 para poder intercalar.
-- Accessors nuevos: `getFotosDeClase()` y `getFotosDeLaMesa()`, ordenados (`orden`, y por identificador las que no lo tienen: la composición no puede cambiar de forma entre dos visitas).
-- **El pivote `llevas-pivote` se RETIRÓ** (29ª ola, indicación del usuario). Existió entre la 22ª y la 28ª para amortiguar el salto de "servicios profesionales" a "ebooks y clases". Se fue porque el problema que resolvía ya no existe: el corte cromático verde→arena más el cambio de encabezado hacen ese giro solos, y **la frase terminaba explicando una transición que el diseño ya comunicaba**. Queda anotado en `voz.ts` para no volver a agregarla por el mismo motivo.
-- **Bug viejo encontrado**: `.colab` usaba `max-inline-size`, y la ficha del zigzag derecho (con `margin-inline-start: auto`) pasaba a ancho de contenido — 364px contra 896 de sus vecinas. Se veía recién ahora, cuando una de las tres tiene foto y las otras no. Con `inline-size` el margen automático hace lo que tenía que hacer: correr la ficha, no achicarla.
-
-### Verificado en estas olas
-Tres gates en verde en cada una. **Medición por DOM como fuente de verdad**: el pane de preview compuso frames en blanco buena parte de la sesión (peor que en olas anteriores; se destraba redimensionando, cerrando pestañas extra o haciendo scroll con eventos reales — `window.scrollTo` no mueve a Lenis). Sin overflow-x en 390, 768, 1280 ni 1440. 23 piezas sin huecos en la mesa, 7 solapes entre 16% y 43%. Dataset auditado contra la semilla al cerrar: 42 imágenes alineadas en gesto, orden y medidas; 18 textos; 3 marcas; 6 secciones en orden.
-
-### Trampa nueva y grave: **el CSS de Turbopack se queda viejo**
-Editar `globals.css` con el dev server corriendo aplicó unos cambios y **no otros del mismo archivo** (`--mosaico-aire` entró y la regla de al lado no). Cuesta mucho tiempo porque las mediciones dan valores viejos y uno busca el error en el código. **Ante cualquier medición que no coincida con el CSS en disco: parar el server, borrar `.next`, levantarlo de nuevo.** No alcanza con recargar ni con cache-bustear la hoja.
-
-### Pendientes
-- **De Delfina:** el **nombre "La mesa"** y sus dos textos (`mesa-apertura`, `mesa-cierre`); el humor de las frases de Budín; rubro/historia/resultados de las tres marcas; su próxima fecha real; fotos de clases pasadas y el texto ampliado de cada clase.
-- **De las otras dos marcas:** su foto de colaboración, con el criterio de la de Don Yeyo.
-- **Infraestructura (sin cambios):** config del webhook al desplegar, CORS del dominio en Sanity, `metadataBase`/OG.
-
----
-
-## 9.bis Concepto de Experiencia (Bloque 1 — aprobado 2026-07-09)
-Entregable completo en `concepto-experiencia.md`. Síntesis para recuperar contexto:
-
-- **Intención emocional (frase):** que el visitante sienta que entró a la cocina de alguien que *sigue aprendiendo y lo invita a aprender con ella*, no al sitio de una chef que exhibe lo que ya sabe.
-- **Arco (sensación, no secciones):** inicio = reconocimiento/cercanía ("esto es real"); evolución = descubrimiento acompañado, la autoridad aparece por acumulación de evidencia, entra el humor y la voz en primera persona; cierre = pertenencia (quiero cocinar/seguir esto), nunca "me quieren vender".
-- **5 sensaciones (con evidencia):** (a) cercanía sin distancia — bio TikTok, "me gusta aprender y enseñar"; (b) honestidad/alcanzable — comida real, manos, luz natural, sin sobreproducción; (c) aprendizaje como columna vertebral — series numeradas "CAPÍTULO #01…", "COCINA NIVEL 0", talleres; (d) calidez con humor — Budín, mate, Konex, autoironía; (e) comunidad/compartir — mesas, chicos, colaboración con Florencia.
-- **Metáfora rectora:** el recorrido como *una clase abierta que nunca termina* — el visitante entra a mitad del aprendizaje de Delfina y se suma. Es brújula de sensación, NO un layout de "curso con módulos". Descartada la metáfora alternativa del error/ensayo (aportaba tono, no dirección).
-- **Tono:** joven, cálido, informal, primera persona, con humor y autoironía; nunca desprolijo. Resuelve la tensión inclinándose siempre al lado humano (cercanía sobre autoridad, enseñar sobre vender) sin perder solidez.
-- **Mostrar vs. descubrir:** se muestra que acá se cocina/aprende y cómo sumarse (sin dominar el recorrido); se descubre solo la autoridad (por el hacer, no proclamada), que cocinar es aprender / equivocarse es parte / cualquiera mejora, y que MasterChef es origen y no eje. Guiar sin dictar la emoción.
-- **Qué NO debe sentirse:** ecommerce genérico (la estética de tienda tradicional, no la venta en sí — vender con ficha cuidada sí), elitismo/lujo, distancia/institucionalidad, urgencia comercial, sobreproducción artificial, docente solemne.
-
----
-
-## 9.ter Contexto de negocio (indicación directa de Delfina — contexto permanente)
-Única indicación funcional recibida directamente de la clienta (registrada 2026-07-10):
-
-> *"Yo lo pensé más que nada para venta de productos (ya sean ebooks, tickets a clases, etc.) y por otro lado poder publicitar mi servicio (colaboraciones en redes, asesorías gastronómicas, o cualquier tipo de propuesta)."*
-
-- Dos funciones: **(1) venta de productos** (ebooks, tickets a clases) y **(2) publicitar su servicio** (colaboraciones en redes, asesorías gastronómicas, propuestas).
-- Los ebooks se comercializan hoy vía **Hotmart Marketplace**.
-- **No modifica** Discovery ni la identidad detectada. **La web sí vende, y esa función es central.** Presentar productos y servicios con ficha cuidada (descripción, precio cuando corresponda, CTA hacia Hotmart) es legítimo y esperable. Lo que se evita es la estética y la lógica del ecommerce genérico, no la comercialización. El modelo de referencia es su propia carta de Hotmart: una ficha con título, precio y botón de compra que igual suena a ella (primera persona).
-- **Qué aporta la dirección de arte a las fichas:** misma paleta cálida, la voz de Delfina en serif en la descripción, datos y precio en sans sin gritarlos, aire y foto real como ancla. Se evita: grilla de productos iguales, precio como protagonista tipográfico, "comprá ahora", card de catálogo.
-- **Pertenece al Bloque 3 (Arquitectura de Experiencia):** dónde y cómo aparecen la venta y la publicitación del servicio dentro del recorrido sin romper la cercanía. La solidez del costado profesional la aporta el rigor tipográfico y el aire, no un giro corporativo.
-
----
-
-## 10. Stack (Operational Protocol)
-Obligatorio: Next.js 16.2.10 · **TypeScript 6.0** (era 7.0; cambiado por el usuario en B5 — el ecosistema aún no soporta el TS 7 nativo en build/lint; detalle en 9.sexies) · Tailwind CSS v4.3 · pnpm.
-Versiones fijadas en B5: next 16.2.10 · react/react-dom 19.2.7 · typescript 6.0.3 · tailwindcss 4.3.2 · @tailwindcss/postcss 4.3.2 · eslint 9 + eslint-config-next 16.2.10.
-Librerías incorporadas (Bloque 6.5, con intención): **Lenis** (scroll suave + scroll-to de anclas con offset del navbar; se desactiva con `prefers-reduced-motion`) y **Motion** (utensilios del navbar, deriva de adornos al scroll, apariciones/transiciones puntuales). *(Historia: en B5/6a se difirieron y se decidió "ninguna"; el Bloque 6.5 revisó ese criterio y las incorporó — ver R3 en §9.decies.)* **`rough-notation`** se instaló y se **removió** (reposicionaba mal con el scroll; reemplazada por SVG inline propio). Lottie no se incorporó. tailwind-merge sigue sin usarse.
-Contenido desacoplado de la interfaz (B5: archivos tipados locales + capa de acceso `content/index.ts`; en 6.5 se sumaron tipos H `RedSocial` y C.bis `SerieAprendizaje`). Arquitectura que proteja la evolución del proyecto.
-**CMS (Bloque 8 · 14ª ola — §9.terdecies):** **Sanity** (project `a7nwe5rn`) como origen principal de contenido, con **Studio embebido en `/studio`** y **respaldo automático a la semilla local**. Deps: `sanity` · `next-sanity` · `@sanity/client` · `@sanity/image-url` · `@sanity/vision` · `styled-components`. La capa de acceso `content/index.ts` pasó a **asíncrona**; las piezas de cliente reciben contenido por props desde `app/(sitio)/layout.tsx` (route group). `/` sigue prerenderizada estática (revalidate 60s); imágenes por `cdn.sanity.io`. Script de carga: `pnpm sembrar`. **La interfaz importa siempre desde `@/content`, nunca de `content/data/*` ni `sanity/*`.**
-**Revalidación (Bloque 8 · 15ª ola — §9.quaterdecies):** ruta `app/api/revalidar/route.ts` (webhook de Sanity firmado → `revalidateTag("contenido","max")`); publicar en el Studio actualiza el sitio al instante. No agrega deps (usa `next-sanity/webhook`). Secreto en `SANITY_REVALIDATE_SECRET`.
-**Video (Bloque 8 · 15ª–16ª olas — §9.quaterdecies; ampliado en §9.quindecies):** loops editados (ffmpeg → MP4+WebM) en `public/videos/`, como assets de dirección de arte en código; se integran con `app/_chrome/adornos/VideoMarco.tsx` (mejora progresiva sobre la foto del CMS como poster). Hoy: Umbral con video, Quién soy con foto. **Desde la 18ª–19ª ola, `Experiencia` y `Marca` tienen además su campo de video OPCIONAL en el CMS** (`file`, mp4/webm, loop corto y liviano), servido con el mismo `VideoMarco` sobre su foto-poster: el patrón no cambia, cambia quién puede cargarlo.
-**Páginas (Bloque 8 · 18ª–19ª olas — §9.quindecies):** el sitio dejó de ser una sola ruta. `/experiencias` y `/colaboraciones` viven en el grupo `(sitio)` (heredan navbar, Lenis, Budín y atmósfera) y se construyen con **`app/_patrones/Banda.tsx`**, el primitivo extraído de `Momento`. Ambas prerenderizadas estáticas con revalidate 1m. `app/api/calendario/[id]/route.ts` genera el `.ics` (dinámica, sin dependencias).
-**Scripts de Sanity:** `pnpm sembrar` = carga inicial completa (PISA lo editado). `pnpm sincronizar` = alinea el dataset sin pisar (borra lo obsoleto, `createIfNotExists` para experiencias y textos).
-
-**Infraestructura / despliegue (criterio permanente — decisión de North-Studio, 2026-08-17):** el **código de negocio se mantiene independiente del proveedor de hosting**. Evitar acoplamientos innecesarios con Netlify, Vercel u otra plataforma cuando exista una alternativa técnicamente equivalente y portable. El **dominio se administra desde Cloudflare Domains** (capa de gestión independiente del hosting). Objetivo: **migrar entre Netlify/Vercel/Cloudflare o cualquier proveedor compatible con Next.js cambiando sólo configuración e infraestructura, nunca el código**. Toda decisión que afecte la arquitectura se evalúa contra este criterio. *Impacto pendiente a revisar al desplegar:* `metadataBase`/OG hoy apuntan a `delfina-gayoso.vercel.app`; el webhook de revalidación y los CORS de Sanity son config de despliegue, no de código (ya aislados). Detalle studio-level en `north-studio-principles.md` → Working Standards → Infraestructura.
-
----
-
-## 11. Reglas específicas del proyecto
-- La web vende (ebooks, clases, asesorías, servicio) con fichas cuidadas; se evita la estética/lógica de ecommerce genérico, no la venta. **(6.5: la propuesta de valor va temprano; "enseñar > vender" se sostiene por peso/tono/ausencia de dominio, no por posición — R1. El ecosistema se muestra completo con contenido de ejemplo marcado — R9.)**
-- MasterChef presente como origen del recorrido, nunca como eje. **(6.5: reforzado con un aura roja integrada a la atmósfera, sin branding — R10.)**
-- Tono joven, cálido, con humor; nunca institucional ni distante. **(6.5: el humor NO se apoya en la autocrítica constante; un poco más profesional; cada frase con función — R2.)**
-- Cada recurso creativo debe justificarse por la identidad, no por la sorpresa. **(6.5: enriquecimiento intencional habilitado — Lenis/Motion, adornos SVG, ilustraciones, acentos a mano, CSS mask, atmósferas — R3.)**
-- ~~Las **atmósferas** dan a cada momento una temperatura emocional distinta…~~ ~~bloques contenidos sobre crema (`.sala-panel`)~~ **(Bloque 8 · §9.terdecies):** el color vive en **BANDAS a pleno ancho con CORTES por ONDA** (sin degradados que mezclan); paleta **nueva del manual** (`images/paleta.jpg`; terracota como acento). Navbar de **herencia continua** de color. Contraste ≥AA verificado.
-- **Contenido editable → Sanity CMS; diseño → código** (regla permanente, §9.terdecies). Textos/imágenes/productos/clases/marcas/redes/secciones se administran en `/studio`; paleta, atmósferas, composición, animaciones y dirección de arte viven en el código. Toda sección/funcionalidad nueva que incorpore contenido administrable **va al CMS con respaldo local**, no fijo en el código. Mantener el desacople interfaz↔datos (importar siempre de `@/content`).
-- **La evidencia de la clienta manda.** Ante contradicción entre una indicación explícita de Delfina y una decisión de un bloque anterior, **prevalece la de ella**; se actualizan documento y código juntos (regla del Bloque 8).
-- **El sitio deduce todo lo que puede deducir** (§9.quindecies). Lo que se puede derivar de un dato —si una clase ya pasó, si se publicó recién— no se le pide a nadie que lo mantenga a mano. Delfi sólo declara lo que únicamente ella sabe.
-- **Un espacio sin material se compone, no se rellena** (§9.quindecies). Nunca placeholders grises ni carteles de ausencia: marcos, arcos dibujados y dirección de arte, para que la sección ya se vea terminada y la foto entre después sin rediseñar nada.
-- **Las marcas se muestran como son** (indicación de Delfina, 20ª ola): colores oficiales, sin tintes ni filtros que alteren su identidad. Los logos deben tener AIRE en los cuatro bordes.
-- **Navegación editorial, nunca botones genéricos** (§9.quindecies): "Ver más" / "Ver colaboraciones" / "Volver al recorrido" usan todos el mismo patrón `EnlaceEditorial` con la flecha ↘.
-- El **manual de marca es referencia, no verdad literal** (lo aclaró ella): se toma su paleta y su logotipo; **no** su tipografía (Montserrat).
-- La **navegación es parte del universo**: navbar de orientación que hereda la atmósfera y disuelve su frontera; menú mobile opaco; marca **DG** (R6, R11).
-- **Contexto de arranque de cada chat/bloque (2026-08-17):** leer `north-studio-principles.md` (destilación permanente del Playbook) + `project-journal.md`, no el Playbook completo. El Playbook original es la fuente de verdad y sólo se relee ante un cambio importante de la filosofía de North-Studio.
-- **Infraestructura hosting-agnóstica** (ver §10): código de negocio independiente del proveedor; dominio en Cloudflare Domains; migrar = cambiar config/infra, nunca código.
-- Git: gestionado exclusivamente por el usuario.
-- Validar con TypeScript, build y lint antes de cerrar cualquier bloque.
-
----
-
-## 12. Estado del proyecto
-
-### Completado
-- Discovery (recibido) + validación independiente del material visual.
-- Master Roadmap propuesto (pendiente de aprobación del usuario).
-- **Bloque 1 — Concepto de Experiencia** (aprobado 2026-07-09). Entregable: `concepto-experiencia.md`.
-- **Bloque 2 — Dirección de Arte** (aprobado 2026-07-10). Entregable: `direccion-de-arte.md`.
-- **Sincronización de Discovery** (2026-07-10). `Investigacion Discovery.md` actualizado con los hallazgos de Bloques 1–2 (sección 12 nueva + refinamiento del tono y del riesgo de ecommerce en su cuerpo), sin duplicar las specs de diseño.
-- **Bloque 3 — Arquitectura de Experiencia** (aprobado 2026-07-10). Entregable: `arquitectura-de-experiencia.md`. Incorpora el contexto de negocio (9.ter): venta de productos (M4) y publicitación del servicio (M6) integradas sin romper la cercanía. Síntesis en sección 9.quater.
-- **Bloque 4 — Sistema Visual** (aprobado 2026-07-10). Entregable: `sistema-visual.md`. Tokens de color/tipografía/espaciado/motion, escala tipográfica fluida, specs de 6 patrones, contraste WCAG verificado. Resuelve los 3 puntos abiertos de 9.quater. Síntesis en sección 9.quinquies.
-- **Bloque 5 — Setup Técnico** (realizado 2026-07-10). Fundación de código en el repo: scaffolding Next 16 + TS 6.0 strict + Tailwind v4 + pnpm; tokens de B4 cableados a `@theme`; fuentes variables Fraunces/Karla vía `next/font`; modelo de contenido desacoplado (7 tipos tipados, archivos locales + capa de acceso); sandbox de fundación. Validado con typecheck + lint + build. Docs de setup en `README.md` y `content/README.md`. Síntesis en 9.sexies. Pendiente sólo la validación/uso por parte del usuario.
-- **Sub-bloque 6a — Implementación (shell + contenido real + M1/M2)** (realizado 2026-07-10). Sandbox reemplazado por el recorrido: columna vertical continua (`app/page.tsx`), wayfinding discreto, patrones contenedor-de-momento/voz/aparición (`app/_patrones/`), M1 El umbral y M2 Quién está cocinando completos (`app/_momentos/`). Todo el contenido real cargado en `content/data/*` (voz, 6 capítulos NIVEL 0, 2 productos de Hotmart con precio, servicio, comunidad), marcado pendiente de validación de Delfina. Decisión de librerías fijada (ninguna instalada). Tres gates en verde + verificación del HTML prerenderizado. Síntesis en 9.septies. Pendiente sólo la validación/uso por parte del usuario.
-- **Sub-bloque 6b — Implementación (M3 + M4)** (realizado 2026-07-10). Primitivos nuevos `Numeral` (§7.4) y `FichaProducto` (§7.1) en `app/_patrones/`; M3 La columna del aprendizaje (centro de gravedad, los 6 capítulos NIVEL 0 como progresión de hitos, cálido sin foto) y M4 Lo que te podés llevar (los 2 ebooks como habitaciones, CTA `Yema`→Hotmart) en `app/_momentos/`, encadenados en la columna existente. Wayfinding ligado al numeral del capítulo actual (no navegable). Transición 3→4 sin quiebre. Ninguna librería nueva. Tres gates en verde + verificación del HTML prerenderizado. Síntesis en 9.octies. Pendiente sólo la validación/uso por parte del usuario.
-- **Sub-bloque 6c — Implementación (M5 + M6 + M7)** (realizado 2026-07-10). **Cierra el Bloque 6: recorrido completo M1→M7.** Primitivo nuevo `InvitacionServicio` (§7.2) en `app/_patrones/`; M5 La cocina compartida (comunidad/vida real tipo G como puente a la pertenencia, racimo cálido sin muro), M6 Trabajemos juntos (servicio como invitación tardía y no dominante) y M7 La clase no termina (cierre en su voz, sin CTA/footer, dos formas de seguir sin embudo) en `app/_momentos/`, encadenados en la columna existente. Silencio deliberado 4→5 materializado con `cocina-compartida` → `ritmoPrevisto: "silencio"` (única edición de la semilla B3). Dos registros de voz nuevos (puente M5 + cierre M7). Ninguna librería nueva. Tres gates en verde + verificación del HTML prerenderizado. Síntesis en 9.nonies. Pendiente sólo la validación/uso por parte del usuario.
-- **Bloque 6.5 — Auditoría y Validación de la Experiencia** (realizado 2026-07-11). Refinamiento intermedio en varias olas de indicaciones. **Reordenó el arco (valor al frente), reformuló el tono, incorporó navbar + Sistema de Atmósferas + Lenis/Motion, la serie "Cocina Nivel 0", ebooks con portadas reales, el ecosistema completo con ejemplos, el enriquecimiento gráfico y la marca DG.** Reformuló criterios de B1–B4 y los reescribió en sus documentos (secciones "Actualización — Bloque 6.5"). Gates en verde por ola; verificación por DOM + capturas. Síntesis en **9.decies**. Backlog en `backlog-refinamiento.md`.
-- **Bloque 7 — Refinamiento (cierre de la v1)** (realizado 2026-07-13). Recorrido completo y vivo en los cinco formatos. **Decisión de forma: la experiencia encontró su forma; sin cambios de código.** El arco (valor al frente + historia acompañando) sostiene reconocimiento→descubrimiento→pertenencia; el fork "ebooks antes que la serie" se mantiene. **Contraste medido al máximo de presencia**: `Hierro` ≥AA/AAA en todas las atmósferas (no se bajó ninguna intensidad). **Responsive validado** en 360/390/768/1440/1920 (cero overflow-x; sin correcciones). **Sustracción**: nada gana su lugar para ser quitado. **Backlog triado** (Resuelto / →Delfina / Descartado-v1) en `backlog-refinamiento.md`. Tres gates en verde. Síntesis en **9.undecies**. Lo abierto es de Delfina (ver Pendiente).
-- **Bloque 8 — Personalización con la clienta** (en curso desde 2026-07-17; **29 olas al 2026-08-01**). **Olas 27–29 en §9.septdecies (ESTADO VIGENTE):** **LA MESA** — el sitio deja de mostrar fotos y construye un lenguaje visual alrededor del material fotográfico: retícula modular con rectángulos declarados y superposición real, movimiento de ocho piezas espejado, sin marcos-contenedor (se retiró `Mosaico`), parallax con animaciones de scroll de CSS · **página `/la-mesa`** con su puerta en el cierre del recorrido · **instante vivo** (dos tomas que se funden, sin JS) · **videos como escena** y no como loop · **Don Yeyo reparado con recorte geométrico** · **Buffalo retirado** (tres colaboraciones) y marquesina que se adapta a cuántas marcas hay · **favicon** con el monograma DG en Fraunces real · **modo `cierre` para las bandas finales** (color en `lvh`, contenido en `svh`) · el pivote `llevas-pivote` retirado · `pnpm sincronizar` detecta assets reemplazados por peso. Antes: **olas 22–26 en §9.sexdecies:** **recorrido reordenado** (Quién soy → Umbral → **Marcas** → **Trabajemos** → **Lo que te llevás** → cierre; el orden vive en el JSX *y* en `momentos.ts`, que gobierna el CMS) · dos transiciones nuevas (la antesala de "Trabajemos" y el pivote `llevas-pivote`) · **`PIGMENTOS`** como punto único del color · la sala **Marcas en piedra cálida** tras cuatro intentos, con el **terracota cerrado como acento y nunca fondo** · **cinta de logotipos en salvia honda** (única palanca del contraste de los logos) · **Budín con juego** (bolsa sin repetición, siempre contesta, deriva en mobile, tres niveles, globo con punta) · **Don Yeyo reparado** · marquesina a 28s · `/colaboraciones` con sala propia. Antes: **olas 17–21 en §9.quindecies:** modelo `Experiencia` separado de `Producto` · estados inteligentes derivados de la fecha · módulo "La próxima experiencia" como invitación · "Guardá la fecha" con calendario inferido del dispositivo (+ `.ics` propio) · primitivo `Banda` y **dos páginas nuevas** (`/experiencias`, `/colaboraciones`) que hablan el mismo idioma que el recorrido · **marcas reales con logotipos a color** en marquesina-banda salvia con guarda · patrón `EnlaceEditorial` (↘) · espacios sin foto como composición terminada · navbar consciente de la ruta · respaldo de la voz por identificador · auditoría del CMS + `pnpm sincronizar`. Lo anterior: Olas 1–8 en §9.duodecies (superadas); olas 9–14 + Sanity en §9.terdecies; **olas 15–16 en §9.quaterdecies (ESTADO VIGENTE)**. Titulares vigentes: recorrido de **6 secciones** (Quién soy abre) · **paleta nueva del manual** (terracota como acento) · **bandas de color con cortes por onda** · **navbar de herencia continua** · **Budín personaje interactivo** · **Sanity CMS** (Studio en `/studio`, capa asíncrona con respaldo, páginas estáticas) · **webhook de revalidación** (publicar → sitio al instante) · **primeros videos**: Umbral con loop del cheese pull (`VideoMarco`, mejora progresiva), **Quién soy con foto original** (video a reevaluar), cierre sin video. Separación contenido(CMS)↔diseño(código) como criterio permanente. Tres gates en verde.
-
-### Pendiente
-- Aprobación del roadmap.
-- **Al cierre de la 29ª ola (lo más fresco, detalle en §9.septdecies):** de **Delfina** → el **nombre "La mesa"** y sus dos textos (`mesa-apertura`, `mesa-cierre`), el humor de las frases de Budín, rubro/historia/resultados de las tres marcas, su próxima fecha real, fotos de clases pasadas y el texto ampliado de cada clase. De **las otras dos marcas** → su foto de colaboración, con el criterio de la de Don Yeyo (el producto de la marca DENTRO de una receta de ella, no un packshot). **Infraestructura** → config del webhook al desplegar, CORS del dominio en Sanity, `metadataBase`/OG.
-- **La v1 técnica está cerrada.** Lo que resta NO es de diseño/código, es **validación de Delfina** (no se fabrica): validar todo el copy de voz; confirmar handles de redes (IG `@delfinagayoso` / TikTok `@gayosodelfi`; el email `gayosodelfina@gmail.com` ya es definitivo); **reemplazar el contenido de EJEMPLO** (`clase-en-vivo-pastas`, `propuestas-educativas`) por datos reales y quitar el flag `borrador`; confirmar el recorte de los captions #04/#06; forma exacta de los utensilios; intensidad del aura/bloom de MasterChef; sección personal (copy + ilustraciones); tiempos de la intro del nombre. Todo señalado en `backlog-refinamiento.md` como **→ Delfina**.
-- **`backlog-refinamiento.md`** quedó **triado en B7**: los ítems técnicos de conjunto (contraste, responsive, overflow, aterrizaje, meseta de atmósferas, Lenis, grano) están **Resueltos** (validados sin ajuste); las capas nuevas de enriquecimiento (transiciones Motion, auto-ocultar navbar, más adornos/CSS-mask/Lottie/embed) quedaron **Descartadas para v1** (refinar es sustraer); el resto es **→ Delfina**.
-- Observación menor para limpieza futura (no afecta la experiencia): comentarios internos de `app/_momentos/*.tsx` con el número de momento anterior al reorden de 6.5.
-
-### Roadmap propuesto (hipótesis inicial)
-1. Concepto de Experiencia ✓
-2. Dirección de Arte ✓
-3. Arquitectura de Experiencia (el recorrido) ✓
-4. Sistema Visual ✓
-5. Setup Técnico ✓
-6. Implementación (por momentos del recorrido) ✓ — 6a (shell + contenido real + M1/M2), 6b (M3–M4) y 6c (M5–M7); recorrido completo M1→M7
-6.5. Auditoría y Validación de la Experiencia ✓ — reorden + tono + navbar + atmósferas + serie + enriquecimiento (§9.decies)
-7. Refinamiento ✓ — recorrido vivo en 5 formatos, contraste medido, responsive validado, backlog triado, **decisión de forma: encontró su forma / sin cambios de código** (§9.undecies). Resta sólo validación de Delfina.
-8. **Personalización con la clienta** ⏳ *(en curso, 29 olas)* — co-creación con Delfina sobre su evidencia. Olas 1–8 (§9.duodecies, superadas): reencuadre de paleta, lenguaje gráfico editorial, logotipo, plataforma agnóstica. Olas 9–14 + Sanity (§9.terdecies): recorrido de 6 secciones (Quién soy abre), nueva paleta del manual (terracota=acento), **bandas de color con cortes por onda**, navbar de herencia continua, **Budín interactivo**, fotografía real, y **Sanity CMS** (sitio administrable, páginas aún estáticas). **Olas 15–16 (§9.quaterdecies):** **webhook de revalidación** (publicar → sitio al instante) y **primeros videos** (Umbral con el cheese pull vía `VideoMarco` = mejora progresiva; Quién soy se mantiene con foto; cierre sin video). **Olas 17–21 (§9.quindecies):** el sitio pasó de un solo recorrido a una casa con **dos habitaciones más** (`/experiencias`, `/colaboraciones`), con `Experiencia` como tipo propio, estados que se derivan solos de la fecha, calendario inferido del dispositivo, marcas reales a color en una marquesina-banda, navegación editorial unificada y el CMS auditado y sincronizado. **Olas 22–26 (§9.sexdecies):** Delfina **reordenó el recorrido** para que el costado profesional suba (Marcas y Trabajemos antes que la propuesta educativa), y eso obligó a resolver el **sistema de color** de raíz: `PIGMENTOS` como punto único, la sala Marcas buscando su tono durante cuatro intentos hasta la **piedra cálida**, el **terracota cerrado como acento**, y la cinta de logotipos bajada a **salvia honda**. Además, **Budín dejó de ser un componente que sortea frases y pasó a ser un personaje con juego**. **Olas 27–29 (§9.septdecies, ESTADO VIGENTE):** llegó material fotográfico en volumen y con él la pregunta de fondo — **el sitio dejó de "mostrar fotos" y construyó un lenguaje visual alrededor del material**. Los marcos-contenedor se retiraron; en su lugar, **LA MESA**: una retícula modular donde cada pieza declara su rectángulo, con superposición real en dos ejes, un movimiento que se repite espejado, sombra de algo apoyado y profundidad por capas resuelta en CSS puro. Estrenó **página propia (`/la-mesa`)**, con la puerta ubicada en el cierre del recorrido —donde ya nació la curiosidad, no donde era temáticamente pertinente—. Los videos pasaron **de loop a escena**, apareció el **instante vivo**, se reparó Don Yeyo con recorte geométrico, se retiró Buffalo y el sitio ganó **favicon**. Sigue abierto: refinamiento continuo + **contenido real de Delfina** (nombre y textos de la mesa, próxima fecha, historia/resultados/fotos de cada marca, galería de clases pasadas) + config del webhook/CORS al desplegar.
-
----
-
-## 13. Aprendizajes
-- El humor/informalidad de Delfina es un rasgo definitorio, no un adorno: debe estar presente en el tono de la experiencia.
-- Su autoridad se construye por evidencia (procesos, errores, recorrido), no por títulos: la web debe mostrar el hacer, no proclamarlo.
-- Las **manos** son la firma visual más consistente y subestimable de su universo: dan escala (entra en tu mano) y autoría (alguien lo hizo). Traducción literal de "vení, te muestro cómo lo aprendí".
-- La restricción de v1 (sin fotografía de producción, `images/` no reutilizable) no pelea con la identidad: la **refuerza**. Una hero sobreproducida habría traicionado su honestidad. La dirección de arte debe ser robusta ante la escasez de fotos, repartiendo el peso en tipografía, color, composición, ritmo y aire.
-- El color y la tipografía no aportan carácter: aportan silencio. Su función es no tapar a Delfina. Trabajar más (sostener jerarquía, temperatura, progresión) no es gritar más.
-- La jerarquía "enseñar > vender" no se sostiene omitiendo la venta (la web sí vende), sino con **posición, peso, ausencia de dominio persistente y tono**. El comercio aparece tarde y no-central, sin nav ni carrito que lo persigan.
-- "Entra a mitad del aprendizaje" no es sólo la sensación del primer momento: es una **propiedad estructural** de toda la arquitectura. El recorrido debe funcionar entrado desde el medio (links, Hotmart, redes), porque así llega su audiencia real.
-- Mobile no es la versión reducida del recorrido: es su forma **nativa** (Delfina es creadora nativa de vertical). El aporte de la web es darle en desktop el aire que la grilla de Instagram le niega — y en mobile, no reconstruir esa grilla.
-- El contraste no es un chequeo posterior sino una restricción de diseño: al calcular la luminancia real de la paleta apareció que **`Yema` (su color más identitario) falla como texto sobre `Harina` (2.0:1)**. No se descarta el color: se redefine su rol (relleno, no tinta). La identidad manda sobre el uso, pero la accesibilidad manda sobre la técnica del uso. El botón correcto es relleno `Yema` + texto `Hierro` (≈7.0:1).
-- "Aportar silencio" no es hacer poco: en v1 (foto escasa) el sistema **hace más trabajo estructural** (jerarquía, temperatura, ritmo, pausa) sin hacerse ver más. La ausencia de foto se resuelve como silencio buscado (`Harina` + aire), no como hueco a rellenar con decoración. Si un patrón solo funciona con foto grande, está mal diseñado.
-- Nombrar es decidir: el `#6B6156` que B2 dejó sin nombre se bautizó **`Piedra`** (mesada de granito). El nombre lo ata a su cocina, igual que los otros seis tonos, y evita que se vuelva "un gris de sistema".
-- El stack obligatorio puede chocar con la realidad del ecosistema: **TS 7.0 (compilador nativo en Go) todavía no es soportado por el build de Next ni por typescript-eslint** (API programática movida a `./unstable/*`; peer de typescript-eslint `<6.1.0`). La decisión correcta no fue forzarlo ni parchear con dependencias extra (se evaluó un puente Babel para el parser de ESLint y se descartó por sobre-ingeniería), sino **bajar a TS 6.0** —última línea con API clásica— para que los tres gates funcionen. La tecnología acompaña: se elige la versión que deja correr typecheck+lint+build hoy, y se migra cuando el ecosistema madure. Cambiar de versión no es cambiar la arquitectura.
-- El desacople contenido↔interfaz no exige un CMS: en v1 (alcance chico, sin catálogo) **archivos tipados locales + una capa de acceso** (`content/index.ts`) logran el mismo desacople con menos costo, y dejan la puerta abierta a un CMS (se reescribe la capa, no la interfaz). El tipado es el baseline de calidad gratis: el contenido inválido no compila. Coherente con "la solución más simple que mantiene la calidad" y "sin dependencias por costumbre".
-- **La promesa del desacople se cobró al migrar a Sanity (14ª ola): la capa de acceso era el único archivo a reescribir, la interfaz no se tocó.** Por eso conviene que ese límite sea sagrado — la interfaz importa siempre de `@/content`. Dos aprendizajes de la migración: (1) **La semilla local como RESPALDO** (cada accessor cae en `content/data/*` si el CMS no responde o está vacío) es lo que vuelve la migración transparente y protege el sitio ante una caída del CMS; además es la fuente del script de carga (`pnpm sembrar`, idempotente). (2) **El CMS obliga a decidir qué es contenido y qué es diseño**: textos/imágenes/productos/marcas → editables; paleta, atmósferas, composición, animaciones → código. Dejar la atmósfera de cada sección FUERA del panel es deliberado: es dirección de arte, no debe poder romperse desde la edición. Regla para lo que venga: contenido administrable → esquema + consulta + accessor con respaldo; nunca fijo en el código.
-- **Embeber el Studio (`/studio`) fuerza a separar el "chrome" del sitio**: navbar, Budín y loading vivían en el layout raíz y se montaban sobre el panel. La solución limpia es un **route group `(sitio)`** (no aparece en la URL) con su propio layout que trae el chrome, dejando la raíz mínima. Las piezas de CLIENTE que consumían contenido (`Navbar`, `Budin`) pasan a recibirlo por props desde el layout servidor: en Next App Router, sólo el servidor consulta el CMS.
-- **pnpm no expone dependencias transitivas**: un script suelto que importa `@sanity/client` (transitiva de `sanity`) no resuelve hasta declararla como dependencia directa. Verificar imports antes de correr scripts de carga evita un medio-run.
-- La fidelidad 1:1 de los tokens es de **valor y nombre semántico**, no de prefijo: mapear `--fs-*`→`--text-*` para que Tailwind v4 genere utilidades es el "cableado" que B4 delegó a B5, no una traición al sistema visual. La regla de cableado (namespace de Tailwind → utilidad; bespoke → `var()`) mantiene el sistema legible y evita duplicar tokens.
-- El motion "vapor" no necesita librería: una transición CSS (`opacity` + `translateY`, `--ease-posar`) disparada por un IntersectionObserver mínimo lo resuelve. Instalar Motion en 6a habría sido dependencia por costumbre — justamente lo que el Operational Protocol evita. La prueba: la decisión (Motion/tailwind-merge/Lenis fuera) no le quitó nada a M1/M2. Se reincorpora solo ante una necesidad concreta (p. ej. orquestación real de una imagen que viaja entre momentos), con intención.
-- La aparición debe **degradar con honestidad**: el estado oculto (`data-armed`) lo agrega el cliente, no el SSR, así que sin JS o antes de hidratar el contenido se ve completo, y `prefers-reduced-motion` ni siquiera lo arma. "Nada importante aparece después de una animación" (B4 §5.4) no es una frase: es una restricción de implementación que se verifica en el HTML prerenderizado (toda la voz está en el `index.html`).
-- Entrar in medias res sin hero crea una tensión real con la accesibilidad (no hay `h1` visible). Se resuelve con encabezados **sr-only** (h1 de página, h2 por momento): estructura para lectores de pantalla sin instalar el título/hero que el diseño evita. El wayfinding, en cambio, es decorativo (`aria-hidden`): orienta, no es landmark ni índice.
-- "Cargar todo el contenido real" y "no adelantar M3–M7" no chocan porque el contenido está **desacoplado**: los 6 capítulos, los 2 productos, el servicio y la comunidad ya viven en `content/data/*` aunque sus momentos (M3–M7) todavía no se rendericen. Agregar el momento en 6b/6c es leer contenido que ya existe, no crearlo. El desacople de B5 rinde acá por primera vez.
-- "6 capítulos" y "el numeral no es un temario" (§7.4) se resuelven en la **composición**, no en el primitivo: `Numeral` sólo sabe dibujar un hito grande y solo; que sean progresión y no fila lo garantiza el momento, apilándolos en vertical con **mucho aire y zigzag** (nunca una grilla de numerales). Un primitivo correcto puede volverse un temario si el momento lo dispone mal: la regla anti-temario vive en el layout, no en el componente.
-- **Sin foto, la voz en serif hace de ancla.** En la ficha de producto (§8) la descripción en primera persona ocupa el lugar que en otra web tendría la imagen del ebook; el precio queda como dato al lado, no como protagonista. La ficha se lee como una carta breve suya, no como una card vacía esperando una foto. Confirma que si un patrón sólo funciona con foto grande está mal diseñado.
-- La transición 3→4 "sin quiebre comercial" (§3.3) **ya estaba resuelta en los datos**: al sembrar M3 y M4 con el mismo `ritmoPrevisto: "denso"` en `content/data/momentos.ts`, el contenedor de momento les da idéntico aire vertical sin lógica especial. El registro se hereda solo; no hizo falta código de transición. Decidir bien la estructura (B3/B5) abarata la implementación (B6).
-- Ligar el wayfinding al numeral **sin volverlo navegable** es cuestión de rol, no de forma: un segundo IntersectionObserver (`rootMargin -50%`) refleja el capítulo que cruza el centro del viewport como texto `aria-hidden`/`pointer-events:none`. Muestra dónde estás; no deja saltar. La misma marca sería un índice si tuviera un `href`; sin él, es orientación pura.
-- Anclar una salida a una sección exige un ancla **en flujo normal**: el h2 sr-only de cada momento está `position:absolute` (lo saca del flujo → el scroll aterrizaría mal), así que la salida "Entrar a la clase" apunta a un `id` nuevo en la propia `<section>`. El encabezado accesible y el destino de ancla son dos necesidades distintas; conviene no mezclarlas en el mismo elemento.
-- El **silencio 4→5 no necesitó código de transición**: se materializó como un dato. Cambiar `cocina-compartida` a `ritmoPrevisto: "silencio"` hace que el contenedor de momento (§7.5) le dé `--space-silencio` de aire → la banda de `Harina` vacía que limpia el registro comercial. La semilla de momentos (B3) se había sembrado en B5 con M5 `"denso"`, antes de diseñar el momento; alinearla con la arquitectura §3.4 es corregir la semilla, no inventar dirección. El quiebre de ritmo es una propiedad del contenido, no de la interfaz — coherente con el desacople y con "decidir bien la estructura abarata la implementación".
-- **El acento `Yema` marca la diferencia venta ≠ invitación.** El botón relleno `Yema` está reservado al CTA de compra (ficha de producto → Hotmart). El contacto del servicio (M6) y las formas de seguir (M7) son **enlaces de texto**, no botones: escribirle o seguirla es una invitación abierta, no una transacción. Reservar el único acento de relleno a la compra sostiene "enseñar > vender" por la vía del peso visual, sin omitir ni la venta ni el servicio.
-- **El cierre no vende y aun así ofrece continuar.** M7 resuelve "la clase abierta que nunca termina" con un **bucle literal** ("Volver al principio" → `#seccion-umbral`) + un enlace a su contenido, ambos de igual peso y sin jerarquía de embudo. Re-listar productos o clases en el cierre habría reabierto el registro comercial que M4 ya cerró; la salida coherente con el arco (pertenencia, no transacción) es continuar la clase, no rematar una venta.
-- **Un dato, un origen.** El Instagram aparece en dos lugares del recorrido (contacto de M6, "seguir" de M7) pero vive una sola vez en el contenido (`servicios.ts`): M7 lo reutiliza vía `getServicios()`, sin duplicar la URL ni inventar un handle. Cuando el usuario confirme el usuario real, se cambia en un solo lugar. El desacople no es sólo interfaz↔contenido: también es no repetir el mismo dato en dos componentes.
-- **Comunidad sin muro.** El riesgo de M5 era volver la vida real (Budín, mate, mamá, chicos) en una grilla de tarjetas / testimonios / logos / contador — justo lo que la identidad evita. Se resolvió tratándola como **su voz en primera persona** (serif, zigzag, aire), pensamientos sueltos, no piezas de prueba social. La calidez la da que hable ella, no que se cuente cuánta gente la sigue.
-
-### Bloque 6.5 (Auditoría / refinamiento intermedio)
-- **El proyecto evoluciona con evidencia nueva.** Varias decisiones "aprobadas" de B1–B4 (orden autobiográfico, comercio tardío, ninguna librería, rojo excluido, sin navbar, tono autoirónico como definitorio, "todo crema") dejaron de representar la experiencia buscada y se **reformularon**, reescribiéndolas en sus documentos de origen. Lo único intocable fue la filosofía Midfield. Conservar un criterio sólo porque fue aprobado antes es lo contrario de la actitud del estudio.
-- **La jerarquía "enseñar > vender" no depende de la posición.** Se puede poner la oferta al frente sin volverse una tienda, si se sostiene con peso, ausencia de dominio comercial persistente y tono. Retrasar el comercio era una de cuatro palancas, no la única.
-- **La verdadera voz estaba en la evidencia, no en nuestra interpretación.** El copy inventado sobreactuó la autocrítica ("me quemo"); la descripción real de su ebook en Hotmart mostró una voz cálida-profesional. Cuando existe material real de la persona, se escribe desde ahí.
-- **El campo continuo promediaba las identidades.** Interpolar siempre entre centros (Opción A) hacía que ninguna atmósfera llegara a su fuerza plena → sensación de uniformidad. **Anclar cada atmósfera a su sección con transición en los bordes (Opción C)** hace que cada capítulo llegue completo y deje un recuerdo distinto, con la implementación más simple. Elegir la arquitectura por la experiencia, no por la complejidad.
-- **Un acento emocional es atmósfera, no un fondo.** El aura de MasterChef, resuelta como `::before` detrás del párrafo, se sentía un bloque con bordes; movida al **propio campo atmosférico** (un foco que florece y se apaga con el scroll) se integró al aire. La diferencia entre "una capa encima" y "parte del universo".
-- **La interfaz que desaparece.** El navbar dejó de sentirse "apoyado" cuando heredó la atmósfera y disolvió su borde (gradiente), y el menú mobile cuando pasó a ser una **hoja opaca** con el color del momento (no una capa transparente). Coherente con "la interfaz acompaña".
-- **Desacoplar el subsistema, no sólo el contenido.** El Sistema de Atmósferas vive centralizado (`config.ts`): cada sección **declara** su atmósfera y toda la lógica/colores están en un lugar → reutilizable en otro proyecto cambiando la config. Mismo principio que interfaz↔contenido, un nivel más arriba.
-- **La caché de dev miente.** Varias veces `.next/dev` sirvió un bundle intermedio y el motor de atmósferas "no escribía" variables; el código era correcto (los gates y el build lo confirmaban) y se resolvía limpiando la caché. Verificar contra el build de producción antes de "arreglar" un fantasma.
-- **La legibilidad es una restricción de diseño de la atmósfera.** Con colores más presentes (chocolate/vino), el texto `Hierro` sigue mandando: la intensidad del foco se elige para que el par de lectura no baje de AA. La riqueza cromática no puede comprarse con legibilidad.
-- **Detalles que cuentan sin explicar.** Ilustraciones del día a día (mate, huellas de Budín), acentos a mano (círculo/subrayado de recetario) y la apertura del caption "como desplegar una hoja" hacen que la experiencia se sienta suya sin agregar texto. El recurso gráfico nace del universo gastronómico, no de la decoración.
-- **Un marco comunica "foto seleccionada"; una composición comunica "esto pasó".** El diagnóstico del usuario en la 28ª ola vale como criterio permanente: encuadrar cada imagen en su contenedor —por cuidado que tenga el contenedor— la presenta como pieza de catálogo. Lo que la vuelve editorial no es un marco mejor sino **sacar el marco** y dejar que la fotografía se apoye: sombra baja, inclinación mínima, escalas muy distintas y superposición real. La prueba está en que el único borde que sobrevivió es el **margen de papel**, que no es un contenedor sino un gesto fotográfico (el borde blanco de una copia impresa).
-- **La superposición real necesita una retícula de DOS EJES.** Con una grilla de tarjetas (span de columnas + orden de flujo) sólo se pueden simular solapes con márgenes negativos, y siempre en el eje horizontal. Que cada pieza declare su **rectángulo** (columna, ancho, fila, alto) sobre `grid-auto-rows` fijo es lo que permite que dos piezas compartan celdas de verdad —y, de paso, vuelve la composición legible de un vistazo en un solo lugar del código.
-- **Una partitura fija envejece mal; una que se repite espejada, no.** Componer a mano tantos rectángulos como fotos haya se rompe apenas la clienta sube una más. Componer **un movimiento bueno y reflejarlo en cada vuelta** da variedad real con partitura finita: el ojo no reconoce el patrón porque nunca ve dos veces el mismo lado. Dos cuidados aprendidos a los golpes: el alto del movimiento tiene que superar la fila donde termina su última pieza (si no, las vueltas se pisan) y el espejado hay que acotarlo (una pieza que llega a la última columna se espeja a la columna 0, que no existe).
-- **Un acceso se ubica donde ya nació la curiosidad, no donde es pertinente.** La puerta a la mesa era temáticamente correcta en "Quién soy" —esa sección presenta a Delfina y la mesa es su respuesta visual— y aun así estaba mal: en el segundo scroll el visitante todavía no sabe lo suficiente como para querer verla, y la invitación competía con el descenso en vez de acompañarlo. En el cierre aterriza sobre "Así que quedate", que es la única línea del sitio que pide quedarse. Corolario: **antes de sumar un acceso, preguntar qué ya leyó el que lo va a ver.**
-- **Una línea que explica lo que el diseño ya comunica, resta.** El pivote de "Lo que te llevás" nombraba un giro que el corte cromático verde→arena y el cambio de encabezado ya hacían solos. Sacarlo no perdió nada. Regla: cuando una transición se resuelve visualmente, el texto que la anuncia deja de ser una ayuda y pasa a ser una redundancia.
-- **Un loop demasiado corto se lee como GIF.** Un fragmento de segundo y medio reproducido de ida y vuelta hace que se perciba el mecanismo antes que la escena. Con el video completo —con sus cortes, su cámara moviéndose y su final— el bucle sigue existiendo pero pasa tan lejos que deja de notarse. La diferencia entre "un recurso animado" y "algo que pasó".
-- **Dos tomas casi iguales valen más que cualquier animación.** El instante vivo (el mismo encuadre, y entre una foto y otra ella cierra los ojos) da sensación de vida con dos imágenes apiladas y un cruce de opacidades: sin estado, sin temporizador, sin hidratación. Y no es un carrusel porque no hay nada que decidir —no se está pasando contenido, es la misma imagen respirando—. Cuando el material trae el gesto, la técnica sólo tiene que no arruinarlo.
-- **Un cierre de página tiene dos medidas que no coinciden.** El color debe llegar a `100lvh` para que el navbar lo herede al final del scroll; el contenido debe componerse contra `100svh`, que es el viewport más chico. Con una sola caja es imposible: centrar en `lvh` pisa el contenido con el navbar cuando el viewport real es menor. La solución son dos cajas anidadas. Pero antes de tocar el centrado conviene **medir el alto real del bloque**: en este caso medía 812px en un viewport de 720 y el problema no era de alineación sino de que **los adornos traían el margen del respiro entre secciones** (160px sumados) adentro de un bloque que tenía que entrar en una pantalla.
-- **Reemplazar un archivo en el repo no cambia nada si el CMS manda.** `pnpm sincronizar` sólo creaba lo que faltaba, así que una foto reemplazada en `public/` seguía sirviéndose vieja para siempre. La solución general —y no el parche de una lista a mano— es **comparar el peso del archivo local contra el del asset en la CDN** y resubir lo que cambió. Corolario para cualquier asset: reemplazarlo obliga a sincronizar y a **volver a medir** sus dimensiones en la semilla, o aparece salto de layout.
-- **Prioridad del resultado visual sobre la resolución nominal.** Llegaron versiones tratadas con menos píxeles que el export directo del original, y son las que van: a los tamaños en que el sitio muestra las fotos, el píxel de más no se ve y el tratamiento sí. Vale como criterio, no como excepción.
-- **Un recorte cromático no siempre es posible, y conviene descubrirlo midiendo.** El damero del logotipo de Don Yeyo es blanco (254) y casi blanco (246): a uno o dos puntos del blanco del propio logo. Ninguna clave de color puede separarlos, y dos intentos se fueron en eso. La salida fue **geométrica**: el núcleo de colores inconfundibles manda, y el blanco pertenece al logo si vive a menos de cierta distancia de ese núcleo o queda encerrado por él. Esa distancia se mide (transformada de distancia), no se estima.
-- **La caché de dev volvió a mentir, peor.** Turbopack aplicó unos cambios de `globals.css` y no otros del mismo archivo, y las mediciones daban valores viejos mientras el disco estaba bien. Costó varias vueltas buscando el error en el código. **Ante cualquier medición que no coincida con el CSS en disco: parar el server, borrar `.next`, levantar de nuevo.** No alcanza con recargar ni con cache-bustear la hoja.
+## 8. Trabajo siguiente
+
+**Bloque 8 — Personalización con la clienta: CERRADO.** Fueron 29 iteraciones sobre la
+evidencia de Delfina. Lo que dejó ya vive repartido acá y en `docs/`: el recorrido
+reordenado por ella, el sistema de color en un punto único, las tres páginas, el CMS con
+su respaldo, Budín como personaje, y **el lenguaje fotográfico propio** (la mesa) que
+reemplazó a los marcos contenedores. No queda nada abierto del bloque salvo lo que
+depende de ella (§5).
+
+**Bloque 9 — Hosting y cotización** se trabaja en su propio chat y no se documenta acá;
+lo único suyo que el proyecto necesita conocer es **D7** (independencia del proveedor).
+
+**Bloque 10 — Iteración con la clienta** es el siguiente, y es de tipo **iteración**: el
+alcance lo fija la cadencia de feedback de Delfina, así que cierra por corte acordado
+—cantidad de iteraciones, fecha o una decisión esperada—, no por entregable. Cada
+iteración se condensa acá al cerrarla, en estado y no en historia.
+
+**Lo primero que habilita valor real es el despliegue**: hasta que el sitio esté en línea,
+los tres pendientes de infraestructura no se pueden cerrar y Delfina no puede ver su sitio
+fuera de una sesión de trabajo.

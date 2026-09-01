@@ -22,9 +22,14 @@ export const sanity = createClient({
 export const REVALIDAR = 60;
 
 /**
- * Consulta tolerante a fallos: si Sanity no responde (o el proyecto todavía no tiene
- * contenido), NO rompe el sitio ni el build — devuelve `null` y la capa de acceso cae
- * en la semilla local. Esta es la pieza que vuelve la migración transparente.
+ * Consulta tolerante a fallos: si Sanity no responde, NO rompe el sitio ni el build —
+ * devuelve `null` y la capa de acceso cae en la semilla local. Esa es la red de seguridad
+ * que mantiene la web publicada aunque el CMS se caiga.
+ *
+ * `null` significa UNA sola cosa: la consulta falló. Un dataset que responde y no tiene
+ * documentos devuelve una lista vacía, y eso es una respuesta, no una falla: la capa de
+ * acceso la obedece y vacía la sección (Bloque 10 · E3, ver `conRespaldo` en
+ * `content/index.ts`). Antes las dos cosas se confundían y borrar en el Studio no borraba.
  */
 export async function consultar<T>(
   query: string,

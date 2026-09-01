@@ -102,7 +102,13 @@ export default async function PaginaLaMesa() {
           )}
 
           {/* Las capas van DENTRO del envoltorio de la mesa, no dentro de la retícula:
-              así se posicionan contra toda la composición y nunca empujan una pieza. */}
+              así se posicionan contra toda la composición y nunca empujan una pieza.
+
+              Sin ninguna foto cargada, el envoltorio entero se retira (Bloque 10 · E3):
+              las capas —el papel de receta, el repasador, el hilo— son objetos APOYADOS
+              sobre la mesa, y sin mesa quedarían flotando sobre el fondo. La página
+              conserva su apertura y su cierre, que es lo que sigue teniendo sentido. */}
+          {piezas.length > 0 && (
           <div className="mesa-envoltorio">
             <CapaMesa
               variante="receta"
@@ -132,6 +138,7 @@ export default async function PaginaLaMesa() {
             <Adorno variante="espiga" className="mesa-espiga" />
             <Adorno variante="huellas" className="mesa-huellas" />
           </div>
+          )}
         </Banda>
 
         {/* El cierre en ARENA, el color de "Lo que te llevás": la mesa termina invitando

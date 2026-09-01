@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { MOMENTOS } from "./voz";
+import { SECCIONES } from "./voz";
 
 /** Redes sociales reales (aparecen en el navbar y en el cierre). */
 export const red = defineType({
@@ -52,7 +52,7 @@ export const momento = defineType({
       name: "identificador",
       title: "Sección",
       type: "string",
-      options: { list: [...MOMENTOS] },
+      options: { list: [...SECCIONES] },
       validation: (r) => r.required(),
     }),
     defineField({

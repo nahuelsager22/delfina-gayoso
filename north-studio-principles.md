@@ -1,158 +1,176 @@
-# North-Studio — Principles (contexto operativo compacto)
+# north-studio-principles.md · Delfina Gayoso
 
-> **Qué es este archivo.** Una destilación de `North-Studio Midfield - The Playbook.md`:
-> conserva únicamente los principios, criterios y estándares que funcionan como
-> **reglas permanentes** del estudio. Reemplaza la lectura completa del Playbook al
-> iniciar bloques/chats nuevos.
->
-> **Fuente de verdad.** El Playbook original sigue siendo la fuente de verdad y la
-> filosofía completa. Sólo debe releerse si se hace una **modificación importante en la
-> filosofía de North-Studio**. Este resumen conserva su espíritu, no lo reemplaza.
->
-> **Alcance.** Contenido studio-level (permanente y reutilizable entre proyectos). Lo
-> específico de este proyecto vive en `project-journal.md`.
+> Interfaz operativa de Midfield para este proyecto. **No copia la metodología general**:
+> los principios, los criterios de implementación, la comunicación y las reglas de riesgo
+> viven una vez en el Playbook y se aplican sin releerlo. Acá está sólo lo que la IA no
+> puede inferir del proyecto, más las referencias que un chat consulta a diario.
 
 ---
 
-## Principio rector
-North-Studio existe para **comprender profundamente a una persona y transformar esa
-comprensión en una experiencia digital coherente**, donde cada decisión tenga una
-intención clara y la **identidad** siempre ocupe el centro. El producto real no es una
-página: es una **representación honesta de una identidad**. El éxito es silencioso: la
-persona siente que esa experiencia le pertenece, como si no pudiera haber sido de otra
-manera.
+## 0. Qué es este proyecto
 
-## Filosofía (Foundation)
-- **Diseñar para una persona, no para una categoría.** La profesión dice qué hace; la
-  identidad, quién es. Dos personas del mismo rubro pueden necesitar experiencias
-  opuestas.
-- **La identidad precede al diseño.** Ya existe en su material (fotos, forma de escribir,
-  palabras que repite, lo que muestra y lo que evita). El trabajo es comprenderla e
-  interpretarla, no inventarla. La creatividad construye sobre el descubrimiento, no lo
-  reemplaza.
-- **La emoción precede a la interfaz.** Primero que el visitante la *sienta*; la
-  información confirma lo que ya percibió. Pregunta guía: **¿qué debería sentir alguien
-  al recorrer este lugar?**
-- **Construimos recorridos, no pantallas.** No es una colección de secciones (Hero/About/
-  Contact) sino un lugar continuo: transiciones, cambios de ritmo y silencios comunican.
-- **La tecnología acompaña, nunca protagoniza.** Cuando se hace visible, deja de sostener
-  la experiencia y compite con ella.
-- **Cada decisión necesita una intención.** No permanece por original, de moda o
-  técnicamente interesante, sino porque **representa mejor a la persona**.
+La web de **Delfina Gayoso**, cocinera y docente. No es el sitio de una chef que exhibe
+lo que sabe: es la cocina de alguien que **sigue aprendiendo e invita a aprender con
+ella**. Vende —ebooks y clases— y ofrece servicio profesional a marcas, y las dos cosas
+tienen que sentirse como consecuencia de la confianza, nunca como el objetivo que ordenó
+el recorrido.
 
-## Las preguntas del estudio (el filtro North-Studio)
-Ante una decisión dudosa: ¿Estamos comprendiendo o suponiendo? · ¿Representa mejor a la
-persona? · ¿Responde a una intención clara? · ¿Fortalece la coherencia? · ¿Podríamos
-eliminarla sin perder identidad? · ¿Resuelve un problema real o agrega complejidad? ·
-¿Seguiríamos tomando esta decisión dentro de años?
+**Naturaleza:** con cliente.
 
-## Los 8 principios
-1. **Comprender antes de decidir.** La creatividad construye sobre la comprensión.
-2. **Representar, no impresionar.** Que el visitante recuerde a la persona, no al diseño.
-3. **Toda decisión necesita una intención** (¿qué aporta a esta identidad?).
-4. **La coherencia construye la experiencia**; la acumulación genera ruido.
-5. **La simplicidad es consecuencia del criterio** (ausencia de decisiones innecesarias,
-   no de elementos).
-6. **El proyecto siempre puede enseñarnos algo**: observación constante en todas las
-   etapas.
-7. **La tecnología acompaña** (es proceso, no mensaje).
-8. **Saber detenerse también es una decisión**: un proyecto termina cuando expresa con
-   claridad lo que vino a representar, no cuando se acaban las ideas.
+**Con cliente** — las tres reglas que gobiernan cada iteración (desarrollo en Playbook IX):
 
-## Método por fases (esencia + check)
-- **Discovery** — Descubrir antes de diseñar. Investigar para *comprender*, no acumular.
-  La identidad deja **patrones, no instrucciones** (colores, tipos de foto, palabras,
-  ritmo, ausencias). Estudiar las **contradicciones** (vuelven auténtica a la persona) y
-  las **ausencias** (lo que evita también define). Trabajar con hipótesis. *Check:* ¿la
-  comprendemos más allá de su profesión?, ¿la creatividad construye sobre la
-  investigación?, ¿entendemos lo que evita comunicar?
-- **Experience** — Transformar la comprensión en decisiones. Empieza por **¿cómo debería
-  sentirse recorrer su universo?**. Coherencia entre foto, composición, ritmo, color,
-  tipografía, movimiento, espacio, transiciones. Cada identidad merece su propio
-  recorrido (no reutilizar estructuras por costumbre). Diseñar es también **decidir qué
-  no hacer**. Permitir descubrir. La interfaz acompaña. *Check:* ¿podemos describir qué
-  queremos que sienta?, ¿todas las disciplinas apuntan a la misma intención?
-- **Build** — Implementar con intención (implementar también es diseñar). La arquitectura
-  **protege la experiencia en el tiempo** (evolucionar sin perder coherencia). El
-  **contenido vive desacoplado de la interfaz**. Cada decisión técnica justifica su
-  existencia; la simplicidad facilita la evolución. La calidad (accesibilidad,
-  rendimiento, responsive, consistencia, mantenibilidad) acompaña **desde el inicio**, no
-  al final. Construir pensando en la siguiente versión. *Check:* ¿respeta la dirección?,
-  ¿la arquitectura facilita evolucionar?, ¿otro dev entendería la estructura rápido?
-- **Refinement** — Volver a mirar el todo. **Refinar no es agregar**: es dar más espacio
-  a lo importante (a menudo, sustraer). Evaluar la experiencia completa, no por piezas.
-  Cada decisión vuelve a justificarse. La coherencia vive en los detalles. **Mejorar ≠
-  cambiar**: reconocer cuándo detenerse. *Check:* ¿algo permanece por inercia?, ¿el todo
-  funciona mejor que la suma de partes?, ¿refinamos o cambiamos?, ¿encontró su forma?
-
-## Señales de alerta (nos estamos alejando del método)
-Diseñar antes de comprender · decidir sólo porque "queda atractivo" · elementos sin
-intención · repetir estructuras porque funcionaron en otro proyecto · agregar complejidad
-donde algo más simple resuelve · cambiar sólo por "probar otra cosa" · seguir refinando
-cuando ya no fortalece la representación.
+- Su indicación explícita vence a una decisión previa, incluso a una que ella aprobó. Una
+  decisión se conserva mientras siga representándola; cuando deja de hacerlo, se
+  reformula en el documento donde nació.
+- El criterio se aporta **antes** de ejecutar: se dice lo que se ve, se explica el costo,
+  se propone la alternativa. Si reafirma, se hace completo y se registra la advertencia.
+- Su formulación es evidencia: cómo nombra y qué agrupa dice cómo entiende su universo.
+  Reordenarlo exige más justificación que respetarlo.
 
 ---
 
-# Working Standards (operativos, evolucionan sin tocar la filosofía)
+## 1. Orden de lectura
 
-## Stack base
-Next.js · TypeScript · Tailwind CSS · pnpm. Opcionales **sólo con intención clara** (nunca
-por costumbre): Motion (animación con intención), Lenis (scroll, si el recorrido lo
-aprovecha), tailwind-merge (si simplifica de verdad). Toda dependencia nueva responde:
-**¿mejora la experiencia o sólo agrega comodidad de desarrollo?** Si no es evidente, no se
-incorpora. *(Versiones concretas y librerías realmente instaladas del proyecto: ver §10 de
-`project-journal.md`.)*
+Para trabajar en un chat nuevo, y nada más por defecto:
 
-## Reglas anti-genéricas
-No partir de plantillas ni de estructuras copiadas. Evitar por defecto (rompible con razón
-ligada a la identidad): grids perfectamente uniformes, todo centrado, layouts SaaS/
-dashboard/startup, Hero+Cards+CTA repetidos, FAQ sin necesidad, cards/sliders/carruseles
-por costumbre, iconografía excesiva, glassmorphism, neumorphism, gradientes exagerados,
-sombras muy marcadas, motion sin intención o compitiendo entre sí, frases vacías/genéricas,
-storytelling artificial, CTAs agresivos. **Ningún recurso es incorrecto en sí; lo
-incorrecto es usarlo sin una razón ligada a la identidad. La identidad tiene prioridad
-sobre la convención.**
+1. Este archivo
+2. `project-journal.md`
+3. el archivo del bloque activo, si existe
+4. los archivos que la tarea necesite
 
-## Responsive
-Es **parte del diseño**, no una adaptación posterior. Cada formato se **reinterpreta**
-(no se reduce el desktop). Revisar como mínimo MacBook, Desktop, Tablet, iPhone, Android:
-composición, jerarquía, ritmo, navegación, interacción táctil, recortes, rendimiento,
-consistencia.
+**`docs/` se lee según la tarea**, no por defecto:
 
-## Comunicación y eficiencia
-Respuestas **directas**: sin introducciones, halagos, resúmenes vacíos, ni narrar planes
-antes de ejecutarlos. El resultado es la respuesta. Responder sólo lo pedido; no leer/
-releer archivos innecesarios; no reescribir archivos completos si basta una edición
-parcial; no crear abstracciones prematuras ni limpiezas no pedidas; preferir la solución
-más simple que mantenga la calidad. **Antes de cerrar una tarea, validar con TypeScript,
-build y lint.** Evitar preview/dev server salvo que sea estrictamente necesario.
+| Si la tarea toca… | Leer |
+|---|---|
+| estructura, orden de secciones, una página nueva | `docs/recorrido.md` |
+| color, tipografía, fotografía, motion, el personaje | `docs/direccion-de-arte.md` |
+| tokens, patrones, medidas, responsive | `docs/sistema-visual.md` |
+| modelo de contenido, CMS, assets, despliegue | `docs/contenido.md` |
+| preparar material o verificar algo visual | `docs/tecnicas.md` |
 
-## Git
-Gestión **exclusiva del usuario**: la IA nunca genera commits, mensajes, changelogs,
-release notes, ramas, PRs ni descripciones de PR por su cuenta.
+El Playbook no se relee salvo decisión metodológica explícita; sus casos están en su
+capítulo IX. **Vive fuera del proyecto**, en la raíz del estudio (`North-Studio/`): una
+sola copia, para que no haya dos autoridades que puedan divergir.
 
-## Infraestructura y despliegue *(criterio permanente — North Commerce Lab, 2026-08)*
-- El **código de negocio se mantiene independiente del proveedor de hosting**.
-- **Evitar acoplamientos** innecesarios con Netlify, Vercel u otra plataforma cuando
-  exista una alternativa técnicamente equivalente y portable.
-- El **dominio se administra desde Cloudflare Domains**, como capa de gestión
-  independiente del hosting.
-- Objetivo: **poder migrar** entre Netlify, Vercel, Cloudflare o cualquier proveedor
-  compatible con Next.js cambiando **sólo configuración e infraestructura, nunca el código
-  de negocio**. Toda decisión que afecte la arquitectura se evalúa contra este criterio.
+---
 
-## Continuidad del proyecto (protocolo IA)
-- La IA es **continuidad del criterio de Midfield**, no reinventa el proyecto en cada
-  chat. Una idea que cambie significativamente identidad/arquitectura/decisión fundamental
-  se presenta como **propuesta diferenciada** y espera validación; la innovación es
-  bienvenida cuando **fortalece** la dirección, no cuando la reemplaza.
-- **`project-journal.md`** es la memoria viva del proyecto; se actualiza **sólo** cuando el
-  usuario indica "**Actualiza la memoria**".
-- **El proyecto evoluciona con evidencia nueva.** Una decisión no se conserva sólo por
-  haber sido aprobada antes: si deja de representar la experiencia buscada, se **actualiza/
-  reformula** y se reescribe en su documento de origen, manteniendo coherencia doc↔código.
-  Lo único intocable es la filosofía de North-Studio.
-- **Trabajo por bloques:** roadmap de alto nivel primero; luego un bloque por vez cuando el
-  usuario lo pide; cada bloque cierra con un **prompt autónomo** para un chat dedicado que
-  asume sólo `project-journal.md`, este archivo, los archivos del proyecto y el propio
-  prompt. Al terminar un bloque, la IA **no** continúa sola: el ritmo lo define el usuario.
+## 2. Norte y filtro
+
+> North-Studio existe para comprender profundamente a una persona y transformar esa
+> comprensión en una experiencia digital coherente, donde cada decisión tenga una
+> intención clara y la identidad ocupe el centro.
+
+**Cómo se lee acá:** cada decisión se mide contra una sola pregunta — *¿esto representa
+mejor a Delfina que la versión anterior?* Ni más original, ni más técnico: más ella.
+
+**El filtro, cuando una decisión genera dudas:** ¿comprendemos o suponemos? · ¿responde a
+una intención clara? · ¿fortalece la coherencia? · ¿podríamos eliminarla sin perder nada?
+· ¿esto que incomoda se puede medir, o es una preferencia? · ¿resolvemos un problema real
+o agregamos complejidad? · ¿qué pasa si esto está mal y nadie se entera? · ¿lo seguiríamos
+decidiendo igual dentro de unos años?
+
+---
+
+## 3. Reglas de implementación propias de este proyecto
+
+- **La interfaz importa siempre desde `@/content`**, nunca de `content/data/*` ni de
+  `sanity/*`. Los componentes de cliente reciben contenido por props desde un server
+  component. Es la frontera que permitió conectar un CMS sin tocar la interfaz.
+- **Contenido editable → CMS con respaldo local; diseño → código.** Toda sección o
+  funcionalidad nueva con contenido administrable sigue los cuatro pasos de
+  `docs/contenido.md`; ninguna queda fija en el código.
+- **Independencia del proveedor de hosting.** Migrar entre proveedores compatibles debe
+  ser cambiar configuración e infraestructura, nunca código. El dominio se administra en
+  Cloudflare Domains.
+- **Al reemplazar un asset**: correr `pnpm sincronizar` y volver a medir las dimensiones
+  declaradas. Sin lo primero el archivo no llega; sin lo segundo aparece salto de layout.
+
+---
+
+## 4. Validación
+
+| Tipo de cambio | Cómo se valida |
+|---|---|
+| Composición, tipografía, color | Medición por DOM en 390, 768, 1280 y 1440 — cajas, líneas reales, trazo, contraste. El pane de previsualización falla seguido y **no se da por validado lo que no se pudo ver ni medir** |
+| Contenido y copy | Sobre el sitio servido, después de sincronizar. Lo que dice la voz de Delfina lo valida ella |
+| Modelo de contenido o CMS | Consultando el dataset **sin CDN** y comparando contra lo que sirve el sitio |
+| Lógica de estado o fechas | Comprobación automática |
+
+**Controles automáticos que deben pasar antes de cerrar algo:** `pnpm typecheck`,
+`pnpm lint` y `pnpm build`, los tres en verde.
+
+*No alcanzan solos —en este proyecto no detectan prácticamente ninguno de los defectos
+reales, que son de composición, de caché o de contenido—: lo que el sistema le dice a una
+persona lo verifica una persona, y se valida sobre el artefacto servido, no sobre el
+archivo.*
+
+---
+
+## 5. Riesgo
+
+**Secciones del capítulo VI que este proyecto activa:** ninguna.
+
+*No hay dinero que se mueva dentro del sitio —la compra sale a una plataforma externa—,
+no hay datos de personas, no hay cuentas ni credenciales de terceros en el navegador y no
+hay acciones irreversibles hacia afuera.*
+
+**Qué es crítico acá:** que un enlace de compra o de reserva lleve al lugar equivocado, y
+que una fecha o un estado de clase muestren algo que ya no es cierto. Las dos cosas dejan
+a alguien esperando algo que creyó comprado o reservado.
+
+---
+
+## 6. Estándar técnico
+
+**Versiones fijadas:**
+
+| Tecnología | Versión | Igual a la base |
+|---|---|---|
+| Next.js | 16.2.10 | sí |
+| React | 19.2.7 | sí |
+| TypeScript | 6.0.3 | sí |
+| Tailwind CSS | 4.3.2 | sí |
+| pnpm | — | sí |
+| Motion | 12.42.2 | sí |
+| Lenis | 1.3.25 | sí |
+| Sanity | 6.6.0 | sí |
+
+*Sanity arrastra sus acompañantes: `next-sanity` 13.2.1, `@sanity/client` 7.25.0, `@sanity/image-url` 2.1.1, `@sanity/vision` 6.6.0 y `styled-components` 6.4.4, que pide el Studio. Las dos condiciones con las que la base lo aprueba —Studio embebido y capa de acceso con respaldo local— **están cumplidas**: ver `docs/contenido.md`.*
+
+**Desvíos respecto de la base, con motivo:**
+
+| Qué | Motivo |
+|---|---|
+| **tailwind-merge — no se usa** | La base lo aprueba para composición real de clases; acá no apareció esa composición. No entra por costumbre |
+
+*Cada dependencia y su motivo viven en el journal.*
+
+---
+
+## 7. Interfaz
+
+**Anti-genéricas específicas de este proyecto** (las generales están en Playbook IX):
+
+- **Nada de estética de tienda.** La web vende, y eso es legítimo; lo que se evita es
+  *sentirse* tienda: grillas de productos iguales, precio como protagonista tipográfico,
+  urgencia, lógica de vidriera.
+- **Nada de institucionalidad ni lujo.** Su mayor activo es la cercanía.
+- **Una foto es una foto, no una tarjeta.** Sin marcos contenedores, sin radios en
+  fotografía.
+- **El terracota es acento, nunca fondo. El acento como tinta significa rótulo.**
+- **Sin scroll-jacking.** El visitante controla el ritmo.
+- **El humor se documenta, no se ilustra.**
+
+**Responsive — formatos y foco:** 390, 768, 1280 y 1440. Mobile es forma nativa, no
+reducción. Se comprueba composición, jerarquía, ritmo, navegación, interacción táctil,
+recortes y overflow.
+
+*Detalle en `docs/direccion-de-arte.md` y `docs/sistema-visual.md`.*
+
+---
+
+## 8. Registro
+
+| Fecha | Cambio | Motivo |
+|---|---|---|
+| 2026-08-25 | Creación | Migración del proyecto al Midfield actual, con el proyecto ya avanzado |

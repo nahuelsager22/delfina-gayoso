@@ -29,6 +29,8 @@
       {texto, gesto} si venían sueltas (31ª ola) y reasigna las que quedaron con una cara
       retirada (33ª: se fue `curioso`). Y actualiza su SALUDO (32ª) sólo si nadie lo
       editó en el Studio.
+  10. CORRIGE un handle de red mal cargado, con la misma cautela: sólo si el documento
+      todavía tiene el valor equivocado.
  *
  * Los pasos 4, 5 y 6 usan `createIfNotExists`: lo que ya está en el Studio manda. Los
  * pasos 1 y 2 sí borran, porque ese contenido ya no representa nada del sitio. El 7 toca
@@ -85,6 +87,7 @@ const { momentos } = await import("../content/data/momentos.ts");
 const { servicios } = await import("../content/data/servicios.ts");
 const { contacto } = await import("../content/data/contacto.ts");
 const { budin } = await import("../content/data/budin.ts");
+const { redes } = await import("../content/data/redes.ts");
 
 const subidas = new Map();
 async function subir(src) {
@@ -409,6 +412,23 @@ if (budinDoc) {
   if (Object.keys(cambios).length > 0) {
     tx = tx.patch(budinDoc._id, (p) => p.set(cambios));
   }
+}
+
+/* 10 · REDES — corrección puntual, con la misma cautela que el saludo de Budín.
+   El handle de TikTok que se mostraba no coincidía con el de su propia URL; Delfina
+   confirmó cuál es el correcto. Se corrige comparando contra el valor equivocado: si el
+   documento todavía lo tiene, nadie lo editó y se puede actualizar; si dice otra cosa,
+   alguien lo escribió en el Studio y ese texto manda. */
+const HANDLES_A_CORREGIR = { "red-tiktok": "@gayosodelfi" };
+
+const redesEnDataset = await cliente.fetch(`*[_type == "red"]{ _id, usuario }`);
+for (const doc of redesEnDataset) {
+  const equivocado = HANDLES_A_CORREGIR[doc._id];
+  if (!equivocado || doc.usuario !== equivocado) continue;
+  const correcto = redes.find((r) => `red-${r.id}` === doc._id)?.usuario;
+  if (!correcto || correcto === doc.usuario) continue;
+  tx = tx.patch(doc._id, (p) => p.set({ usuario: correcto }));
+  resumen.push(`handle de ${doc._id.replace("red-", "")} corregido`);
 }
 
 await tx.commit();

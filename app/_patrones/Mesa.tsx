@@ -141,6 +141,17 @@ function compasDe(i: number): Compas {
   return { ...c, fila: c.fila + vuelta * ALTO_MOVIMIENTO };
 }
 
+/**
+ * Desde cuántas fotos reales vale la pena dibujar los lugares vacíos (Bloque 10 · E3).
+ *
+ * El criterio "la mesa dibuja sus propios huecos" es bueno y se conserva: con material
+ * suficiente, los lugares en blanco se leen como copias dadas vuelta esperando su foto y
+ * la composición no se ve a medio poner. Pero nadie había fijado el piso, y por debajo
+ * deja de significar eso: con una sola foto los siete huecos restantes no la acompañan,
+ * la rodean. Con tres ya hay mesa; con menos, se muestran las que haya y nada más.
+ */
+const MINIMO_PARA_DIBUJAR_HUECOS = 3;
+
 export function Mesa({
   piezas,
   minimo = 8,
@@ -151,7 +162,13 @@ export function Mesa({
   minimo?: number;
   className?: string;
 }) {
-  const total = Math.max(minimo, piezas.length);
+  // Sin una sola foto no hay mesa que poner. Quien la invoca retira la banda entera.
+  if (piezas.length === 0) return null;
+
+  const total =
+    piezas.length >= MINIMO_PARA_DIBUJAR_HUECOS
+      ? Math.max(minimo, piezas.length)
+      : piezas.length;
 
   return (
     <div className={["mesa", className].filter(Boolean).join(" ")}>

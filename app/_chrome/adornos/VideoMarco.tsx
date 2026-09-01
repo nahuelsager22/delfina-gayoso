@@ -95,7 +95,10 @@ export function VideoMarco({
           playsInline
           autoPlay
           preload="none"
-          poster={poster.src}
+          // SIN `poster` (Bloque 10 · E1). El atributo pedía la foto por su URL de
+          // origen, sin optimizador: el navegador se bajaba la misma escena dos veces,
+          // y la segunda a tamaño completo (6,2 MB en todo el sitio). El `<Image>` de
+          // arriba ya está pintado abajo y cumple exactamente esa función.
           onCanPlay={() => setListo(true)}
           style={{
             position: "absolute",

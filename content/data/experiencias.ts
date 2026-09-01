@@ -11,41 +11,19 @@ import type { ExperienciaSemilla } from "../types";
  * DATOS REALES PENDIENTES DE DELFINA: nombre definitivo, fechas siguientes, dirección
  * exacta, cupo, precio y a dónde va "Reservar" (WhatsApp, mail o link de pago). Cuando
  * los cargue en el Studio, esta semilla queda sólo como respaldo.
+ *
+ * NO HAY NINGUNA FECHA FUTURA, Y ES CORRECTO (Bloque 10 · E4). Acá vivía "Pastas frescas,
+ * de cero", una clase FICTICIA que la 20ª ola había puesto para poder mirar la pieza de
+ * invitación mientras Delfina no diera su próxima fecha. Se retiró de los dos lados —de
+ * esta semilla y del dataset— porque el sitio no puede anunciar una clase que no existe:
+ * alguien podía quedarse esperando algo que creyó reservado.
+ *
+ * Sin experiencia futura, el módulo de próxima experiencia no se muestra, el encabezado
+ * de la sección 5 vuelve a "Lo que te podés llevar" y `/experiencias` queda con el
+ * archivo y lo que viene. Ese estado está previsto y se ve terminado; no es un hueco.
+ * Cuando Delfina dé su fecha real, alcanza con cargarla en el Studio.
  */
 export const experiencias: readonly ExperienciaSemilla[] = [
-  {
-    /**
-     * CONTENIDO DE EJEMPLO (Bloque 8 · 20ª ola). Delfina todavía no dio su próxima fecha
-     * y sin ninguna experiencia futura el módulo de invitación no se muestra —es su
-     * comportamiento correcto, pero deja sin evaluar la pieza—. Esta clase es ficticia y
-     * está para poder mirar jerarquía, composición, ritmo y responsive. Se reemplaza
-     * cargando la fecha real en el Studio, o se borra de acá.
-     *
-     * Lleva `estado: "ultimos-lugares"` a propósito: es el único estado que empuja, y
-     * conviene verlo funcionando.
-     */
-    id: "pastas-frescas",
-    nombre: "Pastas frescas, de cero",
-    modalidad: "presencial",
-    inicio: "2026-08-15T11:00:00-03:00",
-    fin: "2026-08-15T14:00:00-03:00",
-    lugar: "9 de Julio, Pcia. Bs. As.",
-    descripcion:
-      "Amasamos, estiramos y comemos lo que hicimos. Se sale con harina hasta en los codos.",
-    queTeLlevas: [
-      "Masa base, sorrentinos y ñoquis de papa",
-      "Dos salsas simples para tener siempre a mano",
-      "Te llevás a casa la pasta que amasaste",
-    ],
-    precio: "$38.000",
-    estado: "ultimos-lugares",
-    ctaLabel: "Reservar tu lugar",
-    destino: "mailto:gayosodelfina@gmail.com",
-    imagen: "manos-masa",
-    historia:
-      "Empezamos con la masa en la mesa y las manos limpias, y de ahí en más ya no hay vuelta atrás. Amasamos, dejamos descansar, y mientras tanto armamos las salsas. Cuando la pasta está lista la cocinamos y nos sentamos a comerla juntos, que para mí es la mejor parte de la clase.",
-    publicada: "2026-07-29T10:00:00-03:00",
-  },
   {
     id: "clase-team-salado",
     nombre: "Clase de cocina",

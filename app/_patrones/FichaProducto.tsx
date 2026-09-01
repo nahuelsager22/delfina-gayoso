@@ -129,7 +129,10 @@ export function FichaProducto({
         >
           {/* Rótulo de categoría: distingue de un vistazo un ebook de una clase
               (jerarquía Bloque 6.5). Se omite cuando el contenedor ya lo dice. */}
-          {mostrarCategoria && (
+          {/* `categoria` sale de `formato`, que es opcional en el Studio: sin él, el
+              rótulo reservaba su línea con su color de acento y quedaba vacío
+              (Bloque 10 · E3). */}
+          {mostrarCategoria && categoria && (
             <p className="momento-kicker" style={{ color: "rgb(var(--atm-accent, 180 97 31))" }}>
               {categoria}
             </p>

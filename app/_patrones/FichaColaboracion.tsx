@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Marca } from "@/content";
+import { srcServido } from "@/content";
 import { Aparicion } from "./Aparicion";
 import { Voz } from "./Voz";
 import { EspacioFoto } from "../_chrome/adornos/EspacioFoto";
@@ -18,6 +19,9 @@ import { VideoMarco } from "../_chrome/adornos/VideoMarco";
  * anunciando una ausencia. Cuando Delfina cargue el material, entra en su lugar sin
  * rediseñar nada.
  */
+
+/** Ancho máximo al que el CSS pinta el logotipo (`.colab-logo`, clamp hasta 170px). */
+const ANCHO_LOGO = 170;
 export function FichaColaboracion({
   marca,
   ancla = "izq",
@@ -72,12 +76,13 @@ export function FichaColaboracion({
 
         <div className="colab-texto">
           {/* El logo, chico: acá ya sabemos quién es; lo que importa es la relación.
-              Con sus colores oficiales, sin tintes (20ª ola). */}
+              Con sus colores oficiales, sin tintes (20ª ola) — por eso no va por el
+              optimizador; el tamaño se le pide a la CDN del CMS (Bloque 10 · E1). */}
           {logo && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               className="colab-logo"
-              src={logo.src}
+              src={srcServido(logo.src, ANCHO_LOGO)}
               alt={nombre}
               width={logo.ancho}
               height={logo.alto}

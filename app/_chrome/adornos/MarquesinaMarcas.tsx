@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import type { Marca } from "@/content";
+import { srcServido } from "@/content";
 
 /**
  * MARQUESINA DE MARCAS (Bloque 8 · 19ª ola; 20ª ola — COLORES OFICIALES).
@@ -50,15 +51,18 @@ function Logo({ marca }: { marca: Marca }) {
   }
 
   const alto = altoOptico(logo);
+  const ancho = Math.round((alto * logo.ancho) / logo.alto);
   return (
-    // Assets locales chicos y ya optimizados (uno es SVG): no pasan por el optimizador
-    // de Next, que además rechazaría el SVG sin habilitarlo explícitamente.
+    // No pasan por el optimizador de Next —que además rechazaría el SVG sin habilitarlo
+    // explícitamente— porque los logotipos van con sus COLORES OFICIALES, sin tintes ni
+    // filtros. El tamaño se resuelve en el origen: `srcServido` le pide a la CDN del CMS
+    // el archivo en el ancho al que se muestra, sin tocar el color (Bloque 10 · E1).
     // eslint-disable-next-line @next/next/no-img-element
     <img
       className="marquesina-marca-logo"
-      src={logo.src}
+      src={srcServido(logo.src, ancho)}
       alt={nombre}
-      width={Math.round((alto * logo.ancho) / logo.alto)}
+      width={ancho}
       height={alto}
       loading="lazy"
       decoding="async"

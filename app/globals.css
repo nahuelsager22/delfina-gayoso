@@ -8,10 +8,10 @@
    · Si el token corresponde a un namespace de Tailwind (--color-*, --font-*,
      --text-*, --radius-*, --ease-*) se define ahí para que Tailwind genere las
      utilidades (bg-harina, font-voz, text-numeral, ease-posar…). El sufijo
-     conserva el nombre semántico de sistema-visual.md; el valor es 1:1.
+     conserva el nombre semántico de docs/sistema-visual.md; el valor es 1:1.
    · Si el token no tiene namespace de Tailwind (escala de espaciado bespoke,
      carriles/bleed, duraciones, ejes de Fraunces, medidas, grano) conserva su
-     nombre literal de sistema-visual.md y se usa vía var().
+     nombre literal de docs/sistema-visual.md y se usa vía var().
    El único renombre es --fs-*  →  --text-* (el cableado sancionado por B4 §0);
    valores, escala de 7 pasos y clamp() son idénticos al documento.
    ========================================================================== */
@@ -38,7 +38,7 @@
 
   /* ---- Tipografía — familias (§2.1) ----
      El valor encadena la variable autohospedada por next/font con el stack de
-     fallback de sistema-visual.md: control de FOUT + render Android (B3 §6). */
+     fallback de docs/sistema-visual.md: control de FOUT + render Android. */
   --font-voz: var(--font-fraunces), "Literata", Georgia, "Times New Roman",
     serif;
   --font-mundo: var(--font-karla), "Work Sans", system-ui, -apple-system,
@@ -98,7 +98,7 @@
 }
 
 /* -----------------------------------------------------------------------------
-   Tokens bespoke sin namespace de Tailwind (nombre literal de sistema-visual.md,
+   Tokens bespoke sin namespace de Tailwind (nombre literal de docs/sistema-visual.md,
    se usan vía var()). No generan utilidades a propósito: el layout del recorrido
    es a medida (carriles + bleed), no una grilla de columnas (§4.1).
    -------------------------------------------------------------------------- */
@@ -283,7 +283,7 @@
   }
 
   /* ---------------------------------------------------------------------------
-     CTA de la ficha de producto (sistema-visual §7.1): invita hacia la plataforma de venta.
+     CTA de la ficha de producto (docs/sistema-visual.md): invita hacia la plataforma de venta.
      Relleno `Yema` + texto `Hierro` = 7.0:1 (§1.3). Sans (es UI, no su voz). El
      único acento de relleno del recorrido; sin sombra, radio mínimo. Hover: una
      leve aproximación de opacidad (sin rebote, §5.2). El foco visible lo da la
@@ -583,7 +583,7 @@
   }
 
   /* ---------------------------------------------------------------------------
-     Aparición "vapor" (sistema-visual §5.3-1): opacity + translateY corto, se
+     Aparición "vapor" (docs/sistema-visual.md): opacity + translateY corto, se
      posa con --ease-posar. Sin librería de motion: es una transición CSS que un
      helper cliente (app/_patrones/Aparicion.tsx) dispara vía data-attributes.
      · Sin JS / SSR: el contenido se ve (no hay data-armed) → nada importante

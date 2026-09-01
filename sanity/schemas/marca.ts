@@ -37,8 +37,12 @@ export const marca = defineType({
     defineField({
       name: "logo",
       title: "Logo",
+      // Bloque 10 · E3 — este texto describía el comportamiento de la 19ª ola, en que los
+      // logotipos iban a tinta única. La 20ª lo revirtió por indicación de Delfina: van
+      // con sus colores oficiales. La ayuda del panel quedó vieja y la habría llevado a
+      // descartar archivos perfectamente válidos.
       description:
-        "PNG con FONDO TRANSPARENTE (o SVG). El sitio lo dibuja en un solo color de la paleta, así que un logo con fondo blanco o negro se vería como un rectángulo.",
+        "PNG con FONDO TRANSPARENTE (o SVG). Se muestra con los colores originales de la marca, sin retoques; lo único que importa es que no traiga fondo, porque se vería como un rectángulo.",
       type: "image",
       options: { hotspot: false },
       fields: [

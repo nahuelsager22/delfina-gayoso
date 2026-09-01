@@ -63,19 +63,27 @@ export default async function PaginaColaboraciones() {
             </Aparicion>
           )}
 
-          {/* Los logotipos, una vez: quiénes son, antes de contar qué hacen. */}
-          <MarquesinaMarcas marcas={marcas} />
+          {/* Los logotipos, una vez: quiénes son, antes de contar qué hacen.
+              Sin ninguna marca cargada se retiran los dos bloques —la cinta y las fichas—
+              y la página queda con su apertura y su cierre, que siguen siendo ciertos: la
+              invitación a trabajar juntas no depende de cuántas colaboraciones haya
+              (Bloque 10 · E3). */}
+          {marcas.length > 0 && (
+            <>
+              <MarquesinaMarcas marcas={marcas} />
 
-          <div className="colab-lista">
-            {marcas.map((m, i) => (
-              <FichaColaboracion
-                key={m.id}
-                marca={m}
-                ancla={i % 2 === 1 ? "der" : "izq"}
-                trazo={i}
-              />
-            ))}
-          </div>
+              <div className="colab-lista">
+                {marcas.map((m, i) => (
+                  <FichaColaboracion
+                    key={m.id}
+                    marca={m}
+                    ancla={i % 2 === 1 ? "der" : "izq"}
+                    trazo={i}
+                  />
+                ))}
+              </div>
+            </>
+          )}
 
           <Adorno variante="especias" color="var(--color-terracota)" />
         </Banda>

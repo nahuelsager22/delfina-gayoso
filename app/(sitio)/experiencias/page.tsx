@@ -169,7 +169,13 @@ export default async function PaginaExperiencias() {
           <Adorno variante="cuchara" />
         </Banda>
 
-        {/* ---- Cómo se ve una clase --------------------------------------- */}
+        {/* ---- Cómo se ve una clase ---------------------------------------
+            La banda entera depende de que haya material (Bloque 10 · E3): su encabezado
+            afirma "así se ve una clase por dentro", y sin una sola foto ese título no
+            tiene nada que sostenerlo. Si Delfina retira las fotos marcadas "cómo se vive
+            una clase" y las galerías, el arco de la página pasa de tres bandas a dos y
+            sigue cerrando —lo que viene, y lo que ya pasó—. */}
+        {piezas.length > 0 && (
         <Banda
           atmosfera="compartir"
           ancla="experiencias-galeria"
@@ -195,6 +201,7 @@ export default async function PaginaExperiencias() {
             </EnlaceEditorial>
           </Aparicion>
         </Banda>
+        )}
 
         {/* ---- Las que ya sucedieron -------------------------------------- */}
         <Banda

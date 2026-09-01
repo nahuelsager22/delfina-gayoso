@@ -49,6 +49,12 @@ export const marcas: readonly MarcaSemilla[] = [
     handle: "@3claveles.arg",
     url: "https://instagram.com/3claveles.arg",
     logo: { src: "/marcas/3-claveles.png", ancho: 709, alto: 216 },
+    // Bloque 10 · E2 — SEGUNDA COLABORACIÓN CON MATERIAL REAL. Portada única, no
+    // carrusel: de las 18 fotos que mandó Delfina, sólo una escena es la colaboración
+    // en acción y está repetida en cuatro tomas del mismo plano; el resto es catálogo.
+    // El razonamiento completo, en `imagenes.ts`. Falta todavía el texto (rubro,
+    // historia, resultados); la ficha ya lo espera.
+    imagen: "marca-3-claveles-foto",
   },
   {
     id: "ormay",

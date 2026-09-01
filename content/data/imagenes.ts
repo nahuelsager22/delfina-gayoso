@@ -5,7 +5,7 @@ import type { ImagenReal } from "../types";
  *
  * v1 NO tiene fotografía producida para el sitio, y las fotos de Instagram/TikTok
  * en la raíz `images/` son evidencia de Discovery, NO banco de assets: no se
- * reutilizan (journal §9). Cada patrón se sostiene sin foto (§8).
+ * reutilizan. Cada patrón se sostiene sin foto: ver docs/direccion-de-arte.md.
  *
  * EXCEPCIÓN incorporada en el Bloque 6.5 (R4): las PORTADAS de los ebooks son
  * CONTENIDO REAL del proyecto —son el producto—, así que sí se usan como imagen
@@ -476,5 +476,31 @@ export const imagenes: readonly ImagenReal[] = [
     orientacion: "vertical",
     ancho: 1500,
     alto: 2000,
+  },
+
+  /* -- La segunda colaboración con material real (Bloque 10 · E2). -----------
+     Delfina mandó 18 fotografías de 3 Claveles y son casi todas de CATÁLOGO: cuatro
+     packshots de las cajas, seis bodegones de los cuchillos sobre la mesada, dos
+     detalles de la tabla grabada. Escenas reales hay una sola —ella cortando cítricos
+     con el cuchillo—, repetida en cuatro tomas del mismo instante.
+
+     Por eso es PORTADA ÚNICA y no carrusel: cuatro variantes del mismo plano no aportan
+     información complementaria, y una colección de packshots es exactamente lo que la
+     sección rechazó cuando Delfina pidió "relaciones reales, no una colección de logos".
+
+     La elegida (IMG_0598) es la que cumple lo que Don Yeyo dejó como referencia: el
+     producto de la marca EN una receta suya, no un packshot. El recorte se eligió
+     comparando los encuadres montados en el marco en arco sobre el crema real: a
+     y=1400 la marca del cuchillo queda legible sin tocar el arco, las manos entran
+     enteras, y las cajas del fondo se reducen a una franja. Se entrega en 4:5 —la caja
+     exacta de `EspacioFoto`— para que el encuadre servido sea el que se eligió. */
+  {
+    id: "marca-3-claveles-foto",
+    src: "/marcas/3-claveles-colaboracion.jpg",
+    alt: "Las manos de Delfina sostienen media naranja recién cortada junto a un cuchillo 3 Claveles, sobre una tabla de madera con los gajos alrededor.",
+    tipoGesto: "proceso",
+    orientacion: "vertical",
+    ancho: 1500,
+    alto: 1875,
   },
 ];

@@ -6,7 +6,7 @@
  * capítulo o una frase es agregar un objeto tipado acá, sin tocar `app/`.
  *
  * Decisión de enfoque (Bloque 5): archivos tipados locales, NO headless CMS.
- * Ver `content/README.md` para la justificación. La interfaz nunca importa
+ * Ver `docs/contenido.md` para la justificación. La interfaz nunca importa
  * estos módulos de datos directamente: los consume a través de la capa de
  * acceso (`content/index.ts`), que es el límite de desacople. Cambiar la fuente
  * (local → CMS) mañana sería reescribir esa capa, no la interfaz.

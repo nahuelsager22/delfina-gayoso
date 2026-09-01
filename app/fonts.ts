@@ -1,7 +1,7 @@
 import { Fraunces, Karla } from "next/font/google";
 
 /**
- * Dos familias, dos funciones semánticas (sistema-visual.md §2.1):
+ * Dos familias, dos funciones semánticas (docs/sistema-visual.md):
  *   - Fraunces  → `--font-voz`   = la voz de Delfina en primera persona (serif).
  *   - Karla     → `--font-mundo` = el mundo alrededor / lo funcional (sans).
  *
@@ -9,7 +9,7 @@ import { Fraunces, Karla } from "next/font/google";
  * inyecta `size-adjust` para el fallback y aplica `display: "swap"`:
  * ese es el control de FOUT y la garantía de render consistente en Android
  * que pide B3 §6. El stack de fallback completo se compone en globals.css,
- * encadenando estas variables con las alternativas de sistema-visual.md.
+ * encadenando estas variables con las alternativas de docs/sistema-visual.md.
  */
 
 // Fraunces es variable: exponemos sus ejes (opsz, SOFT, WONK) para poder

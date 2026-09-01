@@ -21,11 +21,22 @@ import { Adorno } from "../_chrome/adornos/Adorno";
  *  · Responsive nativo: un solo carril, texto anclado a la izquierda con su medida
  *    corta; en el teléfono la voz se acerca al registro de un mensaje directo.
  *
- * La voz se lee del contenido (getVozDeMomento): la primera pieza es la detención
- * grande (voz-xl), la segunda un segundo beat más contenido (voz-l).
+ * La voz se lee del contenido (getVozDeMomento) y se busca POR IDENTIFICADOR:
+ * `umbral-invitacion` es la detención grande (voz-xl) y `umbral-oferta` el segundo beat,
+ * más contenido (voz-l). Las dos son opcionales: si una no está, no deja hueco.
  */
 export async function Umbral() {
   const voces = await getVozDeMomento("umbral");
+  // Por IDENTIFICADOR, no por posición (Bloque 10 · E3). Este era el único momento que
+  // leía `voces[0]` y `voces[1]`, y eso lo ataba a dos cosas que Delfina controla desde el
+  // Studio: el campo "Orden" de cada texto, y que `getVozDeMomento` devuelve también los
+  // marcados "libre" —cualquiera de los dos podía poner otra frase en el titular del
+  // sitio—. El resto de las secciones ya buscaba por id; esta se alinea.
+  //
+  // Y las dos van con guarda: sin texto se pintaba un <p> vacío con la escala del hero,
+  // más la onda debajo. Un adorno flotando sobre nada, en la primera pantalla.
+  const invitacion = voces.find((v) => v.id === "umbral-invitacion");
+  const oferta = voces.find((v) => v.id === "umbral-oferta");
   // 10ª ola: llega el material real. El hero abre con un PLATO que apetece (croquetas
   // recién partidas) —lo que vas a aprender a hacer—, dentro del marco en arco ya
   // resuelto. El retrato de Delfina se reserva para la bienvenida "Quién soy".
@@ -43,22 +54,24 @@ export async function Umbral() {
           no cae en vertical. Cuando llegue la foto se pasa como children de EspacioFoto. */}
       <div className="hero-grid">
         <div className="hero-texto">
-          <Aparicion orden={0}>
-            <Voz
-              texto={voces[0]?.texto ?? ""}
-              escala="xl"
-              className="voz-hero"
-              enfasis={voces[0]?.enfasis}
-            />
-            <LineaEditorial
-              variante="onda"
-              ancho="clamp(140px, 34%, 320px)"
-              style={{ marginBlockStart: "var(--space-md)" }}
-            />
-          </Aparicion>
-          {voces[1] && (
+          {invitacion && (
+            <Aparicion orden={0}>
+              <Voz
+                texto={invitacion.texto}
+                escala="xl"
+                className="voz-hero"
+                enfasis={invitacion.enfasis}
+              />
+              <LineaEditorial
+                variante="onda"
+                ancho="clamp(140px, 34%, 320px)"
+                style={{ marginBlockStart: "var(--space-md)" }}
+              />
+            </Aparicion>
+          )}
+          {oferta && (
             <Aparicion orden={1} style={{ marginBlockStart: "var(--space-lg)" }}>
-              <Voz texto={voces[1].texto} escala="l" enfasis={voces[1].enfasis} />
+              <Voz texto={oferta.texto} escala="l" enfasis={oferta.enfasis} />
             </Aparicion>
           )}
         </div>

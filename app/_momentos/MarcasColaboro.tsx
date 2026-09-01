@@ -39,6 +39,22 @@ import { MarquesinaMarcas } from "../_chrome/adornos/MarquesinaMarcas";
  */
 export async function MarcasColaboro() {
   const marcas = await getMarcas();
+  /**
+   * SIN MARCAS CARGADAS, la sección no desaparece: se acorta (Bloque 10 · E3).
+   *
+   * Antes esto no se podía ver, porque una lista vacía en el CMS devolvía la semilla. Al
+   * quedar el vaciado en manos de Delfina hubo que decidir qué muestra la sección cuando
+   * no hay ningún logo, y la respuesta no es "nada": lo que se cae es lo que MIENTE sin
+   * marcas —el rótulo "Hoy cocino con", que anuncia logos que no llegan, y el enlace a
+   * `/colaboraciones`, que llevaría a una página sin fichas—.
+   *
+   * Lo que se queda es lo que sigue siendo cierto: el encabezado, su voz, y sobre todo la
+   * invitación "¿Sumamos tu marca a esta cocina?", que es una CARTA DE PRESENTACIÓN y no
+   * un listado. Una marca que entra tiene que encontrar la puerta abierta, tenga Delfina
+   * tres colaboraciones o ninguna. Además es la antesala de "Trabajemos juntos": sin ella
+   * el recorrido perdería su bisagra.
+   */
+  const hayMarcas = marcas.length > 0;
 
   return (
     <Momento id="marcas" kicker="Colaboraciones activas" titulo="Marcas con las que colaboro">
@@ -49,18 +65,22 @@ export async function MarcasColaboro() {
         />
       </Aparicion>
 
-      <p className="marcas-lead">Hoy cocino con</p>
+      {hayMarcas && (
+        <>
+          <p className="marcas-lead">Hoy cocino con</p>
 
-      <MarquesinaMarcas marcas={marcas} />
+          <MarquesinaMarcas marcas={marcas} />
 
-      <Aparicion className="marcas-ver">
-        <EnlaceEditorial
-          href="/colaboraciones"
-          nota="Historias que seguimos construyendo junto a marcas que confían en mi trabajo"
-        >
-          Ver colaboraciones
-        </EnlaceEditorial>
-      </Aparicion>
+          <Aparicion className="marcas-ver">
+            <EnlaceEditorial
+              href="/colaboraciones"
+              nota="Historias que seguimos construyendo junto a marcas que confían en mi trabajo"
+            >
+              Ver colaboraciones
+            </EnlaceEditorial>
+          </Aparicion>
+        </>
+      )}
 
       {/* Semillas espolvoreadas: el detalle final. 23ª ola: dejan de ir en terracota fijo
           —invisible sobre el marrón nuevo de la sala— y toman el acento de la sala, que

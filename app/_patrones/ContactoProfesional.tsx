@@ -1,4 +1,4 @@
-import type { ContactoProfesional as Contacto, MedioContacto } from "@/content";
+import type { ContactoProfesional as Contacto } from "@/content";
 import { Aparicion } from "./Aparicion";
 import { Voz } from "./Voz";
 
@@ -18,7 +18,14 @@ import { Voz } from "./Voz";
  *    transacción.
  */
 
-const ETIQUETA_MEDIO: Record<MedioContacto, string> = {
+/**
+ * Cómo se nombra cada canal. Va indexado por `string` y con respaldo al valor crudo —el
+ * mismo patrón que `NOMBRE_RED` en el cierre y en el navbar— porque el medio lo elige
+ * Delfina en el Studio: si mañana se suma uno al esquema y todavía no está acá, el enlace
+ * tiene que seguir teniendo texto. Antes se renderizaba un ancla vacía, clickeable e
+ * invisible (Bloque 10 · E3).
+ */
+const ETIQUETA_MEDIO: Record<string, string> = {
   instagram: "Instagram",
   whatsapp: "WhatsApp",
   email: "Mail",
@@ -31,11 +38,12 @@ export function ContactoProfesional({ contacto }: { contacto: Contacto }) {
     <Aparicion className="contacto-pro">
       <Voz texto={contacto.invitacion} escala="l" />
       <div className="contacto-pro-canales">
-        {contacto.canales.map((c) => {
+        {contacto.canales.map((c, i) => {
           const esExterno = c.medio !== "email";
           return (
             <a
-              key={c.medio}
+              // El medio solo no alcanza: nada impide cargar dos mails o dos Instagram.
+              key={`${c.medio}-${i}`}
               href={c.destino}
               {...(esExterno
                 ? { target: "_blank", rel: "noopener noreferrer" }
@@ -47,7 +55,7 @@ export function ContactoProfesional({ contacto }: { contacto: Contacto }) {
                 color: "rgb(var(--atm-ink, 42 36 30))",
               }}
             >
-              {ETIQUETA_MEDIO[c.medio]}
+              {ETIQUETA_MEDIO[c.medio] ?? c.medio}
             </a>
           );
         })}
