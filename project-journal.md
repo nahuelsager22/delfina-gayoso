@@ -5,7 +5,7 @@
 >
 > Se actualiza cuando el usuario indica **"Actualiza la memoria"**.
 >
-> Última actualización: 2026-08-30 · cierre del Bloque 8.
+> Última actualización: 2026-09-05 · cierre del Bloque 10.
 
 ---
 
@@ -65,8 +65,8 @@ clienta, por iteraciones cortas.
   Detalle en `docs/recorrido.md`.
 - **CMS**: Sanity con Studio en `/studio`, respaldo local, webhook de revalidación.
   Delfina puede editar textos, fichas, fotos, orden y las frases de Budín.
-- **Material real integrado**: 42 fotografías, 2 videos, 3 marcas con logotipo, 2 ebooks,
-  3 experiencias.
+- **Material real integrado**: 43 fotografías, 2 videos, 3 marcas con logotipo (dos ya con
+  su foto de colaboración), 1 ebook, 2 experiencias —ninguna futura, ver §5—.
 - **Sin desplegar todavía.** El sitio corre en desarrollo; la configuración de despliegue
   está aislada y pendiente (ver §5).
 
@@ -116,6 +116,30 @@ siguiente.
 **D11 · `/la-mesa` no se llama "galería"**, y su puerta vive en el cierre del recorrido,
 no en "Quién soy": un acceso se ubica donde ya nació la curiosidad.
 
+**D12 · La fotografía de una colaboración es una portada única, no un carrusel.** De las
+18 fotos que mandó 3 Claveles, escena real había una sola —Delfina cortando cítricos con
+el cuchillo— repetida en cuatro tomas del mismo instante; el resto es catálogo. Varias
+tomas del mismo plano no aportan información, y una colección de packshots es lo que la
+sección ya rechazó. Ver descartes.
+
+**D13 · El CMS manda sobre la semilla, incluso cuando dice que no hay nada.** Una lista
+vacía es una respuesta legítima y el sitio la obedece: vaciar una sección desde el Studio
+la vacía en la web. La semilla queda sólo para cuando el CMS **no responde**. Antes las
+dos cosas se confundían y borrar en el Studio no borraba.
+
+Con dos excepciones, y las dos por la misma razón —lo que se cae no es contenido sino el
+andamiaje de una página—: las **secciones del recorrido**, que la semilla define y el CMS
+sólo ajusta; y los **textos**, donde la semilla repone lo que falte, porque no hay forma
+de distinguir "Delfina lo borró" de "el código estrena un texto que el CMS todavía no
+tiene". Para quitar un texto se lo quita del componente.
+
+**D14 · Un valor de lista que llega del CMS se comprueba contra los que el código
+conoce.** El tipo de TypeScript es una afirmación sobre un dato de afuera, no una
+garantía. Contenido y código se despliegan por separado, así que recibir un valor que el
+esquema ya tiene y el código todavía no es normal. Lo que estaba en juego no era
+cosmético: un estado desconocido hacía **desaparecer el botón de reservar**, sin ninguna
+señal.
+
 ---
 
 ## 4. Decisiones descartadas
@@ -135,6 +159,8 @@ Se conservan **para que no se vuelvan a proponer por desconocimiento**.
 | **Metáfora "del error al plato"** | Reduce a Delfina a su torpeza simpática y deja afuera el eje real. Aportaba tono, no dirección |
 | **Buffalo como colaboración** | Delfina confirmó que ya no está activa |
 | **Separar chef privado y catering en dos servicios** | Ella lo nombró como uno solo; partirlo sería reinterpretarla |
+| **Carrusel para las fotos de una colaboración** | Se evaluó con las 18 fotos de 3 Claveles y no había qué rotar: una sola escena real, repetida en cuatro tomas del mismo plano, y el resto catálogo. Un carrusel habría mostrado packshots, que es lo que la sección rechazó. Sólo se justificaría con momentos **distintos** de la misma colaboración |
+| **La clase de ejemplo "Pastas frescas, de cero"** | Era ficticia, puesta para poder mirar la pieza de invitación mientras Delfina no daba su fecha. El sitio no puede anunciar una clase que no existe: alguien podía quedarse esperando algo que creyó reservado. Se retiró del dataset y de la semilla |
 
 ---
 
@@ -142,10 +168,14 @@ Se conservan **para que no se vuelvan a proponer por desconocimiento**.
 
 **De Delfina** — no se fabrican:
 
-- Rubro, historia y resultados de las tres marcas; y la foto de colaboración de 3 Claveles
-  y Ormay. *La de Don Yeyo ya está y sirve de referencia de qué pedir: la colaboración
-  misma, no un packshot.*
-- Su próxima fecha real de clase.
+- Rubro, historia y resultados de las tres marcas; y la foto de colaboración de **Ormay**.
+  *Don Yeyo y 3 Claveles ya están, y sirven de referencia de qué pedir: el producto de la
+  marca EN una receta suya, no un packshot. De las 18 que mandó 3 Claveles sólo una
+  servía, justamente por eso.*
+- **Su próxima fecha real de clase.** Pasó a ser lo más urgente de esta lista: al retirarse
+  la clase de ejemplo, el sitio no tiene ninguna experiencia futura y el módulo de
+  invitación no se muestra. Es el comportamiento correcto, pero la pieza que más empuja
+  está apagada hasta que ella cargue una fecha en el Studio.
 - El nombre de `/la-mesa` y sus dos textos (`mesa-apertura`, `mesa-cierre`).
 - Fotos de clases pasadas y el texto ampliado de cada clase.
 - Validación del copy de voz que sigue siendo interpretación. *Ya validados: los handles
@@ -203,6 +233,21 @@ mentir por separado.** Un handle se veía distinto del que abría su propia URL 
 notó durante meses, porque cada campo por su lado parecía correcto. Cuando un dato tiene
 una forma visible y una accionable, se comparan entre sí.
 
+**A10 · Un tipo sobre un dato que viene de afuera es una afirmación, no una garantía.**
+El compilador comprueba lo que el código se dice a sí mismo; en el borde —un CMS, una
+API, un archivo— sólo declara lo que uno espera recibir. Y el borde se cruza más seguido
+de lo que parece: cuando el contenido y el código se despliegan por separado, recibir un
+valor que el esquema ya tiene y el código todavía no es la situación normal, no el
+accidente.
+
+Lo que lo vuelve un aprendizaje y no una precaución de estilo es **cómo falla**: un valor
+desconocido no rompe nada ruidosamente, se propaga. Acá viajó como estado de una clase
+hasta una función que decidía si mostrar el botón de reservar, y lo apagó — alguien que
+quería anotarse a una clase abierta no encontraba cómo, y ninguna página tiraba error.
+**Se comprueba contra la lista de valores conocidos en el punto donde el dato entra**, no
+donde se usa; y cuando el valor alimenta una acción del visitante, el respaldo tiene que
+dejarla disponible, no retirarla.
+
 *Los que resultaron universales ya subieron al Playbook y se sacaron de acá.*
 
 ---
@@ -219,11 +264,15 @@ depende de ella (§5).
 **Bloque 9 — Hosting y cotización** se trabaja en su propio chat y no se documenta acá;
 lo único suyo que el proyecto necesita conocer es **D7** (independencia del proveedor).
 
-**Bloque 10 — Iteración con la clienta** es el siguiente, y es de tipo **iteración**: el
-alcance lo fija la cadencia de feedback de Delfina, así que cierra por corte acordado
-—cantidad de iteraciones, fecha o una decisión esperada—, no por entregable. Cada
-iteración se condensa acá al cerrarla, en estado y no en historia.
+**Bloque 10 — Que el contenido no pueda romper la web: CERRADO.** Se había previsto como
+bloque de iteración y terminó siendo de entregables, cuatro: la optimización de imagen y
+video (se fueron ~6,5 MB y el ancho de banda de Sanity dejó de escalar con cada
+visitante), la portada de 3 Claveles (**D12**), Sanity autoadministrable (**D13**, **D14**
+y lo que quedó escrito en `docs/contenido.md`), y el retiro de la clase de ejemplo. Los
+estados vacíos se provocaron de verdad y se miraron: sin contenido, las cuatro páginas
+responden y ninguna deja un título huérfano.
 
-**Lo primero que habilita valor real es el despliegue**: hasta que el sitio esté en línea,
-los tres pendientes de infraestructura no se pueden cerrar y Delfina no puede ver su sitio
-fuera de una sesión de trabajo.
+**Lo primero que habilita valor real sigue siendo el despliegue**: hasta que el sitio esté
+en línea, los tres pendientes de infraestructura no se pueden cerrar y Delfina no puede
+ver su sitio fuera de una sesión de trabajo. Después del despliegue, lo que más mueve la
+aguja es **su próxima fecha real** (§5): hoy el módulo de invitación está apagado.

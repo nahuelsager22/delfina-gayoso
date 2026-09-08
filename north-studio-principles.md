@@ -35,8 +35,10 @@ Para trabajar en un chat nuevo, y nada más por defecto:
 
 1. Este archivo
 2. `project-journal.md`
-3. el archivo del bloque activo, si existe
+3. `prompt-bloque-activo.md`, si hay un bloque en curso
 4. los archivos que la tarea necesite
+
+`prompt-bloque-activo.md` es el prompt autónomo del bloque activo: archivo único que rota, escrito por el chat principal como Prompt Architect, con sólo lo propio del bloque (Playbook IX · *Prompt de bloque*).
 
 **`docs/` se lee según la tarea**, no por defecto:
 
@@ -174,3 +176,4 @@ recortes y overflow.
 | Fecha | Cambio | Motivo |
 |---|---|---|
 | 2026-08-25 | Creación | Migración del proyecto al Midfield actual, con el proyecto ya avanzado |
+| 2026-09-05 | El prompt de bloque pasa a un archivo único `prompt-bloque-activo.md`; el chat principal actúa como Prompt Architect y su respuesta es sólo un mensaje breve de apertura | Bajar el contexto redundante en cada arranque de bloque. Canonizado en Playbook IX y en la plantilla |

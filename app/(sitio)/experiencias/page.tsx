@@ -211,6 +211,7 @@ export default async function PaginaExperiencias() {
           titulo={pasadas.length > 0 ? "Lo que ya cocinamos" : undefined}
           tituloOculto="Volver al recorrido"
           aire="silencio"
+          firma
         >
           {pasadas.length > 0 && (
             <ul className="pasadas">

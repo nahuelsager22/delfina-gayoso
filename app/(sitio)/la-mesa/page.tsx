@@ -148,6 +148,7 @@ export default async function PaginaLaMesa() {
           ancla="mesa-cierre"
           tituloOculto="Sentate a la mesa"
           cierre
+          firma
         >
           <Aparicion className="mesa-final">
             {cierre && <Voz texto={cierre.texto} escala="xl" />}

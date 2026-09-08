@@ -24,6 +24,7 @@ export async function Momento({
   alFinal = false,
   primero = false,
   alto = "100svh",
+  firma = false,
 }: {
   id: MomentoId;
   children: React.ReactNode;
@@ -39,6 +40,8 @@ export async function Momento({
    * lo hereda desde el primer momento, sin arrastrar restos de la anterior.
    */
   alto?: string;
+  /** La banda lleva al pie la firma del estudio (Bloque 11). Ver `Banda` y `FirmaEstudio`. */
+  firma?: boolean;
 }) {
   const m = await getMomento(id);
 
@@ -55,6 +58,7 @@ export async function Momento({
       alFinal={alFinal}
       primero={primero}
       alto={alto}
+      firma={firma}
     >
       {children}
     </Banda>

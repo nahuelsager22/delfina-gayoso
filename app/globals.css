@@ -43,6 +43,11 @@
     serif;
   --font-mundo: var(--font-karla), "Work Sans", system-ui, -apple-system,
     "Segoe UI", Roboto, sans-serif;
+  /* La letra de North Studio, no la de la casa (Bloque 11). Se usa en un solo lugar
+     —la firma del estudio al pie de la última sala— y por eso existe: una marca ajena
+     dentro de la casa de otra persona se escribe con su propia letra. */
+  --font-estudio: var(--font-newsreader), "Literata", Georgia, "Times New Roman",
+    serif;
 
   /* ---- Tipografía — escala fluida de 7 pasos (§2.2, era --fs-*) ----
      clamp() reales, interpolando 375px → 1440px. Interlineado y tracking van
@@ -2647,4 +2652,137 @@ a.colab-handle:hover {
    pegada a la frase de arriba ni como parte de la lista de redes de abajo. */
 .cierre-mesa {
   margin-block-start: var(--space-md);
+}
+
+/* =============================================================================
+   LA FIRMA DEL ESTUDIO (Bloque 11) — "Desarrollado por North Studio".
+   Una firma, no un pie: no agrega banda ni ocupa lugar en el flujo. Se apoya en el
+   PISO de la última sala de cada página, en la esquina que queda libre. El criterio
+   completo vive en `_chrome/FirmaEstudio.tsx`.
+   ========================================================================== */
+.firma-estudio {
+  /* Fuera del flujo: no empuja el cierre y no puede producir salto de layout. El
+     ancla es el `<section>` de la banda —`.sala` es `position: relative`—, no
+     `.sala-inner`, cuyo alto cambia según el modo de la banda. */
+  position: absolute;
+  /* Caja de la firma, no línea de texto. Con el `<a>` inline-flex sobre una línea, el
+     interlineado dejaba un colchón fantasma bajo la firma y el retiro real no coincidía
+     con el declarado (variaba entre 20 y 24,3px según el formato). En flex la caja mide
+     lo que mide la pieza y el retiro es el que dice acá. */
+  display: flex;
+  inset-block-end: clamp(14px, 2vh, 22px);
+  /* Alineada con el carril de contenido, no con el filo de la pantalla: el mismo
+     `--space-lg` que separa el texto del borde en `.sala-inner`. */
+  inset-inline-end: max(var(--space-lg), calc((100% - 80rem) / 2 + var(--space-lg)));
+  z-index: 2;
+  /* Sólo el enlace recibe el puntero: el resto de la caja no bloquea nada. */
+  pointer-events: none;
+}
+.firma-enlace {
+  pointer-events: auto;
+  display: inline-flex;
+  /* UNA SOLA LÍNEA DE BASE (ajuste final del Bloque 11). Con `center` se centran las
+     CAJAS, y las cajas mienten: la masa del ismo está toda abajo —la cordillera apoya
+     en el borde inferior del dibujo y el destello flota arriba—, así que centrarlo
+     dejaba su base 4,33px por debajo de la línea de base del texto (medido con una
+     sonda de alto cero sobre un cuerpo de 14,25: un 30%). Se leía como texto alto.
+     Con `baseline`, el ismo no tiene línea de base propia y el navegador la sintetiza
+     en su borde inferior — que es exactamente donde apoya la cordillera. Las montañas
+     y las letras pasan a estar paradas sobre el mismo piso: una sola firma, no dos
+     objetos alineados a ojo. */
+  align-items: baseline;
+  gap: 0.6em;
+  text-decoration: none;
+  /* La tinta secundaria de la sala, sin diluir: la discreción la dan el cuerpo y el
+     lugar, no bajar el contraste. Medido sobre las cuatro salas de cierre —marrón
+     7,9:1 · verde 7,5:1 · crema 10,1:1 · arena 6,4:1—. */
+  color: rgb(var(--atm-ink-soft, 63 55 45));
+  transition:
+    color var(--dur-sm) var(--ease-suave),
+    transform var(--dur-sm) var(--ease-posar);
+}
+/* Al pasar el cursor (o al llegar con el teclado) responde COMO UNA SOLA PIEZA: la
+   montaña no tiene su propia animación, se eleva porque es parte de la firma. 1,5px
+   sobre un cuerpo de 14 es perceptible y no llega a ser un movimiento. */
+.firma-enlace:hover,
+.firma-enlace:focus-visible {
+  color: rgb(var(--atm-ink, 42 36 30));
+  transform: translateY(-1.5px);
+}
+/* La letra del estudio (Bloque 11): redonda para la atribución, ITÁLICA para el nombre.
+   La jerarquía la hace la inclinación, no el peso ni el cuerpo — que es exactamente lo
+   que distingue una firma editorial de un rótulo. */
+.firma-texto {
+  font-family: var(--font-estudio), var(--font-voz), Georgia, serif;
+  font-size: var(--text-meta);
+  line-height: 1.1;
+  letter-spacing: 0.005em;
+  white-space: nowrap;
+}
+.firma-nombre {
+  font-style: italic;
+}
+/* SIN SUBRAYADO, tampoco al hover. La firma no se comporta como un enlace de texto:
+   es una marca, y el subrayado la empujaba hacia el registro de CTA justo cuando el
+   resto del ajuste buscaba lo contrario. La interacción la dicen la elevación del
+   conjunto y el salto a la tinta plena de la sala. Lo que NO se toca es el foco de
+   teclado: sigue con el anillo global (`:focus-visible`, 2px en `--atm-ink`), que es
+   la señal que sí tiene que existir sí o sí y no depende del color. */
+/* El ismo conserva los colores oficiales del estudio: nunca `currentColor`. La sala
+   elige la variante por su tono, igual que elige su tinta. */
+.firma-ismo {
+  display: block;
+  flex: none;
+  line-height: 0;
+}
+.firma-ismo-svg {
+  display: block;
+  block-size: clamp(13px, 1.1vw, 16px);
+  inline-size: auto;
+}
+.firma-ismo-claro {
+  display: none;
+}
+[data-oscura="true"] .firma-ismo-claro {
+  display: block;
+}
+[data-oscura="true"] .firma-ismo-oscuro {
+  display: none;
+}
+
+/* Mobile: no hace falta ninguna corrección. La versal con tracking que había antes
+   medía 272,6px en un viewport de 390; en caja baja la pieza entera mide 220,3 y no
+   pide aflojar nada. El fallback métricamente ajustado que inyecta `next/font` mide
+   224,2 —3,9px más—, y como la firma está anclada por su borde DERECHO, esos píxeles
+   se los come hacia adentro: el swap de la fuente no puede desbordar. */
+
+/* EL GUIÑO A NORTH STUDIO dentro del globo de Budín (Bloque 11) — ver `FirmaGuino`.
+   Vive adentro del globo por una razón medida: el globo es SIEMPRE crema
+   (`--color-harina`) sin importar sobre qué sala esté flotando Budín, así que el ismo
+   puede conservar su color oficial sin adaptarse. Afuera no podría —a la izquierda de
+   Budín hay 30px en escritorio, y ahí abajo pasan seis salas distintas al hacer scroll—. */
+.budin-firma {
+  display: flex;
+  /* Una sola línea de base, igual que en el crédito del pie: la masa de la cordillera
+     apoya en el borde inferior del dibujo, así que centrar las cajas la hundiría. */
+  align-items: baseline;
+  gap: 0.45em;
+  margin-block-start: 0.55em;
+  /* Nunca recibe el puntero: es una marca, no una puerta. */
+  pointer-events: none;
+}
+.budin-firma-ismo {
+  display: block;
+  flex: none;
+  block-size: 11px;
+  inline-size: auto;
+}
+.budin-firma-nombre {
+  font-family: var(--font-estudio), var(--font-voz), Georgia, serif;
+  font-style: italic;
+  font-size: var(--text-micro);
+  line-height: 1.1;
+  letter-spacing: 0.005em;
+  /* Un paso por debajo de la tinta de la frase: adentro del globo, quien habla es Budín. */
+  color: var(--color-piedra);
 }

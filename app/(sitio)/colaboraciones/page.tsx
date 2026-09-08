@@ -99,6 +99,7 @@ export default async function PaginaColaboraciones() {
           ancla="colaboraciones-cierre"
           tituloOculto="Trabajemos juntos"
           cierre
+          firma
         >
           <Aparicion className="colab-cierre">
             {cierre && <Voz texto={cierre.texto} escala="xl" />}

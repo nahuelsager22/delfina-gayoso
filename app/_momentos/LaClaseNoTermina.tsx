@@ -38,7 +38,7 @@ export async function LaClaseNoTermina() {
   const redes = await getRedes();
 
   return (
-    <Momento id="la-clase-no-termina" full alto="118svh">
+    <Momento id="la-clase-no-termina" full alto="118svh" firma>
       {/* Cierre editorial (Bloque 8 · 11ª ola): una sola columna, CENTRADA en el viewport
           (ya no anclada al fondo, que cortaba el título arriba). Sobre el MARRÓN del
           manual —el terracota pasó a ser acento—. Tipografía y espaciados calibrados para

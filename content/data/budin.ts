@@ -112,6 +112,23 @@ export const budin: VozBudin = {
     { texto: "Delfi todavía no sabe que te estoy hablando tanto 😅", gesto: "ladeado" },
     { texto: "Si llegaste hasta acá, gracias por quedarte un rato", gesto: "alegre" },
     { texto: "Creo que ya descubriste casi todos mis secretos 🤫", gesto: "ladeado" },
+    /* EL GUIÑO A NORTH STUDIO (Bloque 11). Las dos únicas frases con `firma: true`: al
+       decirlas, aparece la marca del estudio dentro del globo y se va con la frase.
+       Están acá, en las RARAS, y no entre las de siempre, a propósito — hay que haberlo
+       tocado diez veces y tener suerte (16%) para que salgan. Es un guiño para quien
+       jugó, no un crédito.
+       La primera es cariño ("mis amigos") y va sonriendo; la segunda es un remate seco
+       y por eso va con cara seria: decirla en serio ES el chiste. */
+    {
+      texto: "Ah... esta casita también la hicieron mis amigos de North Studio 🐾",
+      gesto: "alegre",
+      firma: true,
+    },
+    {
+      texto: "Si necesitás una web así... ya sabés dónde viven",
+      gesto: "ladeado",
+      firma: true,
+    },
   ],
   amistad: "Ahora sí: creo que somos amigos. Prometeme que vas a volver",
 };

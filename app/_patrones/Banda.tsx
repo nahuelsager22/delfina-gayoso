@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { getSala, estiloSala, datosNavbar } from "../_chrome/atmosferas/config";
+import { FirmaEstudio } from "../_chrome/FirmaEstudio";
 
 /**
  * BANDA — la franja de color con corte por onda (Bloque 8 · 18ª ola).
@@ -58,6 +59,7 @@ export function Banda({
   cierre = false,
   alto = "100svh",
   marca,
+  firma = false,
 }: {
   /** Clave de la sala (ver `atmosferas/config.ts`). El contenido no conoce colores. */
   atmosfera?: string;
@@ -96,6 +98,16 @@ export function Banda({
    */
   cierre?: boolean;
   alto?: string;
+  /**
+   * La ÚLTIMA banda de la página lleva la firma del estudio (Bloque 11). Se monta acá
+   * —hermana de `.sala-inner`, no adentro— por una razón de anclaje: `.sala-inner` es
+   * `position: relative` y su alto cambia según el modo de la banda (en un `cierre`
+   * llega al piso; en la home, `full`, es una caja centrada). Colgada del `<section>`,
+   * el ancla es siempre el borde de la banda y la firma cae en el mismo lugar en las
+   * cuatro páginas. Además hereda la tinta y el tono de la sala, que es lo que le
+   * permite leerse sobre las cuatro. Ver `FirmaEstudio`.
+   */
+  firma?: boolean;
   /**
    * Etiqueta del encabezado. En el recorrido cada banda es un `h2`; dentro de una página
    * con su propio `h1`, también. Existe para no forzar jerarquías falsas más adelante.
@@ -158,6 +170,7 @@ export function Banda({
           {children}
         </div>
       </div>
+      {firma && <FirmaEstudio />}
     </section>
   );
 }
