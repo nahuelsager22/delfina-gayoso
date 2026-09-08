@@ -83,8 +83,8 @@
  *    escala sobre 14px es medio píxel: se lee como tembleque, no como gesto).
  */
 
-/** Dónde vive el estudio. Confirmado contra los otros proyectos del estudio
- *  (`north-studio-web`, `north-studio-social`): el dominio es `northstudio.com.ar`. */
+/** Dónde vive el estudio. VALIDADO por el usuario (Bloque 11); coincide con el dominio
+ *  del mail y del enlace de bio de los otros proyectos del estudio. */
 const URL_ESTUDIO = "https://northstudio.com.ar";
 
 /** Los dos colores oficiales del ismo. El claro es el de las salas hondas. */

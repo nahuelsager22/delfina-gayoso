@@ -332,6 +332,10 @@ export interface FraseBudin {
   /**
    * Si al decirla aparece la firma de North Studio dentro del globo (Bloque 11).
    *
+   * La interfaz sólo reparte estas frases en el MENÚ MOBILE: el Budín de escritorio las
+   * excluye de su bolsa, porque flota sobre el recorrido —la casa de Delfina— y ahí el
+   * estudio ya firma una vez al pie de la página.
+   *
    * Es un CAMPO y no un calce por texto, por el mismo motivo que `gesto`: Delfi corrige
    * una coma en el Studio y el guiño sigue funcionando. Atarlo a la frase exacta se
    * rompería a la primera edición — la lección de la 31ª ola, aplicada de nuevo.

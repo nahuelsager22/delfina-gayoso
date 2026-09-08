@@ -126,7 +126,7 @@ const fraseBudin = {
       name: "firma",
       title: "Mostrar la firma de North Studio",
       description:
-        "Sólo para el guiño al estudio que hizo la web: mientras se lee esta frase aparece su marca dentro del globo, y se va con la frase. Dejalo apagado en todas las demás.",
+        "Sólo para el guiño al estudio que hizo la web: mientras se lee esta frase aparece su marca dentro del globo, y se va con la frase. Estas frases salen únicamente en el menú del celular. Dejalo apagado en todas las demás.",
       type: "boolean",
       initialValue: false,
     }),

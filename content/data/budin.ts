@@ -117,10 +117,28 @@ export const budin: VozBudin = {
        Están acá, en las RARAS, y no entre las de siempre, a propósito — hay que haberlo
        tocado diez veces y tener suerte (16%) para que salgan. Es un guiño para quien
        jugó, no un crédito.
+
+       Y SÓLO SALEN EN EL MENÚ MOBILE: el Budín de escritorio flota sobre el recorrido,
+       que es la casa de Delfina, y ahí el estudio ya firma una vez al pie. La interfaz
+       las excluye de su bolsa (ver `raras` en `Budin.tsx`), así que en escritorio no
+       aparecen ni siquiera sin la marca. Por eso viven acá y no en una lista aparte:
+       para Delfi son dos frases raras más, que puede borrar como cualquier otra.
+
+       NINGUNA DE LAS DOS NOMBRA AL ESTUDIO: lo nombra la marca, debajo. La primera decía
+       "mis amigos de North Studio" y la firma repetía el nombre dos renglones más abajo,
+       dentro de un globo de 264px. Una nota firmada no funciona así —no se cierra con
+       "Atentamente, Juan" y después se firma "Juan"—: la frase prepara y la firma
+       revela. Además "mis amigos" a secas es más de Budín que el nombre de una empresa;
+       nombrar al estudio era lo único de la frase que no sonaba a perro.
+       El costo, dicho: el guiño queda VISUAL. Con lector de pantalla no existe, porque
+       la marca es decorativa. Se acepta porque no es información —la atribución real es
+       un enlace anunciado al pie de las cuatro páginas—, sino un chiste que además está
+       detrás de diez toques y un 16%.
+
        La primera es cariño ("mis amigos") y va sonriendo; la segunda es un remate seco
        y por eso va con cara seria: decirla en serio ES el chiste. */
     {
-      texto: "Ah... esta casita también la hicieron mis amigos de North Studio 🐾",
+      texto: "Ah... esta casita también la hicieron mis amigos 🐾",
       gesto: "alegre",
       firma: true,
     },

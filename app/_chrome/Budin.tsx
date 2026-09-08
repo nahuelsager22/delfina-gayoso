@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -111,11 +111,15 @@ import { FirmaGuino } from "./FirmaGuino";
  * lleva el SALTO. Así el globo viaja con Budín —su punta lo sigue apuntando— mientras la
  * cabeza salta por su cuenta.
  *
- * EL GUIÑO AL ESTUDIO (Bloque 11)
+ * EL GUIÑO AL ESTUDIO (Bloque 11) — SÓLO EN EL MENÚ MOBILE
  * -----------------------------------------------------------------------------
  * Dos frases RARAS traen `firma: true` desde el contenido y, mientras se leen, muestran
- * la marca de North Studio dentro del globo (ver `FirmaGuino`). Tres cosas que importan:
+ * la marca de North Studio dentro del globo (ver `FirmaGuino`). Cuatro cosas que importan:
  *
+ *  · **Sólo en `variante="menu"`.** El Budín de escritorio ni siquiera tiene esas frases
+ *    en la bolsa (ver `raras`): flota sobre el recorrido, que es la casa de Delfina y
+ *    donde el estudio ya firma una vez al pie. El menú es otra cosa —una pantalla
+ *    aparte, a la que se entra a propósito— y ahí el guiño no le pasa por encima a nadie.
  *  · **Lo dispara un CAMPO, no el texto.** Es la misma lección de la 31ª ola con las
  *    caras: calzar contra la frase exacta se rompe en cuanto Delfi corrige una coma.
  *  · **Vive en el contenido, no en el código** —al revés que el crédito del pie—. El
@@ -238,6 +242,24 @@ export function Budin({
    * firma que se quedara después de la frase dejaría de ser un guiño y sería un crédito.
    */
   const [firmado, setFirmado] = useState(false);
+
+  /**
+   * EL GUIÑO AL ESTUDIO VIVE SÓLO EN EL MENÚ MOBILE (Bloque 11, replanteo).
+   *
+   * No es que en escritorio salga la frase sin la marca: **las frases firmadas ni
+   * siquiera entran en la bolsa**. El Budín de escritorio flota sobre el recorrido —la
+   * casa de Delfina, donde el estudio ya firma una vez al pie— y ahí una frase que
+   * nombra a North Studio es el estudio hablando encima de ella. En el menú el contexto
+   * es otro: es una pantalla aparte, cerrada, a la que hay que entrar a propósito, y el
+   * crédito editorial del pie no está a la vista para competir con nada.
+   *
+   * Así que el escritorio queda con 6 raras y el menú con 8. Cualquiera de las dos
+   * bolsas se sigue barajando y agotando igual: el juego no cambia, cambia el repertorio.
+   */
+  const raras = useMemo(
+    () => (variante === "menu" ? secretas : secretas.filter((f) => !f.firma)),
+    [secretas, variante],
+  );
   /**
    * La cara de AHORA. Se queda puesta: no hay temporizador que la devuelva al reposo, y
    * SÓLO la cambia una frase nueva —ni el saludo, ni el hover, ni el saltito de reposo—.
@@ -451,10 +473,10 @@ export function Budin({
     }
     if (
       n >= TOQUES_PARA_SECRETAS &&
-      secretas.length > 0 &&
+      raras.length > 0 &&
       Math.random() < PROBABILIDAD_SECRETA
     ) {
-      const rara = sacar(bolsaSecretasRef, secretas);
+      const rara = sacar(bolsaSecretasRef, raras);
       if (rara) {
         decir(rara.texto, rara.gesto, rara.firma);
         return;
@@ -470,7 +492,7 @@ export function Budin({
     deriva,
     frases,
     sacar,
-    secretas,
+    raras,
     sinMotion,
   ]);
 
