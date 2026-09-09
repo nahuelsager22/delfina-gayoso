@@ -88,17 +88,12 @@
 const URL_ESTUDIO = "https://northstudio.com.ar";
 
 /** Los dos colores oficiales del ismo. El claro es el de las salas hondas. */
-export const ISMO_CLARO = "#EAE8E3";
-export const ISMO_OSCURO = "#1D1A17";
+const ISMO_CLARO = "#EAE8E3";
+const ISMO_OSCURO = "#1D1A17";
 
 /** El ismo: la cordillera con su destello. Trazos originales, sin retoque; lo único
- *  propio es el viewBox recortado a la caja real del dibujo (x 14–168, y 1–64).
- *
- *  Se exporta porque el guiño de Budín (`FirmaGuino`) usa EXACTAMENTE este dibujo: dos
- *  copias de los mismos trazos serían dos fuentes de verdad para una sola marca, que es
- *  justo lo que el proyecto evita en todos lados (los pigmentos, la paleta, el dominio).
- *  Lo que cambia entre las dos piezas no es el dibujo: es el lockup y la naturaleza. */
-export function Ismo({ color, className }: { color: string; className: string }) {
+ *  propio es el viewBox recortado a la caja real del dibujo (x 14–168, y 1–64). */
+function Ismo({ color, className }: { color: string; className: string }) {
   return (
     <svg
       className={className}

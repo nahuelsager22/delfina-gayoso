@@ -402,40 +402,6 @@ if (budinDoc) {
     resumen.push("frases de Budín ya al día (no se tocan)");
   }
 
-  /* EL GUIÑO A NORTH STUDIO (Bloque 11). Las frases NUEVAS de la semilla no viajan
-     solas: esta sincronización migra la forma de las que ya están, no agrega las que
-     faltan, y `pnpm sembrar` reescribiría el documento entero —borrando lo que Delfi
-     haya editado—. Así que las dos del guiño se empujan a mano, con la misma cautela
-     que el saludo: se AGREGAN AL FINAL de las raras, y sólo si no están.
-
-     Idempotente por texto y por `_key`: correr la sincronización dos veces no las
-     duplica, y si ella reescribe una, la clave sigue ahí y no se vuelve a agregar. Nada
-     de lo que Delfi escribió se toca; para apagar el guiño le alcanza con borrar las
-     dos frases desde el Studio. */
-  const delGuino = (budin.secretas ?? []).filter((f) => f.firma === true);
-  const secretasActuales = cambios.secretas ?? budinDoc.secretas ?? [];
-  const textos = new Set(
-    secretasActuales.map((f) => (typeof f === "string" ? f : f?.texto)),
-  );
-  const claves = new Set(
-    secretasActuales.map((f) => (typeof f === "object" && f ? f._key : null)),
-  );
-  const faltantes = delGuino
-    .map((f) => ({ frase: f, key: `guino-${(budin.secretas ?? []).indexOf(f)}` }))
-    .filter(({ frase, key }) => !textos.has(frase.texto) && !claves.has(key));
-
-  if (faltantes.length > 0) {
-    cambios.secretas = [
-      ...secretasActuales,
-      ...faltantes.map(({ frase, key }) => ({ _key: key, ...frase })),
-    ];
-    resumen.push(
-      `${faltantes.length} frases del guiño a North Studio agregadas a las raras de Budín`,
-    );
-  } else {
-    resumen.push("guiño a North Studio ya cargado (no se toca)");
-  }
-
   if (budinDoc.saludo === SALUDO_ANTERIOR && budin.saludo !== budinDoc.saludo) {
     cambios.saludo = budin.saludo;
     resumen.push("saludo de Budín actualizado");

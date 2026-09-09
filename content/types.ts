@@ -329,22 +329,6 @@ export type GestoBudin = "alegre" | "ladeado";
 export interface FraseBudin {
   readonly texto: string;
   readonly gesto: GestoBudin;
-  /**
-   * Si al decirla aparece la firma de North Studio dentro del globo (Bloque 11).
-   *
-   * La interfaz sólo reparte estas frases en el MENÚ MOBILE: el Budín de escritorio las
-   * excluye de su bolsa, porque flota sobre el recorrido —la casa de Delfina— y ahí el
-   * estudio ya firma una vez al pie de la página.
-   *
-   * Es un CAMPO y no un calce por texto, por el mismo motivo que `gesto`: Delfi corrige
-   * una coma en el Studio y el guiño sigue funcionando. Atarlo a la frase exacta se
-   * rompería a la primera edición — la lección de la 31ª ola, aplicada de nuevo.
-   *
-   * Y por eso vive en el contenido y no en el código, a diferencia del crédito del pie:
-   * el crédito es identidad del estudio y no se toca desde el Studio, pero ESTO lo dice
-   * Budín, que es de Delfina. Borrar la frase apaga el guiño entero, sin tocar código.
-   */
-  readonly firma?: boolean;
 }
 
 export interface VozBudin {

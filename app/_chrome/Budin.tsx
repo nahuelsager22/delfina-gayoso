@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -9,7 +9,6 @@ import {
   useReducedMotion,
 } from "motion/react";
 import type { FraseBudin, GestoBudin, VozBudin } from "@/content";
-import { FirmaGuino } from "./FirmaGuino";
 
 /**
  * Budín — el compañero del recorrido (Bloque 8 · 13ª ola; JUEGO en la 22ª).
@@ -110,24 +109,6 @@ import { FirmaGuino } from "./FirmaGuino";
  * DOS CAPAS DE MOVIMIENTO, a propósito: el contenedor lleva el DESPLAZAMIENTO y el botón
  * lleva el SALTO. Así el globo viaja con Budín —su punta lo sigue apuntando— mientras la
  * cabeza salta por su cuenta.
- *
- * EL GUIÑO AL ESTUDIO (Bloque 11) — SÓLO EN EL MENÚ MOBILE
- * -----------------------------------------------------------------------------
- * Dos frases RARAS traen `firma: true` desde el contenido y, mientras se leen, muestran
- * la marca de North Studio dentro del globo (ver `FirmaGuino`). Cuatro cosas que importan:
- *
- *  · **Sólo en `variante="menu"`.** El Budín de escritorio ni siquiera tiene esas frases
- *    en la bolsa (ver `raras`): flota sobre el recorrido, que es la casa de Delfina y
- *    donde el estudio ya firma una vez al pie. El menú es otra cosa —una pantalla
- *    aparte, a la que se entra a propósito— y ahí el guiño no le pasa por encima a nadie.
- *  · **Lo dispara un CAMPO, no el texto.** Es la misma lección de la 31ª ola con las
- *    caras: calzar contra la frase exacta se rompe en cuanto Delfi corrige una coma.
- *  · **Vive en el contenido, no en el código** —al revés que el crédito del pie—. El
- *    crédito es identidad del estudio y Delfina no lo administra; esto lo dice BUDÍN,
- *    que es de ella. Borrar la frase en el Studio apaga el guiño entero sin tocar nada.
- *  · **Se va con la frase.** `firmado` nace y muere con `mensaje`, mientras que la CARA
- *    persiste. La asimetría es deliberada: una firma que se quedara puesta después de
- *    la frase dejaría de ser un guiño y pasaría a ser un crédito permanente.
  */
 
 /**
@@ -235,31 +216,6 @@ export function Budin({
   const deriva = variante === "menu";
 
   const [mensaje, setMensaje] = useState<string | null>(null);
-  /**
-   * Si la frase que está diciendo lleva el guiño al estudio (Bloque 11). Vive junto al
-   * mensaje y muere con él: la marca entra y sale con el globo, nunca queda puesta. A
-   * diferencia de la CARA, que sí persiste — lo que se dijo caduca, la expresión no; una
-   * firma que se quedara después de la frase dejaría de ser un guiño y sería un crédito.
-   */
-  const [firmado, setFirmado] = useState(false);
-
-  /**
-   * EL GUIÑO AL ESTUDIO VIVE SÓLO EN EL MENÚ MOBILE (Bloque 11, replanteo).
-   *
-   * No es que en escritorio salga la frase sin la marca: **las frases firmadas ni
-   * siquiera entran en la bolsa**. El Budín de escritorio flota sobre el recorrido —la
-   * casa de Delfina, donde el estudio ya firma una vez al pie— y ahí una frase que
-   * nombra a North Studio es el estudio hablando encima de ella. En el menú el contexto
-   * es otro: es una pantalla aparte, cerrada, a la que hay que entrar a propósito, y el
-   * crédito editorial del pie no está a la vista para competir con nada.
-   *
-   * Así que el escritorio queda con 6 raras y el menú con 8. Cualquiera de las dos
-   * bolsas se sigue barajando y agotando igual: el juego no cambia, cambia el repertorio.
-   */
-  const raras = useMemo(
-    () => (variante === "menu" ? secretas : secretas.filter((f) => !f.firma)),
-    [secretas, variante],
-  );
   /**
    * La cara de AHORA. Se queda puesta: no hay temporizador que la devuelva al reposo, y
    * SÓLO la cambia una frase nueva —ni el saludo, ni el hover, ni el saltito de reposo—.
@@ -394,20 +350,13 @@ export function Budin({
    * queda hasta la interacción siguiente. Esa asimetría es a propósito — lo que se dijo
    * caduca, la expresión con la que quedó no.
    */
-  const decir = useCallback(
-    (texto: string, gesto: GestoBudin, firma = false) => {
-      setSaludando(false);
-      setCara(gesto);
-      setMensaje(texto);
-      setFirmado(firma);
-      if (ocultarRef.current) clearTimeout(ocultarRef.current);
-      ocultarRef.current = setTimeout(() => {
-        setMensaje(null);
-        setFirmado(false);
-      }, 5200);
-    },
-    [],
-  );
+  const decir = useCallback((texto: string, gesto: GestoBudin) => {
+    setSaludando(false);
+    setCara(gesto);
+    setMensaje(texto);
+    if (ocultarRef.current) clearTimeout(ocultarRef.current);
+    ocultarRef.current = setTimeout(() => setMensaje(null), 5200);
+  }, []);
 
   const hablar = useCallback(() => {
     yaHabloRef.current = true;
@@ -473,17 +422,17 @@ export function Budin({
     }
     if (
       n >= TOQUES_PARA_SECRETAS &&
-      raras.length > 0 &&
+      secretas.length > 0 &&
       Math.random() < PROBABILIDAD_SECRETA
     ) {
-      const rara = sacar(bolsaSecretasRef, raras);
+      const rara = sacar(bolsaSecretasRef, secretas);
       if (rara) {
-        decir(rara.texto, rara.gesto, rara.firma);
+        decir(rara.texto, rara.gesto);
         return;
       }
     }
     const frase = sacar(bolsaRef, frases);
-    if (frase) decir(frase.texto, frase.gesto, frase.firma);
+    if (frase) decir(frase.texto, frase.gesto);
   }, [
     amistad,
     controles,
@@ -492,7 +441,7 @@ export function Budin({
     deriva,
     frases,
     sacar,
-    raras,
+    secretas,
     sinMotion,
   ]);
 
@@ -526,11 +475,6 @@ export function Budin({
             }}
           >
             {globo}
-            {/* El guiño (Bloque 11). Va DENTRO del globo, así entra y sale con la frase
-                sin necesitar animación propia. `mensaje` en la condición y no sólo
-                `firmado`: si el globo pasó a mostrar el saludo del hover, lo que se lee
-                ya no es la frase firmada. */}
-            {firmado && mensaje && <FirmaGuino />}
           </motion.p>
         )}
       </AnimatePresence>

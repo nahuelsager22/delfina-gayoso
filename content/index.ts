@@ -649,18 +649,11 @@ function aFrase(v: unknown): FraseBudin | null {
     return v.trim() ? { texto: v, gesto: GESTO_POR_DEFECTO } : null;
   }
   if (v && typeof v === "object") {
-    const { texto, gesto, firma } = v as {
-      texto?: unknown;
-      gesto?: unknown;
-      firma?: unknown;
-    };
+    const { texto, gesto } = v as { texto?: unknown; gesto?: unknown };
     if (typeof texto !== "string" || !texto.trim()) return null;
     return {
       texto,
       gesto: GESTOS.find((g) => g === gesto) ?? GESTO_POR_DEFECTO,
-      // Sólo `true` enciende el guiño: cualquier otra cosa que llegue del CMS —ausente,
-      // nula, una cadena— lo deja apagado, que es el estado seguro (A10).
-      firma: firma === true,
     };
   }
   return null;

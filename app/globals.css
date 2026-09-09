@@ -2755,34 +2755,3 @@ a.colab-handle:hover {
    pide aflojar nada. El fallback métricamente ajustado que inyecta `next/font` mide
    224,2 —3,9px más—, y como la firma está anclada por su borde DERECHO, esos píxeles
    se los come hacia adentro: el swap de la fuente no puede desbordar. */
-
-/* EL GUIÑO A NORTH STUDIO dentro del globo de Budín (Bloque 11) — ver `FirmaGuino`.
-   Vive adentro del globo por una razón medida: el globo es SIEMPRE crema
-   (`--color-harina`) sin importar sobre qué sala esté flotando Budín, así que el ismo
-   puede conservar su color oficial sin adaptarse. Afuera no podría —a la izquierda de
-   Budín hay 30px en escritorio, y ahí abajo pasan seis salas distintas al hacer scroll—. */
-.budin-firma {
-  display: flex;
-  /* Una sola línea de base, igual que en el crédito del pie: la masa de la cordillera
-     apoya en el borde inferior del dibujo, así que centrar las cajas la hundiría. */
-  align-items: baseline;
-  gap: 0.45em;
-  margin-block-start: 0.55em;
-  /* Nunca recibe el puntero: es una marca, no una puerta. */
-  pointer-events: none;
-}
-.budin-firma-ismo {
-  display: block;
-  flex: none;
-  block-size: 11px;
-  inline-size: auto;
-}
-.budin-firma-nombre {
-  font-family: var(--font-estudio), var(--font-voz), Georgia, serif;
-  font-style: italic;
-  font-size: var(--text-micro);
-  line-height: 1.1;
-  letter-spacing: 0.005em;
-  /* Un paso por debajo de la tinta de la frase: adentro del globo, quien habla es Budín. */
-  color: var(--color-piedra);
-}
