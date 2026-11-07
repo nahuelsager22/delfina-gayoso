@@ -21,6 +21,10 @@ Fraunces, grano).
 **Tinta adaptativa:** `--atm-ink`, `--atm-ink-soft`, `--atm-accent`, escritas por la sala
 en su `<section>`. Todo el contenido las consume; nunca se entinta a mano.
 
+**Familias:** `--font-voz` (Fraunces), `--font-mundo` (Karla) y `--font-estudio`
+(Newsreader, sólo la firma del estudio). Se componen en `globals.css` encadenando la
+variable que autohospeda `next/font` con su stack de respaldo.
+
 ## La escalera de trazo
 
 **El orden de lectura de una sala se mide por grosor de trazo, no por cuerpo, y ningún
@@ -48,6 +52,19 @@ corte por onda y `overflow-x: clip`. El contenido se centra en `.sala-inner`.
 contra `100svh`, que es el más exigente. Con una sola caja es imposible.
 *Además:* los adornos traen el margen del respiro entre secciones, y adentro de un cierre
 eso es justo lo que sobra — se neutraliza localmente.
+
+**Firma del estudio** (`_chrome/FirmaEstudio.tsx`) — el crédito a North Studio, una vez
+por página. Se monta con la prop `firma` de `Banda`/`Momento`, que la cuelga del
+`<section>` y **no de `.sala-inner`**: así el ancla es siempre el borde de la banda y cae
+en el mismo lugar en las cuatro páginas, que la usan en modos distintos (`cierre`, `full`,
+banda normal). Absoluta, fuera del flujo: no empuja el cierre ni puede producir salto.
+- **Hereda la sala**, y por eso vive adentro: `--atm-ink` para la tinta y `data-oscura`
+  para elegir cuál de las dos variantes oficiales del ismo se muestra. Ninguna tinta fija
+  pasa AA sobre las cuatro salas de cierre a la vez.
+- **El ismo conserva sus colores oficiales**: va inline, nunca con `currentColor` ni por
+  el optimizador. Es identidad del estudio, no contenido de Delfina.
+- Una sola línea de base entre el ismo y el texto (`align-items: baseline`): centrar las
+  cajas hundía la cordillera 4,33px, porque su masa está toda abajo.
 
 **Ficha de producto** — sin grilla de productos iguales, sin precio como protagonista
 tipográfico, sin "comprá ahora". El CTA sale a la plataforma externa y la UI no la nombra.

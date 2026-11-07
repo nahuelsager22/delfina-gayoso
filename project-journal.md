@@ -5,7 +5,7 @@
 >
 > Se actualiza cuando el usuario indica **"Actualiza la memoria"**.
 >
-> Última actualización: 2026-09-05 · cierre del Bloque 10.
+> Última actualización: 2026-11-05 · cierre del Bloque 11.
 
 ---
 
@@ -67,8 +67,11 @@ clienta, por iteraciones cortas.
   Delfina puede editar textos, fichas, fotos, orden y las frases de Budín.
 - **Material real integrado**: 43 fotografías, 2 videos, 3 marcas con logotipo (dos ya con
   su foto de colaboración), 1 ebook, 2 experiencias —ninguna futura, ver §5—.
-- **Sin desplegar todavía.** El sitio corre en desarrollo; la configuración de despliegue
-  está aislada y pendiente (ver §5).
+- **Las cuatro páginas cierran con la firma del estudio** (D15).
+- **En línea.** `delfinagayoso.com.ar` responde 200 (verificado el 2026-11-05). Lo que
+  sigue abierto no es el despliegue sino lo que quedó sin reconfigurar después de él, y
+  uno de esos pendientes ya no es inocuo: **los OG del sitio publicado todavía anuncian
+  el dominio de previsualización** (ver §5).
 
 ---
 
@@ -140,6 +143,33 @@ esquema ya tiene y el código todavía no es normal. Lo que estaba en juego no e
 cosmético: un estado desconocido hacía **desaparecer el botón de reservar**, sin ninguna
 señal.
 
+**D15 · El estudio FIRMA la casa; no le pone un pie.** El sitio sigue sin footer y eso no
+cambió: "Desarrollado por North Studio" es una **firma apoyada en el piso de la última
+sala** de cada página —esquina inferior derecha, alineada al carril de contenido—, fuera
+del flujo, así que no empuja el cierre ni puede producir salto de layout. El cierre de la
+home rechaza el footer por escrito y termina en pertenencia; convertir ese final en una
+banda institucional sería cobrarle a Delfina el crédito del estudio.
+
+*Dónde vive, y por qué no en el layout.* Va **dentro de la última banda** de cada página
+(prop `firma` en `Banda`/`Momento`, hermana de `.sala-inner`, no adentro). El layout era
+la ubicación cómoda —es el único envoltorio de las cuatro— pero desde afuera de las
+secciones no hay forma de saber en qué habitación cae: `--atm-ink` y `data-oscura` los
+escribe cada `<section>`. Y los necesita, porque las cuatro páginas cierran en salas
+distintas —marrón y verde hondas, crema y arena claras— y **ningún color plano pasa AA
+sobre las cuatro a la vez**.
+
+*Tratamiento.* El ismo va **inline, con sus dos variantes oficiales**, y la sala elige
+cuál según su tono: no se entinta ni pasa por el optimizador, porque es identidad del
+estudio. El texto va en **Newsreader** (`--font-estudio`), la tipografía de North Studio y
+la tercera familia del sitio: Fraunces es la voz de Delfina —firmar con ella sería hablar
+por ella— y Karla es el mundo funcional de su casa; que la firma tenga letra propia es lo
+que la vuelve legible como una marca ajena y no como un metadato más. Al pasar el cursor
+el conjunto se eleva 1,5px y sube a la tinta plena de la sala, sin subrayado.
+
+*Dónde se administra.* **En código, no en el CMS**: es identidad del estudio, no contenido
+de Delfina. Enlaza a `https://northstudio.com.ar` en pestaña nueva. Delfina sabe que el
+estudio firma el sitio y lo aprobó.
+
 ---
 
 ## 4. Decisiones descartadas
@@ -161,6 +191,13 @@ Se conservan **para que no se vuelvan a proponer por desconocimiento**.
 | **Separar chef privado y catering en dos servicios** | Ella lo nombró como uno solo; partirlo sería reinterpretarla |
 | **Carrusel para las fotos de una colaboración** | Se evaluó con las 18 fotos de 3 Claveles y no había qué rotar: una sola escena real, repetida en cuatro tomas del mismo plano, y el resto catálogo. Un carrusel habría mostrado packshots, que es lo que la sección rechazó. Sólo se justificaría con momentos **distintos** de la misma colaboración |
 | **La clase de ejemplo "Pastas frescas, de cero"** | Era ficticia, puesta para poder mirar la pieza de invitación mientras Delfina no daba su fecha. El sitio no puede anunciar una clase que no existe: alguien podía quedarse esperando algo que creyó reservado. Se retiró del dataset y de la semilla |
+| **Footer corporativo, `©` al pie o una sección "sobre North Studio"** | El arco termina en pertenencia y el cierre de la home rechaza el pie por escrito. El crédito se resolvió como firma (D15) |
+| **El crédito montado en el layout** | Era la ubicación natural para una pieza única en las cuatro páginas, pero afuera de las secciones no hereda `--atm-ink` ni `data-oscura`, y ninguna tinta fija pasa AA sobre las cuatro salas de cierre |
+| **La firma en Karla, en registro de rótulo** | Versal y con tracking leía como un metadato más del sitio. Karla también es de la casa de Delfina; la letra propia del estudio es lo que la vuelve una marca ajena |
+| **Subrayado en "North Studio"** | Empujaba la firma al registro de CTA. La interacción la dicen la elevación y el salto de tinta, y el foco de teclado no depende de él |
+| **Un brillo recorriendo el nombre** | Es finito, así que cumple la letra de la regla de motion y falla su intención: un barrido de luz existe sólo para atraer la mirada, justo en el instante en que el arco aterriza. Además implica un material —foil, cromo— que no existe en un sitio de papel y pigmento mate, y es la señal de lujo que el proyecto prohíbe |
+| **La aparición "vapor" sobre la firma** | No es criterio, es medición: el observador recorta el 8% inferior del viewport y la firma vive a 25px del final del documento. Intersección máxima posible, 0 (ver A11) |
+| **El guiño a North Studio en las frases de Budín** | Se implementó entero —dos frases raras, campo `firma` en el CMS, lockup dentro del globo, sólo en el menú mobile— y se descartó al verlo funcionando: **Budín es de Delfina y no hace referencias al estudio ni vende nada**. Se retiró del código y del dataset; la autoría ya la representa el crédito del pie (ver A12) |
 
 ---
 
@@ -182,11 +219,16 @@ Se conservan **para que no se vuelvan a proponer por desconocimiento**.
   de Instagram y TikTok, Instagram como canal de contacto, y las frases e interacciones
   de Budín.*
 
-**De infraestructura** — al desplegar:
+**De infraestructura** — ya no son "al desplegar": el sitio está en línea y siguen
+abiertos, así que ahora fallan en producción, no en teoría.
 
-- Configurar el webhook de revalidación en el proveedor.
+- **`metadataBase` y OG apuntan a `delfina-gayoso.vercel.app`.** Verificado sobre el sitio
+  publicado el 2026-11-05: `og:url` y `og:image` salen con el dominio de previsualización.
+  Es el más urgente de los tres porque se rompe hacia afuera: cada link compartido muestra
+  una tarjeta que no es la del sitio.
+- Configurar el webhook de revalidación en el proveedor. Sin él, un cambio en el Studio
+  tarda hasta el próximo ciclo de revalidación (60s) en verse.
 - CORS del dominio en Sanity.
-- `metadataBase` y OG apuntan hoy a un dominio de previsualización.
 
 *Los dos handles de redes quedaron **validados y corregidos** en el cierre de esta tanda.*
 
@@ -248,6 +290,27 @@ quería anotarse a una clase abierta no encontraba cómo, y ninguna página tira
 donde se usa; y cuando el valor alimenta una acción del visitante, el respaldo tiene que
 dejarla disponible, no retirarla.
 
+**A11 · Un elemento anclado al borde inferior del documento queda fuera del alcance de
+cualquier revelado por viewport.** `Aparicion` observa con `rootMargin: "0px 0px -8%"` y
+`threshold: 0.15`: recorta el 8% inferior del viewport para que las cosas se revelen
+*antes* de llegar al borde. Una pieza que vive a 25px del final del documento cae entera
+dentro de ese recorte y **no puede intersectar nunca** — medido en 390×844: borde efectivo
+en 776,5px, la pieza entre 811,8 y 839,1.
+
+Lo que lo vuelve un aprendizaje es cómo falla: no tira error, no advierte nada, el
+elemento simplemente queda invisible para siempre. Y la tentación es corregir el
+observador, que cambiaría cómo aparece **todo** el sitio por una línea de 14px. Si algo
+vive pegado al final del documento, o no se revela, o necesita otro mecanismo — y montarle
+un mecanismo propio a una pieza así casi nunca vale lo que cuesta.
+
+**A12 · Una pieza del estudio puede vivir en la casa del cliente, pero no en la boca de su
+personaje.** El crédito al pie y el guiño en las frases de Budín parecían el mismo gesto
+con distinta dosis, y no lo son: el crédito es el estudio firmando una pared; el guiño era
+el estudio hablando **con la voz de ella**. Budín es de Delfina, su repertorio está
+validado por ella y su regla escrita es que no vende nada. La prueba de fuego no es cuánto
+se nota —el guiño estaba detrás de diez toques y un 16% de probabilidad, en el menú
+mobile— sino **quién lo dice**.
+
 *Los que resultaron universales ya subieron al Playbook y se sacaron de acá.*
 
 ---
@@ -272,7 +335,17 @@ y lo que quedó escrito en `docs/contenido.md`), y el retiro de la clase de ejem
 estados vacíos se provocaron de verdad y se miraron: sin contenido, las cuatro páginas
 responden y ninguna deja un título huérfano.
 
-**Lo primero que habilita valor real sigue siendo el despliegue**: hasta que el sitio esté
-en línea, los tres pendientes de infraestructura no se pueden cerrar y Delfina no puede
-ver su sitio fuera de una sesión de trabajo. Después del despliegue, lo que más mueve la
-aguja es **su próxima fecha real** (§5): hoy el módulo de invitación está apagado.
+**Bloque 11 — El crédito de North Studio: CERRADO.** Un solo entregable y una pregunta de
+fondo: cómo firma el estudio la casa de otra persona. Quedó como **D15** —una firma al pie
+de la última sala de las cuatro páginas, en la letra del estudio, en código y no en el
+CMS—, y dejó siete descartes en §4, entre ellos el guiño de Budín, que se construyó entero
+y se retiró. Dos aprendizajes nuevos: **A11** (lo anclado al final del documento no lo
+alcanza ningún revelado por viewport) y **A12** (el estudio puede firmar la casa, no hablar
+por el personaje).
+
+**El despliegue ya ocurrió**, así que lo que habilita valor real cambió de lugar. Hoy lo
+primero es **cerrar los pendientes de infraestructura** (§5), y dentro de ellos el más
+urgente no es el más técnico: los OG del sitio publicado anuncian el dominio de
+previsualización, así que cada vez que alguien comparte el link, la tarjeta sale mal.
+Después, lo que más mueve la aguja sigue siendo **su próxima fecha real**: el módulo de
+invitación está apagado hasta que ella cargue una.

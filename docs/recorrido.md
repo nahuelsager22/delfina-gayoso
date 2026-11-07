@@ -65,6 +65,13 @@ extremos del recorrido mezclados. Se usó donde el manual no tenía nada.
 **El terracota nunca es fondo.** Se probó como banda entera y se descartó: como color
 protagonista se lee clásico y el sitio no lo es. Aporta personalidad en el detalle.
 
+## La firma del estudio
+
+Las cuatro páginas terminan con el crédito a North Studio apoyado en el piso de su última
+sala, en la esquina inferior derecha. **No es un footer y el sitio sigue sin tener uno**:
+es una firma, fuera del flujo, que no agrega banda ni toca el cierre. Ver D15 en el
+journal y el patrón en `sistema-visual.md`.
+
 ## Qué queda afuera
 
 Carrito y checkout (la compra sale a la plataforma externa), login, buscador y filtros,

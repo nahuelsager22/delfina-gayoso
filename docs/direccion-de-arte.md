@@ -65,12 +65,19 @@ AAA.
 
 ## Tipografía
 
-Dos familias con dos funciones semánticas, y la distinción es de sentido, no de gusto:
+Tres familias con tres funciones semánticas, y la distinción es de sentido, no de gusto:
 
 - **Fraunces (`--font-voz`)** — la voz de Delfina. Variable, con los ejes `opsz`, `SOFT`
   y `WONK` configurados por token. `WONK` on sólo en cuerpos de display: es la
   irregularidad que vuelve suya a la tipografía.
 - **Karla (`--font-mundo`)** — el mundo alrededor: lo funcional, los rótulos, los datos.
+- **Newsreader (`--font-estudio`)** — la letra de North Studio, no la de la casa. Aparece
+  **una sola vez por página**, en la firma del estudio al pie de la última sala, a cuerpo
+  micro: redonda para "Desarrollado por", itálica para el nombre. Existe por sustracción:
+  las otras dos son de Delfina —una es su voz, la otra el mundo de su casa—, así que
+  firmar con cualquiera de ellas sería hablar por ella. Que la firma tenga letra propia es
+  exactamente lo que la vuelve legible como una marca ajena. Una tercera familia que
+  aparece una vez no rompe el sistema: lo nombra.
 
 **Qué nombra cada una** (la convención más fácil de romper sin darse cuenta):
 
