@@ -1,6 +1,13 @@
 import type { CSSProperties, ReactNode } from "react";
 import { getSala, estiloSala, datosNavbar } from "../_chrome/atmosferas/config";
 import { FirmaEstudio } from "../_chrome/FirmaEstudio";
+import { OndaNavidad } from "../_edicion/navidad/OndaNavidad";
+import { DecoracionSala } from "../_edicion/navidad/DecoracionSala";
+import { salaDeLaEdicion } from "../_edicion/navidad/salaServidor";
+
+/** Edición de Navidad (Bloque 12). Lo que importa de `_edicion` son componentes de servidor
+ *  sin JavaScript de cliente: con la bandera apagada no cambia ni un byte de lo servido. */
+const EDICION = process.env.EDICION_NAVIDAD === "1";
 
 /**
  * BANDA — la franja de color con corte por onda (Bloque 8 · 18ª ola).
@@ -114,7 +121,7 @@ export function Banda({
    */
   marca?: "h2" | "h3";
 }) {
-  const sala = getSala(atmosfera);
+  const sala = EDICION ? salaDeLaEdicion(atmosfera) : getSala(atmosfera);
   const Titulo = marca ?? "h2";
   const id = headingId ?? `banda-${ancla}`;
   const aireVertical =
@@ -128,6 +135,7 @@ export function Banda({
       data-banda={sala.banda ? "true" : "false"}
       className={cierre ? "sala sala-cierre" : "sala"}
       {...datosNavbar(sala)}
+      {...(EDICION ? { "data-sala": atmosfera } : {})}
       style={
         {
           ...estiloSala(sala),
@@ -149,7 +157,8 @@ export function Banda({
         } as CSSProperties
       }
     >
-      {!primero && <OndaSuperior color={sala.solido} />}
+      {!primero && (EDICION ? <OndaNavidad sala={ancla} /> : <OndaSuperior color={sala.solido} />)}
+      {EDICION && <DecoracionSala ancla={ancla} primero={primero} />}
       <div
         className="sala-inner"
         style={full && !cierre ? ({ inlineSize: "100%" } as CSSProperties) : undefined}

@@ -191,8 +191,21 @@ export function Navbar({
           </span>
         </a>
 
+        {/* Edición de Navidad (Bloque 12): en mobile el menú está cerrado, así que Navidad
+            se queda en la barra. La rama no compila con la bandera apagada. */}
+        {process.env.EDICION_NAVIDAD === "1" && (
+          <a href="/navidad" className="navbar-link navbar-link--navidad navbar-navidad-movil">
+            Navidad
+          </a>
+        )}
+
         {/* Desktop: enlaces de orientación + redes. */}
         <nav className="navbar-desktop" aria-label="Secciones del recorrido">
+          {process.env.EDICION_NAVIDAD === "1" && (
+            <a href="/navidad" className="navbar-link navbar-link--navidad">
+              Navidad
+            </a>
+          )}
           {items.map((it) => (
             <a
               key={it.id}
@@ -243,6 +256,11 @@ export function Navbar({
             exit={sinMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
             transition={{ duration: sinMotion ? 0 : 0.22 }}
           >
+            {process.env.EDICION_NAVIDAD === "1" && (
+              <a href="/navidad" className="navbar-panel-link" onClick={() => setAbierto(false)}>
+                Navidad
+              </a>
+            )}
             {items.map((it) => (
               <a
                 key={it.id}

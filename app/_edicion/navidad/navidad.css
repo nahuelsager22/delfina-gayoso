@@ -1,0 +1,996 @@
+/* =============================================================================
+   EDICIÓN DE NAVIDAD (Bloque 12 · exploración). Sólo se carga con la bandera encendida.
+   Las paletas viven en `paletas.ts`; acá vive cómo se dibuja la temporada.
+   ========================================================================== */
+
+:root {
+  --foco-1: #ffcf5c;
+  --foco-2: #ff5a5f;
+  --foco-3: #5fd39a;
+  --foco-4: #fff2c9;
+  --cable: 28 40 28;
+}
+html[data-paleta="borgona"] {
+  --foco-1: #f7cf72;
+  --foco-2: #ffe9b8;
+  --foco-3: #f7cf72;
+  --foco-4: #ff8d7a;
+}
+[data-oscura="true"] {
+  --cable: 255 240 215;
+}
+
+/* El ambiente: fijo, encima de las salas y debajo de Budín y del navbar. */
+.ambiente {
+  position: fixed;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  z-index: 8;
+  pointer-events: none;
+}
+
+/* ---- LAS GUIRNALDAS --------------------------------------------------------- */
+/* La onda de la edición es proporcional al ancho: es lo que deja dibujar las lamparitas en un
+   solo SVG sin deformarlas. Estas proporciones son las de `OndaNavidad.tsx`. */
+.onda-sup,
+.guirnalda {
+  block-size: 5.5vw;
+}
+@media (max-width: 690px) {
+  .onda-sup,
+  .guirnalda {
+    block-size: 9.7vw;
+  }
+}
+.guirnalda {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  transform: translateY(-99%);
+  z-index: 1;
+  pointer-events: none;
+}
+.guirnalda-capas {
+  position: absolute;
+  inset: 0;
+}
+.guirnalda-capas svg {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+}
+.solo-movil {
+  display: none;
+}
+@media (max-width: 690px) {
+  .solo-ancho {
+    display: none;
+  }
+  .solo-movil {
+    display: block;
+  }
+}
+.cable {
+  fill: none;
+  stroke: rgb(var(--cable) / 0.62);
+  stroke-width: 1.6;
+}
+.casquillo {
+  fill: rgb(28 24 20 / 0.75);
+}
+.foco-apagado {
+  fill: #87806f;
+}
+.c0 {
+  fill: var(--foco-1);
+}
+.c1 {
+  fill: var(--foco-2);
+}
+.c2 {
+  fill: var(--foco-3);
+}
+.c3 {
+  fill: var(--foco-4);
+}
+.g-halos {
+  filter: blur(5px);
+  opacity: 0.8;
+  transition: opacity 900ms var(--ease-suave) 350ms;
+}
+[data-oscura="false"] .g-halos {
+  opacity: 0.55;
+}
+/* Prendidas, por defecto: sin JavaScript la casa se ve con las luces encendidas. El barrido va
+   de izquierda a derecha, como cuando se enchufa la guirnalda. */
+.g-prendidas {
+  clip-path: inset(-60% -2% -60% 0);
+  transition: clip-path 1500ms var(--ease-suave);
+}
+html[data-luces-armadas] [data-luces]:not([data-encendida]) .g-prendidas {
+  clip-path: inset(-60% 100% -60% 0);
+}
+html[data-luces-armadas] [data-luces]:not([data-encendida]) .g-halos {
+  opacity: 0;
+}
+/* Dos grupos a contratiempo. Sólo mientras se ven: fuera de pantalla no corre ninguna. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-luces][data-encendida][data-visible] .g-halos-a {
+    animation: foco-titila 3.1s ease-in-out 1.6s infinite;
+  }
+  [data-luces][data-encendida][data-visible] .g-halos-b {
+    animation: foco-titila 4.3s ease-in-out 2.4s infinite;
+  }
+}
+@keyframes foco-titila {
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.32;
+  }
+}
+
+/* La guirnalda colgada de la primera pantalla. */
+.guirnalda--colgada {
+  transform: none;
+  inset-block-start: calc(var(--navbar-h) - 18px);
+  block-size: 7.5vw;
+  z-index: 2;
+}
+@media (max-width: 690px) {
+  .guirnalda--colgada {
+    block-size: 13vw;
+  }
+}
+.apertura > section:not(:first-child) .guirnalda--colgada,
+.apertura > section:first-child > .onda-sup,
+.apertura > section:first-child > .guirnalda:not(.guirnalda--colgada) {
+  display: none;
+}
+
+/* ---- LAS TRES ONDAS ----------------------------------------------------------------
+   En desarrollo están las tres en el DOM y el control elige cuál se ve; en un build servido
+   sólo existe la de `BASE`. Sin atributo, se ven las lamparitas. */
+.onda-pino,
+.onda-cinta {
+  display: none;
+}
+html[data-onda="pino"] .onda-luces,
+html[data-onda="cinta"] .onda-luces {
+  display: none;
+}
+html[data-onda="pino"] .onda-pino,
+html[data-onda="cinta"] .onda-cinta {
+  display: block;
+}
+
+/* Guirnalda de pino: dos verdes de rama, bayas de acebo y lucecitas cálidas entre las agujas. */
+.pino-tallo,
+.pino-oscuro,
+.pino-claro {
+  fill: none;
+  stroke-linecap: round;
+}
+.pino-tallo {
+  stroke: #0f2e1f;
+}
+.pino-oscuro {
+  stroke: #154d32;
+}
+.pino-claro {
+  stroke: #2f8a5c;
+}
+[data-oscura="true"] .pino-claro {
+  stroke: #4aa874;
+}
+.pino-baya {
+  fill: #c4202f;
+  stroke: #6e0d18;
+  stroke-width: 0.8;
+}
+.pino-luz {
+  fill: #ffe6a3;
+}
+.guirnalda-pino .g-halos {
+  opacity: 0.9;
+}
+
+/* Cinta: satén de la paleta, con brillo, sombra, puntada y moño. */
+:root {
+  --cinta: #c4202f;
+  --cinta-luz: #ec6a6c;
+  --cinta-sombra: #7e0d1e;
+  --cinta-puntada: #fbe09c;
+}
+html[data-paleta="borgona"] {
+  --cinta: #d9ae4e;
+  --cinta-luz: #f6dc95;
+  --cinta-sombra: #8a6420;
+  --cinta-puntada: #6a1228;
+}
+.cinta,
+.cinta-sombra,
+.cinta-brillo,
+.cinta-puntada {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cinta {
+  stroke: var(--cinta);
+}
+.cinta-sombra {
+  stroke: rgb(0 0 0 / 0.28);
+}
+.cinta-brillo {
+  stroke: var(--cinta-luz);
+  opacity: 0.55;
+}
+.cinta-puntada {
+  stroke: var(--cinta-puntada);
+  opacity: 0.85;
+}
+.mono-lazo,
+.mono-cola,
+.mono-nudo {
+  fill: var(--cinta);
+  stroke: var(--cinta-sombra);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+.mono-pliegue {
+  fill: none;
+  stroke: var(--cinta-sombra);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  opacity: 0.6;
+}
+.mono-nudo {
+  fill: var(--cinta-luz);
+}
+
+/* ---- STICKERS ---------------------------------------------------------------- */
+.sticker {
+  display: block;
+  block-size: auto;
+  overflow: visible;
+  filter: drop-shadow(0 3px 5px rgb(40 20 10 / 0.3));
+}
+.corte,
+.corte * {
+  fill: #fffdf6 !important;
+  stroke: #fffdf6 !important;
+  stroke-width: 13px !important;
+  stroke-linejoin: round !important;
+  stroke-linecap: round !important;
+  stroke-dasharray: none !important;
+  opacity: 1 !important;
+}
+/* Un trazado abierto (el bastón) no se rellena: el troquel sigue su forma, no su interior. */
+.corte .sin-relleno {
+  fill: none !important;
+}
+.pegado {
+  z-index: 0;
+}
+@media (max-width: 760px) {
+  .pegado--ancho {
+    display: none;
+  }
+}
+.sello-texto {
+  font-family: var(--font-mundo);
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+.sello-giro {
+  transform-origin: 80px 80px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sello-navidad[data-visible] .sello-giro {
+    animation: sello-gira 26s linear infinite;
+  }
+}
+@keyframes sello-gira {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- BUDÍN DE TEMPORADA ------------------------------------------------------ */
+/* El gorro se apoya sobre el botón por CSS: Budín no se entera, y su lienzo común hace que le
+   quede bien a las dos caras. */
+.budin-boton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/edicion/gorro-budin.svg") center / contain no-repeat;
+  pointer-events: none;
+}
+.budin-gorro-sticker {
+  position: relative;
+  display: block;
+  aspect-ratio: 473 / 512;
+}
+.budin-gorro-sticker img {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+}
+.budin-gorro-sticker img:first-child {
+  filter: drop-shadow(2px 0 0 #fffdf6) drop-shadow(-2px 0 0 #fffdf6) drop-shadow(0 2px 0 #fffdf6)
+    drop-shadow(0 -2px 0 #fffdf6) drop-shadow(0 4px 6px rgb(20 10 5 / 0.3));
+}
+.budin-asoma {
+  position: absolute;
+  z-index: 0;
+  /* Apoyado en el piso de su sala: la onda de la sala siguiente le tapa el cuello y queda
+     asomándose por detrás. Si sobresale hacia abajo, entra en la otra sala y nada lo tapa. */
+  inset-block-end: 0;
+  inset-inline-end: clamp(-18px, 2vw, 40px);
+  inline-size: clamp(110px, 15vw, 210px);
+  rotate: -6deg;
+  pointer-events: none;
+}
+
+/* ---- PRIMERA PANTALLA: LA AGENDA ABIERTA ------------------------------------- */
+.agenda-abierta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2xs) var(--space-md);
+  padding: 0.7rem 1.1rem 0.75rem 1.2rem;
+  background: #fffdf6;
+  color: #34130e;
+  text-decoration: none;
+  border-radius: 3px;
+  rotate: -1.4deg;
+  box-shadow:
+    0 14px 22px -14px rgb(30 10 5 / 0.55),
+    0 2px 5px -2px rgb(30 10 5 / 0.35);
+  transition:
+    rotate var(--dur-sm) var(--ease-posar),
+    translate var(--dur-sm) var(--ease-posar);
+}
+.agenda-abierta:hover {
+  rotate: 0deg;
+  translate: 0 -2px;
+}
+.agenda-abierta:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px #fffdf6;
+}
+.agenda-abierta-texto {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.agenda-abierta-rotulo {
+  font-size: var(--text-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5a2a20;
+}
+.agenda-abierta-estado {
+  font-size: var(--text-voz-l);
+  font-weight: var(--font-weight-nombre);
+  color: #9c1226;
+}
+.agenda-abierta-accion {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  font-size: var(--text-meta);
+  font-weight: var(--font-weight-medium);
+  border-block-end: 1.5px solid #9c1226;
+}
+
+/* ---- LA BANDA NAVIDEÑA ------------------------------------------------------- */
+/* Menos aire que una sala habitual: es la puerta y tiene que entrar casi entera. */
+section[data-momento="navidad"] {
+  padding-block-start: clamp(104px, 9vw, 132px) !important;
+  padding-block-end: clamp(88px, 8vw, 130px) !important;
+}
+section[data-momento="navidad"] .momento-portada {
+  max-inline-size: 58rem;
+  margin-block-end: var(--space-lg);
+}
+section[data-momento="navidad"] .momento-kicker {
+  color: rgb(var(--atm-accent));
+}
+section[data-momento="navidad"] .momento-titulo {
+  font-size: clamp(2.5rem, 1.5rem + 5.2vw, 5.6rem);
+  line-height: 1;
+  font-weight: var(--font-weight-nombre);
+  letter-spacing: -0.015em;
+  /* Oro de horno: un degradado en el texto, medido contra el fondo en sus dos extremos. */
+  background: linear-gradient(100deg, #fff1c6 0%, #f8d88a 34%, #fff6da 52%, #f4cb6e 74%, #fff1c6 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@media (prefers-reduced-motion: no-preference) {
+  section[data-momento="navidad"] .momento-titulo[data-visible] {
+    animation: oro-corre 11s ease-in-out infinite alternate;
+  }
+}
+@keyframes oro-corre {
+  to {
+    background-position: 100% 0;
+  }
+}
+.apertura > section[data-momento="navidad"]:first-child {
+  min-block-size: 100svh;
+  padding-block-start: calc(var(--navbar-h) + clamp(96px, 10vw, 150px)) !important;
+}
+/* El panel de clases es crema al 50%: sobre una sala honda se vuelve malva y la tinta clara
+   de la sala cae a 2,1–3,4:1 (medido). En una sala honda es un velo apenas más claro. */
+[data-oscura="true"] .bloque-clases {
+  background-color: rgb(255 246 230 / 0.07);
+}
+.banda-navidad {
+  position: relative;
+}
+.banda-navidad-bajada {
+  font-size: var(--text-voz-l);
+  line-height: 1.25;
+  max-inline-size: 30ch;
+  margin-block-end: var(--space-xl);
+  color: rgb(var(--atm-ink));
+}
+.banda-navidad-reservas {
+  margin-block-start: var(--space-2xl);
+  max-inline-size: 34ch;
+}
+
+.etiquetas {
+  list-style: none;
+  position: relative;
+  display: grid;
+  gap: var(--space-sm);
+  padding: 0;
+}
+.etiqueta-colgada {
+  --giro: -1.6deg;
+}
+.etiqueta-colgada:nth-child(even) {
+  --giro: 1.4deg;
+}
+.etiqueta {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  /* Isla de papel: la tinta no depende de la sala que la aloja. */
+  color: #34130e;
+  text-decoration: none;
+  min-block-size: 76px;
+  padding: 0.55rem 1.3rem 0.55rem 0.7rem;
+  rotate: var(--giro);
+  background: #fffdf6;
+  border-radius: 3px 12px 12px 3px;
+  box-shadow:
+    0 16px 24px -16px rgb(10 5 0 / 0.65),
+    0 2px 5px -2px rgb(10 5 0 / 0.4);
+  transition:
+    rotate var(--dur-sm) var(--ease-posar),
+    translate var(--dur-sm) var(--ease-posar);
+}
+@media (hover: hover) and (pointer: fine) {
+  .etiqueta:hover {
+    rotate: 0deg;
+    translate: 0 -3px;
+  }
+  .etiqueta:hover .etiqueta-sticker {
+    rotate: -8deg;
+    scale: 1.08;
+  }
+}
+.etiqueta:focus-visible {
+  outline: 3px solid #fff6da;
+  outline-offset: 3px;
+}
+.etiqueta-sticker {
+  flex: none;
+  inline-size: 58px;
+  transition:
+    rotate var(--dur-sm) var(--ease-posar),
+    scale var(--dur-sm) var(--ease-posar);
+}
+.etiqueta-texto {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+.etiqueta-nombre {
+  font-size: var(--text-titulo);
+  font-weight: var(--font-weight-nombre);
+  line-height: 1.15;
+}
+.etiqueta-nota {
+  font-size: var(--text-meta);
+  color: #5a2a20;
+}
+/* Mobile: una al lado de la otra no entran con un toque cómodo. Se alternan de lado, y el
+   ancho incompleto es lo que evita que se lean como una lista de botones. */
+@media (max-width: 759px) {
+  .etiquetas {
+    gap: var(--space-xs);
+  }
+  .etiqueta-colgada {
+    inline-size: 90%;
+  }
+  .etiqueta-colgada:nth-child(even) {
+    margin-inline-start: 10%;
+  }
+}
+/* Desktop: las cinco colgadas de un hilo de repostería, a alturas distintas. El largo de cada
+   hebra se calcula de lo que baja la etiqueta: el hilo siempre llega. */
+@media (min-width: 760px) {
+  .etiquetas {
+    --aire-hilo: var(--space-lg);
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--space-md);
+    padding-block-start: var(--aire-hilo);
+  }
+  .etiquetas::before {
+    content: "";
+    position: absolute;
+    inset-inline: calc(50% - 50vw);
+    inset-block-start: 0;
+    block-size: 3px;
+    border-radius: 2px;
+    background: repeating-linear-gradient(115deg, #fff6e6 0 5px, #c4202f 5px 10px);
+    box-shadow: 0 2px 3px rgb(0 0 0 / 0.25);
+  }
+  .etiqueta-colgada {
+    --baja: 0px;
+    grid-column: span 2;
+    position: relative;
+    margin-block-start: var(--baja);
+  }
+  .etiqueta-colgada[data-i="3"] {
+    grid-column: 2 / span 2;
+  }
+  .etiqueta-colgada::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    inset-block-start: calc(-1 * (var(--aire-hilo) + var(--baja)));
+    block-size: calc(var(--aire-hilo) + var(--baja) + 14px);
+    inset-inline-start: 2.4rem;
+    inline-size: 2.5px;
+    background: repeating-linear-gradient(25deg, #fff6e6 0 5px, #c4202f 5px 10px);
+    pointer-events: none;
+  }
+  /* El ojal de la etiqueta, por donde pasa el hilo. */
+  .etiqueta::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 7px;
+    inset-inline-start: calc(2.4rem - 6px);
+    inline-size: 14px;
+    block-size: 14px;
+    border-radius: 50%;
+    background: var(--atm-papel);
+    box-shadow:
+      inset 0 1px 2px rgb(0 0 0 / 0.5),
+      0 0 0 2px #e9dfca;
+  }
+  .etiqueta {
+    padding-block-start: 1.4rem;
+  }
+  .etiqueta-colgada[data-i="1"] {
+    --baja: 30px;
+  }
+  .etiqueta-colgada[data-i="2"] {
+    --baja: 8px;
+  }
+}
+@media (min-width: 1100px) {
+  .etiquetas {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .etiqueta-colgada,
+  .etiqueta-colgada[data-i="3"] {
+    grid-column: span 1;
+  }
+  .etiqueta-colgada[data-i="1"],
+  .etiqueta-colgada[data-i="3"] {
+    --baja: 40px;
+  }
+  .etiqueta-colgada[data-i="2"] {
+    --baja: 8px;
+  }
+  .etiqueta-colgada[data-i="4"] {
+    --baja: 20px;
+  }
+  .etiqueta {
+    padding-block-start: 1.7rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2xs);
+    padding-inline: 1rem;
+    padding-block-end: 1.1rem;
+  }
+  .etiqueta-sticker {
+    inline-size: 76px;
+  }
+}
+
+/* ---- EL CIERRE: CIELO Y BARRIO ------------------------------------------------ */
+.cielo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.cielo-estrella {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff6da;
+  box-shadow: 0 0 6px rgb(255 240 200 / 0.8);
+  opacity: 0.85;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cielo[data-visible] .cielo-estrella[data-titila] {
+    animation: foco-titila 3.6s ease-in-out infinite;
+    animation-delay: calc(var(--i) * -310ms);
+  }
+}
+.barrio {
+  position: absolute;
+  z-index: 0;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  /* La firma ocupa unos 250px de la esquina derecha (D15): el barrio llega hasta ahí y no más.
+     Medido: en 390 la firma empieza en x=138. */
+  inline-size: min(72%, 620px, calc(100% - 280px));
+  block-size: auto;
+  pointer-events: none;
+}
+.ventana {
+  fill: #ffd479;
+  transition: fill 500ms var(--ease-suave);
+  transition-delay: calc(var(--i) * 170ms);
+}
+html[data-luces-armadas] [data-luces]:not([data-encendida]) .ventana {
+  fill: #18242f;
+}
+
+/* ---- NAVBAR ------------------------------------------------------------------- */
+.navbar-link--navidad {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.34em;
+  padding: 0.28em 0.8em 0.32em;
+  border-radius: 999px;
+  background: #fff6da;
+  color: #8e0f22 !important;
+  font-weight: 600;
+  opacity: 1 !important;
+  text-decoration: none;
+  box-shadow: 0 2px 8px -3px rgb(30 10 5 / 0.5);
+}
+.navbar-link--navidad:hover {
+  background: #fffdf2;
+}
+.navbar-link--navidad svg {
+  inline-size: 0.9em;
+  block-size: 0.9em;
+}
+.navbar-navidad-movil {
+  margin-inline-start: auto;
+  margin-inline-end: var(--space-2xs);
+}
+@media (min-width: 900px) {
+  .navbar-navidad-movil {
+    display: none !important;
+  }
+}
+
+/* ---- CONTROL DE VARIANTES (sólo desarrollo) ----------------------------------- */
+.control-variantes {
+  position: fixed;
+  inset-block-end: 12px;
+  inset-inline-end: 12px;
+  z-index: 60;
+  font: 13px/1.3 system-ui, sans-serif;
+  color: #111;
+  background: #fff;
+  border: 1px solid #0003;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 8px 24px #0004;
+  max-inline-size: 236px;
+}
+.control-variantes form {
+  display: grid;
+  gap: 6px;
+  margin-block-start: 8px;
+}
+.control-variantes label {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  align-items: center;
+  gap: 6px;
+}
+.control-variantes select {
+  inline-size: 100%;
+  border: 1px solid #0004;
+  border-radius: 4px;
+  padding: 2px;
+  background: #fff;
+}
+.control-variantes button {
+  border: 1px solid #0004;
+  border-radius: 4px;
+  padding: 2px 8px;
+  background: #f4f4f4;
+  cursor: pointer;
+}
+
+/* Los loops del título y las capas ya están condicionados; esto es la última red. */
+@media (prefers-reduced-motion: reduce) {
+  .g-prendidas,
+  .g-halos,
+  .ventana,
+  .agenda-abierta,
+  .etiqueta,
+  .etiqueta-sticker {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* ---- STICKERS VIVOS Y LA MAGIA AL TOCAR (segunda exploración) ----------------------
+   Los stickers pegados responden al toque: suben por encima del contenido, pero viven en los
+   bordes (ver la partitura de `DecoracionSala`), así que no tapan texto. Son un juego para el
+   puntero: no informan ni llevan a ningún lado, por eso no entran en el orden del teclado.
+   Budín, que sí es un botón, dispara lo mismo desde el teclado. */
+.sticker-vivo {
+  pointer-events: auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transform-origin: 50% 50%;
+}
+.pegado.sticker-vivo {
+  z-index: 2;
+}
+.budin-asoma.sticker-vivo {
+  z-index: 1;
+}
+@media (hover: hover) and (pointer: fine) {
+  .sticker-vivo {
+    transition: translate var(--dur-sm) var(--ease-posar), scale var(--dur-sm) var(--ease-posar);
+  }
+  .sticker-vivo:hover {
+    translate: 0 -3px;
+    scale: 1.04;
+  }
+}
+
+/* La capa de destellos se crea al tocar y se borra al terminar. */
+.destellos-capa {
+  z-index: 9;
+  inline-size: 0;
+  block-size: 0;
+  pointer-events: none;
+}
+.destellos-aura {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 246 214 / 0.95) 0%, rgb(255 222 140 / 0.55) 30%, rgb(255 200 100 / 0.18) 52%, transparent 70%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+}
+.destello {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  filter: drop-shadow(0 0 2px rgb(255 240 190 / 1)) drop-shadow(0 0 6px rgb(255 200 90 / 0.85));
+}
+.destello-nucleo {
+  fill: #ffffff;
+  opacity: 0.9;
+}
+.destello svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  fill: #fffbea;
+}
+.destello--chico svg {
+  fill: #ffe39a;
+}
+
+/* Cada sticker reacciona a su manera: lo que haría ese objeto, no un rebote genérico. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-sticker][data-toque] {
+    animation: sticker-salta 620ms cubic-bezier(0.3, 1.6, 0.5, 1);
+  }
+  [data-sticker="estrella"][data-toque],
+  [data-sticker="sello"][data-toque] {
+    animation: sticker-gira 820ms cubic-bezier(0.25, 1.2, 0.4, 1);
+  }
+  [data-sticker="baston"][data-toque] {
+    transform-origin: 50% 12%;
+    animation: sticker-hamaca 900ms ease-out;
+  }
+  [data-sticker="galleta"][data-toque] {
+    animation: sticker-saluda 760ms ease-out;
+  }
+  [data-sticker="regalo"][data-toque] .tapa {
+    animation: regalo-abre 760ms cubic-bezier(0.3, 1.5, 0.5, 1);
+  }
+  [data-sticker="manga"][data-toque] {
+    animation: manga-aprieta 620ms ease-out;
+  }
+  [data-sticker="manga"][data-toque] .gota {
+    animation: manga-gota 900ms ease-out;
+  }
+  [data-sticker="acebo"][data-toque] .baya {
+    animation: baya-rebota 600ms cubic-bezier(0.3, 1.8, 0.5, 1);
+  }
+  [data-sticker="acebo"][data-toque] .baya:nth-of-type(2) {
+    animation-delay: 70ms;
+  }
+  [data-sticker="masita"][data-toque] .chispas {
+    animation: chispas-bailan 700ms ease-out;
+  }
+  [data-sticker="arbolito"][data-toque] .punta {
+    animation: punta-brilla 900ms ease-out;
+  }
+  .budin-asoma[data-toque] {
+    animation: budin-se-asoma 760ms cubic-bezier(0.3, 1.5, 0.5, 1);
+  }
+}
+/* Lo que cambia de color no es movimiento: también con movimiento reducido. */
+[data-sticker="casita"][data-toque] .ventanita {
+  fill: #ffe27a;
+  filter: drop-shadow(0 0 3px #ffd34d);
+}
+[data-sticker="arbolito"][data-toque] .bolita {
+  fill: #fff2b8;
+}
+.ventanita,
+.bolita {
+  transition: fill 220ms ease-out;
+}
+.tapa,
+.baya,
+.chispas,
+.punta,
+.gota {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.gota {
+  transform-origin: 50% 0%;
+  transform: scale(0);
+}
+@keyframes sticker-salta {
+  0% { transform: none; }
+  35% { transform: translateY(-9%) scale(1.08); }
+  100% { transform: none; }
+}
+@keyframes sticker-gira {
+  0% { transform: none; }
+  50% { transform: rotate(180deg) scale(1.12); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes sticker-hamaca {
+  0% { transform: none; }
+  20% { transform: rotate(-16deg); }
+  45% { transform: rotate(11deg); }
+  68% { transform: rotate(-5deg); }
+  85% { transform: rotate(2deg); }
+  100% { transform: none; }
+}
+@keyframes sticker-saluda {
+  0% { transform: none; }
+  20% { transform: translateY(-10%) rotate(-8deg); }
+  45% { transform: translateY(-4%) rotate(9deg); }
+  70% { transform: rotate(-4deg); }
+  100% { transform: none; }
+}
+@keyframes regalo-abre {
+  0% { transform: none; }
+  35% { transform: translateY(-34%) rotate(-7deg); }
+  100% { transform: none; }
+}
+@keyframes manga-aprieta {
+  0% { transform: none; }
+  30% { transform: scale(0.92, 1.06); }
+  60% { transform: scale(1.03, 0.97); }
+  100% { transform: none; }
+}
+@keyframes manga-gota {
+  0% { transform: scale(0); }
+  30% { transform: scale(1.15); }
+  75% { transform: scale(1) translateY(20%); }
+  100% { transform: scale(0) translateY(40%); }
+}
+@keyframes baya-rebota {
+  0% { transform: none; }
+  40% { transform: translateY(-22%) scale(1.12); }
+  100% { transform: none; }
+}
+@keyframes chispas-bailan {
+  0% { transform: none; }
+  25% { transform: rotate(-14deg) scale(1.05); }
+  60% { transform: rotate(10deg); }
+  100% { transform: none; }
+}
+@keyframes punta-brilla {
+  0% { transform: none; }
+  40% { transform: scale(1.5) rotate(36deg); }
+  100% { transform: none; }
+}
+@keyframes budin-se-asoma {
+  0% { transform: none; }
+  40% { transform: translateY(-16%) rotate(4deg); }
+  100% { transform: none; }
+}
+
+/* ---- LABORATORIO (se retira al cerrar el bloque) ------------------------------ */
+.lab {
+  min-block-size: 100vh;
+  padding: calc(var(--navbar-h) + 32px) 24px 80px;
+  background: #123f2c;
+  color: #fff6e6;
+}
+.lab-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-block-end: 28px;
+  font-size: 14px;
+}
+.lab-nav a {
+  color: inherit;
+}
+.lab-nav a[data-activo] {
+  font-weight: 700;
+}
+.lab-titulo {
+  font-size: clamp(2.5rem, 1.5rem + 5.2vw, 5.6rem);
+  line-height: 1;
+  font-weight: 600;
+  max-inline-size: 16ch;
+  margin-block-end: 32px;
+}
+.lab-oro {
+  background: linear-gradient(100deg, #fff1c6 0%, #f8d88a 34%, #fff6da 52%, #f4cb6e 74%, #fff1c6 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: oro-corre 11s ease-in-out infinite alternate;
+}
+.lab-relleno {
+  max-inline-size: 42ch;
+  margin-block-end: 28px;
+}
+.lab-planilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 28px;
+  padding: 32px;
+  margin-block-end: 40px;
+  background: #fff3d9;
+  border-radius: 4px;
+}

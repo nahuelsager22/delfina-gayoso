@@ -17,11 +17,24 @@ import { getBudin, getMomentos, getRedes } from "@/content";
 export default async function SitioLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const [momentos, redes, vozBudin] = await Promise.all([
+  const [momentos, redes, vozHabitual] = await Promise.all([
     getMomentos(),
     getRedes(),
     getBudin(),
   ]);
+
+  // Edición de Navidad (Bloque 12): ramas que el compilador tira con la bandera apagada, así
+  // que ni su CSS ni su JS entran al build. Budín suma frases de temporada sobre las suyas.
+  let vozBudin = vozHabitual;
+  let edicion: React.ReactNode = null;
+  if (process.env.EDICION_NAVIDAD === "1") {
+    const [{ EdicionChrome }, { FRASES_TEMPORADA }] = await Promise.all([
+      import("../_edicion/navidad/EdicionChrome"),
+      import("../_edicion/navidad/contenido"),
+    ]);
+    vozBudin = { ...vozHabitual, frases: [...vozHabitual.frases, ...FRASES_TEMPORADA] };
+    edicion = <EdicionChrome />;
+  }
 
   return (
     <>
@@ -58,6 +71,7 @@ export default async function SitioLayout({
           {/* Budín acompaña todo el recorrido (13ª ola). Sólo en desktop: en mobile
               aparece dentro del menú, para no tapar contenido en pantallas chicas. */}
           <Budin voz={vozBudin} />
+          {edicion}
         </LenisProvider>
       </AtmosferaProvider>
     </>

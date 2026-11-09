@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 473 512">
+  <!-- Gorro de Budín (Bloque 12). Dibujado sobre el lienzo común de sus dos caras, que están
+       alineadas por los ojos: la misma prenda les queda a las dos. El perro es el de siempre (A8). -->
+  <defs>
+    <linearGradient id="r" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#D92F3A"/>
+      <stop offset=".55" stop-color="#B91C2B"/>
+      <stop offset="1" stop-color="#8B1120"/>
+    </linearGradient>
+    <radialGradient id="p" cx=".38" cy=".32" r=".8">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset=".7" stop-color="#F4EEE4"/>
+      <stop offset="1" stop-color="#D6CBBB"/>
+    </radialGradient>
+    <linearGradient id="b" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E2D8C9"/>
+    </linearGradient>
+  </defs>
+  <g transform="rotate(-15 236 128)">
+    <ellipse cx="236" cy="150" rx="84" ry="13" fill="#5B2A0E" opacity=".32"/>
+    <path d="M164 130 C170 104 176 88 188 72 C162 62 136 62 112 70 C134 30 192 4 240 12 C284 20 304 74 308 128 Z" fill="url(#r)"/>
+    <path d="M188 72 C198 60 214 52 228 50 C206 48 190 54 176 66 Z" fill="#7C0E1C" opacity=".55"/>
+    <path d="M228 26 C262 34 282 78 288 122" fill="none" stroke="#F06A6A" stroke-opacity=".35" stroke-width="8" stroke-linecap="round"/>
+    <path d="M152 134 C196 118 276 116 320 130" fill="none" stroke="url(#b)" stroke-width="38" stroke-linecap="round"/>
+    <g fill="#FFFFFF">
+      <circle cx="160" cy="122" r="11"/><circle cx="186" cy="114" r="12"/><circle cx="216" cy="110" r="12"/>
+      <circle cx="248" cy="109" r="12"/><circle cx="280" cy="112" r="12"/><circle cx="310" cy="120" r="11"/>
+    </g>
+    <circle cx="106" cy="76" r="27" fill="url(#p)"/>
+    <g fill="#FFFFFF" opacity=".9">
+      <circle cx="92" cy="62" r="8"/><circle cx="110" cy="56" r="8"/><circle cx="84" cy="80" r="7"/>
+    </g>
+  </g>
+</svg>

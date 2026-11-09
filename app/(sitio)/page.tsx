@@ -27,7 +27,13 @@ import { Wayfinding } from "../_patrones/Wayfinding";
  * se montan): "La columna del aprendizaje" (con la serie Cocina Nivel 0) y "La cocina
  * compartida". El contenido real vive en `content/data/*` y se lee vía `content/index.ts`.
  */
-export default function Recorrido() {
+export default async function Recorrido() {
+  // Edición de Navidad (Bloque 12): rama que el compilador tira con la bandera apagada.
+  if (process.env.EDICION_NAVIDAD === "1") {
+    const { RecorridoNavidad } = await import("../_edicion/navidad/RecorridoNavidad");
+    return <RecorridoNavidad />;
+  }
+
   return (
     <>
       {/* Nombre de página para lectores de pantalla (h1 sin hero visible). */}

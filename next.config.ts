@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // La bandera de la edición se escribe en el código al compilar, y no se lee en ejecución,
+  // para que el compilador pueda tirar la rama entera: apagada, nada de `app/_edicion` entra
+  // al build. Cambiarla exige volver a compilar (Bloque 12).
+  env: { EDICION_NAVIDAD: process.env.EDICION_NAVIDAD ?? "" },
   images: {
     // Las fotos que Delfi suba al CMS se sirven desde la CDN de Sanity y siguen pasando
     // por el optimizador de Next: mismo formato y mismo peso servido que hoy con los

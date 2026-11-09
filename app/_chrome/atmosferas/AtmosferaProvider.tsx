@@ -73,6 +73,15 @@ const leerRGB = (v: string | null): [number, number, number] => {
 export function AtmosferaProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const raiz = document.documentElement;
+    /* Las variables del navbar se escriben en el navbar, no en `:root` (Bloque 12, medido).
+       Escribirlas en la raíz en cada cuadro invalida el estilo del documento entero, y en
+       mobile era la mayor parte del tiempo de cada cuadro. Todos sus consumos viven dentro
+       de `.navbar` (bar, rótulos, utensilios y hoja del menú), que las hereda igual. Si
+       alguna regla fuera de `.navbar` necesitara `--nav-*`, tendría que leerla de ahí. */
+    const lienzo = document.querySelector<HTMLElement>(".navbar") ?? raiz;
+    /* `--navbar-h` es una constante del sistema: se lee una vez, no en cada cuadro. */
+    const alto =
+      parseFloat(getComputedStyle(raiz).getPropertyValue("--navbar-h")) || 56;
 
     let superficies: Superficie[] = [];
     const registrar = () => {
@@ -103,8 +112,6 @@ export function AtmosferaProvider({ children }: { children: React.ReactNode }) {
 
       const barra = marca?.getBoundingClientRect();
       const x = barra ? barra.left + barra.width / 2 : 24;
-      const alto =
-        parseFloat(getComputedStyle(raiz).getPropertyValue("--navbar-h")) || 56;
 
       // Los bordes efectivos de este frame: el tope de cada sección corregido por la
       // media onda que monta sobre la anterior (la línea media de la curva).
@@ -167,13 +174,13 @@ export function AtmosferaProvider({ children }: { children: React.ReactNode }) {
       if (firma === ultimo) return;
       ultimo = firma;
 
-      raiz.style.setProperty("--nav-bg", bg.join(" "));
-      raiz.style.setProperty("--nav-ink", tinta.ink);
+      lienzo.style.setProperty("--nav-bg", bg.join(" "));
+      lienzo.style.setProperty("--nav-ink", tinta.ink);
       // En la franja ambigua la tinta secundaria se acerca a la principal (los enlaces
       // son texto chico), y vuelve a su tono apenas el fondo se despeja.
       const soft = leerRGB(tinta.soft);
       const ink = leerRGB(tinta.ink);
-      raiz.style.setProperty(
+      lienzo.style.setProperty(
         "--nav-ink-soft",
         [
           Math.round(soft[0] + (ink[0] - soft[0]) * halo),
@@ -181,10 +188,10 @@ export function AtmosferaProvider({ children }: { children: React.ReactNode }) {
           Math.round(soft[2] + (ink[2] - soft[2]) * halo),
         ].join(" "),
       );
-      raiz.style.setProperty("--nav-accent", tinta.accent);
+      lienzo.style.setProperty("--nav-accent", tinta.accent);
       // El halo es siempre el tono OPUESTO a la tinta (es lo que la despega).
-      raiz.style.setProperty("--nav-halo", sobreOscuro ? "26 20 16" : "247 242 234");
-      raiz.style.setProperty("--nav-halo-a", (halo * 0.62).toFixed(3));
+      lienzo.style.setProperty("--nav-halo", sobreOscuro ? "26 20 16" : "247 242 234");
+      lienzo.style.setProperty("--nav-halo-a", (halo * 0.62).toFixed(3));
     };
 
     raf = requestAnimationFrame(medir);
@@ -194,12 +201,12 @@ export function AtmosferaProvider({ children }: { children: React.ReactNode }) {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
-      raiz.style.removeProperty("--nav-bg");
-      raiz.style.removeProperty("--nav-ink");
-      raiz.style.removeProperty("--nav-ink-soft");
-      raiz.style.removeProperty("--nav-accent");
-      raiz.style.removeProperty("--nav-halo");
-      raiz.style.removeProperty("--nav-halo-a");
+      lienzo.style.removeProperty("--nav-bg");
+      lienzo.style.removeProperty("--nav-ink");
+      lienzo.style.removeProperty("--nav-ink-soft");
+      lienzo.style.removeProperty("--nav-accent");
+      lienzo.style.removeProperty("--nav-halo");
+      lienzo.style.removeProperty("--nav-halo-a");
     };
   }, []);
 
