@@ -23,6 +23,10 @@ interface Pegado {
   /** Inclinación, en grados. */
   g: number;
   soloAncho?: boolean;
+  /** Pegado en la esquina de arriba, junto al rótulo y el título. En un celular angosto el
+   *  título ocupa todo el ancho, así que se corre hasta el borde y asoma; por debajo de 360px
+   *  no queda lugar y no se pega. */
+  esquina?: boolean;
 }
 
 const ESCENAS: Record<string, readonly Pegado[]> = {
@@ -41,20 +45,20 @@ const ESCENAS: Record<string, readonly Pegado[]> = {
     { s: "manga", y: "78%", x: "-1.4rem", lado: "der", t: "clamp(76px, 9vw, 130px)", g: 8 },
   ],
   marcas: [
-    { s: "regalo", y: "6%", x: "3%", lado: "der", t: "clamp(70px, 8vw, 118px)", g: 10 },
+    { s: "regalo", y: "6%", x: "3%", lado: "der", t: "clamp(70px, 8vw, 118px)", g: 10, esquina: true },
   ],
   "trabajemos-juntos": [
-    { s: "acebo", y: "5%", x: "2%", lado: "der", t: "clamp(78px, 9vw, 132px)", g: -8 },
+    { s: "acebo", y: "5%", x: "2%", lado: "der", t: "clamp(78px, 9vw, 132px)", g: -8, esquina: true },
     { s: "galleta", y: "62%", x: "-1.8rem", lado: "der", t: "clamp(78px, 9vw, 126px)", g: 12, soloAncho: true },
   ],
   "lo-que-te-llevas": [
-    { s: "casita", y: "4%", x: "3%", lado: "der", t: "clamp(78px, 9.5vw, 138px)", g: 7 },
+    { s: "casita", y: "4%", x: "3%", lado: "der", t: "clamp(78px, 9.5vw, 138px)", g: 7, esquina: true },
     { s: "arbolito", y: "58%", x: "-1.8rem", lado: "izq", t: "clamp(80px, 9vw, 128px)", g: -9, soloAncho: true },
   ],
   "la-clase-no-termina": [],
   // Páginas internas: la edición las atraviesa con menos, para no tapar lo que se lee.
   "la-mesa": [
-    { s: "estrella", y: "3%", x: "4%", lado: "der", t: "clamp(62px, 7vw, 108px)", g: 10 },
+    { s: "estrella", y: "3%", x: "4%", lado: "der", t: "clamp(62px, 7vw, 108px)", g: 10, esquina: true },
     { s: "galleta", y: "22%", x: "-1.4rem", lado: "izq", t: "clamp(66px, 7vw, 108px)", g: -14 },
   ],
   experiencias: [
@@ -121,7 +125,11 @@ function Barrio() {
 }
 
 export function DecoracionSala({ ancla, primero = false }: { ancla: string; primero?: boolean }) {
-  const pegados = ESCENAS[ancla] ?? [];
+  // El andamio de `/navidad` (primera sala de su página, con la firma de North Studio al pie)
+  // no se decora hasta que se componga: la partitura de la banda es para la home, y ahí Budín
+  // caía sobre la firma y el bastón sobre la lista.
+  const andamio = primero && ancla === "navidad";
+  const pegados = andamio ? [] : (ESCENAS[ancla] ?? []);
   const cierre = ancla === "la-clase-no-termina";
   // La primera sala de cualquier página lleva la guirnalda colgada: en la home la disputan
   // Hola y la banda según quién abra (`.apertura`), y en las páginas internas es esa sola.
@@ -132,17 +140,18 @@ export function DecoracionSala({ ancla, primero = false }: { ancla: string; prim
       {inicio && <GuirnaldaColgada />}
       {cierre && <Cielo />}
       {cierre && <Barrio />}
-      {ancla === "navidad" && <BudinGorro className="budin-asoma sticker-vivo" />}
+      {ancla === "navidad" && !andamio && <BudinGorro className="budin-asoma sticker-vivo" />}
       {pegados.map((p, i) => (
         <Sticker
           key={i}
           nombre={p.s}
-          className={`pegado sticker-vivo${p.soloAncho ? " pegado--ancho" : ""}`}
+          className={`pegado sticker-vivo${p.soloAncho ? " pegado--ancho" : ""}${p.esquina ? " pegado--esquina" : ""}`}
           style={
             {
               position: "absolute",
               insetBlockStart: p.y,
-              [p.lado === "izq" ? "insetInlineStart" : "insetInlineEnd"]: p.x,
+              "--px": p.x,
+              [p.lado === "izq" ? "insetInlineStart" : "insetInlineEnd"]: p.esquina ? "var(--px-angosto, var(--px))" : p.x,
               inlineSize: p.t,
               rotate: `${p.g}deg`,
             } as CSSProperties

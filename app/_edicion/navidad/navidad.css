@@ -283,6 +283,18 @@ html[data-paleta="borgona"] {
     display: none;
   }
 }
+/* Los de la esquina de arriba: en un celular angosto se corren hasta asomar por el borde (la
+   sala los recorta), y por debajo de 360px no se pegan. */
+@media (max-width: 419px) {
+  .pegado--esquina {
+    --px-angosto: -1.4rem;
+  }
+}
+@media (max-width: 359px) {
+  .pegado--esquina {
+    display: none;
+  }
+}
 .sello-texto {
   font-family: var(--font-mundo);
   font-size: 15.5px;
@@ -450,6 +462,13 @@ section[data-momento="navidad"] .momento-titulo {
 .banda-navidad-reservas {
   margin-block-start: var(--space-2xl);
   max-inline-size: 34ch;
+}
+/* En el celular la invitación ocupa todo el ancho y su última línea caía sobre el gorro de
+   Budín, que se asoma en la esquina de abajo: se le deja su piso libre. */
+@media (max-width: 719px) {
+  .banda-navidad {
+    padding-block-end: 72px;
+  }
 }
 
 .etiquetas {
