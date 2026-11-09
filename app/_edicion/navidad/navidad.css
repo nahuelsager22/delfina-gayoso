@@ -738,6 +738,32 @@ html[data-luces-armadas] [data-luces]:not([data-encendida]) .ventana {
   background: #f4f4f4;
   cursor: pointer;
 }
+/* Celular (deployment de exploración): abajo a la izquierda, donde en desktop está Budín y en
+   mobile no hay nada fijo; la esquina derecha es la de Budín dentro del menú. Los `select` van
+   a 16px para que iOS no haga zoom al tocarlos, y abierto el panel nunca pasa de media
+   pantalla. */
+@media (max-width: 719px) {
+  .control-variantes {
+    inset-inline-end: auto;
+    inset-inline-start: 10px;
+    inset-block-end: calc(10px + env(safe-area-inset-bottom));
+    max-inline-size: min(300px, calc(100vw - 20px));
+    max-block-size: 55svh;
+    overflow-y: auto;
+    padding: 6px;
+    font-size: 14px;
+  }
+  .control-variantes select {
+    font-size: 16px;
+    padding: 4px;
+  }
+  .control-variantes label {
+    grid-template-columns: 72px 1fr;
+  }
+  .control-variantes button {
+    padding: 6px 10px;
+  }
+}
 
 /* Los loops del título y las capas ya están condicionados; esto es la última red. */
 @media (prefers-reduced-motion: reduce) {

@@ -8,10 +8,13 @@ import { aplicarVariantes, cargarVariantes, useVariantes } from "./estado";
 import { destellar } from "./destellar";
 import { BASE } from "./variantes";
 
-/** El control de variantes existe sólo en desarrollo: en un build servido este `dynamic` no
- *  se compila, así que su código no llega. */
+/** El control de variantes existe en desarrollo y en el deployment de exploración
+ *  (`EDICION_NAVIDAD_EXPLORAR=1`). En cualquier otro build este `dynamic` no se compila, así
+ *  que su código no llega. */
+const EXPLORAR =
+  process.env.NODE_ENV === "development" || process.env.EDICION_NAVIDAD_EXPLORAR === "1";
 const ControlVariantes =
-  process.env.NODE_ENV === "development"
+  EXPLORAR
     ? dynamic(() => import("./ControlVariantes").then((m) => m.ControlVariantes), { ssr: false })
     : null;
 
@@ -84,7 +87,7 @@ export function CapasEdicion() {
 
   useEffect(() => {
     const igualABase = (Object.keys(BASE) as (keyof typeof BASE)[]).every((k) => v[k] === BASE[k]);
-    if (process.env.NODE_ENV === "development" || !igualABase) aplicarVariantes(v);
+    if (EXPLORAR || !igualABase) aplicarVariantes(v);
   }, [v, ruta]);
 
   // Los stickers y Budín responden al toque. Un solo oyente para toda la página: no hay un

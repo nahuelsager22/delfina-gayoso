@@ -5,15 +5,16 @@ import { fijarVariantes, useVariantes } from "./estado";
 import { OPCIONES, BASE, type Variantes } from "./variantes";
 
 /**
- * Comparar en vivo (sólo desarrollo). No es interfaz del sitio: no lleva la voz de nadie ni
- * pretende ser linda, tiene que ser rápida de usar y fácil de ignorar en las capturas.
+ * Comparar en vivo (desarrollo y deployment de exploración). No es interfaz del sitio: no
+ * lleva la voz de nadie ni pretende ser linda, tiene que ser rápida de usar y fácil de ignorar
+ * en las capturas. En el celular arranca cerrado, para que lo primero que se vea sea la home.
  */
 export function ControlVariantes() {
   const v = useVariantes();
-  const [abierto, setAbierto] = useState(true);
+  const [abierto, setAbierto] = useState(() => matchMedia("(min-width: 720px)").matches);
 
   return (
-    <aside className="control-variantes" aria-label="Variantes de la edición (desarrollo)">
+    <aside className="control-variantes" aria-label="Variantes de la edición navideña">
       <button type="button" aria-expanded={abierto} onClick={() => setAbierto((a) => !a)}>
         {abierto ? "Ocultar variantes" : "Variantes"}
       </button>

@@ -145,9 +145,11 @@ function Capas({ g, clase }: { g: Geometria; clase: string }) {
   );
 }
 
-/* Las alternativas de onda. En desarrollo se dibujan las tres para compararlas en vivo; en un
-   build servido sólo la de `BASE`: no se paga por lo que no se ve. */
-const COMPARAR = process.env.NODE_ENV === "development";
+/* Las alternativas de onda. En desarrollo y en el deployment de exploración se dibujan las tres
+   para compararlas en vivo; en cualquier otro build sólo la de `BASE`: no se paga por lo que no
+   se ve. */
+const COMPARAR =
+  process.env.NODE_ENV === "development" || process.env.EDICION_NAVIDAD_EXPLORAR === "1";
 const CON_PINO = COMPARAR || BASE.onda === "pino";
 const CON_CINTA = COMPARAR || BASE.onda === "cinta";
 
