@@ -21,6 +21,12 @@ Hecho en la segunda exploración, por indicación del usuario:
   tres variantes para comparar.
 - Librerías reevaluadas; las descartadas, retiradas.
 
+**Deployment de prueba en Vercel (2026-11-09).** La segunda exploración está publicada, con el
+panel, en la URL fija de la rama:
+`https://delfina-gayoso-git-delfina-preview-01-nahuels-projects-0004f11b.vercel.app`. Se
+enciende sola en los Preview de `delfina-preview-01`; detalle en `docs/navidad.md`. Falta que el
+usuario y Delfina la recorran desde sus celulares.
+
 ## Lo que falta (después de elegir)
 
 1. `/navidad` en composición avanzada, primero mobile. Hoy es un andamio con las anclas.
@@ -32,6 +38,8 @@ Hecho en la segunda exploración, por indicación del usuario:
 ## Al cerrar
 
 - Retirar las variantes no elegidas, sus estilos y la lectura de `localStorage` en builds.
+- Retirar `EDICION_NAVIDAD_EXPLORAR` y el encendido por rama de `next.config.ts` (o dejar sólo
+  la bandera de la edición, si se quiere seguir probando en Preview).
 - Retirar `canvas-confetti` si no se elige "Al tocar · canvas-confetti".
 - Retirar `app/(sitio)/navidad/laboratorio/`, `app/_edicion/navidad/laboratorio/` y el bloque
   `LABORATORIO` de `navidad.css`.

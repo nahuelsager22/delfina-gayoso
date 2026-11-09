@@ -121,11 +121,30 @@ agrega datos: ni precios, ni cantidades, ni plazos.
   reiniciar o recompilar.**
 - **Todo vive en `app/_edicion/navidad/`.** Lo que toca código de la casa son ramas detrás de la
   bandera: `Banda`, `Navbar`, `(sitio)/layout` y `(sitio)/page`.
-- **Las variantes** las cambia el panel, sólo en desarrollo. En un build servido también se leen
-  de `localStorage` (clave `navidad-variantes`), y es lo que permite medir cada combinación sobre
-  el build real. Al elegir la dirección, eso se va con las opciones no elegidas.
-- **En un build servido sólo se dibuja la onda de `BASE`**: las otras dos existen en desarrollo.
-- **El contenido** vive en constantes locales. No se escribió nada en Sanity.
+- **Las variantes** las cambia el panel, que existe en desarrollo y en el deployment de prueba
+  (`EDICION_NAVIDAD_EXPLORAR=1`). En cualquier build también se leen de `localStorage` (clave
+  `navidad-variantes`): cada navegador recuerda su combinación. Al elegir la dirección, eso se va
+  con las opciones no elegidas.
+- **Las tres ondas** se dibujan en desarrollo y en el deployment de prueba; en cualquier otro
+  build, sólo la de `BASE`.
+- **El contenido** vive en constantes locales. No se escribió nada en Sanity, y no hace falta
+  sincronizar: lo que la edición lee del CMS (la foto y la voz de Delfina en Hola) ya está
+  publicado.
+
+### El deployment de prueba (Vercel)
+
+- **URL fija de la rama:**
+  `https://delfina-gayoso-git-delfina-preview-01-nahuels-projects-0004f11b.vercel.app`. Apunta
+  siempre al último push de `delfina-preview-01` y es pública: se puede compartir con Delfina.
+- **Por qué no se veía:** la bandera estaba sólo en `.env.local`, que no se sube. Vercel compilaba
+  con la edición apagada y la página salía igual a producción, con `/navidad` en 404.
+- **Cómo se enciende:** `next.config.ts` enciende las dos banderas cuando el build es un Preview
+  de `delfina-preview-01` (`VERCEL_ENV` y `VERCEL_GIT_COMMIT_REF`, variables de sistema de
+  Vercel). No hay que tocar el dashboard. Producción (`main`) y cualquier otra rama quedan
+  apagadas; si una variable se define a mano, ese valor manda.
+- **El panel** arranca abierto en desktop (abajo a la derecha) y cerrado en el celular (abajo a la
+  izquierda, para no cruzarse con Budín en el menú). Sus `select` van a 16px para que iOS no haga
+  zoom.
 
 ### Lo que costó encontrar
 
@@ -200,7 +219,14 @@ y escritos a medida pesan menos que cualquier envoltorio.
   Las guirnaldas fuera de pantalla no titilan.
 - **Teclado:** Navidad, la agenda y las cinco etiquetas, en orden y con foco visible.
 - **Scroll horizontal:** ninguno en 390, 768, 1280 y 1440.
-- **Stickers tocables:** ninguno tapa texto en los cuatro anchos.
+- **Stickers tocables:** ninguno tapa texto. Sobre el deployment se midió línea por línea en la
+  home, La mesa, Experiencias, Colaboraciones y `/navidad`, a 320, 360, 375, 390, 412, 430, 768,
+  1024, 1280 y 1440. Eso encontró tres roces que la medición a 390 no veía, ya corregidos:
+  - a 375, Budín asomado tapaba la última línea de la invitación;
+  - a 360 y 320, los stickers de la esquina de arriba (`esquina` en la partitura) rozaban
+    rótulos y títulos: por debajo de 420px se corren al borde, y por debajo de 360px no se pegan;
+  - en el andamio de `/navidad`, Budín caía sobre la firma: el andamio no se decora hasta
+    componerlo.
 
 ## Pendiente de medir o decidir
 
