@@ -49,8 +49,8 @@ export const OPCIONES: { [K in keyof Variantes]: Opcion<K> } = {
   version: {
     rotulo: "Versión",
     valores: [
-      ["a", "A · En toda la casa"],
-      ["b", "B · En su sección"],
+      ["a", "A · Navidad en toda la web"],
+      ["b", "B · Navidad en su sección"],
     ],
   },
   paleta: {

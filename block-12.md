@@ -32,6 +32,13 @@ en su sección) se eligen desde la primera fila del panel, en el mismo deploymen
 finos, lamparitas más chicas, barrio del cierre a todo el ancho en mobile y nombres claros en
 "Al tocar". Detalle en `docs/navidad.md`. Nada elegido: Delfina recorre las dos y elige.
 
+**Cuarta pasada (2026-11-09).** Versiones renombradas ("Navidad en toda la web" y "Navidad en
+su sección"); stickers enteros en las esquinas del aire de cada sala y destellos que no generan
+scroll horizontal (ver `docs/navidad.md`). Fuera de la edición, para toda la web: la marquesina
+ondulada de "Lo que te llevás" arranca medio período antes del borde izquierdo y ya no muestra
+la cuña de su extremo (`Marquesina.tsx`). Esa corrección es de la web habitual: llega a `main`
+con la fusión, aunque no se elija la edición.
+
 ## Lo que falta (después de elegir)
 
 1. `/navidad` en composición avanzada, primero mobile. Hoy es un andamio con las anclas.

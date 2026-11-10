@@ -95,8 +95,13 @@ function MarquesinaOnda({ texto, tono }: { texto: string; tono: Tono }) {
   const A = 15; // amplitud
   const T = 70; // grosor de la cinta (trazo)
   const P = 360; // período de la onda
-  const segs = Math.ceil(w / (P / 2)) + 2;
-  let d = `M 0 ${my} q ${P / 4} ${-A} ${P / 2} 0`;
+  // La onda arranca medio período ANTES del borde izquierdo. Si arrancaba en x = 0, el
+  // extremo de la cinta (corte `butt`, perpendicular a la curva) caía dentro del cuadro ya
+  // inclinado, y dejaba una cuña sin pintar en la esquina izquierda: la cinta se leía
+  // cortada. Con el extremo fuera del viewBox, la cinta entra y sale del cuadro entera.
+  const inicio = -P / 2;
+  const segs = Math.ceil((w - inicio) / (P / 2)) + 2;
+  let d = `M ${inicio} ${my} q ${P / 4} ${-A} ${P / 2} 0`;
   for (let i = 1; i < segs; i++) d += ` t ${P / 2} 0`;
 
   // Repetir el texto para cubrir el ancho + una unidad de reserva (para el bucle).

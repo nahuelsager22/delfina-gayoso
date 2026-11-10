@@ -292,25 +292,61 @@ html[data-paleta="borgona"] {
 .corte .sin-relleno {
   fill: none !important;
 }
+/* LOS PEGADOS (cuarta pasada): enteros, en las esquinas del aire de cada sala. La partitura
+   está en `DecoracionSala.tsx`; acá, las medidas. */
 .pegado {
+  position: absolute;
   z-index: 0;
+  inline-size: var(--pt);
+  rotate: var(--pg);
+}
+.pegado--arriba {
+  inset-block-start: var(--py, clamp(14px, 2.4vw, 36px));
+}
+/* Por encima de la onda de la sala siguiente (5,5vw; 9,7vw en un celular), con aire. */
+.pegado--abajo {
+  inset-block-end: calc(5.5vw + clamp(12px, 1.6vw, 22px));
+}
+.pegado--izq {
+  inset-inline-start: clamp(12px, 2.2vw, 32px);
+}
+.pegado--der {
+  inset-inline-end: clamp(12px, 2.2vw, 32px);
 }
 @media (max-width: 760px) {
   .pegado--ancho {
     display: none;
   }
 }
-/* Los de la esquina de arriba: en un celular angosto se corren hasta asomar por el borde (la
-   sala los recorta), y por debajo de 360px no se pegan. */
-@media (max-width: 419px) {
-  .pegado--esquina {
-    --px-angosto: -1.4rem;
+@media (max-width: 719px) {
+  .pegado {
+    inline-size: 62px;
   }
 }
-@media (max-width: 359px) {
-  .pegado--esquina {
-    display: none;
+@media (max-width: 690px) {
+  .pegado--abajo {
+    inset-block-end: calc(9.7vw + 12px);
   }
+}
+/* Desde 1100px, los que tienen lugar propio al lado del texto. */
+@media (min-width: 1100px) {
+  .pegado--libre {
+    inset-block: var(--py-a) auto;
+  }
+  .pegado--libre-der {
+    inset-inline: auto var(--px-a);
+  }
+  .pegado--libre-izq {
+    inset-inline: var(--px-a) auto;
+  }
+}
+/* Cuando la sala de Navidad abre la home ("Navidad abre"), su aire de arriba es el del navbar
+   y la guirnalda colgada: sus stickers bajan por debajo de los dos. */
+.apertura > section[data-sala="navidad"]:first-child > .pegado--arriba {
+  --py: calc(var(--navbar-h) + 2vw);
+}
+.apertura > section[data-sala="navidad"]:first-child > .pegado--libre {
+  --py-a: calc(var(--navbar-h) + 6vw);
 }
 .sello-texto {
   font-family: var(--font-mundo);
@@ -363,7 +399,8 @@ html[data-paleta="borgona"] {
   /* Apoyado en el piso de su sala: la onda de la sala siguiente le tapa el cuello y queda
      asomándose por detrás. Si sobresale hacia abajo, entra en la otra sala y nada lo tapa. */
   inset-block-end: 0;
-  inset-inline-end: clamp(-18px, 2vw, 40px);
+  /* Entero dentro de la pantalla (cuarta pasada): antes asomaba también por el costado. */
+  inset-inline-end: clamp(12px, 2vw, 40px);
   inline-size: clamp(110px, 15vw, 210px);
   rotate: -6deg;
   pointer-events: none;
@@ -861,7 +898,24 @@ html[data-luces-armadas] [data-luces]:not([data-encendida]) .ventana {
 }
 
 /* La capa de destellos se crea al tocar y se borra al terminar. */
+/* El escenario de los destellos: una caja que recorta lo que se pase del ancho de la página
+   (`overflow: clip` no crea scroll). Sin él, un toque cerca del borde agrandaba el ancho
+   desplazable y aparecía scroll horizontal. Hay uno que acompaña al documento y otro fijo,
+   para Budín y el navbar. */
+.destellos-escenario {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  overflow: clip;
+  pointer-events: none;
+  z-index: 9;
+}
+.destellos-escenario--fijo {
+  position: fixed;
+  inset: 0;
+}
 .destellos-capa {
+  position: absolute;
   z-index: 9;
   inline-size: 0;
   block-size: 0;

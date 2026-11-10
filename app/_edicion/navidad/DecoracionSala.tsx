@@ -8,65 +8,70 @@ import { GuirnaldaColgada } from "./OndaNavidad";
  * pegado y dónde: como en La mesa, el lugar viene de una partitura y no del azar, para que el
  * servidor y el cliente dibujen lo mismo.
  *
- * Los stickers viven por detrás del contenido (`z-index: 0`) y sin eventos: si caen cerca de
- * un texto no le pueden restar contraste ni robarle un toque. Se apoyan en los bordes y el
- * corte de la sala los recorta: en un celular asoman, no invaden.
+ * DÓNDE SE PEGAN (cuarta pasada). Un sticker se ve entero o no se pega: nunca cortado por el
+ * borde de la pantalla. Medido, en un celular los márgenes laterales son de 31px y el texto
+ * ocupa todo el ancho; lo que toda sala sí tiene es AIRE arriba y abajo (de 98 a 160px en 390,
+ * de 107 a 430px en desktop). Por eso cada sticker vive en una ESQUINA de ese aire —arriba o
+ * abajo, izquierda o derecha—, nunca en el costado, y la regla es la misma en todos los anchos:
+ *  · `arriba`: a unos 14–36px del filo de la sala, encima del rótulo.
+ *  · `abajo`: justo por encima de la onda de la sala siguiente, que no lo tapa.
+ *  · Siempre a 12–32px del borde de la pantalla, así que ni su reacción ni los destellos de
+ *    un toque se salen del cuadro.
+ *  · En un celular todos miden 62px: entran en el aire más chico con margen.
+ * La primera sala de una página (La mesa, Experiencias, Colaboraciones) tiene el navbar encima
+ * de su aire superior, así que ahí van abajo.
  */
+type Borde = "arriba" | "abajo";
 interface Pegado {
   s: NombreSticker;
-  /** Distancias en % de la sala; `lado` elige contra qué borde se mide `x`. */
-  y: string;
-  x: string;
+  borde: Borde;
   lado: "izq" | "der";
-  /** Tamaño fluido. */
+  /** Tamaño fluido en tablet y desktop; en un celular, 62px. */
   t: string;
   /** Inclinación, en grados. */
   g: number;
+  /** Sólo desde 761px: donde en un celular no queda lugar entero para él. */
   soloAncho?: boolean;
-  /** Pegado en la esquina de arriba, junto al rótulo y el título. En un celular angosto el
-   *  título ocupa todo el ancho, así que se corre hasta el borde y asoma; por debajo de 360px
-   *  no queda lugar y no se pega. */
-  esquina?: boolean;
+  /** Distancia propia desde el filo (sólo `arriba`), si la general no sirve. */
+  y?: string;
+  /** Desde 1100px, un lugar propio fuera del aire: donde la sala tiene una zona libre al lado
+   *  del texto (la banda navideña, a la derecha del título). `x` se mide desde `lado`. */
+  ancho?: { y: string; x: string; lado: "izq" | "der" };
 }
 
 const ESCENAS: Record<string, readonly Pegado[]> = {
+  // "Hola" ocupa toda la pantalla y su aire de arriba es el del navbar y la guirnalda: el acebo
+  // va debajo de los dos, y en un celular no entra (ahí el sticker de "Hola" es el sello).
   "quien-soy": [
-    { s: "acebo", y: "78%", x: "-2.2rem", lado: "der", t: "clamp(84px, 9vw, 132px)", g: 14 },
+    { s: "acebo", borde: "arriba", lado: "der", t: "clamp(84px, 8vw, 116px)", g: 14, soloAncho: true, y: "calc(var(--navbar-h) + 2vw)" },
   ],
   navidad: [
-    // Arriba del rótulo: en 390 el aire superior de la banda es lo único que le queda libre.
-    // En un celular no hay lugar libre arriba del rótulo que no quede bajo el navbar: ahí no va.
-    { s: "estrella", y: "clamp(14px, 5.5vw, 90px)", x: "2%", lado: "der", t: "clamp(68px, 10vw, 148px)", g: 12, soloAncho: true },
-    { s: "baston", y: "46%", x: "-1.6rem", lado: "izq", t: "clamp(70px, 8vw, 118px)", g: -18 },
+    // En pantalla ancha la mitad derecha de la banda, al lado del título, está vacía: ahí van
+    // los dos, y no en el aire de arriba, que al leer queda bajo el navbar.
+    { s: "estrella", borde: "arriba", lado: "der", t: "clamp(64px, 7vw, 116px)", g: 12, ancho: { y: "8vw", x: "9%", lado: "der" } },
+    { s: "baston", borde: "arriba", lado: "izq", t: "clamp(64px, 6vw, 92px)", g: -18, ancho: { y: "25vw", x: "30%", lado: "der" } },
   ],
   umbral: [
-    // Abajo y no arriba: arriba quedaba sobre el título, y ahora que se puede tocar lo taparía.
-    { s: "masita", y: "84%", x: "-1.6rem", lado: "izq", t: "clamp(72px, 9vw, 130px)", g: -12 },
-    { s: "manga", y: "78%", x: "-1.4rem", lado: "der", t: "clamp(76px, 9vw, 130px)", g: 8 },
+    { s: "masita", borde: "abajo", lado: "izq", t: "clamp(64px, 8vw, 120px)", g: -12 },
+    { s: "manga", borde: "abajo", lado: "der", t: "clamp(64px, 8vw, 120px)", g: 8 },
   ],
-  marcas: [
-    { s: "regalo", y: "6%", x: "3%", lado: "der", t: "clamp(70px, 8vw, 118px)", g: 10, esquina: true },
-  ],
+  marcas: [{ s: "regalo", borde: "arriba", lado: "der", t: "clamp(62px, 7vw, 110px)", g: 10 }],
   "trabajemos-juntos": [
-    { s: "acebo", y: "5%", x: "2%", lado: "der", t: "clamp(78px, 9vw, 132px)", g: -8, esquina: true },
-    { s: "galleta", y: "62%", x: "-1.8rem", lado: "der", t: "clamp(78px, 9vw, 126px)", g: 12, soloAncho: true },
+    { s: "acebo", borde: "arriba", lado: "der", t: "clamp(62px, 7.5vw, 118px)", g: -8 },
+    { s: "galleta", borde: "abajo", lado: "der", t: "clamp(62px, 8vw, 116px)", g: 12 },
   ],
   "lo-que-te-llevas": [
-    { s: "casita", y: "4%", x: "3%", lado: "der", t: "clamp(78px, 9.5vw, 138px)", g: 7, esquina: true },
-    { s: "arbolito", y: "58%", x: "-1.8rem", lado: "izq", t: "clamp(80px, 9vw, 128px)", g: -9, soloAncho: true },
+    { s: "casita", borde: "arriba", lado: "der", t: "clamp(62px, 7.5vw, 120px)", g: 7 },
+    { s: "arbolito", borde: "arriba", lado: "izq", t: "clamp(62px, 6.5vw, 104px)", g: -9 },
   ],
   "la-clase-no-termina": [],
   // Páginas internas: la edición las atraviesa con menos, para no tapar lo que se lee.
   "la-mesa": [
-    { s: "estrella", y: "3%", x: "4%", lado: "der", t: "clamp(62px, 7vw, 108px)", g: 10, esquina: true },
-    { s: "galleta", y: "22%", x: "-1.4rem", lado: "izq", t: "clamp(66px, 7vw, 108px)", g: -14 },
+    { s: "estrella", borde: "abajo", lado: "der", t: "clamp(62px, 7vw, 104px)", g: 10 },
+    { s: "galleta", borde: "abajo", lado: "izq", t: "clamp(62px, 7vw, 104px)", g: -14 },
   ],
-  experiencias: [
-    { s: "manga", y: "clamp(96px, 11vw, 170px)", x: "3%", lado: "der", t: "clamp(66px, 7vw, 108px)", g: 8 },
-  ],
-  colaboraciones: [
-    { s: "regalo", y: "clamp(96px, 11vw, 170px)", x: "3%", lado: "der", t: "clamp(62px, 7vw, 104px)", g: 8 },
-  ],
+  experiencias: [{ s: "manga", borde: "abajo", lado: "der", t: "clamp(62px, 7vw, 104px)", g: 8 }],
+  colaboraciones: [{ s: "regalo", borde: "abajo", lado: "der", t: "clamp(62px, 7vw, 104px)", g: 8 }],
 };
 
 function Cielo() {
@@ -147,15 +152,13 @@ export function DecoracionSala({ ancla, primero = false }: { ancla: string; prim
         <Sticker
           key={i}
           nombre={p.s}
-          className={`pegado sticker-vivo${p.soloAncho ? " pegado--ancho" : ""}${p.esquina ? " pegado--esquina" : ""}`}
+          className={`pegado pegado--${p.borde} pegado--${p.lado} sticker-vivo${p.soloAncho ? " pegado--ancho" : ""}${p.ancho ? ` pegado--libre pegado--libre-${p.ancho.lado}` : ""}`}
           style={
             {
-              position: "absolute",
-              insetBlockStart: p.y,
-              "--px": p.x,
-              [p.lado === "izq" ? "insetInlineStart" : "insetInlineEnd"]: p.esquina ? "var(--px-angosto, var(--px))" : p.x,
-              inlineSize: p.t,
-              rotate: `${p.g}deg`,
+              "--pt": p.t,
+              "--pg": `${p.g}deg`,
+              ...(p.y ? { "--py": p.y } : {}),
+              ...(p.ancho ? { "--py-a": p.ancho.y, "--px-a": p.ancho.x } : {}),
             } as CSSProperties
           }
         />

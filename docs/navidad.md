@@ -48,7 +48,7 @@ Todas las dimensiones siguen abiertas.
 
 | Dimensión | Opciones | Qué está en juego |
 |---|---|---|
-| **Versión** | A · En toda la casa · B · En su sección | Toda la web ambientada, o la fiesta concentrada en su sala |
+| **Versión** | A · Navidad en toda la web · B · Navidad en su sección | Toda la web ambientada, o la fiesta concentrada en su sala |
 | **Paleta** | Cereza y pino · Borgoña y oro | Rojo de fruta con verde de rama, o vino con oro de horno |
 | **Intensidad** (sólo A) | Detalles · Salas de fiesta · Anochecer | Cuánto se transforma la casa (ver abajo) |
 | **Ambiente** | Mezcla por sala · Nieve · Destellos · Luces flotando · Sin partículas | Qué se mueve en el aire, y dónde |
@@ -122,9 +122,32 @@ destellos alrededor, que brillan y se apagan alejándose apenas. **No es una exp
 con elementos sueltos y la Web Animations API, sólo con `transform` y `opacity`: mientras nadie
 toca nada, cuesta cero, y todo se borra al terminar.
 
-Los stickers viven en los bordes de cada sala y **ninguno tapa texto** (medido en los cuatro
-anchos). Son un juego para el puntero: no informan ni llevan a ningún lado, así que no entran en
-el orden del teclado. Budín, que sí es un botón, dispara lo mismo desde el teclado.
+Son un juego para el puntero: no informan ni llevan a ningún lado, así que no entran en el orden
+del teclado. Budín, que sí es un botón, dispara lo mismo desde el teclado.
+
+**Dónde se pegan (cuarta pasada): enteros, nunca cortados por el borde de la pantalla.** Hasta la
+tercera pasada asomaban desde el costado, y eso tenía dos problemas: se veían cortados (hasta
+47px afuera) y, al tocarlos, los destellos agrandaban el ancho de la página —hasta 105px de
+scroll horizontal—. Medido: en un celular los márgenes laterales son de 31px y el texto ocupa
+todo el ancho, así que ningún sticker entra al costado; lo que toda sala tiene es **aire arriba y
+abajo** (de 98 a 160px en 390, hasta 430px en desktop). La regla, igual en todos los anchos:
+
+- cada sticker vive en una **esquina** de ese aire —arriba o abajo, izquierda o derecha—, a
+  12–32px del borde de la pantalla;
+- los de abajo, justo por encima de la onda de la sala siguiente;
+- en un celular miden 62px, así que entran en el aire más chico con margen;
+- la primera sala de una página interna tiene el navbar sobre su aire de arriba: ahí van abajo;
+- desde 1100px la banda navideña usa la mitad derecha, vacía, al lado del título;
+- el acebo de "Hola" sólo existe desde 761px: en un celular "Hola" no tiene aire libre debajo del
+  navbar, y su sticker es el sello.
+
+La partitura está en `ESCENAS` (`DecoracionSala.tsx`) y las medidas en `.pegado`
+(`navidad.css`). Budín asomado también quedó entero: asoma por detrás de la onda, ya no por el
+costado.
+
+**Los destellos no se salen del cuadro.** Nacen en un escenario del ancho de la página que recorta
+lo que sobra (`overflow: clip`, que no crea scroll), y cada destello se acomoda para terminar a
+4px o más del borde de la pantalla.
 
 ## Retirado en esta exploración
 

@@ -33,6 +33,25 @@ function reaccionar(el: Element) {
 
 const azar = (a: number, b: number) => a + Math.random() * (b - a);
 
+/**
+ * El escenario donde nacen los destellos: una caja del ancho de la página que recorta lo que
+ * se pase (`overflow: clip`, ver `.destellos-escenario`). Antes la capa colgaba directo del
+ * `body`, y un toque cerca del borde agrandaba el ancho desplazable: scroll horizontal.
+ */
+function escenario(fijo: boolean): HTMLElement {
+  const tipo = fijo ? "destellos-escenario--fijo" : "destellos-escenario--pagina";
+  let e = document.querySelector<HTMLElement>(`.${tipo}`);
+  if (!e) {
+    e = document.createElement("div");
+    e.className = `destellos-escenario ${tipo}`;
+    e.setAttribute("aria-hidden", "true");
+    document.body.appendChild(e);
+  }
+  // El de la página mide lo que mide el documento, que puede haber crecido desde el último toque.
+  if (!fijo) e.style.blockSize = `${document.documentElement.scrollHeight}px`;
+  return e;
+}
+
 export function destellar(el: HTMLElement | SVGElement, toque: Toque) {
   const sinMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const r = el.getBoundingClientRect();
@@ -45,10 +64,12 @@ export function destellar(el: HTMLElement | SVGElement, toque: Toque) {
 
   const capa = document.createElement("div");
   capa.className = "destellos-capa";
-  capa.style.position = fijo ? "fixed" : "absolute";
   capa.style.left = `${cx}px`;
   capa.style.top = `${cy}px`;
-  document.body.appendChild(capa);
+  escenario(fijo).appendChild(capa);
+  // Ancho visible: los destellos se acomodan para nacer y apagarse dentro del cuadro.
+  const anchoVisible = document.documentElement.clientWidth;
+  const centroVisible = r.left + r.width / 2;
   const animaciones: Animation[] = [];
 
   // 1 · El aura: una luz cálida detrás, que crece y se apaga.
@@ -88,7 +109,13 @@ export function destellar(el: HTMLElement | SVGElement, toque: Toque) {
     for (let i = 0; i < n; i++) {
       const ang = (i / n) * Math.PI * 2 + azar(-0.3, 0.3);
       const k = azar(0.88, 1.12);
-      const x = Math.cos(ang) * rx * k;
+      const tamPrevio = i % 3 === 2 ? 13 : 28 * Math.min(1.25, Math.max(0.85, r.width / 110));
+      // Lo más lejos que llega un destello es 1,16 veces su posición: se acota para que, con
+      // su tamaño, termine siempre a 4px o más del borde de la pantalla.
+      const margen = 4 + tamPrevio / 2;
+      const xMax = (anchoVisible - margen - centroVisible) / 1.16;
+      const xMin = (margen - centroVisible) / 1.16;
+      const x = Math.min(xMax, Math.max(xMin, Math.cos(ang) * rx * k));
       const y = Math.sin(ang) * ry * k;
       const s = document.createElement("span");
       s.className = i % 3 === 2 ? "destello destello--chico" : "destello";
