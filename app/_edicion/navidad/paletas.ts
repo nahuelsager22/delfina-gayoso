@@ -188,3 +188,19 @@ export function salaEdicion(
   const [bg, tono, propias] = def;
   return { bg, oscura: tono === "hondo", ...(propias ?? p[tono]) };
 }
+
+/**
+ * La sala según la VERSIÓN (tercera exploración). En A, la de la paleta y la intensidad. En B la
+ * casa es la de siempre (`null`: cada sala conserva su color habitual) y sólo la sala de Navidad
+ * se viste, con el rojo de la paleta: en una casa de salvia, crema, piedra y verde, es el único
+ * color que no existe en ninguna otra sala, y por eso la sala se reconoce de lejos.
+ */
+export function salaSegunVersion(
+  clave: string | undefined,
+  paleta: ClavePaleta,
+  intensidad: Intensidad,
+  version: "a" | "b",
+): SalaEdicion | null {
+  if (version === "a") return salaEdicion(clave, paleta, intensidad);
+  return clave === "navidad" ? salaEdicion(clave, paleta, "anochecer") : null;
+}

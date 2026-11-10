@@ -27,6 +27,11 @@ panel, en la URL fija de la rama:
 enciende sola en los Preview de `delfina-preview-01`; detalle en `docs/navidad.md`. Falta que el
 usuario y Delfina la recorran desde sus celulares.
 
+**Tercera exploración (2026-11-09): dos versiones.** A (Navidad en toda la casa) y B (Navidad
+en su sección) se eligen desde la primera fila del panel, en el mismo deployment. Ambientes más
+finos, lamparitas más chicas, barrio del cierre a todo el ancho en mobile y nombres claros en
+"Al tocar". Detalle en `docs/navidad.md`. Nada elegido: Delfina recorre las dos y elige.
+
 ## Lo que falta (después de elegir)
 
 1. `/navidad` en composición avanzada, primero mobile. Hoy es un andamio con las anclas.
@@ -37,10 +42,12 @@ usuario y Delfina la recorran desde sus celulares.
 
 ## Al cerrar
 
-- Retirar las variantes no elegidas, sus estilos y la lectura de `localStorage` en builds.
+- Retirar las variantes no elegidas, sus estilos y la lectura de `localStorage` en builds. Si se
+  elige una versión, retirar la otra entera (en B: `salaSegunVersion`, el bloque "Versión B" de
+  `navidad.css`, `data-tras-navidad` y el cielo de la sala de Navidad; en A, lo mismo al revés).
 - Retirar `EDICION_NAVIDAD_EXPLORAR` y el encendido por rama de `next.config.ts` (o dejar sólo
   la bandera de la edición, si se quiere seguir probando en Preview).
-- Retirar `canvas-confetti` si no se elige "Al tocar · canvas-confetti".
+- Retirar `canvas-confetti` si no se elige "Al tocar · Estrellitas que saltan".
 - Retirar `app/(sitio)/navidad/laboratorio/`, `app/_edicion/navidad/laboratorio/` y el bloque
   `LABORATORIO` de `navidad.css`.
 - Reescribir en el journal y borrar este archivo y el prompt.

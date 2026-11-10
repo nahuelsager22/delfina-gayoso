@@ -5,7 +5,8 @@
 > *retirado* (se probó y salió) o *elegido*. Hoy **no hay nada elegido**: la dirección la elige el
 > usuario al cerrar el Bloque 12, y **ningún texto se publica sin que lo valide Delfina**.
 >
-> Segunda exploración, medida el 2026-11-09 sobre el build servido, con Chrome real.
+> Tercera exploración (dos versiones), medida el 2026-11-09 sobre el build servido, con Chrome
+> real. Lo que no cambió desde la segunda conserva sus medidas de entonces.
 
 ## La idea
 
@@ -13,19 +14,47 @@ La casa de Delfi, decorada por ella, en su fecha favorita del año. Es además s
 primero que verá su público. La edición no es una sección nueva con adornos alrededor: es la misma
 casa con las luces puestas.
 
+## Dos versiones de la edición
+
+Es la pregunta principal de la tercera exploración, y la primera fila del panel. Falta más de un
+mes para Navidad y no se sabe si Delfina quiere toda su web ambientada durante ese tiempo o la
+fiesta concentrada en su sección: en lugar de preguntárselo, lo puede recorrer.
+
+- **A — Navidad en toda la casa.** Cada sala participa: color de temporada (según la
+  intensidad), ambiente repartido por sala, stickers en los bordes, guirnaldas en todas las
+  ondas, el sello en "Hola" y la noche con su barrio en el cierre.
+- **B — Navidad en su sección.** La casa de siempre —sus colores, su onda lisa, sin stickers ni
+  ambiente— y una sala de Navidad que concentra la fiesta. No es A con los efectos apagados:
+  - la sala de Navidad es **la única de noche**: en rojo de la paleta (el único color que no
+    existe en ninguna otra sala de la casa), con cielo estrellado propio;
+  - el ambiente se dibuja **sólo ahí**, y con los tres sistemas a la vez —nieve, luces lejanas y
+    destellos—: una sala con clima propio, como una vidriera;
+  - las luces **enmarcan** la sala: la onda de entrada y la de salida llevan la guirnalda
+    elegida; ninguna otra;
+  - conserva todo lo suyo: etiquetas con stickers, el título dorado, el bastón, la estrella y
+    Budín asomado;
+  - lo que une el resto de la casa son detalles chicos que ya existían: el acceso del navbar, la
+    agenda abierta en "Hola", el gorro de Budín y sus frases de temporada, y su destello al
+    tocarlo.
+
+  En B no hay intensidad que elegir (la casa es la de siempre) y el panel no la muestra; la
+  paleta decide el rojo de la sala y sus luces. Está en `salaSegunVersion` (`paletas.ts`), la
+  sección "Versión B" de `navidad.css` y `pesoDe` en `Ambiente.tsx`.
+
 ## Lo que se compara en vivo
 
-Con `pnpm dev`, el panel de abajo a la derecha cambia todo sin recargar. Las seis dimensiones
-siguen abiertas.
+El panel de exploración cambia todo sin recargar, en `pnpm dev` y en el deployment de prueba.
+Todas las dimensiones siguen abiertas.
 
 | Dimensión | Opciones | Qué está en juego |
 |---|---|---|
+| **Versión** | A · En toda la casa · B · En su sección | Toda la web ambientada, o la fiesta concentrada en su sala |
 | **Paleta** | Cereza y pino · Borgoña y oro | Rojo de fruta con verde de rama, o vino con oro de horno |
-| **Intensidad** | Detalles · Salas de fiesta · Anochecer | Cuánto se transforma la casa (ver abajo) |
+| **Intensidad** (sólo A) | Detalles · Salas de fiesta · Anochecer | Cuánto se transforma la casa (ver abajo) |
 | **Ambiente** | Mezcla por sala · Nieve · Destellos · Luces flotando · Sin partículas | Qué se mueve en el aire, y dónde |
 | **Ondas** | Lamparitas · Guirnalda de pino · Cinta | Cómo se decora el corte entre salas |
 | **Apertura** | Hola, soy Delfi · Navidad abre | Quién recibe al que llega |
-| **Al tocar** | Destellos propios · canvas-confetti · Sólo aura | Cómo responde un sticker o Budín |
+| **Al tocar** | Destellos alrededor · Estrellitas que saltan · Sólo un brillo | Cómo responde un sticker o Budín. Los nombres dicen lo que se ve; la segunda usa `canvas-confetti` |
 
 ### Las tres intensidades, con el mismo desarrollo
 
@@ -40,21 +69,30 @@ Las tres pasan AA en todos los textos, con las dos paletas (ver *Lo medido*).
 
 ### Los ambientes
 
-Un solo canvas fijo con tres sistemas, dibujados en la GPU (`ambienteGL.ts`):
+Un solo canvas fijo con tres sistemas, dibujados en la GPU (`ambienteGL.ts`). En la tercera
+pasada se volvieron **más finos y más editoriales**: lo que se veía borroso era lo grande y
+desenfocado, así que la profundidad ahora la dan el tamaño, la velocidad y la opacidad, nunca el
+desenfoque. Todo borde se recorta con un píxel físico de suavizado.
 
-- **Nieve:** profundidad real (la mayoría lejos, chicos y lentos; unos pocos muy cerca, grandes y
-  fuera de foco), variedad (copos redondos y, a media distancia, cristales de seis brazos que
-  giran) y movimiento natural (dos balanceos por copo más ráfagas de viento compartidas). Sobre
-  las salas claras se ve menos y con un filo cálido, para que el blanco se lea.
-- **Destellos:** viven un instante y aparecen en otro lado. Forma de brillo de verdad: dos rayos
-  largos y finos, dos cortos en diagonal, núcleo blanco y halo dorado. Sobre lo hondo suman luz;
-  sobre lo claro se dibujan en oro más hondo.
-- **Luces flotando:** bokeh de lamparitas fuera de foco, discos parejos con el aro apenas más
-  brillante, en los colores cálidos de la paleta. Suben despacio y respiran.
-- **Mezcla por sala:** los tres no compiten, se reparten. La primera pantalla brilla (destellos);
-  en la banda navideña nieva; las salas claras de lectura quedan casi quietas; las salas hondas
-  del medio son de luces flotando; el cierre es la noche completa (nieve, luces y estrellas). La
-  transición entre salas es gradual. El reparto vive en `MEZCLA`, en `Ambiente.tsx`.
+- **Nieve:** lejos, puntos de menos de un píxel, lentos y tenues; cerca, copos de hasta 4px,
+  nítidos. Uno de cada diez, a media distancia, es un cristal de seis brazos con dos pares de
+  ramas y una placa hexagonal al centro, en líneas de un píxel y medio físico, que gira despacio.
+  Dos balanceos por copo más ráfagas de viento compartidas.
+- **Destellos:** luz que se engancha en algo un instante: se enciende de golpe y se apaga más
+  despacio. Dos rayos largos que se afinan hacia la punta, dos diagonales cortas y un núcleo
+  blanco; el halo grande se retiró (era lo que los volvía manchas).
+- **Luces flotando:** lamparitas lejanas, no manchas: un punto nítido de 1,2 a 2,4px con un
+  resplandor tibio. El bokeh de discos (hasta 54px) se retiró: se leía borroso y, sobre las salas
+  hondas, como burbujas. Sólo colores cálidos y claros: el rojo, sobre una sala roja, era una
+  mancha oscura.
+- **Acompañan la lectura:** cada sistema dibuja alrededor de un tercio menos que antes, y en
+  pantallas desde 900px las partículas se apartan de la columna central, donde vive el texto
+  (`lectura` en el shader). En el celular, donde el texto ocupa todo el ancho, se dibuja menos y
+  más tenue.
+- **Mezcla por sala (A):** los tres se reparten. La primera pantalla brilla apenas; en la banda
+  navideña nieva; las salas claras de lectura quedan casi quietas; las hondas del medio son de
+  luces; el cierre es la noche. En **B** el ambiente vive sólo en la sala de Navidad, con los tres
+  a la vez. El reparto vive en `MEZCLA` y `pesoDe`, en `Ambiente.tsx`.
 
 ### Las ondas
 
@@ -62,7 +100,11 @@ Las tres se dibujan como un SVG por onda, con la geometría calculada en el serv
 deforman a ningún ancho.
 
 - **Lamparitas:** se enchufan de izquierda a derecha al llegar a cada sala, y titilan por grupos
-  sólo mientras se ven.
+  sólo mientras se ven. En la tercera pasada se afinaron para que acompañen la onda en lugar de
+  ser las protagonistas del corte: focos al 60 % del tamaño y más juntos (unos 9px de ancho en
+  1440 y 6px en 390), la comba a la mitad, cable más fino y halos contenidos que titilan dentro de
+  una opacidad más baja. La guirnalda colgada de la primera pantalla siguió el mismo criterio y
+  cuelga menos.
 - **Guirnalda de pino:** agujas en dos verdes, bayas de acebo y lucecitas cálidas entre las ramas.
 - **Cinta:** satén de la paleta (rojo en Cereza, oro en Borgoña), con brillo, sombra, puntada y un
   moño. El moño cambia de lugar en cada sala, así que bajando la casa se lee como un regalo que se
@@ -97,8 +139,10 @@ el orden del teclado. Budín, que sí es un botón, dispara lo mismo desde el te
 ## Lo que sí se sostiene
 
 Accesibilidad, fluidez en celulares reales, nada inventado, el visitante controla el scroll,
-Budín no vende (A12) y es el mismo dibujo (A8), y la firma sigue sobria (D15): el barrio del
-cierre se recorta para dejarle siempre libre su esquina.
+Budín no vende (A12) y es el mismo dibujo (A8), y la firma sigue sobria (D15). En desktop el
+barrio del cierre se recorta para dejarle libre su esquina. En el celular (tercera pasada) medía
+110px y quedaba perdido: ahora ocupa todo el ancho, apoyado en su propia calle —una franja del
+azul de las casas—, y la firma va por esa calle, en su lugar de siempre y sin nada encima.
 
 ## Copy en borrador (lo valida Delfina)
 

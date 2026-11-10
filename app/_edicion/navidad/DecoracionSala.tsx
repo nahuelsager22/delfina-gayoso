@@ -98,7 +98,7 @@ function Barrio() {
     { x: 282, a: 80, h: 72 }, { x: 366, a: 92, h: 44 },
   ];
   return (
-    <svg className="barrio" data-luces viewBox="0 0 470 150" aria-hidden focusable="false">
+    <svg className="barrio" data-luces viewBox="0 0 470 150" preserveAspectRatio="xMidYMax meet" aria-hidden focusable="false">
       {casas.map((c, i) => {
         const base = 150 - c.h;
         return (
@@ -138,7 +138,9 @@ export function DecoracionSala({ ancla, primero = false }: { ancla: string; prim
   return (
     <>
       {inicio && <GuirnaldaColgada />}
-      {cierre && <Cielo />}
+      {/* La sala de Navidad tiene su propio cielo, que sólo se ve en la versión B: ahí es la
+          única sala de noche de la casa. */}
+      {(cierre || (ancla === "navidad" && !andamio)) && <Cielo />}
       {cierre && <Barrio />}
       {ancla === "navidad" && !andamio && <BudinGorro className="budin-asoma sticker-vivo" />}
       {pegados.map((p, i) => (

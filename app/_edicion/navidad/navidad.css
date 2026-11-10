@@ -37,6 +37,12 @@ html[data-paleta="borgona"] {
 .guirnalda {
   block-size: 5.5vw;
 }
+/* El alto proporcional cae en fracciones de píxel, y el SVG recortaba su propio borde: entre la
+   onda y su sala quedaba una costura de la sala anterior, una línea clara de medio píxel. El
+   relleno baja unas unidades más (`OndaNavidad`) y la onda deja ver lo que se pasa. */
+.onda-sup {
+  overflow: visible;
+}
 @media (max-width: 690px) {
   .onda-sup,
   .guirnalda {
@@ -75,8 +81,8 @@ html[data-paleta="borgona"] {
 }
 .cable {
   fill: none;
-  stroke: rgb(var(--cable) / 0.62);
-  stroke-width: 1.6;
+  stroke: rgb(var(--cable) / 0.5);
+  stroke-width: 1.1;
 }
 .casquillo {
   fill: rgb(28 24 20 / 0.75);
@@ -96,13 +102,14 @@ html[data-paleta="borgona"] {
 .c3 {
   fill: var(--foco-4);
 }
+/* Halos contenidos: un resplandor que se pega al foco, no una nube. */
 .g-halos {
-  filter: blur(5px);
-  opacity: 0.8;
+  filter: blur(3px);
+  opacity: 0.6;
   transition: opacity 900ms var(--ease-suave) 350ms;
 }
 [data-oscura="false"] .g-halos {
-  opacity: 0.55;
+  opacity: 0.38;
 }
 /* Prendidas, por defecto: sin JavaScript la casa se ve con las luces encendidas. El barrido va
    de izquierda a derecha, como cuando se enchufa la guirnalda. */
@@ -119,10 +126,20 @@ html[data-luces-armadas] [data-luces]:not([data-encendida]) .g-halos {
 /* Dos grupos a contratiempo. Sólo mientras se ven: fuera de pantalla no corre ninguna. */
 @media (prefers-reduced-motion: no-preference) {
   [data-luces][data-encendida][data-visible] .g-halos-a {
-    animation: foco-titila 3.1s ease-in-out 1.6s infinite;
+    animation: halo-titila 3.1s ease-in-out 1.6s infinite;
   }
   [data-luces][data-encendida][data-visible] .g-halos-b {
-    animation: foco-titila 4.3s ease-in-out 2.4s infinite;
+    animation: halo-titila 4.3s ease-in-out 2.4s infinite;
+  }
+}
+/* Los halos titilan dentro de su propia opacidad, más baja que la de las estrellas. */
+@keyframes halo-titila {
+  0%,
+  100% {
+    opacity: 0.62;
+  }
+  50% {
+    opacity: 0.22;
   }
 }
 @keyframes foco-titila {
@@ -677,6 +694,18 @@ section[data-momento="navidad"] .momento-titulo {
   block-size: auto;
   pointer-events: none;
 }
+/* Celular (tercera pasada): a 390 el barrio medía 110px y quedaba perdido en la esquina. Ahora
+   ocupa todo el ancho y se apoya en su propia calle —una franja del mismo azul de las casas—,
+   y la firma de North Studio camina por esa calle: queda en su lugar de siempre, sobre un
+   fondo todavía más hondo, sin nada encima (D15). El alto tiene tope para que en pantallas
+   bajas el barrio no suba hasta el texto. */
+@media (max-width: 719px) {
+  .barrio {
+    inline-size: 100%;
+    max-block-size: 19svh;
+    border-block-end: 50px solid #06121d;
+  }
+}
 .ventana {
   fill: #ffd479;
   transition: fill 500ms var(--ease-suave);
@@ -742,6 +771,13 @@ html[data-luces-armadas] [data-luces]:not([data-encendida]) .ventana {
   grid-template-columns: 74px 1fr;
   align-items: center;
   gap: 6px;
+}
+/* La versión es la pregunta principal: va primero y separada del resto. */
+.control-variantes .control-version {
+  font-weight: 600;
+  padding-block-end: 8px;
+  margin-block-end: 2px;
+  border-block-end: 1px solid #0002;
 }
 .control-variantes select {
   inline-size: 100%;
@@ -1038,4 +1074,35 @@ html[data-luces-armadas] [data-luces]:not([data-encendida]) .ventana {
   margin-block-end: 40px;
   background: #fff3d9;
   border-radius: 4px;
+}
+
+/* ---- VERSIÓN B: NAVIDAD EN SU SECCIÓN (tercera exploración) ----------------------------
+   La casa de siempre, y una sala que concentra la fiesta. No es la A con los efectos apagados:
+   tiene su propia composición.
+   · El resto de la web vuelve a su color (eso lo hace `aplicarVariantes`), a su onda lisa y sin
+     stickers ni ambiente.
+   · La sala de Navidad es la única de noche: cielo estrellado, nieve, luces y destellos (el
+     ambiente se dibuja sólo ahí), sus stickers y Budín asomado.
+   · Las luces ENMARCAN la sala: la onda de entrada y la de salida llevan la guirnalda elegida;
+     ninguna otra.
+   · Lo que une el resto son detalles chicos que ya existen: el acceso del navbar, la agenda
+     abierta en "Hola", el gorro de Budín y su voz de temporada. */
+html[data-version="b"] section[data-sala]:not([data-sala="navidad"]) > :is(.pegado, .guirnalda--colgada, .cielo, .barrio) {
+  display: none;
+}
+html[data-version="b"] section[data-sala]:not([data-sala="navidad"]):not([data-tras-navidad]) > .guirnalda {
+  display: none;
+}
+/* La onda lisa de siempre, con su alto de siempre (`globals.css`). */
+html[data-version="b"] section[data-sala]:not([data-sala="navidad"]):not([data-tras-navidad]) > .onda-sup {
+  block-size: clamp(38px, 5.5vw, 84px);
+}
+html[data-version="b"] .sello-navidad {
+  display: none;
+}
+section[data-sala="navidad"] > .cielo {
+  display: none;
+}
+html[data-version="b"] section[data-sala="navidad"] > .cielo {
+  display: block;
 }

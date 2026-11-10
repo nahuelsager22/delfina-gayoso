@@ -20,8 +20,10 @@ export function ControlVariantes() {
       </button>
       {abierto && (
         <form onSubmit={(e) => e.preventDefault()}>
-          {(Object.keys(OPCIONES) as (keyof Variantes)[]).map((dim) => (
-            <label key={dim}>
+          {(Object.keys(OPCIONES) as (keyof Variantes)[])
+            .filter((dim) => !OPCIONES[dim].soloEn || OPCIONES[dim].soloEn === v.version)
+            .map((dim) => (
+            <label key={dim} className={dim === "version" ? "control-version" : undefined}>
               <span>{OPCIONES[dim].rotulo}</span>
               <select
                 value={v[dim]}
@@ -35,7 +37,8 @@ export function ControlVariantes() {
               </select>
             </label>
           ))}
-          <button type="button" onClick={() => fijarVariantes(BASE)}>
+          {/* Vuelve a la base sin cambiar de versión: comparar A y B es la pregunta principal. */}
+          <button type="button" onClick={() => fijarVariantes({ ...BASE, version: v.version })}>
             Volver a la base
           </button>
         </form>

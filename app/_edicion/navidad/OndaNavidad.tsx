@@ -73,7 +73,7 @@ function armar(
   focos.forEach(([x, y], i) => {
     const a = ampolla(x, y, r);
     color[i % 4] += a;
-    halos[i % 4] += halo(x, y + r * 1.4, r * 2.1);
+    halos[i % 4] += halo(x, y + r * 1.4, r * 1.7);
     apagadas += a;
     casquillos += casquillo(x, y, r);
   });
@@ -89,7 +89,9 @@ const ALTO_MOVIL = 116.4;
 
 function geometriaOnda(alto: number, spanes: number, r: number): Geometria {
   const esc = alto / 100;
-  const comba = 15 * esc;
+  // Tercera pasada: la comba bajó a la mitad. Con 15 el cable colgaba muy por debajo del filo y
+  // la guirnalda se volvía una franja propia; con 7 acompaña la onda.
+  const comba = 7 * esc;
   let cable = "";
   const focos: [number, number][] = [];
   for (let i = 0; i < spanes; i++) {
@@ -105,9 +107,12 @@ function geometriaOnda(alto: number, spanes: number, r: number): Geometria {
   return armar(alto, cable, focos, r);
 }
 
+/* Tercera pasada: focos de un 60 % del tamaño anterior y más juntos. Una guirnalda fina de
+   lamparitas chicas se lee como parte de la onda; diez focos grandes se leían como un adorno
+   puesto encima. En 1440 cada foco mide unos 9px de ancho; en 390, unos 6px. */
 const ONDAS = {
-  ancho: geometriaOnda(ALTO_ANCHO, 20, 6),
-  movil: geometriaOnda(ALTO_MOVIL, 10, 13),
+  ancho: geometriaOnda(ALTO_ANCHO, 28, 3.7),
+  movil: geometriaOnda(ALTO_MOVIL, 13, 8.6),
 };
 
 /** Las capas de una guirnalda, ya en SVG. El barrido de encendido y el titilar son CSS. */
@@ -307,7 +312,7 @@ export function OndaNavidad({ color = "var(--atm-papel)", sala = "" }: { color?:
         focusable="false"
       >
         <path
-          d="M0,58 C 170,18 360,18 600,52 C 840,86 1030,86 1200,48 L1200,101 L0,101 Z"
+          d="M0,58 C 170,18 360,18 600,52 C 840,86 1030,86 1200,48 L1200,106 L0,106 Z"
           fill={color}
         />
       </svg>
@@ -343,7 +348,9 @@ export function OndaNavidad({ color = "var(--atm-papel)", sala = "" }: { color?:
 function geometriaColgada(alto: number, combas: number, porComba: number, r: number): Geometria {
   let cable = "";
   const focos: [number, number][] = [];
-  const hondo = alto * 2;
+  // La comba llega a dos tercios de la caja, no a toda: la guirnalda queda arriba, cerca del
+  // navbar, y no se mete en el título.
+  const hondo = alto * 1.35;
   for (let c = 0; c < combas; c++) {
     const x0 = (c * 1200) / combas;
     const x1 = ((c + 1) * 1200) / combas;
@@ -357,8 +364,8 @@ function geometriaColgada(alto: number, combas: number, porComba: number, r: num
 }
 
 const COLGADAS = {
-  ancho: geometriaColgada(90, 3, 7, 6.5),
-  movil: geometriaColgada(156, 3, 4, 14),
+  ancho: geometriaColgada(90, 3, 9, 4),
+  movil: geometriaColgada(156, 3, 5, 9),
 };
 
 export function GuirnaldaColgada() {

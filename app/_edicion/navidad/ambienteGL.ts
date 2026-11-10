@@ -1,18 +1,28 @@
 /**
- * EL AMBIENTE EN LA GPU (Bloque 12 · segunda exploración).
+ * EL AMBIENTE EN LA GPU (Bloque 12).
  * -----------------------------------------------------------------------------
  * Tres sistemas —nieve, destellos y luces flotando— dibujados con WebGL en un solo canvas fijo.
  *
- * Por qué así y no con un canvas 2D o una librería: lo que se pidió es CALIDAD (profundidad,
- * copos distintos entre sí, destellos definidos, bokeh con borde) SIN cargar el celular. En
- * WebGL cada partícula se mueve con una fórmula del tiempo, dentro de la GPU: el hilo principal
- * no recorre ninguna lista por cuadro, sólo actualiza seis números. Y las formas se dibujan en
- * el shader, matemáticamente: un copo cristalino o un destello de cuatro puntas quedan nítidos
- * a cualquier tamaño y densidad de pantalla, sin imágenes.
+ * Por qué así y no con un canvas 2D o una librería: lo que se pide es CALIDAD (formas precisas,
+ * profundidad, movimiento natural) SIN cargar el celular. En WebGL cada partícula se mueve con
+ * una fórmula del tiempo, dentro de la GPU: el hilo principal no recorre ninguna lista por
+ * cuadro, sólo actualiza unos pocos números. Y las formas se dibujan en el shader,
+ * matemáticamente: un cristal o un destello quedan nítidos a cualquier densidad de pantalla.
+ *
+ * TERCERA PASADA — más fina, más editorial. Lo que se corrigió, y por qué:
+ *  · Nada grande y desenfocado. Los copos cercanos "fuera de foco" y el bokeh de hasta 54px se
+ *    leían borrosos: ahora el copo más grande mide 4px y las luces son puntos nítidos con un
+ *    resplandor tenue, como lamparitas lejanas. La profundidad la dan el tamaño, la velocidad
+ *    y la opacidad, no el desenfoque.
+ *  · Todo borde se recorta con un píxel físico de suavizado (`uDpr`): nítido en cualquier
+ *    pantalla, sin dentado.
+ *  · Menos y más tenue. Cada sistema dibuja alrededor de un tercio menos que antes.
+ *  · Acompaña la lectura: en pantallas anchas, las partículas se apartan de la columna central
+ *    (`lectura`), donde vive el texto, y se quedan en los márgenes.
  *
  * Cada sistema sabe en qué sala cae cada partícula (`uBand`) y cuánto le corresponde estar ahí
- * (`uPeso`). Así funciona la MEZCLA: la misma escena reparte nieve, destellos y luces según la
- * sala, con transiciones suaves en los bordes.
+ * (`uPeso`). Así funcionan la MEZCLA y la VERSIÓN B: la misma escena reparte los sistemas según
+ * la sala, con transiciones suaves en los bordes.
  */
 
 export type Sistema = 0 | 1 | 2; // nieve, destellos, luces
@@ -35,6 +45,8 @@ uniform float uDpr;
 uniform float uTime;
 uniform float uScroll;
 uniform float uWind;
+uniform float uColumna;
+uniform float uTenue;
 uniform vec4 uBand[${MAX_BANDAS}];
 uniform vec4 uPeso[${MAX_BANDAS}];
 uniform float uBands;
@@ -44,12 +56,20 @@ float peso(float y, out float oscura) {
   for (int i = 0; i < ${MAX_BANDAS}; i++) {
     if (float(i) >= uBands) break;
     vec4 b = uBand[i];
-    float m = smoothstep(b.x - 50.0, b.x + 50.0, y) * (1.0 - smoothstep(b.y - 50.0, b.y + 50.0, y));
+    float m = smoothstep(b.x - 40.0, b.x + 40.0, y) * (1.0 - smoothstep(b.y - 40.0, b.y + 40.0, y));
     float p = uSistema < 0.5 ? uPeso[i].x : (uSistema < 1.5 ? uPeso[i].y : uPeso[i].z);
     w += m * p; o += m * b.z; tot += m;
   }
   oscura = tot > 0.001 ? o / tot : 1.0;
-  return w;
+  return w * uTenue;
+}
+// La columna de lectura: en pantallas anchas, lo que cae sobre el centro se vuelve casi
+// transparente. Con uColumna = 0 (celular) no aparta nada: ahí el texto ocupa todo el ancho y
+// lo que cuida la lectura es la cantidad.
+float lectura(float x) {
+  if (uColumna <= 0.0) return 1.0;
+  float dx = abs(x - uRes.x * 0.5);
+  return mix(0.3, 1.0, smoothstep(uColumna * 0.7, uColumna * 1.2, dx));
 }
 vec4 aClip(float x, float y) {
   return vec4(x / uRes.x * 2.0 - 1.0, 1.0 - y / uRes.y * 2.0, 0.0, 1.0);
@@ -57,39 +77,36 @@ vec4 aClip(float x, float y) {
 `;
 
 /* ---- NIEVE ------------------------------------------------------------------------------
-   Cuatro decisiones hacen que se lea como nieve y no como puntos blancos:
-   · Profundidad real: la mayoría lejos (chicos, lentos, tenues, casi sin parallax); unos pocos
-     muy cerca, grandes y desenfocados, como fuera de foco de una cámara.
-   · Variedad: copos redondos y, entre los medianos y cercanos, cristales de seis brazos con
-     ramas, que giran despacio.
-   · Movimiento con dos balanceos de frecuencias distintas por copo, más ráfagas de viento
-     compartidas: nadie cae en línea recta ni todos se mueven igual.
-   · Sobre las salas claras, un borde cálido apenas visible, para que el blanco se lea. */
+   · Profundidad sin desenfoque: lejos, puntos de menos de un píxel CSS, lentos, tenues y casi
+     sin parallax; cerca, copos de hasta 4px, más rápidos y más claros. Todos con borde nítido.
+   · Variedad: uno de cada diez, a media distancia, es un cristal de seis brazos con dos pares
+     de ramas y una placa al centro, dibujado con líneas de un píxel y medio físico. Giran
+     despacio, cada uno para su lado.
+   · Movimiento: dos balanceos de frecuencias distintas por copo, más ráfagas compartidas. Nadie
+     cae en línea recta ni todos se mueven igual.
+   · Sobre las salas claras el blanco se apaga a la mitad y gana un filo tibio muy leve: se
+     adivina, no se recorta. */
 const NIEVE_V = COMUN + `
-varying float vA; varying float vBlur; varying float vRot; varying float vTipo;
+varying float vA; varying float vRot; varying float vTipo;
 varying float vOsc; varying float vSize; varying float vEsc;
 void main() {
-  float d = pow(aSeed.z, 1.8);
-  float m = 70.0;
+  float d = pow(aSeed.z, 1.6);
+  float m = 40.0;
   float W = uRes.x + 2.0 * m; float H = uRes.y + 2.0 * m;
   float ph = aSeed.w * 6.2831;
-  float f1 = 0.22 + 0.45 * fract(aSeed.w * 7.13);
-  float f2 = 0.8 + 0.9 * fract(aSeed.w * 3.71);
-  float y = mod(aSeed.y * H + uTime * mix(11.0, 66.0, d) - uScroll * mix(0.04, 0.46, d), H) - m;
-  float vaiven = sin(uTime * f1 + ph) * mix(5.0, 30.0, d) + sin(uTime * f2 + ph * 1.7) * mix(1.5, 8.0, d);
-  float x = mod(aSeed.x * W + uWind * mix(0.2, 1.2, d) + vaiven, W) - m;
-  float o; float w = peso(y, o);
-  // Cristales: pocos (uno de cada siete), sólo a media distancia y chicos, como se ven de
-  // verdad. Los muy cercanos son siempre redondos y desenfocados: un cristal fuera de foco ya no
-  // se lee como cristal, se lee como dibujo.
-  vTipo = step(0.86, fract(aSeed.w * 13.7)) * step(0.3, d) * (1.0 - step(0.78, d));
-  float blur = smoothstep(0.86, 1.0, d) * (1.0 - vTipo);
-  float size = vTipo > 0.5 ? mix(3.4, 6.2, (d - 0.3) / 0.48) : mix(1.2, 5.0, d * d) * (1.0 + blur * 1.8);
-  vA = w * mix(0.28, 0.95, d) * (1.0 - blur * 0.5) * (vTipo > 0.5 ? 0.9 : 1.0);
-  vBlur = blur; vOsc = o; vSize = size;
+  float f1 = 0.16 + 0.3 * fract(aSeed.w * 7.13);
+  float f2 = 0.6 + 0.8 * fract(aSeed.w * 3.71);
+  float y = mod(aSeed.y * H + uTime * mix(8.0, 32.0, d) - uScroll * mix(0.03, 0.3, d), H) - m;
+  float vaiven = sin(uTime * f1 + ph) * mix(4.0, 18.0, d) + sin(uTime * f2 + ph * 1.7) * mix(0.8, 4.0, d);
+  float x = mod(aSeed.x * W + uWind * mix(0.12, 0.8, d) + vaiven, W) - m;
+  float o; float w = peso(y, o) * lectura(x);
+  vTipo = step(0.9, fract(aSeed.w * 13.7)) * step(0.35, d) * (1.0 - step(0.85, d));
+  float size = vTipo > 0.5 ? mix(3.6, 5.4, (d - 0.35) / 0.5) : mix(0.7, 2.0, d);
+  vA = w * mix(0.2, 0.78, d) * (vTipo > 0.5 ? 0.8 : 1.0);
+  vOsc = o; vSize = size;
   float dir = fract(aSeed.w * 9.1) > 0.5 ? 1.0 : -1.0;
-  vRot = ph + uTime * (0.15 + 0.5 * fract(aSeed.w * 5.3)) * dir;
-  float lado = size * 2.8 + 2.0;
+  vRot = ph + uTime * (0.1 + 0.35 * fract(aSeed.w * 5.3)) * dir;
+  float lado = size * 2.0 + 3.0;
   vEsc = lado / (2.0 * size);
   gl_PointSize = lado * uDpr;
   gl_Position = w < 0.01 ? vec4(2.0, 2.0, 0.0, 1.0) : aClip(x, y);
@@ -98,7 +115,7 @@ void main() {
 const NIEVE_F = `
 precision mediump float;
 uniform highp float uDpr;
-varying float vA; varying float vBlur; varying float vRot; varying float vTipo;
+varying float vA; varying float vRot; varying float vTipo;
 varying float vOsc; varying float vSize; varying float vEsc;
 float seg(vec2 p, vec2 a, vec2 b) {
   vec2 pa = p - a; vec2 ba = b - a;
@@ -108,6 +125,8 @@ float seg(vec2 p, vec2 a, vec2 b) {
 void main() {
   vec2 p = (gl_PointCoord * 2.0 - 1.0) * vEsc;
   float r = length(p);
+  // Un píxel físico, en unidades del copo: el suavizado del borde.
+  float px = 1.0 / (vSize * uDpr);
   float a;
   if (vTipo > 0.5) {
     float c = cos(vRot); float s = sin(vRot);
@@ -115,118 +134,121 @@ void main() {
     float sector = 1.0471976;
     float ang = mod(atan(p.y, p.x) + sector * 0.5, sector) - sector * 0.5;
     vec2 q = vec2(cos(ang), abs(sin(ang))) * r;
-    float dd = seg(q, vec2(0.0), vec2(0.96, 0.0));
-    dd = min(dd, seg(q, vec2(0.42, 0.0), vec2(0.64, 0.21)));
-    dd = min(dd, seg(q, vec2(0.66, 0.0), vec2(0.82, 0.14)));
-    float px = 1.0 / (vSize * uDpr);
-    float g = 0.07 + px;
-    a = 1.0 - smoothstep(g - px * 1.5, g + px * 1.5, dd);
-    a = max(a, (1.0 - smoothstep(0.0, 0.22, r)) * 0.9);
-    a = max(a, (1.0 - smoothstep(0.0, 1.0, r)) * 0.14);
+    float dd = seg(q, vec2(0.0), vec2(0.94, 0.0));
+    dd = min(dd, seg(q, vec2(0.36, 0.0), vec2(0.56, 0.2)));
+    dd = min(dd, seg(q, vec2(0.6, 0.0), vec2(0.74, 0.13)));
+    // La placa del centro: un hexágono chico, de borde.
+    float hex = abs(q.x - 0.17);
+    dd = min(dd, max(hex, q.y - 0.1));
+    float g = 0.75 * px;
+    a = 1.0 - smoothstep(g - px, g + px, dd);
+    a = max(a, (1.0 - smoothstep(0.0, 0.12 + px, r)) * 0.9);
   } else {
-    float borde = mix(0.42, 0.98, vBlur);
-    a = 1.0 - smoothstep(1.0 - borde, 1.0, r);
-    a *= 0.82 + 0.18 * (1.0 - r);
+    a = 1.0 - smoothstep(1.0 - px, 1.0 + px, r);
+    a *= 0.86 + 0.14 * (1.0 - r * r);
   }
-  // Sobre una sala clara el blanco no se ve: un filo cálido, apenas, y menos nieve. Con más
-  // filo los copos se leían como burbujas.
   float clara = 1.0 - vOsc;
-  float sombra = clara * (1.0 - smoothstep(0.85, 1.25, r)) * (1.0 - a) * 0.13;
-  float A = a * vA * (1.0 - clara * 0.35);
-  float S = sombra * vA;
-  vec3 rgb = vec3(1.0, 0.996, 0.988) * A + vec3(0.42, 0.33, 0.27) * S * (1.0 - A);
+  float filo = clara * (1.0 - smoothstep(1.0, 1.0 + 2.0 * px, r)) * (1.0 - a) * 0.12;
+  float A = a * vA * (1.0 - clara * 0.5);
+  float S = filo * vA;
+  vec3 rgb = vec3(1.0, 0.997, 0.99) * A + vec3(0.45, 0.36, 0.3) * S * (1.0 - A);
   gl_FragColor = vec4(rgb, A + S * (1.0 - A));
 }`;
 
 /* ---- DESTELLOS --------------------------------------------------------------------------
-   Un destello vive un instante y aparece en otro lado: nace rápido, brilla, se apaga más
-   despacio, y gira apenas. Su forma es la de un brillo de verdad —dos rayos largos y finos,
-   dos más cortos en diagonal, un núcleo blanco y un halo dorado—, no un punto que titila.
-   Sobre una sala honda suma luz; sobre una clara se dibuja en oro más hondo para verse. */
+   Un destello es luz que se engancha en algo un instante: se enciende de golpe, brilla, y se
+   apaga más despacio, en otro lugar cada vez. Forma de brillo de verdad y a escala chica: dos
+   rayos largos de un píxel y medio de ancho que se afinan hacia la punta, dos diagonales
+   cortas y tenues, y un núcleo blanco. Sin halo grande: el halo era lo que lo volvía mancha.
+   Sobre una sala honda suma luz; sobre una clara se dibuja en oro hondo. */
 const DESTELLOS_V = COMUN + `
-varying float vA; varying float vRot; varying float vOsc;
+varying float vA; varying float vRot; varying float vOsc; varying float vPx;
 float h(float n) { return fract(sin(n) * 43758.5453); }
 void main() {
-  float P = mix(2.4, 5.4, aSeed.z);
+  float P = mix(3.4, 7.0, aSeed.z);
   float k = uTime / P + aSeed.w;
   float ciclo = floor(k); float vida = fract(k);
-  float m = 40.0;
+  float m = 30.0;
   float H = uRes.y + 2.0 * m;
   float x = h(ciclo * 12.9898 + aSeed.x * 78.233) * uRes.x;
-  float y = mod(h(ciclo * 39.3468 + aSeed.y * 11.135) * H - uScroll * 0.3, H) - m;
-  float env = smoothstep(0.0, 0.12, vida) * (1.0 - smoothstep(0.2, 0.62, vida));
-  float o; float w = peso(y, o);
-  float size = mix(9.0, 30.0, pow(aSeed.z, 2.2)) * (0.5 + 0.5 * env);
+  float y = mod(h(ciclo * 39.3468 + aSeed.y * 11.135) * H - uScroll * 0.25, H) - m;
+  float env = smoothstep(0.0, 0.06, vida) * (1.0 - smoothstep(0.08, 0.36, vida));
+  float o; float w = peso(y, o) * lectura(x);
+  float size = mix(5.0, 12.0, pow(aSeed.z, 1.6)) * (0.55 + 0.45 * env);
   vA = env * w;
-  vRot = (aSeed.w - 0.5) * 0.5 + vida * 0.5;
+  vRot = (aSeed.w - 0.5) * 0.4 + vida * 0.35;
   vOsc = o;
+  vPx = 1.0 / (size * uDpr);
   gl_PointSize = size * 2.0 * uDpr;
   gl_Position = vA < 0.004 ? vec4(2.0, 2.0, 0.0, 1.0) : aClip(x, y);
 }`;
 
 const DESTELLOS_F = `
 precision mediump float;
-varying float vA; varying float vRot; varying float vOsc;
-float rayo(vec2 q, float largo, float grosor) {
+varying float vA; varying float vRot; varying float vOsc; varying float vPx;
+float rayo(vec2 q, float largo, float ancho) {
   float t = max(0.0, 1.0 - abs(q.x) / largo);
-  return exp(-abs(q.y) / grosor) * t * t;
+  float w = ancho * (0.35 + 0.65 * t);
+  return exp(-(q.y * q.y) / (w * w)) * pow(t, 1.6);
 }
 void main() {
   vec2 p = gl_PointCoord * 2.0 - 1.0;
   float c = cos(vRot); float s = sin(vRot);
   p = mat2(c, -s, s, c) * p;
   float r = length(p);
-  float I = rayo(p, 1.0, 0.03) + rayo(p.yx, 1.0, 0.03);
+  float ancho = max(vPx * 0.85, 0.02);
+  float I = rayo(p, 1.0, ancho) + rayo(p.yx, 0.82, ancho);
   vec2 d = mat2(0.7071, -0.7071, 0.7071, 0.7071) * p;
-  I += 0.5 * (rayo(d, 0.48, 0.028) + rayo(d.yx, 0.48, 0.028));
-  float nucleo = exp(-r * r * 60.0);
-  float halo = exp(-r * 6.0) * 0.32;
-  float a = clamp(I * 0.95 + nucleo + halo, 0.0, 1.0) * vA;
-  vec3 oro = vec3(1.0, 0.9, 0.66);
-  vec3 col = mix(oro, vec3(1.0), clamp(nucleo * 1.5 + I * 0.25, 0.0, 1.0));
-  col = mix(vec3(0.66, 0.43, 0.06), col, vOsc);
-  gl_FragColor = vec4(col * a, a * mix(1.0, 0.35, vOsc));
+  I += 0.3 * (rayo(d, 0.36, ancho) + rayo(d.yx, 0.36, ancho));
+  float nucleo = exp(-r * r * 140.0);
+  float halo = exp(-r * 11.0) * 0.1;
+  float a = clamp(I * 0.9 + nucleo + halo, 0.0, 1.0) * vA;
+  vec3 oro = vec3(1.0, 0.92, 0.72);
+  vec3 col = mix(oro, vec3(1.0), clamp(nucleo * 1.6 + I * 0.3, 0.0, 1.0));
+  col = mix(vec3(0.62, 0.41, 0.07), col, vOsc);
+  gl_FragColor = vec4(col * a, a * mix(1.0, 0.3, vOsc));
 }`;
 
 /* ---- LUCES FLOTANDO ---------------------------------------------------------------------
-   Bokeh de lamparitas fuera de foco: discos con borde definido y el aro apenas más brillante,
-   como sale en una foto de noche. Los cercanos son grandes, más blandos y más tenues; los
-   lejanos, chicos y nítidos. Suben muy despacio y respiran. Toman los colores de las
-   lamparitas de la paleta. */
+   Lamparitas lejanas, no manchas: cada luz es un punto nítido de uno a dos píxeles y medio con
+   un resplandor tibio alrededor, como una guirnalda vista desde la otra punta de un salón.
+   (Hasta la segunda pasada eran discos de bokeh de hasta 54px; en la tercera quedó también un
+   disco chico, y sobre las salas hondas se leía como una burbuja gris: se retiró.) Suben muy
+   despacio, se mecen y respiran. Toman los colores cálidos de la paleta. */
 const LUCES_V = COMUN + `
 uniform vec3 uCol[4];
-varying float vA; varying float vD; varying vec3 vCol; varying float vOsc;
+varying float vA; varying vec3 vCol; varying float vOsc; varying float vPx;
 void main() {
   float d = aSeed.z;
-  float m = 90.0;
+  float m = 40.0;
   float W = uRes.x + 2.0 * m; float H = uRes.y + 2.0 * m;
-  float y = mod(aSeed.y * H - uTime * mix(4.0, 14.0, d) - uScroll * mix(0.06, 0.5, d), H) - m;
-  float x = mod(aSeed.x * W + sin(uTime * (0.1 + 0.18 * fract(aSeed.w * 3.3)) + aSeed.w * 6.28) * mix(10.0, 44.0, d) + uWind * 0.12, W) - m;
-  float o; float w = peso(y, o);
-  float respira = 0.78 + 0.22 * sin(uTime * (0.4 + 0.6 * fract(aSeed.w * 7.0)) + aSeed.w * 20.0);
-  vA = w * mix(1.0, 0.55, d) * respira;
-  vD = d; vOsc = o;
+  float y = mod(aSeed.y * H - uTime * mix(2.0, 7.0, d) - uScroll * mix(0.05, 0.36, d), H) - m;
+  float x = mod(aSeed.x * W + sin(uTime * (0.08 + 0.14 * fract(aSeed.w * 3.3)) + aSeed.w * 6.28) * mix(6.0, 22.0, d) + uWind * 0.08, W) - m;
+  float o; float w = peso(y, o) * lectura(x);
+  float respira = 0.68 + 0.32 * sin(uTime * (0.35 + 0.5 * fract(aSeed.w * 7.0)) + aSeed.w * 20.0);
+  vA = w * respira * mix(0.7, 1.0, d);
+  vOsc = o;
   float i = floor(fract(aSeed.w * 17.0) * 4.0);
   vCol = i < 1.0 ? uCol[0] : (i < 2.0 ? uCol[1] : (i < 3.0 ? uCol[2] : uCol[3]));
-  gl_PointSize = mix(10.0, 54.0, d * d) * uDpr;
+  // Núcleo de 1,2 a 2,4px; la caja es siete veces mayor para que entre el resplandor.
+  float nucleo = mix(1.2, 2.4, d);
+  vPx = 1.0 / (nucleo * uDpr);
+  gl_PointSize = nucleo * 14.0 * uDpr;
   gl_Position = w < 0.01 ? vec4(2.0, 2.0, 0.0, 1.0) : aClip(x, y);
 }`;
 
 const LUCES_F = `
 precision mediump float;
-varying float vA; varying float vD; varying vec3 vCol; varying float vOsc;
+varying float vA; varying vec3 vCol; varying float vOsc; varying float vPx;
 void main() {
-  vec2 p = gl_PointCoord * 2.0 - 1.0;
-  float r = length(p);
-  float blando = mix(0.07, 0.42, vD);
-  float disco = 1.0 - smoothstep(1.0 - blando, 1.0, r);
-  // Disco parejo y un aro fino apenas más brillante. Con núcleo y aro marcados se leía como una
-  // diana.
-  float aro = smoothstep(0.78, 0.96, r) * disco * 0.22;
-  float a = (disco * 0.58 + aro) * vA * mix(0.5, 1.3, vOsc);
-  vec3 col = mix(vCol, vec3(1.0, 0.95, 0.82), 0.12);
-  // Sobre lo hondo, casi pura suma de luz: es lo que hace que brillen en vez de verse grises.
-  gl_FragColor = vec4(col * a, a * mix(0.9, 0.08, vOsc));
+  // r = 1 es el borde del núcleo.
+  float r = length(gl_PointCoord * 2.0 - 1.0) * 7.0;
+  float nucleo = 1.0 - smoothstep(1.0 - vPx, 1.0 + vPx, r);
+  float brillo = exp(-r * 0.7) * 0.34;
+  float a = clamp(nucleo * 0.95 + brillo, 0.0, 1.0) * vA * mix(0.45, 1.0, vOsc);
+  vec3 col = mix(vCol, vec3(1.0, 0.98, 0.92), nucleo * 0.6);
+  // Sobre lo hondo, casi pura suma de luz: brillan en vez de verse grises.
+  gl_FragColor = vec4(col * a, a * mix(0.85, 0.1, vOsc));
 }`;
 
 function compilar(gl: WebGLRenderingContext, v: string, f: string): WebGLProgram | null {
@@ -276,11 +298,12 @@ export interface Escena {
 function cantidades(ancho: number, alto: number) {
   const area = (ancho * alto) / 1e6; // megapíxeles CSS: 0,33 en un celular, 1,3 en 1440×900
   return {
-    nieve: Math.round(Math.min(420, 150 + area * 210)),
-    destellos: Math.round(Math.min(46, 16 + area * 22)),
-    luces: Math.round(Math.min(34, 12 + area * 16)),
+    nieve: Math.round(Math.min(300, 110 + area * 150)),
+    destellos: Math.round(Math.min(30, 10 + area * 14)),
+    luces: Math.round(Math.min(40, 14 + area * 18)),
   };
 }
+const MAXIMO = [300, 30, 40] as const;
 
 export function crearEscena(canvas: HTMLCanvasElement): Escena | null {
   const gl = canvas.getContext("webgl", {
@@ -298,7 +321,6 @@ export function crearEscena(canvas: HTMLCanvasElement): Escena | null {
     [DESTELLOS_V, DESTELLOS_F],
     [LUCES_V, LUCES_F],
   ];
-  const MAXIMO = [420, 46, 34];
   const programas: Programa[] = [];
   for (let i = 0; i < 3; i++) {
     const prog = compilar(gl, fuentes[i]![0], fuentes[i]![1]);
@@ -309,7 +331,10 @@ export function crearEscena(canvas: HTMLCanvasElement): Escena | null {
     gl.bindBuffer(gl.ARRAY_BUFFER, buf);
     gl.bufferData(gl.ARRAY_BUFFER, datos, gl.STATIC_DRAW);
     const u: Programa["u"] = {};
-    for (const n of ["uRes", "uDpr", "uTime", "uScroll", "uWind", "uBand", "uPeso", "uBands", "uSistema", "uCol"])
+    for (const n of [
+      "uRes", "uDpr", "uTime", "uScroll", "uWind", "uColumna", "uTenue",
+      "uBand", "uPeso", "uBands", "uSistema", "uCol",
+    ])
       u[n] = gl.getUniformLocation(prog, n);
     programas.push({ prog, buf, total: MAXIMO[i]!, u, attr: gl.getAttribLocation(prog, "aSeed") });
   }
@@ -321,6 +346,8 @@ export function crearEscena(canvas: HTMLCanvasElement): Escena | null {
   let alto = 1;
   let dpr = 1;
   let fraccion = 1;
+  let columna = 0;
+  let tenue = 1;
   let cant = cantidades(1, 1);
   const bandaDatos = new Float32Array(MAX_BANDAS * 4);
   const pesoDatos = new Float32Array(MAX_BANDAS * 4);
@@ -335,6 +362,10 @@ export function crearEscena(canvas: HTMLCanvasElement): Escena | null {
       canvas.height = Math.round(h * d);
       gl.viewport(0, 0, canvas.width, canvas.height);
       cant = cantidades(w, h);
+      // La columna de lectura sólo existe donde hay márgenes: desde 900px. En un celular el
+      // texto ocupa todo el ancho, y lo que cuida la lectura es dibujar menos y más tenue.
+      columna = w >= 900 ? Math.min(w * 0.3, 420) : 0;
+      tenue = w < 700 ? 0.82 : 1;
     },
     densidad(f) {
       fraccion = f;
@@ -366,6 +397,8 @@ export function crearEscena(canvas: HTMLCanvasElement): Escena | null {
         gl.uniform1f(p.u.uTime!, t);
         gl.uniform1f(p.u.uScroll!, scroll);
         gl.uniform1f(p.u.uWind!, viento);
+        gl.uniform1f(p.u.uColumna!, columna);
+        gl.uniform1f(p.u.uTenue!, tenue);
         gl.uniform4fv(p.u.uBand!, bandaDatos);
         gl.uniform4fv(p.u.uPeso!, pesoDatos);
         gl.uniform1f(p.u.uBands!, n);

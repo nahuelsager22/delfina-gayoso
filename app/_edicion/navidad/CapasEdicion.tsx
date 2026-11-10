@@ -108,7 +108,7 @@ export function CapasEdicion() {
   return (
     <>
       {/* El laboratorio monta sus propios efectos: medirlos con la nieve encima los falsea. */}
-      {!ruta.startsWith("/navidad/laboratorio") && <Ambiente modo={v.luz} paleta={v.paleta} />}
+      {!ruta.startsWith("/navidad/laboratorio") && <Ambiente modo={v.luz} paleta={v.paleta} version={v.version} />}
       {ControlVariantes && <ControlVariantes />}
     </>
   );

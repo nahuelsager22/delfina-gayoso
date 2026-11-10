@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { getSala, rgbStr, type RGB } from "../../_chrome/atmosferas/config";
-import { salaEdicion } from "./paletas";
+import { salaSegunVersion } from "./paletas";
 import { BASE, type Variantes } from "./variantes";
 
 /**
@@ -51,12 +51,19 @@ export function useVariantes(): Variantes {
  *  hace que el motor de atmósfera vuelva a leer los `data-nav-*`. */
 export function aplicarVariantes(v: Variantes) {
   const raiz = document.documentElement;
+  raiz.dataset.version = v.version;
   raiz.dataset.paleta = v.paleta;
   raiz.dataset.intensidad = v.intensidad;
   raiz.dataset.onda = v.onda;
+  // En B la sala que sigue a la de Navidad lleva las luces de la salida: la entrada y la
+  // salida enmarcan la sala. Se marca acá porque la apertura puede cambiar el orden.
+  let trasNavidad = false;
   document.querySelectorAll<HTMLElement>("section[data-sala]").forEach((el) => {
     const clave = el.dataset.sala;
-    const e = salaEdicion(clave, v.paleta, v.intensidad);
+    if (trasNavidad) el.dataset.trasNavidad = "";
+    else delete el.dataset.trasNavidad;
+    trasNavidad = clave === "navidad";
+    const e = salaSegunVersion(clave, v.paleta, v.intensidad, v.version);
     const h = getSala(clave);
     const s = e
       ? {

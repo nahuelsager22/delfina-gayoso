@@ -16,10 +16,10 @@ export const ACCESOS = [
 export const BANDA = {
   kicker: "La agenda de Navidad está abierta",
   titulo: "Navidad, mi fecha favorita del año",
-  bajada: "Hay cosas para llevarte y cosas que armamos juntos. ¿Para quién es?",
+  bajada: "Hay cosas para llevarte y cosas para armar juntos. ¿Cuál te gusta más?",
   /** Que la agenda está abierta, dicho como una invitación y no como un apuro: sin fechas ni
    *  urgencia (indicación del usuario, segunda exploración). Borrador en su voz. */
-  invitacion: "Ya estoy armando la agenda de estas fiestas. Si algo de esto es para vos, escribime y lo charlamos.",
+  invitacion: "Ya estoy armando la agenda de estas fiestas. Si alguna opción te interesa, escribime y lo charlamos.",
 };
 
 export const AGENDA = { rotulo: "La agenda de Navidad", estado: "está abierta", accion: "Mirá qué hay" };

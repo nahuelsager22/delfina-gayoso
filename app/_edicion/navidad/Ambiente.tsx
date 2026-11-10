@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "motion/react";
 import { crearEscena, type Banda } from "./ambienteGL";
-import type { Luz } from "./variantes";
+import type { Luz, Version } from "./variantes";
 
 /**
  * EL AMBIENTE (Bloque 12 · segunda exploración). Un canvas fijo, sin eventos, encima de las
@@ -17,31 +17,47 @@ import type { Luz } from "./variantes";
  */
 
 /**
- * LA MEZCLA: qué le toca a cada sala. Los tres recursos no compiten, se reparten.
- *  · La primera pantalla brilla: destellos alrededor de su guirnalda, algo de nieve.
- *  · La banda navideña es donde nieva de verdad.
- *  · Las salas claras de lectura quedan casi quietas: un destello cada tanto, nada que distraiga.
- *  · Las salas hondas del medio son de luces flotando: es donde el bokeh se ve lindo.
- *  · El cierre es la noche completa: nieve, luces y algunas estrellas que destellan.
+ * LA MEZCLA de la versión A: qué le toca a cada sala. Los tres recursos no compiten, se
+ * reparten, y en la tercera pasada todo bajó un escalón para acompañar la lectura.
+ *  · La primera pantalla brilla apenas: algunos destellos y una nieve muy rala.
+ *  · La banda navideña es donde nieva de verdad, con alguna luz lejana.
+ *  · Las salas claras de lectura quedan casi quietas: un destello cada tanto.
+ *  · Las salas hondas del medio son de luces flotando.
+ *  · El cierre es la noche: nieve, luces y estrellas que destellan.
  * [nieve, destellos, luces]
  */
 const MEZCLA: Record<string, readonly [number, number, number]> = {
-  "quien-soy": [0.3, 1, 0],
-  navidad: [1, 0.3, 0],
-  umbral: [0, 0.4, 0],
-  marcas: [0, 0.3, 0],
-  "trabajemos-juntos": [0.25, 0.2, 1],
-  "lo-que-te-llevas": [0, 0.55, 0],
-  "la-clase-no-termina": [1, 0.45, 0.75],
+  "quien-soy": [0.25, 0.7, 0],
+  navidad: [1, 0.35, 0.45],
+  umbral: [0, 0.3, 0],
+  marcas: [0, 0.25, 0],
+  "trabajemos-juntos": [0.2, 0.15, 0.85],
+  "lo-que-te-llevas": [0, 0.35, 0],
+  "la-clase-no-termina": [0.9, 0.35, 0.7],
 };
 
-function pesoDe(modo: Luz, sala: string, oscura: boolean): readonly [number, number, number] {
+/**
+ * LA VERSIÓN B: el ambiente vive sólo en la sala de Navidad, y ahí con todo —nieve, luces y
+ * destellos a la vez—. Fuera de ella no se dibuja nada: no es un ambiente apagado sino una
+ * sala que tiene clima propio, como una vidriera.
+ */
+const SALA_B: readonly [number, number, number] = [1, 0.6, 0.8];
+const NADA: readonly [number, number, number] = [0, 0, 0];
+
+function pesoDe(
+  modo: Luz,
+  version: Version,
+  sala: string,
+  oscura: boolean,
+): readonly [number, number, number] {
+  if (version === "b" && sala !== "navidad") return NADA;
   if (modo === "nieve") return [1, 0, 0];
   if (modo === "destellos") return [0, 1, 0];
-  if (modo === "luces") return [0, 0, oscura ? 1 : 0.55];
-  const t = MEZCLA[sala] ?? (oscura ? [0.5, 0.3, 0.6] : [0, 0.35, 0]);
+  if (modo === "luces") return [0, 0, oscura ? 1 : 0.4];
+  if (version === "b") return SALA_B;
+  const t = MEZCLA[sala] ?? (oscura ? [0.35, 0.2, 0.55] : [0, 0.25, 0]);
   // Si la paleta vuelve honda una sala que la mezcla pensó clara, recibe luces.
-  return oscura && t[2] === 0 && sala !== "navidad" && sala !== "quien-soy" ? [t[0], t[1], 0.6] : t;
+  return oscura && t[2] === 0 && sala !== "navidad" && sala !== "quien-soy" ? [t[0], t[1], 0.55] : t;
 }
 
 const hexARgb = (h: string): [number, number, number] => {
@@ -49,7 +65,7 @@ const hexARgb = (h: string): [number, number, number] => {
   return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
 };
 
-export function Ambiente({ modo, paleta }: { modo: Luz; paleta: string }) {
+export function Ambiente({ modo, paleta, version = "a" }: { modo: Luz; paleta: string; version?: Version }) {
   const ref = useRef<HTMLCanvasElement>(null);
   const sinMotion = useReducedMotion();
   const activo = !sinMotion && modo !== "calma";
@@ -58,17 +74,21 @@ export function Ambiente({ modo, paleta }: { modo: Luz; paleta: string }) {
     const canvas = ref.current;
     if (!activo || !canvas) return;
     const escena = crearEscena(canvas);
-    if (!escena) return lienzo2D(canvas, modo === "mezcla" ? "nieve" : modo);
+    // El respaldo 2D no sabe de salas: en B, sin WebGL, la sala se queda sin clima antes que
+    // nevar sobre toda la casa.
+    if (!escena) return version === "b" ? undefined : lienzo2D(canvas, modo === "mezcla" ? "nieve" : modo);
 
-    // Los colores de las luces son los de las lamparitas de la paleta, aclarados, y sólo los
-    // cálidos: oro, blanco tibio y rojo. El verde, fuera de foco, se veía verde agua.
+    // Los colores de las luces: sólo cálidos y claros —el oro de las lamparitas de la paleta,
+    // crema y blanco tibio—. El rojo, sobre una sala roja, se leía como una mancha oscura, y el
+    // verde fuera de foco, como verde agua.
     const css = getComputedStyle(document.documentElement);
-    escena.colores(
-      ["--foco-1", "--foco-4", "--foco-2", "--foco-1"].map((v) => {
-        const c = hexARgb(css.getPropertyValue(v) || "#ffd27a");
-        return [c[0] * 0.9 + 0.1, c[1] * 0.85 + 0.08, c[2] * 0.75] as [number, number, number];
-      }),
-    );
+    const oro = hexARgb(css.getPropertyValue("--foco-1") || "#ffcf5c");
+    escena.colores([
+      [oro[0] * 0.9 + 0.1, oro[1] * 0.85 + 0.12, oro[2] * 0.7 + 0.1],
+      [1, 0.94, 0.8],
+      [1, 0.86, 0.6],
+      [1, 0.97, 0.9],
+    ]);
 
     const medir = () =>
       escena.medir(window.innerWidth, window.innerHeight, Math.min(window.devicePixelRatio || 1, 2));
@@ -110,7 +130,7 @@ export function Ambiente({ modo, paleta }: { modo: Luz; paleta: string }) {
         const r = s.getBoundingClientRect();
         if (r.bottom < -120 || r.top > alto + 120) continue;
         const oscura = s.dataset.oscura === "true";
-        bandas.push({ top: r.top, bottom: r.bottom, oscura, peso: pesoDe(modo, s.dataset.momento ?? "", oscura) });
+        bandas.push({ top: r.top, bottom: r.bottom, oscura, peso: pesoDe(modo, version, s.dataset.momento ?? "", oscura) });
       }
       escena.cuadro(t, window.scrollY, viento, bandas);
     };
@@ -137,11 +157,11 @@ export function Ambiente({ modo, paleta }: { modo: Luz; paleta: string }) {
       window.removeEventListener("resize", alRedimensionar);
       escena.destruir();
     };
-  }, [activo, modo, paleta]);
+  }, [activo, modo, paleta, version]);
 
   if (!activo) return null;
   // `key`: un contexto WebGL destruido no se puede volver a pedir sobre el mismo canvas.
-  return <canvas key={`${modo}-${paleta}`} ref={ref} className="ambiente" aria-hidden />;
+  return <canvas key={`${modo}-${paleta}-${version}`} ref={ref} className="ambiente" aria-hidden />;
 }
 
 /**
@@ -170,13 +190,13 @@ function lienzo2D(canvas: HTMLCanvasElement, modo: Exclude<Luz, "mezcla" | "calm
     });
   const dibujos =
     modo === "nieve"
-      ? [halo(2, "rgba(255,255,255,1)"), halo(3.5, "rgba(255,255,255,.95)"), halo(6, "rgba(255,255,255,.8)")]
+      ? [halo(1.2, "rgba(255,255,255,.9)"), halo(2, "rgba(255,255,255,.85)"), halo(3, "rgba(255,255,255,.75)")]
       : modo === "destellos"
-        ? [halo(5, "rgba(255,230,160,1)"), halo(9, "rgba(255,230,160,.9)")]
-        : [halo(16, "rgba(255,214,120,.7)"), halo(28, "rgba(255,190,140,.55)")];
+        ? [halo(3, "rgba(255,232,170,.95)"), halo(5, "rgba(255,232,170,.85)")]
+        : [halo(4, "rgba(255,214,120,.6)"), halo(6, "rgba(255,200,150,.45)")];
   let ancho = 0;
   let alto = 0;
-  const n = modo === "nieve" ? 70 : modo === "destellos" ? 26 : 18;
+  const n = modo === "nieve" ? 60 : modo === "destellos" ? 18 : 16;
   const copos = Array.from({ length: n }, () => ({ x: Math.random(), y: Math.random(), z: Math.random(), f: Math.random() * 6 }));
   const medir = () => {
     ancho = window.innerWidth;
