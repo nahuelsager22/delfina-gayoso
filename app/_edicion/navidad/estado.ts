@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { getSala, rgbStr, type RGB } from "../../_chrome/atmosferas/config";
-import { salaSegunVersion } from "./paletas";
+import { esSalaNavidad, salaSegunVersion } from "./paletas";
 import { BASE, type Variantes } from "./variantes";
 
 /**
@@ -60,9 +60,10 @@ export function aplicarVariantes(v: Variantes) {
   let trasNavidad = false;
   document.querySelectorAll<HTMLElement>("section[data-sala]").forEach((el) => {
     const clave = el.dataset.sala;
-    if (trasNavidad) el.dataset.trasNavidad = "";
+    const deNavidad = esSalaNavidad(clave);
+    if (trasNavidad && !deNavidad) el.dataset.trasNavidad = "";
     else delete el.dataset.trasNavidad;
-    trasNavidad = clave === "navidad";
+    trasNavidad = deNavidad;
     const e = salaSegunVersion(clave, v.paleta, v.intensidad, v.version);
     const h = getSala(clave);
     const s = e

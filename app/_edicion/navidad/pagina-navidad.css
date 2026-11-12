@@ -1,0 +1,459 @@
+/* =============================================================================
+   /navidad · LA PÁGINA (Bloque 12 · quinta pasada). Estructura y criterio en
+   `PaginaEdicion.tsx`; sólo se carga en esta página.
+
+   Dos tratamientos que se distinguen antes de leer:
+   · lo que se LLEVA vive en papel —la carta, las fichas—, con su tinta propia: se lee igual
+     sobre cualquier sala y cualquier variante;
+   · lo que se ARMA vive sobre la sala, con la tinta de la sala, como "Trabajemos juntos".
+   ========================================================================== */
+/* Las portadas de esta página van más cerca de su texto: es una página de leer y elegir, no
+   de detenerse en cada título. */
+.pagina-navidad .momento-portada {
+  margin-block-end: var(--space-lg);
+}
+/* La entrada lleva el título grande de la banda de la home, y su oro sólo cuando la sala es
+   honda: sobre la entrada clara de "Del día a la noche" el oro no se lee, y va en tinta. */
+section[data-momento="navidad-entrada"] .momento-kicker {
+  color: rgb(var(--atm-accent));
+}
+section[data-momento="navidad-entrada"] .momento-titulo {
+  font-size: clamp(3rem, 1.8rem + 6vw, 6.4rem);
+  line-height: 1;
+  font-weight: var(--font-weight-nombre);
+  letter-spacing: -0.015em;
+}
+section[data-momento="navidad-entrada"][data-oscura="true"] .momento-titulo {
+  background: linear-gradient(100deg, #fff1c6 0%, #f8d88a 34%, #fff6da 52%, #f4cb6e 74%, #fff1c6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.pn-ancla {
+  scroll-margin-top: calc(var(--navbar-h) + var(--space-md));
+}
+.pn-bajada {
+  max-inline-size: 34ch;
+  margin-block-end: var(--space-xl);
+}
+
+/* El papel: tinta propia, para que el botón, el borde y los textos no tomen la de la sala. */
+.pn-carta,
+.pn-ficha {
+  --atm-ink: 52 19 14;
+  --atm-ink-soft: 90 42 32;
+  --atm-accent: 142 15 34;
+  color: rgb(var(--atm-ink));
+  background: #fffdf6;
+  border-radius: 4px;
+  box-shadow:
+    0 18px 30px -20px rgb(30 10 5 / 0.6),
+    0 2px 6px -2px rgb(30 10 5 / 0.3);
+}
+
+/* ---- La carta de la entrada ---------------------------------------------- */
+.pn-carta {
+  display: grid;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-md) var(--space-md);
+  max-inline-size: 880px;
+  rotate: -0.6deg;
+}
+@media (min-width: 760px) {
+  .pn-carta {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    padding: var(--space-lg) var(--space-xl) var(--space-xl);
+  }
+  .pn-carta-grupo + .pn-carta-grupo {
+    border-inline-start: 1.5px dashed rgb(var(--atm-ink) / 0.22);
+    padding-inline-start: var(--space-xl);
+  }
+}
+@media (max-width: 759px) {
+  .pn-carta-grupo + .pn-carta-grupo {
+    border-block-start: 1.5px dashed rgb(var(--atm-ink) / 0.22);
+    padding-block-start: var(--space-md);
+  }
+}
+.pn-carta-rotulo {
+  font-family: var(--font-voz);
+  font-size: var(--text-voz-l);
+  font-weight: var(--font-weight-nombre);
+  line-height: 1.1;
+}
+.pn-carta-nota {
+  font-size: var(--text-meta);
+  color: rgb(var(--atm-ink-soft));
+  margin-block: 2px var(--space-xs);
+}
+.pn-carta ul {
+  list-style: none;
+  display: grid;
+  gap: 2px;
+  padding: 0;
+  margin: 0;
+}
+.pn-carta-item {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: center;
+  gap: var(--space-sm);
+  padding-block: 7px;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color var(--dur-sm) var(--ease-posar);
+}
+.pn-carta-item:hover {
+  background: rgb(var(--atm-accent) / 0.06);
+}
+.pn-carta-item:focus-visible {
+  outline: 2px solid rgb(var(--atm-accent));
+  outline-offset: 2px;
+}
+.pn-carta-sticker {
+  inline-size: 40px;
+  filter: drop-shadow(0 2px 3px rgb(40 20 10 / 0.25));
+}
+.pn-carta-texto {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.pn-carta-para {
+  font-size: var(--text-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(var(--atm-accent));
+}
+.pn-carta-que {
+  font-family: var(--font-voz);
+  font-size: 1.12rem;
+}
+.pn-carta-flecha {
+  color: rgb(var(--atm-accent));
+  transition: translate var(--dur-sm) var(--ease-posar);
+}
+.pn-carta-item:hover .pn-carta-flecha {
+  translate: 3px 0;
+}
+
+/* ---- Para llevarte: las fichas -------------------------------------------- */
+.pn-fichas {
+  display: grid;
+  gap: var(--space-2xl);
+}
+.pn-ficha {
+  display: grid;
+  gap: var(--space-lg);
+  padding: var(--space-lg) var(--space-md);
+  rotate: 0.5deg;
+}
+.pn-ficha--kids {
+  rotate: -0.5deg;
+}
+@media (min-width: 900px) {
+  .pn-ficha {
+    grid-template-columns: minmax(240px, 38%) 1fr;
+    align-items: center;
+    gap: var(--space-xl);
+    padding: var(--space-xl);
+  }
+}
+.pn-para {
+  font-size: var(--text-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(var(--atm-accent));
+}
+.pn-nombre {
+  font-family: var(--font-voz);
+  font-size: clamp(1.9rem, 1.4rem + 2vw, 2.8rem);
+  font-weight: var(--font-weight-nombre);
+  line-height: 1.05;
+  margin-block: 4px var(--space-sm);
+}
+.pn-texto {
+  font-family: var(--font-voz);
+  font-size: var(--text-cuerpo);
+  line-height: 1.45;
+  max-inline-size: 42ch;
+}
+.pn-texto--stickers {
+  font-weight: var(--font-weight-nombre);
+  color: rgb(var(--atm-accent));
+  margin-block-start: var(--space-sm);
+}
+
+/* La caja dibujada de la Cookie Box: kraft, su cinta, y las masitas asomando. */
+.pn-caja {
+  position: relative;
+  inline-size: min(100%, 340px);
+  aspect-ratio: 4 / 3;
+  margin-inline: auto;
+}
+.pn-caja-fondo {
+  position: absolute;
+  inset: 22% 0 0;
+  inline-size: 100%;
+  block-size: 78%;
+}
+.pn-caja-pieza {
+  position: absolute;
+  inline-size: 36%;
+}
+.pn-caja-pieza--a {
+  inset: 2% auto auto 10%;
+  rotate: -10deg;
+}
+.pn-caja-pieza--b {
+  inset: 0 auto auto 38%;
+  inline-size: 30%;
+  rotate: 6deg;
+}
+.pn-caja-pieza--c {
+  inset: 8% 6% auto auto;
+  inline-size: 30%;
+  rotate: 14deg;
+}
+
+/* Box Kids: la foto de referencia, con su rótulo, y el sello de los stickers. */
+.pn-kids-foto {
+  position: relative;
+  inline-size: min(100%, 320px);
+  margin: 0 auto;
+}
+.pn-referencia {
+  font-size: var(--text-micro);
+  letter-spacing: 0.06em;
+  color: rgb(var(--atm-ink-soft));
+  margin-block-start: 6px;
+  text-align: center;
+}
+.pn-stickers {
+  position: absolute;
+  inset-block-start: 5%;
+  inset-inline-end: 4px;
+  display: grid;
+  place-items: center;
+  inline-size: 86px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #c4202f;
+  color: #fff8ea;
+  font-family: var(--font-voz);
+  font-weight: var(--font-weight-nombre);
+  font-size: 1rem;
+  line-height: 1;
+  text-align: center;
+  padding: 10px;
+  rotate: 12deg;
+  box-shadow:
+    0 0 0 4px #fffdf6,
+    0 6px 12px -4px rgb(30 10 5 / 0.45);
+}
+.pn-variantes {
+  display: grid;
+  gap: var(--space-sm);
+  margin-block-start: var(--space-md);
+}
+@media (min-width: 560px) {
+  .pn-variantes {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.pn-variante {
+  position: relative;
+  padding: var(--space-sm) var(--space-sm) var(--space-sm) 66px;
+  border-radius: 6px;
+  background: rgb(var(--atm-accent) / 0.05);
+}
+.pn-variante-sticker {
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-start: 8px;
+  inline-size: 50px;
+}
+.pn-variante-nombre {
+  font-family: var(--font-voz);
+  font-size: 1.2rem;
+  font-weight: var(--font-weight-nombre);
+  margin-block-end: 6px;
+}
+.pn-incluye {
+  display: grid;
+  gap: 4px;
+  font-size: var(--text-meta);
+  line-height: 1.35;
+  color: rgb(var(--atm-ink-soft));
+  padding-inline-start: 1.1em;
+  margin: 0;
+}
+.pn-incluye li::marker {
+  content: "✶ ";
+  color: rgb(var(--atm-accent));
+  font-size: 0.8em;
+}
+
+/* El pedido: el botón se ve —es lo que distingue comprar de consultar— pero provisional. */
+.pn-pedido {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px var(--space-md);
+  margin-block-start: var(--space-md);
+}
+.pn-provisional {
+  cursor: not-allowed;
+  outline: 2px dashed rgb(var(--atm-ink) / 0.55);
+  outline-offset: 4px;
+  box-shadow: none;
+}
+.pn-provisional:hover {
+  transform: none;
+  box-shadow: none;
+}
+.pn-provisional-nota {
+  font-size: var(--text-micro);
+  letter-spacing: 0.04em;
+  color: rgb(var(--atm-ink-soft));
+}
+.pn-reservar {
+  flex-basis: 100%;
+  font-size: var(--text-meta);
+  color: rgb(var(--atm-accent));
+  text-underline-offset: 3px;
+}
+
+/* ---- Lo armamos juntos: sobre la sala -------------------------------------- */
+.pn-propuestas {
+  display: grid;
+  gap: var(--space-3xl);
+  /* Budín se asoma en la esquina de abajo de esta sala (`DecoracionSala`): su piso queda
+     libre, o pisaba los enlaces de la última propuesta. */
+  padding-block-end: clamp(110px, 13vw, 190px);
+}
+.pn-propuesta {
+  display: grid;
+  gap: var(--space-lg);
+}
+@media (min-width: 900px) {
+  .pn-propuesta {
+    grid-template-columns: minmax(240px, 36%) 1fr;
+    align-items: center;
+    gap: var(--space-2xl);
+  }
+  .pn-propuesta[data-lado="der"] .pn-propuesta-visual {
+    order: 2;
+  }
+}
+.pn-propuesta-visual {
+  inline-size: min(100%, 320px);
+  margin-inline: auto;
+}
+.pn-nombre--sala,
+.pn-texto--sala {
+  color: rgb(var(--atm-ink));
+}
+.pn-para--sala {
+  color: rgb(var(--atm-accent));
+}
+.pn-despues {
+  font-size: var(--text-meta);
+  line-height: 1.4;
+  color: rgb(var(--atm-ink-soft));
+  margin-block-start: var(--space-sm);
+  max-inline-size: 44ch;
+}
+.pn-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-lg);
+  margin-block-start: var(--space-md);
+}
+.pn-flecha-abajo {
+  rotate: 90deg;
+}
+.pn-marca {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 5 / 4;
+}
+.pn-marca-sticker {
+  inline-size: min(62%, 180px);
+}
+
+/* La caja que crece: masita + frasco + pan dulce, que se suman de a uno. */
+.pn-crece {
+  cursor: pointer;
+  margin: 0;
+}
+.pn-crece-fila {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.pn-crece-pieza {
+  inline-size: 30%;
+  max-inline-size: 104px;
+}
+.pn-crece-pieza .sticker {
+  inline-size: 100%;
+}
+.pn-crece-mas {
+  font-family: var(--font-voz);
+  font-size: 1.8rem;
+  line-height: 1;
+  color: rgb(var(--atm-accent));
+}
+.pn-crece-leyenda {
+  margin-block-start: var(--space-sm);
+  text-align: center;
+  font-size: var(--text-meta);
+  color: rgb(var(--atm-ink-soft));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pn-crece[data-estado="lista"] :is(.pn-crece-pieza, .pn-crece-mas) {
+    opacity: 0;
+    translate: 0 14px;
+    scale: 0.8;
+  }
+  .pn-crece[data-estado="armada"] :is(.pn-crece-pieza, .pn-crece-mas) {
+    transition:
+      opacity 420ms var(--ease-suave),
+      translate 560ms cubic-bezier(0.3, 1.5, 0.5, 1),
+      scale 560ms cubic-bezier(0.3, 1.5, 0.5, 1);
+    transition-delay: calc(var(--i) * 420ms);
+  }
+}
+
+/* ---- Cierre ----------------------------------------------------------------- */
+/* El contenido deja libre el piso, que es del barrio (en un celular, del barrio y su calle). */
+.pn-cierre {
+  display: grid;
+  gap: var(--space-md);
+  max-inline-size: 40rem;
+  padding-block-end: clamp(150px, 14vw, 210px);
+}
+@media (max-width: 719px) {
+  .pn-cierre {
+    padding-block-end: calc(19svh + 70px);
+  }
+}
+.pn-canales {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-xl);
+}
+.pn-reserva {
+  font-size: var(--text-meta);
+  line-height: 1.45;
+  color: rgb(var(--atm-ink-soft));
+  max-inline-size: 42ch;
+}
+.pn-volver {
+  font-size: var(--text-meta);
+}

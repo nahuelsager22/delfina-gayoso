@@ -131,6 +131,31 @@ const ARTE = {
       </g>
     </>
   ),
+  /* Quinta pasada, para la Box Empresarial ("cookie box + confituras + pan dulce o budín
+     inglés"): las dos cosas que la caja suma. Misma planilla: tinta, gama plana y troquel. */
+  frasco: (
+    <>
+      <path d="M30 46 C30 40 34 37 40 37 H80 C86 37 90 40 90 46 V100 C90 107 85 111 78 111 H42 C35 111 30 107 30 100 Z" fill={R} {...trazo} />
+      <path d="M38 50 V98" fill="none" stroke="#E4606A" strokeWidth="5" strokeLinecap="round" opacity=".8" />
+      <rect x="40" y="62" width="40" height="28" rx="4" fill={B} {...trazo} strokeWidth={2.4} />
+      <path d="M48 76 q6 -7 12 0 q6 7 12 0" fill="none" stroke={R} strokeWidth="3" strokeLinecap="round" />
+      <rect x="34" y="22" width="52" height="16" rx="3" fill={OC} {...trazo} />
+      <path d="M30 24 C40 12 80 12 90 24 L86 30 C74 22 46 22 34 30 Z" fill={B} {...trazo} strokeWidth={2.4} />
+      <path d="M42 18 l-2 6 M54 15 l-1 7 M66 15 l1 7 M78 18 l2 6" fill="none" stroke={R} strokeWidth="2.4" strokeLinecap="round" />
+    </>
+  ),
+  pandulce: (
+    <>
+      <path d="M22 70 C20 38 40 22 60 22 C80 22 100 38 98 70 Z" fill={G} {...trazo} />
+      <path d="M30 46 C42 38 52 44 60 38 C70 44 80 38 90 46" fill="none" stroke={GH} strokeWidth="4" strokeLinecap="round" />
+      <circle cx="44" cy="58" r="4" fill={R} {...trazo} strokeWidth={2} />
+      <circle cx="62" cy="52" r="3.6" fill={V} {...trazo} strokeWidth={2} />
+      <circle cx="78" cy="60" r="4" fill={O} {...trazo} strokeWidth={2} />
+      <circle cx="54" cy="64" r="3.2" fill={R} {...trazo} strokeWidth={2} />
+      <path d="M20 68 H100 L95 108 H25 Z" fill={B} {...trazo} />
+      <path d="M33 70 L36 106 M47 70 L49 106 M60 70 V106 M73 70 L71 106 M87 70 L84 106" fill="none" stroke={R} strokeWidth="3.4" strokeLinecap="round" />
+    </>
+  ),
 } as const satisfies Record<string, ReactNode>;
 
 export type NombreSticker = keyof typeof ARTE;

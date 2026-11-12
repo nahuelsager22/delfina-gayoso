@@ -1,9 +1,26 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { useReducedMotion } from "motion/react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
+
+/**
+ * `prefers-reduced-motion`, leído del navegador y siguiendo sus cambios. No se usa el
+ * `useReducedMotion` de Motion: lee la preferencia UNA vez, cuando se monta el primer
+ * componente de Motion, y en `/navidad` el ambiente se montaba antes y recibía el valor por
+ * defecto: con movimiento reducido quedaba un canvas en la página (quinta pasada). En el
+ * servidor se asume reducido, así el HTML nunca trae el canvas.
+ */
+const CONSULTA = "(prefers-reduced-motion: reduce)";
+const suscribir = (aviso: () => void) => {
+  const m = matchMedia(CONSULTA);
+  m.addEventListener("change", aviso);
+  return () => m.removeEventListener("change", aviso);
+};
+function usePrefiereQuieto(): boolean {
+  return useSyncExternalStore(suscribir, () => matchMedia(CONSULTA).matches, () => true);
+}
 import { crearEscena, type Banda } from "./ambienteGL";
 import type { Luz, Version } from "./variantes";
+import { esSalaNavidad } from "./paletas";
 
 /**
  * EL AMBIENTE (Bloque 12 · segunda exploración). Un canvas fijo, sin eventos, encima de las
@@ -34,6 +51,12 @@ const MEZCLA: Record<string, readonly [number, number, number]> = {
   "trabajemos-juntos": [0.2, 0.15, 0.85],
   "lo-que-te-llevas": [0, 0.35, 0],
   "la-clase-no-termina": [0.9, 0.35, 0.7],
+  // `/navidad`: nieva al entrar, casi quietud donde se leen las cajas, luces lejanas en lo que
+  // se arma y la noche completa al final.
+  "navidad-entrada": [0.9, 0.4, 0.35],
+  "para-llevarte": [0, 0.3, 0],
+  "lo-armamos-juntos": [0.25, 0.2, 0.8],
+  "navidad-contacto": [0.9, 0.35, 0.7],
 };
 
 /**
@@ -49,12 +72,16 @@ function pesoDe(
   version: Version,
   sala: string,
   oscura: boolean,
+  clave: string | undefined,
 ): readonly [number, number, number] {
-  if (version === "b" && sala !== "navidad") return NADA;
+  // En B, sólo las salas de Navidad (la banda de la home y las de `/navidad`) tienen clima.
+  if (version === "b" && !esSalaNavidad(clave)) return NADA;
   if (modo === "nieve") return [1, 0, 0];
   if (modo === "destellos") return [0, 1, 0];
   if (modo === "luces") return [0, 0, oscura ? 1 : 0.4];
-  if (version === "b") return SALA_B;
+  // En B, las salas hondas de Navidad llevan los tres; la clara de `/navidad` (donde se leen
+  // las cajas) sólo algún destello.
+  if (version === "b") return oscura ? SALA_B : [0, 0.3, 0];
   const t = MEZCLA[sala] ?? (oscura ? [0.35, 0.2, 0.55] : [0, 0.25, 0]);
   // Si la paleta vuelve honda una sala que la mezcla pensó clara, recibe luces.
   return oscura && t[2] === 0 && sala !== "navidad" && sala !== "quien-soy" ? [t[0], t[1], 0.55] : t;
@@ -67,7 +94,7 @@ const hexARgb = (h: string): [number, number, number] => {
 
 export function Ambiente({ modo, paleta, version = "a" }: { modo: Luz; paleta: string; version?: Version }) {
   const ref = useRef<HTMLCanvasElement>(null);
-  const sinMotion = useReducedMotion();
+  const sinMotion = usePrefiereQuieto();
   const activo = !sinMotion && modo !== "calma";
 
   useEffect(() => {
@@ -130,7 +157,7 @@ export function Ambiente({ modo, paleta, version = "a" }: { modo: Luz; paleta: s
         const r = s.getBoundingClientRect();
         if (r.bottom < -120 || r.top > alto + 120) continue;
         const oscura = s.dataset.oscura === "true";
-        bandas.push({ top: r.top, bottom: r.bottom, oscura, peso: pesoDe(modo, version, s.dataset.momento ?? "", oscura) });
+        bandas.push({ top: r.top, bottom: r.bottom, oscura, peso: pesoDe(modo, version, s.dataset.momento ?? "", oscura, s.dataset.sala) });
       }
       escena.cuadro(t, window.scrollY, viento, bandas);
     };

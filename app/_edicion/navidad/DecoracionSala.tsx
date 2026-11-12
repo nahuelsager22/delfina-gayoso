@@ -65,6 +65,13 @@ const ESCENAS: Record<string, readonly Pegado[]> = {
     { s: "arbolito", borde: "arriba", lado: "izq", t: "clamp(62px, 6.5vw, 104px)", g: -9 },
   ],
   "la-clase-no-termina": [],
+  // `/navidad` (quinta pasada). Pocos pegados: los stickers de esta página viven en el
+  // contenido —la caja, las variantes de Kids, la caja que crece—, y acá sólo acompañan.
+  // La entrada es la primera sala de su página: el navbar está sobre su aire de arriba.
+  "navidad-entrada": [{ s: "estrella", borde: "abajo", lado: "der", t: "clamp(62px, 7vw, 108px)", g: 12 }],
+  "lo-armamos-juntos": [
+    { s: "acebo", borde: "arriba", lado: "der", t: "clamp(62px, 7vw, 110px)", g: -8, ancho: { y: "7vw", x: "10%", lado: "der" } },
+  ],
   // Páginas internas: la edición las atraviesa con menos, para no tapar lo que se lee.
   "la-mesa": [
     { s: "estrella", borde: "abajo", lado: "der", t: "clamp(62px, 7vw, 104px)", g: 10 },
@@ -130,12 +137,11 @@ function Barrio() {
 }
 
 export function DecoracionSala({ ancla, primero = false }: { ancla: string; primero?: boolean }) {
-  // El andamio de `/navidad` (primera sala de su página, con la firma de North Studio al pie)
-  // no se decora hasta que se componga: la partitura de la banda es para la home, y ahí Budín
-  // caía sobre la firma y el bastón sobre la lista.
-  const andamio = primero && ancla === "navidad";
-  const pegados = andamio ? [] : (ESCENAS[ancla] ?? []);
-  const cierre = ancla === "la-clase-no-termina";
+  const pegados = ESCENAS[ancla] ?? [];
+  // Las dos noches con barrio: el cierre de la home y el de `/navidad`.
+  const cierre = ancla === "la-clase-no-termina" || ancla === "navidad-contacto";
+  // Budín se asoma en la banda de la home y, en `/navidad`, detrás de la onda del cierre.
+  const asoma = ancla === "navidad" || ancla === "lo-armamos-juntos";
   // La primera sala de cualquier página lleva la guirnalda colgada: en la home la disputan
   // Hola y la banda según quién abra (`.apertura`), y en las páginas internas es esa sola.
   const inicio = primero || ancla === "quien-soy" || ancla === "navidad";
@@ -145,9 +151,9 @@ export function DecoracionSala({ ancla, primero = false }: { ancla: string; prim
       {inicio && <GuirnaldaColgada />}
       {/* La sala de Navidad tiene su propio cielo, que sólo se ve en la versión B: ahí es la
           única sala de noche de la casa. */}
-      {(cierre || (ancla === "navidad" && !andamio)) && <Cielo />}
+      {(cierre || ancla === "navidad") && <Cielo />}
       {cierre && <Barrio />}
-      {ancla === "navidad" && !andamio && <BudinGorro className="budin-asoma sticker-vivo" />}
+      {asoma && <BudinGorro className="budin-asoma sticker-vivo" />}
       {pegados.map((p, i) => (
         <Sticker
           key={i}

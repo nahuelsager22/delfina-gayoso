@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { fijarVariantes, useVariantes } from "./estado";
 import { OPCIONES, BASE, type Variantes } from "./variantes";
 
@@ -11,17 +12,19 @@ import { OPCIONES, BASE, type Variantes } from "./variantes";
  */
 export function ControlVariantes() {
   const v = useVariantes();
+  const ruta = usePathname();
   const [abierto, setAbierto] = useState(() => matchMedia("(min-width: 720px)").matches);
 
   return (
-    <aside className="control-variantes" aria-label="Variantes de la edición navideña">
+    <aside className="control-variantes" aria-label="Opciones de diseño de la edición navideña">
       <button type="button" aria-expanded={abierto} onClick={() => setAbierto((a) => !a)}>
-        {abierto ? "Ocultar variantes" : "Variantes"}
+        {abierto ? "Ocultar opciones" : "Opciones de diseño"}
       </button>
       {abierto && (
         <form onSubmit={(e) => e.preventDefault()}>
           {(Object.keys(OPCIONES) as (keyof Variantes)[])
             .filter((dim) => !OPCIONES[dim].soloEn || OPCIONES[dim].soloEn === v.version)
+            .filter((dim) => !OPCIONES[dim].soloEnRuta || OPCIONES[dim].soloEnRuta === ruta)
             .map((dim) => (
             <label key={dim} className={dim === "version" ? "control-version" : undefined}>
               <span>{OPCIONES[dim].rotulo}</span>
@@ -39,7 +42,7 @@ export function ControlVariantes() {
           ))}
           {/* Vuelve a la base sin cambiar de versión: comparar A y B es la pregunta principal. */}
           <button type="button" onClick={() => fijarVariantes({ ...BASE, version: v.version })}>
-            Volver a la base
+            Restablecer
           </button>
         </form>
       )}

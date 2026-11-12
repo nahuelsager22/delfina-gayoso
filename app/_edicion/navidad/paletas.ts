@@ -42,6 +42,12 @@ export const CLAVES_SALA = [
   "colaboraciones",
   "mesa",
   "compartir",
+  // `/navidad` (quinta pasada): sus cuatro salas tienen clave propia, así cada variante las
+  // compone como un recorrido y no como copias de la banda de la home.
+  "navidad-entrada",
+  "navidad-llevar",
+  "navidad-juntos",
+  "navidad-cierre",
 ] as const;
 export type ClaveSala = (typeof CLAVES_SALA)[number];
 
@@ -93,6 +99,12 @@ function casaVestida(acentoClaro: Hex, acentoHondo: Hex, banda: Def): Record<Cla
     colaboraciones: claro(CASA.crema),
     mesa: claro(CASA.crema),
     compartir: claro(CASA.salvia),
+    // `/navidad` con los colores de siempre: la entrada es la banda de temporada, y el resto
+    // son salas de la casa —crema, verde, marrón— con el acento de la paleta.
+    "navidad-entrada": banda,
+    "navidad-llevar": claro(CASA.crema),
+    "navidad-juntos": hondo(CASA.verde),
+    "navidad-cierre": hondo(CASA.marron),
   };
 }
 
@@ -121,6 +133,12 @@ export const PALETAS = {
       colaboraciones: ["#FFF3D9", "claro"],
       mesa: ["#FFF3D9", "claro"],
       compartir: ["#F9DAD3", "claro", { ink: "#34130E", inkSoft: "#5A2A20", accent: "#8E0F22" }],
+      // `/navidad`: pino a la entrada, manteca para lo que se lleva, cereza para lo que se
+      // arma, y la noche al final.
+      "navidad-entrada": ["#123F2C", "hondo"],
+      "navidad-llevar": ["#FFF3D9", "claro"],
+      "navidad-juntos": ["#AE1529", "hondo", { ink: "#FFF8EA", inkSoft: "#FFEEDD", accent: "#FBE09C" }],
+      "navidad-cierre": ["#0E2233", "hondo"],
     },
     anochecer: {
       "quien-soy": ["#FFEFCF", "claro"],
@@ -133,6 +151,11 @@ export const PALETAS = {
       colaboraciones: ["#FFEFCF", "claro"],
       mesa: ["#FFEFCF", "claro"],
       compartir: ["#FBDDD2", "claro", { ink: "#34130E", inkSoft: "#5A2A20", accent: "#8E0F22" }],
+      // `/navidad` también anochece: de la tarde a la noche, bajando.
+      "navidad-entrada": ["#FFEFCF", "claro"],
+      "navidad-llevar": ["#FBDDD2", "claro", { ink: "#34130E", inkSoft: "#5A2A20", accent: "#8E0F22" }],
+      "navidad-juntos": ["#AE1529", "hondo", { ink: "#FFF8EA", inkSoft: "#FFEEDD", accent: "#FBE09C" }],
+      "navidad-cierre": ["#0C1A2B", "hondo"],
     },
   },
 
@@ -156,6 +179,10 @@ export const PALETAS = {
       colaboraciones: ["#FBF1DC", "claro"],
       mesa: ["#FBF1DC", "claro"],
       compartir: ["#EADBC0", "claro"],
+      "navidad-entrada": ["#0F3327", "hondo"],
+      "navidad-llevar": ["#FBF1DC", "claro"],
+      "navidad-juntos": ["#5C0F1F", "hondo"],
+      "navidad-cierre": ["#1C0A13", "hondo"],
     },
     anochecer: {
       "quien-soy": ["#F7E7CB", "claro"],
@@ -168,6 +195,10 @@ export const PALETAS = {
       colaboraciones: ["#F7E7CB", "claro"],
       mesa: ["#F7E7CB", "claro"],
       compartir: ["#EAD3B2", "claro", { ink: "#2A0E13", inkSoft: "#47212A", accent: "#6A1228" }],
+      "navidad-entrada": ["#F7E7CB", "claro"],
+      "navidad-llevar": ["#EAD3B2", "claro", { ink: "#2A0E13", inkSoft: "#47212A", accent: "#6A1228" }],
+      "navidad-juntos": ["#7A1830", "hondo"],
+      "navidad-cierre": ["#140910", "hondo"],
     },
   },
 } as const satisfies Record<string, Paleta>;
@@ -202,5 +233,23 @@ export function salaSegunVersion(
   version: "a" | "b",
 ): SalaEdicion | null {
   if (version === "a") return salaEdicion(clave, paleta, intensidad);
-  return clave === "navidad" ? salaEdicion(clave, paleta, "anochecer") : null;
+  if (!esSalaNavidad(clave)) return null;
+  // `/navidad` en B es la sala de Navidad entera: entra por el mismo rojo de la banda de la
+  // home —quien llega desde ahí sigue en la misma sala—, pasa por manteca para lo que se
+  // lleva, por pino para lo que se arma y termina de noche.
+  const sala: Partial<Record<ClaveSala, [ClaveSala, Intensidad]>> = {
+    navidad: ["navidad", "anochecer"],
+    "navidad-entrada": ["navidad", "anochecer"],
+    "navidad-llevar": ["navidad-llevar", "salas"],
+    "navidad-juntos": ["navidad", "salas"],
+    "navidad-cierre": ["despedida", "salas"],
+  };
+  const [de, en] = sala[clave as ClaveSala] ?? ["navidad", "anochecer"];
+  return salaEdicion(de, paleta, en);
+}
+
+/** Las salas que son de Navidad: la banda de la home y las cuatro de `/navidad`. En B, son
+ *  las únicas que se visten. */
+export function esSalaNavidad(clave: string | undefined): boolean {
+  return clave === "navidad" || !!clave?.startsWith("navidad-");
 }

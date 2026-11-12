@@ -39,9 +39,15 @@ ondulada de "Lo que te llevás" arranca medio período antes del borde izquierdo
 la cuña de su extremo (`Marquesina.tsx`). Esa corrección es de la web habitual: llega a `main`
 con la fusión, aunque no se elija la edición.
 
+**Quinta pasada (2026-11-12): `/navidad` completa.** Panel con nombres de lo que se ve,
+siete frases nuevas de Budín y `/navidad` con contenido real en las cuatro secciones, visible
+con todas las alternativas del panel. La lista de lo que falta confirmar con Delfina está en
+`docs/navidad.md` ("Para confirmar con Delfina").
+
 ## Lo que falta (después de elegir)
 
-1. `/navidad` en composición avanzada, primero mobile. Hoy es un andamio con las anclas.
+1. `/navidad`: completar con lo que confirme Delfina (compra, fotos, textos) y la dirección
+   elegida. Ya no es un andamio.
 2. Uso de stickers en Kids.
 3. Bocetos funcionales: armar la casita, la caja que crece y abrir una box.
 4. Probar `matter-js` con esos bocetos, si hace falta física.

@@ -46,15 +46,23 @@ fiesta concentrada en su sección: en lugar de preguntárselo, lo puede recorrer
 El panel de exploración cambia todo sin recargar, en `pnpm dev` y en el deployment de prueba.
 Todas las dimensiones siguen abiertas.
 
-| Dimensión | Opciones | Qué está en juego |
+Los nombres del panel (quinta pasada) dicen **qué cambia en pantalla**, para que Delfina elija
+sin explicaciones; las claves internas y las propuestas visuales no cambiaron. Entre paréntesis,
+el nombre de taller que tenía antes.
+
+| En el panel | Opciones | Qué cambia |
 |---|---|---|
-| **Versión** | A · Navidad en toda la web · B · Navidad en su sección | Toda la web ambientada, o la fiesta concentrada en su sala |
-| **Paleta** | Cereza y pino · Borgoña y oro | Rojo de fruta con verde de rama, o vino con oro de horno |
-| **Intensidad** (sólo A) | Detalles · Salas de fiesta · Anochecer | Cuánto se transforma la casa (ver abajo) |
-| **Ambiente** | Mezcla por sala · Nieve · Destellos · Luces flotando · Sin partículas | Qué se mueve en el aire, y dónde |
-| **Ondas** | Lamparitas · Guirnalda de pino · Cinta | Cómo se decora el corte entre salas |
-| **Apertura** | Hola, soy Delfi · Navidad abre | Quién recibe al que llega |
-| **Al tocar** | Destellos alrededor · Estrellitas que saltan · Sólo un brillo | Cómo responde un sticker o Budín. Los nombres dicen lo que se ve; la segunda usa `canvas-confetti` |
+| **Versión** | A · Navidad en toda la web · B · Navidad en su sección | Toda la web ambientada, o la fiesta concentrada en su sección |
+| **Tonos de Navidad** (Paleta) | Rojo cereza y verde pino · Borgoña y dorado | Los rojos, verdes y dorados con que se pinta todo |
+| **Colores de las secciones** (Intensidad), sólo en A | Colores originales (Detalles) · Colores navideños (Salas de fiesta) · Del día a la noche (Anochecer) | Con qué colores se pinta cada sección. No cambia la cantidad de decoración: por eso dejó de llamarse "Intensidad". No puede ser "Paleta" porque sus tres opciones se dibujan con los tonos elegidos arriba |
+| **Efecto animado** (Ambiente) | Combinados por sección · Solo nieve · Solo destellos · Solo lucecitas · Sin efecto | Lo que se mueve en el aire, y dónde |
+| **Adorno entre secciones** (Ondas) | Lamparitas · Guirnalda de pino · Cinta de regalo | Cómo se decora el corte entre secciones |
+| **Comienzo de la home** (Apertura), sólo en la home | Hola, soy Delfi · La sección de Navidad | Qué se ve primero al entrar |
+| **Al tocar un sticker** | Destellos alrededor · Estrellitas que saltan · Solo un brillo | Cómo responde un sticker o Budín; la segunda usa `canvas-confetti` |
+
+El panel muestra sólo lo que cambia algo en la página abierta: en B no aparece "Colores de las
+secciones", y fuera de la home no aparece "Comienzo de la home". Se abre con "Opciones de
+diseño" y "Restablecer" vuelve a la propuesta inicial sin cambiar de versión.
 
 ### Las tres intensidades, con el mismo desarrollo
 
@@ -149,6 +157,44 @@ costado.
 lo que sobra (`overflow: clip`, que no crea scroll), y cada destello se acomoda para terminar a
 4px o más del borde de la pantalla.
 
+## `/navidad` (quinta pasada): primera versión completa
+
+Una sola página, con anclas para enlazar cada propuesta desde historias o desde la banda de la
+home. Responde, en orden, las preguntas de quien llega por curiosidad:
+
+| Sección | Qué tiene | Pregunta |
+|---|---|---|
+| **Entrada** | "La agenda de Navidad está abierta", y una carta con todo partido en dos: *Para llevarte* (Cookie Box, Box Kids) y *Lo armamos juntos* (Box Empresarial, despedidas, marcas) | ¿Hay algo para mí? |
+| **Para llevarte** | Cookie Box y Box Kids (Armá tu casita, Armá tu arbolito, ¡y stickers!) | ¿Qué puedo comprar? |
+| **Lo armamos juntos** | Box Empresarial, despedidas de fin de año (catering o chef privada) y contenido navideño para marcas, con enlace a `/colaboraciones` | ¿Qué puedo personalizar? |
+| **Cierre** | Un solo contacto con los canales confirmados (Instagram y mail), la reserva de las cajas y la firma | ¿Cómo la contacto? |
+
+- **Comprar y consultar se distinguen antes de leer.** Lo que se lleva vive en papel (fichas
+  crema con su tinta propia, que se lee igual en cualquier variante) y tiene botón de pedido; lo
+  que se arma vive sobre la sección, como "Trabajemos juntos", y termina en "Escribime". Cada
+  propuesta dice en una línea qué pasa después.
+- **El botón de pedido es provisional, y se ve así**: borde punteado y "Falta definir cómo se
+  piden". Al lado, lo que sí se puede hacer hoy: escribirle para reservarla.
+- **Los canales aparecen una sola vez, al final** (D8). Cada propuesta lleva a ese contacto.
+- **Todas las alternativas del panel llegan a la página**, porque cada sección es una `Banda`
+  con clave propia (`navidad-entrada`, `-llevar`, `-juntos`, `-cierre`) definida en cada
+  paleta y cada opción de color (`paletas.ts`): ondas, colores, versión, efecto animado y
+  stickers se aplican igual que en el resto de la casa. En A cada opción de color compone su
+  propio recorrido (originales: la casa vestida; navideños: pino, manteca, cereza y noche; del
+  día a la noche: anochece bajando). En B la página entera es la sala de Navidad: entra por el
+  mismo rojo de la banda de la home, y el efecto animado se dibuja en todas sus secciones.
+- **Recursos, con criterio.** Los stickers viven en el contenido —la caja de la Cookie Box, las
+  variantes de Kids, la carta— y responden al toque. Hay una sola interacción nueva, la **caja
+  que crece**: a la masita se le suman el frasco de confitura y el pan dulce, de a uno, al
+  llegar a la Box Empresarial (es lo que ella describió: la Cookie Box que crece). El cierre
+  repite la noche con su barrio, y Budín se asoma detrás de la onda del cierre.
+- **Material provisional.** Nada pasa por la caja real: la Cookie Box y la Box Empresarial se
+  cuentan con stickers dibujados (se leen como ilustración); Kids usa una foto real del
+  proyecto —una mano decorando un bastón con royal icing— rotulada "Foto de referencia", y las
+  despedidas, la foto de Delfina emplatando con chaqueta.
+- **Dos stickers nuevos** para la Box Empresarial: el frasco de confitura y el pan dulce, de la
+  misma planilla que los demás.
+
 ## Retirado en esta exploración
 
 | Qué | Por qué |
@@ -174,12 +220,24 @@ agrega datos: ni precios, ni cantidades, ni plazos.
 
 - **"Navidad, mi fecha favorita del año"** (título de la banda) y **"Mi fecha favorita del año"**
   (sello).
-- **"Ya estoy armando la agenda de estas fiestas. Si algo de esto es para vos, escribime y lo
-  charlamos."** Reemplaza la frase de noviembre: invita, no apura.
-- **Budín de temporada**, sumadas a las que ya validó: "Aclaro: el budín inglés no soy yo." · "Me
-  pusieron un gorro. Nadie me preguntó." · "Hace un calor de locos y acá nieva. Yo no pregunto." ·
-  "Si una masita se cae al piso, es mía. Es la ley." · "Delfi está feliz. Hay luces hasta en mi
-  cucha."
+- **"Ya estoy armando la agenda de estas fiestas. Si alguna opción te interesa, escribime y lo
+  charlamos."** (texto ajustado por el usuario). Reemplaza la frase de noviembre: invita, no
+  apura. Es también la invitación del cierre de `/navidad`.
+- **Budín de temporada**, doce frases sumadas a las que ya validó Delfina, en la misma bolsa: se
+  barajan con las de siempre y siguen las reglas de su escritura (sin punto final, un emoji como
+  mucho y al final, menos de la mitad con emoji). Las cinco primeras: "Aclaro: el budín inglés
+  no soy yo" · "Me pusieron un gorro. Nadie me preguntó" · "Hace un calor de locos y acá nieva.
+  Yo no pregunto" · "Si una masita se cae al piso, es mía. Es la ley" · "Delfi está feliz. Hay
+  luces hasta en mi cucha" (en la quinta pasada se les sacó el punto final). Las siete nuevas
+  recorren la temporada:
+  - la llegada: "Ya huele a Navidad. Tengo el mejor olfato de la casa, no falla" · "Le escribí a
+    Papá Noel. Pedí lo de siempre: más masitas 🎄";
+  - la emoción: "Me encanta esta época. Todos andan contentos y reparten más mimos ✨";
+  - los preparativos: "Delfi ya arrancó con los preparativos. Yo superviso desde abajo de la
+    mesada";
+  - las reuniones: "Cuando viene toda la familia, saludo a cada uno. Dos veces";
+  - el cierre del año: "Cierro el año invicto como catador oficial. En enero defiendo el título" ·
+    "Para el año que viene pido lo mismo: vos, Delfi y la cocina oliendo rico".
 
 ## Cómo está construida
 
@@ -294,6 +352,30 @@ y escritos a medida pesan menos que cualquier envoltorio.
     rótulos y títulos: por debajo de 420px se corren al borde, y por debajo de 360px no se pegan;
   - en el andamio de `/navidad`, Budín caía sobre la firma: el andamio no se decora hasta
     componerlo.
+
+## Para confirmar con Delfina
+
+Lo que la página necesita y ella todavía no definió. Nada de esto se inventó: donde falta, la
+página lo deja fuera o lo marca como provisional.
+
+1. **Cómo se compran la Cookie Box y la Box Kids** (link de pago, tienda, WhatsApp o pedido por
+   mensaje). Hoy el botón "Quiero una" es provisional y el camino real es escribirle.
+2. **Si se puede reservar escribiéndole.** La página dice "escribime y te la reservo", apoyado en
+   su "q vayan reservando": hay que confirmar que es así como quiere tomarlas.
+3. **Precios, entregas o retiro, zonas y plazos** de las cajas. No aparece ninguno.
+4. **La caja de presentación de la Box Kids** ("a confirmar"): hoy no se nombra.
+5. **Cuántas cookies trae "Armá tu arbolito"** ("x cookies"). Si se decide publicar cantidades
+   —hoy no se publica ninguna, tampoco las piezas de la casita—.
+6. **La Box Empresarial:** si hay mínimo de unidades, y si el pan dulce o el budín inglés se
+   elige o lo define ella.
+7. **Las despedidas:** si es en la casa de quien la contrata, para cuántas personas como mínimo
+   o máximo, y qué incluye cada servicio. Hoy sólo se dice "catering o chef privada", con sus
+   palabras.
+8. **Contenido navideño para marcas:** qué ofrece concretamente. Hoy la página invita a escribir
+   y enlaza a `/colaboraciones`.
+9. **Fotos reales** de cada caja, para reemplazar la ilustración y la foto de referencia.
+10. **Los textos**, todos borrador en su voz: la entrada, las fichas, las líneas de "qué pasa
+    después" y las siete frases nuevas de Budín.
 
 ## Pendiente de medir o decidir
 

@@ -796,7 +796,9 @@ html[data-luces-armadas] [data-luces]:not([data-encendida]) .ventana {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 8px 24px #0004;
-  max-inline-size: 236px;
+  /* Los nombres dicen qué cambia en pantalla, y por eso son más largos: el rótulo tiene su
+     columna y puede ir en dos renglones. */
+  max-inline-size: 300px;
 }
 .control-variantes form {
   display: grid;
@@ -805,7 +807,8 @@ html[data-luces-armadas] [data-luces]:not([data-encendida]) .ventana {
 }
 .control-variantes label {
   display: grid;
-  grid-template-columns: 74px 1fr;
+  grid-template-columns: 104px 1fr;
+  line-height: 1.15;
   align-items: center;
   gap: 6px;
 }
@@ -850,7 +853,7 @@ html[data-luces-armadas] [data-luces]:not([data-encendida]) .ventana {
     padding: 4px;
   }
   .control-variantes label {
-    grid-template-columns: 72px 1fr;
+    grid-template-columns: 96px 1fr;
   }
   .control-variantes button {
     padding: 6px 10px;
@@ -1141,14 +1144,14 @@ html[data-luces-armadas] [data-luces]:not([data-encendida]) .ventana {
      ninguna otra.
    · Lo que une el resto son detalles chicos que ya existen: el acceso del navbar, la agenda
      abierta en "Hola", el gorro de Budín y su voz de temporada. */
-html[data-version="b"] section[data-sala]:not([data-sala="navidad"]) > :is(.pegado, .guirnalda--colgada, .cielo, .barrio) {
+html[data-version="b"] section[data-sala]:not([data-sala^="navidad"]) > :is(.pegado, .guirnalda--colgada, .cielo, .barrio) {
   display: none;
 }
-html[data-version="b"] section[data-sala]:not([data-sala="navidad"]):not([data-tras-navidad]) > .guirnalda {
+html[data-version="b"] section[data-sala]:not([data-sala^="navidad"]):not([data-tras-navidad]) > .guirnalda {
   display: none;
 }
 /* La onda lisa de siempre, con su alto de siempre (`globals.css`). */
-html[data-version="b"] section[data-sala]:not([data-sala="navidad"]):not([data-tras-navidad]) > .onda-sup {
+html[data-version="b"] section[data-sala]:not([data-sala^="navidad"]):not([data-tras-navidad]) > .onda-sup {
   block-size: clamp(38px, 5.5vw, 84px);
 }
 html[data-version="b"] .sello-navidad {
