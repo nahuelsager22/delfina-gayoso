@@ -44,10 +44,16 @@ siete frases nuevas de Budín y `/navidad` con contenido real en las cuatro secc
 con todas las alternativas del panel. La lista de lo que falta confirmar con Delfina está en
 `docs/navidad.md` ("Para confirmar con Delfina").
 
+**Dirección elegida (2026-11-14).** Delfina eligió B · Navidad en su sección, Borgoña y dorado,
+Solo destellos, Lamparitas, Hola soy Delfi y Solo un brillo. `delfina-preview-01` la muestra sin
+panel; la exploración completa quedó en `delfina-merry-christmas`. Sus pedidos de los chats
+011-019 (pan dulce, Box Kids, compra "Muy pronto") están hechos, y el pack de identidad para las
+etiquetas, armado. Detalle en `docs/navidad.md`.
+
 ## Lo que falta (después de elegir)
 
-1. `/navidad`: completar con lo que confirme Delfina (compra, fotos, textos) y la dirección
-   elegida. Ya no es un andamio.
+1. `/navidad`: completar con lo que confirme Delfina (fotos, textos, precios).
+2. La compra con Mercado Pago (decidida): desarrollarla y probarla; hasta entonces "Muy pronto".
 2. Uso de stickers en Kids.
 3. Bocetos funcionales: armar la casita, la caja que crece y abrir una box.
 4. Probar `matter-js` con esos bocetos, si hace falta física.

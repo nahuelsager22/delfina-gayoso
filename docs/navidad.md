@@ -353,33 +353,104 @@ y escritos a medida pesan menos que cualquier envoltorio.
   - en el andamio de `/navidad`, Budín caía sobre la firma: el andamio no se decora hasta
     componerlo.
 
+## Lo que eligió y pidió Delfina (chats 011 a 019, 2026-11-13)
+
+**Elegido por ella** (chat 013, "yo dejaría así… me encanta real"): versión **B · Navidad en su
+sección**, **Borgoña y dorado**, **Solo destellos**, **Lamparitas**, **Hola, soy Delfi** y
+**Solo un brillo**. Es la base de `delfina-preview-01` (ver *Las dos ramas*). Comentó que si no
+fuera el lanzamiento llenaría toda la web de Navidad, "pero me contengo": es una opinión, no un
+pedido; la versión A queda guardada en `delfina-merry-christmas`.
+
+**Pedidos concretos, hechos el 2026-11-14:**
+- *"Lo único que no me convence es el dibujo del pan dulce o budín, está raro"*. En su captura
+  marcó el FRASCO: los dos dibujos se leían mal y uno se confundía con el otro. Se redibujaron
+  los dos (frasco: vidrio, confitura, paño a cuadritos y frutilla; pan dulce: cúpula con corte
+  en cruz, frutas, papel con cinta y una porción) y cada pieza de la caja que crece lleva su
+  nombre.
+- *"Lo de ¡y stickers! en la de lo[s chicos] lo pondría también en el texto: incluye esto, esto,
+  esto y plancha de stickers para decorar la caja. Y en su lugar agregaría: en la casita
+  dificultad media; en el arbolito dificultad baja."* La plancha de stickers entró en la lista de
+  lo que trae cada Box Kids, con sus palabras, y la línea "¡Y stickers!" se reemplazó por la
+  dificultad de cada una. El sello "¡Y stickers!" sobre la foto quedó.
+- *Los recursos para diseñar las etiquetas* (stickers, tipografía y paleta): ver *El pack de
+  identidad*.
+
+**Decidido con ella:**
+- **La compra va a ser desde la página con Mercado Pago** (ella lo usa), y el pedido le llega al
+  mail con los datos de quien compró. Hasta que esté probada, la acción dice **"Muy pronto"** y se
+  habilita después: "para que la idea esté y tener tiempo de publicitarla" (chat 019). Hecho: el
+  botón provisional pasó a "Muy pronto" y se retiró el "te la reservo", que no estaba confirmado.
+
+**Comentarios:** las frases nuevas de Budín le encantaron ("ay me mueo… está genial"). Va a
+conseguir cajitas para hacer las fotos.
+
 ## Para confirmar con Delfina
 
 Lo que la página necesita y ella todavía no definió. Nada de esto se inventó: donde falta, la
-página lo deja fuera o lo marca como provisional.
+página lo deja fuera.
 
-1. **Cómo se compran la Cookie Box y la Box Kids** (link de pago, tienda, WhatsApp o pedido por
-   mensaje). Hoy el botón "Quiero una" es provisional y el camino real es escribirle.
-2. **Si se puede reservar escribiéndole.** La página dice "escribime y te la reservo", apoyado en
-   su "q vayan reservando": hay que confirmar que es así como quiere tomarlas.
-3. **Precios, entregas o retiro, zonas y plazos** de las cajas. No aparece ninguno.
-4. **La caja de presentación de la Box Kids** ("a confirmar"): hoy no se nombra.
-5. **Cuántas cookies trae "Armá tu arbolito"** ("x cookies"). Si se decide publicar cantidades
-   —hoy no se publica ninguna, tampoco las piezas de la casita—.
-6. **La Box Empresarial:** si hay mínimo de unidades, y si el pan dulce o el budín inglés se
-   elige o lo define ella.
-7. **Las despedidas:** si es en la casa de quien la contrata, para cuántas personas como mínimo
-   o máximo, y qué incluye cada servicio. Hoy sólo se dice "catering o chef privada", con sus
-   palabras.
-8. **Contenido navideño para marcas:** qué ofrece concretamente. Hoy la página invita a escribir
-   y enlaza a `/colaboraciones`.
-9. **Fotos reales** de cada caja, para reemplazar la ilustración y la foto de referencia.
-10. **Los textos**, todos borrador en su voz: la entrada, las fichas, las líneas de "qué pasa
-    después" y las siete frases nuevas de Budín.
+1. **La compra con Mercado Pago**: está decidida, falta desarrollarla y probarla (precios, qué se
+   le pide a quien compra, el mail que le llega). Hasta entonces, "Muy pronto".
+2. **Precios, entregas o retiro, zonas y plazos** de las cajas. No aparece ninguno.
+3. **La caja de presentación de la Box Kids.** Antes estaba "a confirmar"; ahora pidió "plancha de
+   stickers para decorar la caja", que sugiere que hay una caja. Hay que confirmarlo antes de
+   nombrarla.
+4. **¿La Cookie Box también trae plancha de stickers?** El brief del usuario lo ubicaba en la
+   Cookie Box, pero en el chat Delfina lo pide para "la de lo[s chicos]", donde estaba "¡Y
+   stickers!". Se puso sólo en la Box Kids.
+5. **Cuántas cookies trae "Armá tu arbolito"** ("x cookies"), y si se publican cantidades.
+6. **La Box Empresarial:** si hay mínimo de unidades, y quién elige entre pan dulce y budín inglés.
+7. **Las despedidas:** lugar, cantidad de personas y qué incluye cada servicio.
+8. **Contenido navideño para marcas:** qué ofrece concretamente.
+9. **Fotos reales** de cada caja (las está preparando).
+10. **Los textos**, todos borrador en su voz.
+
+## Las dos ramas (2026-11-14)
+
+| Rama | Qué es | Panel | Qué ve quien entra |
+|---|---|---|---|
+| `delfina-preview-01` | La propuesta que eligió Delfina, con los ajustes de los chats | No | Su selección, siempre |
+| `delfina-merry-christmas` | La exploración completa, tal como Delfina la recorrió antes de elegir | Sí, con todas las alternativas | La base anterior (A · Cereza y pino), y lo que cada uno toque en el panel |
+
+**Cómo se fija lo que se ve** (la diferencia entre el panel y lo publicado):
+- La configuración que ve cualquiera es `BASE` (`variantes.ts`). El servidor la dibuja: los colores
+  de cada sala salen de `salaSegunVersion` con la versión de `BASE`, y el `<html>` lleva
+  `data-version`, `data-paleta`, `data-intensidad` y `data-onda` desde el servidor
+  (`app/layout.tsx`, sólo con la bandera encendida). No depende de JavaScript.
+- Lo que alguien elige en el panel se guarda sólo en SU navegador (`localStorage`,
+  `navidad-variantes`). Hasta el 2026-11-14 eso se leía en todas las ramas: la selección de
+  Delfina existía sólo en su celular, y otro visitante veía la base anterior. Ahora se lee
+  únicamente donde hay panel (desarrollo y `delfina-merry-christmas`); en `delfina-preview-01`
+  una elección vieja guardada no puede reemplazar la suya.
+- La salida de la sala de Navidad (la guirnalda de la sala que le sigue) se reconoce desde el HTML
+  con `:has`, sin el panel.
+- `next.config.ts`: la edición se enciende en los Preview de las dos ramas; el panel
+  (`EDICION_NAVIDAD_EXPLORAR`), sólo en `delfina-merry-christmas`.
+
+`delfina-merry-christmas` quedó como foto de la exploración: no tiene los ajustes del 2026-11-14
+(pan dulce nuevo, Box Kids, "Muy pronto"). Si se quieren ahí, se trae ese commit. Su URL fija de
+rama la acorta Vercel (supera los 63 caracteres) y no aparece en GitHub: se ve en el dashboard de
+Vercel; cada deploy tiene además su URL única.
+
+## El pack de identidad (2026-11-14)
+
+Carpeta `../Pack-Navidad-Delfina-Gayoso/` (fuera del repo) y su `.zip`, para que Delfina diseñe
+las etiquetas de las cajas. Se arma desde los componentes reales, no son capturas:
+- **01-Paleta:** lámina PNG, SVG editable y los HEX en `.txt` y `.csv`: Borgoña y dorado, la marca
+  de siempre y los colores de los stickers.
+- **02-Tipografías:** muestra de uso y guía. Fraunces y Karla son de Google Fonts (SIL Open Font
+  License: libres para uso comercial y packaging). Los archivos no van incluidos: lo que hay en el
+  proyecto son subconjuntos WOFF2 para web, que los programas de diseño no instalan; la guía enlaza
+  la descarga oficial. Newsreader es de la firma de North Studio y no va.
+- **03-Stickers:** los once stickers y el sello en SVG autónomo (cada color escrito en el archivo,
+  con su troquel blanco) y en PNG de 1200 px transparente; Budín con gorro, sin gorro y el gorro
+  solo; hoja de contacto. Budín sale de su dibujo original de 473 × 512 px: rinde a unos 4 cm.
+- **04-Recursos:** ondas en cinco colores, guirnaldas de lamparitas (Borgoña) y de pino, cinta con
+  moño dorada y roja, destellos, el barrio y los cinco logotipos oficiales.
+- **00-LEEME.html** (índice visual) y **00-LEEME.txt**.
 
 ## Pendiente de medir o decidir
 
 - **Verlo en un celular real.** Es lo único que ninguna medición de acá reemplaza, y ahora más:
   el ambiente depende de la GPU del teléfono.
-- Elegir las seis dimensiones; recién ahí se compone `/navidad`.
 - Budín flotante puede tapar por un momento la primera etiqueta en pantallas de hasta ~1280.
