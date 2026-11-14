@@ -1,12 +1,17 @@
 import type { NextConfig } from "next";
 
-/** Los Preview de la rama de prueba (`delfina-preview-01`) encienden la edición y su panel de
- *  exploración sin tocar el dashboard de Vercel: `VERCEL_ENV` y `VERCEL_GIT_COMMIT_REF` son
- *  variables de sistema que Vercel define en cada build. Producción (`main`) y cualquier otra
- *  rama quedan como siempre. Si una variable se define a mano (en `.env.local` o en Vercel),
- *  ese valor manda. */
+/** Los Preview de las ramas de prueba encienden la edición y su panel de exploración sin tocar
+ *  el dashboard de Vercel: `VERCEL_ENV` y `VERCEL_GIT_COMMIT_REF` son variables de sistema
+ *  que Vercel define en cada build. Producción (`main`) y cualquier otra rama quedan como
+ *  siempre. Si una variable se define a mano (en `.env.local` o en Vercel), ese valor manda.
+ *
+ *  `delfina-merry-christmas` (2026-11-14) guarda la EXPLORACIÓN COMPLETA: todas las
+ *  alternativas del panel, tal como las vio Delfina antes de elegir. La rama de la propuesta
+ *  elegida es `delfina-preview-01`. */
+const RAMAS_DE_PRUEBA = ["delfina-preview-01", "delfina-merry-christmas"];
 const RAMA_DE_PRUEBA =
-  process.env.VERCEL_ENV === "preview" && process.env.VERCEL_GIT_COMMIT_REF === "delfina-preview-01";
+  process.env.VERCEL_ENV === "preview" &&
+  RAMAS_DE_PRUEBA.includes(process.env.VERCEL_GIT_COMMIT_REF ?? "");
 
 const nextConfig: NextConfig = {
   // La bandera de la edición se escribe en el código al compilar, y no se lee en ejecución,
