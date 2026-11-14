@@ -131,29 +131,67 @@ const ARTE = {
       </g>
     </>
   ),
-  /* Quinta pasada, para la Box Empresarial ("cookie box + confituras + pan dulce o budín
-     inglés"): las dos cosas que la caja suma. Misma planilla: tinta, gama plana y troquel. */
+  /* Para la Box Empresarial ("cookie box + confituras + pan dulce o budín inglés"): las dos
+     cosas que la caja suma. Misma planilla: tinta, gama plana y troquel.
+
+     Sexta pasada (2026-11-14). Delfina: "el dibujo del pan dulce o budín está raro". En su
+     captura lo marcado era el FRASCO: los dos dibujos se leían mal, y uno se confundía con el
+     otro. El frasco era un rectángulo rojo con tapa amarilla —una lata, o un budín— y el pan
+     dulce, una cúpula sobre papel a rayas —un muffin—. Ahora cada uno lleva lo que lo hace
+     inconfundible:
+      · el frasco: vidrio con la confitura a la vista, el paño a cuadritos atado con un moño
+        y una frutilla en la etiqueta;
+      · el pan dulce: la cúpula dorada con su corte en cruz y las frutas abrillantadas, el
+        papel con la cinta y una porción cortada adelante, que muestra la miga con fruta. */
   frasco: (
     <>
-      <path d="M30 46 C30 40 34 37 40 37 H80 C86 37 90 40 90 46 V100 C90 107 85 111 78 111 H42 C35 111 30 107 30 100 Z" fill={R} {...trazo} />
-      <path d="M38 50 V98" fill="none" stroke="#E4606A" strokeWidth="5" strokeLinecap="round" opacity=".8" />
-      <rect x="40" y="62" width="40" height="28" rx="4" fill={B} {...trazo} strokeWidth={2.4} />
-      <path d="M48 76 q6 -7 12 0 q6 7 12 0" fill="none" stroke={R} strokeWidth="3" strokeLinecap="round" />
-      <rect x="34" y="22" width="52" height="16" rx="3" fill={OC} {...trazo} />
-      <path d="M30 24 C40 12 80 12 90 24 L86 30 C74 22 46 22 34 30 Z" fill={B} {...trazo} strokeWidth={2.4} />
-      <path d="M42 18 l-2 6 M54 15 l-1 7 M66 15 l1 7 M78 18 l2 6" fill="none" stroke={R} strokeWidth="2.4" strokeLinecap="round" />
+      {/* El vidrio, con la confitura adentro y un brillo. */}
+      <path d="M34 50 H86 V56 C95 60 98 67 98 76 V100 C98 108 92 112 84 112 H36 C28 112 22 108 22 100 V76 C22 67 25 60 34 56 Z" fill="#FDF3F0" {...trazo} />
+      <path d="M24 75 C40 70 80 70 96 75 V100 C96 106 91 110 84 110 H36 C29 110 24 106 24 100 Z" fill={R} />
+      <path d="M29 82 V100" fill="none" stroke="#FFFFFF" strokeWidth="4" strokeLinecap="round" opacity=".7" />
+      <path d="M34 50 H86 V56 C95 60 98 67 98 76 V100 C98 108 92 112 84 112 H36 C28 112 22 108 22 100 V76 C22 67 25 60 34 56 Z" fill="none" {...trazo} />
+      {/* La etiqueta, con su frutilla. */}
+      <rect x="40" y="80" width="40" height="24" rx="5" fill={B} {...trazo} strokeWidth={2.4} />
+      <path d="M60 100 C53 96 50 90 52 87 C54 84 58 85 60 87 C62 85 66 84 68 87 C70 90 67 96 60 100 Z" fill={R} stroke={T} strokeWidth="2" strokeLinejoin="round" />
+      <path d="M55 87 L58 83 L60 86 L62 83 L65 87" fill={V} stroke={T} strokeWidth="1.8" strokeLinejoin="round" />
+      <circle cx="57.5" cy="91" r="1.1" fill={OC} />
+      <circle cx="62.5" cy="91" r="1.1" fill={OC} />
+      <circle cx="60" cy="95" r="1.1" fill={OC} />
+      {/* El paño a cuadritos sobre la tapa, atado con un hilo y su moño. */}
+      <path d="M22 50 C22 36 34 28 60 28 C86 28 98 36 98 50 q-4.75 5 -9.5 0 q-4.75 5 -9.5 0 q-4.75 5 -9.5 0 q-4.75 5 -9.5 0 q-4.75 5 -9.5 0 q-4.75 5 -9.5 0 q-4.75 5 -9.5 0 q-4.75 5 -9.5 0 Z" fill={B} />
+      <path d="M33 32 h7 v7 h-7 Z M47 30 h7 v9 h-7 Z M61 30 h7 v9 h-7 Z M75 31 h7 v8 h-7 Z M26 39 h7 v7 h-7 Z M40 39 h7 v7 h-7 Z M54 39 h7 v7 h-7 Z M68 39 h7 v7 h-7 Z M82 39 h7 v7 h-7 Z M33 46 h7 v4 h-7 Z M47 46 h7 v4 h-7 Z M61 46 h7 v4 h-7 Z M75 46 h7 v4 h-7 Z" fill={R} opacity=".85" />
+      <path d="M22 50 C22 36 34 28 60 28 C86 28 98 36 98 50 q-4.75 5 -9.5 0 q-4.75 5 -9.5 0 q-4.75 5 -9.5 0 q-4.75 5 -9.5 0 q-4.75 5 -9.5 0 q-4.75 5 -9.5 0 q-4.75 5 -9.5 0 q-4.75 5 -9.5 0 Z" fill="none" {...trazo} />
+      <path d="M24 53 C40 57 80 57 96 53" fill="none" stroke={T} strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M86 55 c6 -8 13 -3 6 2 Z M86 55 c-1 8 6 10 8 4 Z" fill={OC} stroke={T} strokeWidth="1.8" strokeLinejoin="round" />
     </>
   ),
   pandulce: (
     <>
-      <path d="M22 70 C20 38 40 22 60 22 C80 22 100 38 98 70 Z" fill={G} {...trazo} />
-      <path d="M30 46 C42 38 52 44 60 38 C70 44 80 38 90 46" fill="none" stroke={GH} strokeWidth="4" strokeLinecap="round" />
-      <circle cx="44" cy="58" r="4" fill={R} {...trazo} strokeWidth={2} />
-      <circle cx="62" cy="52" r="3.6" fill={V} {...trazo} strokeWidth={2} />
-      <circle cx="78" cy="60" r="4" fill={O} {...trazo} strokeWidth={2} />
-      <circle cx="54" cy="64" r="3.2" fill={R} {...trazo} strokeWidth={2} />
-      <path d="M20 68 H100 L95 108 H25 Z" fill={B} {...trazo} />
-      <path d="M33 70 L36 106 M47 70 L49 106 M60 70 V106 M73 70 L71 106 M87 70 L84 106" fill="none" stroke={R} strokeWidth="3.4" strokeLinecap="round" />
+      {/* La cúpula: dorada, con el copete más tostado y el corte en cruz. */}
+      <path d="M17 84 C15 54 34 33 60 33 C86 33 105 54 103 84 Z" fill={G} {...trazo} />
+      <path d="M24 62 C30 46 44 39 60 39 C76 39 90 46 96 62 C85 56 73 54 60 54 C47 54 35 56 24 62 Z" fill={GH} />
+      <path d="M52 41 L68 50 M68 41 L52 50" fill="none" stroke={OC} strokeWidth="4" strokeLinecap="round" />
+      {/* Las frutas abrillantadas y las pasas, asomando de la masa. */}
+      <rect x="31" y="66" width="7" height="6" rx="1.6" fill={R} stroke={T} strokeWidth="1.8" />
+      <rect x="49" y="71" width="7" height="6" rx="1.6" fill="#2C9A68" stroke={T} strokeWidth="1.8" />
+      <rect x="68" y="63" width="7" height="6" rx="1.6" fill={O} stroke={T} strokeWidth="1.8" />
+      <circle cx="42" cy="76" r="2.6" fill={T} />
+      <circle cx="61" cy="62" r="2.4" fill={T} />
+      <circle cx="82" cy="73" r="2.6" fill={T} />
+      {/* El papel, con su cinta y un moño. */}
+      <path d="M17 82 H103 L100 108 C100 110 98 112 96 112 H24 C22 112 20 110 20 108 Z" fill={OC} {...trazo} />
+      <path d="M18.5 95 H101.5" fill="none" stroke={R} strokeWidth="6" />
+      <path d="M40 95 c-10 -10 -18 -3 -11 3 c3 2 8 1 11 -3 Z M40 95 c10 -10 18 -3 11 3 c-3 2 -8 1 -11 -3 Z" fill={R} stroke={T} strokeWidth="1.8" strokeLinejoin="round" />
+      <circle cx="40" cy="95" r="3.2" fill={RH} stroke={T} strokeWidth="1.8" />
+      {/* La porción cortada: corteza, miga y fruta. */}
+      <path d="M70 113 L110 113 C112 100 108 86 99 78 Z" fill="#FBE3A6" {...trazo} />
+      <path d="M110 113 C112 100 108 86 99 78" fill="none" stroke={G} strokeWidth="5" strokeLinecap="round" />
+      <path d="M70 113 L110 113 C112 100 108 86 99 78 Z" fill="none" {...trazo} />
+      <rect x="86" y="101" width="5" height="4.5" rx="1.2" fill={R} />
+      <rect x="95" y="93" width="5" height="4.5" rx="1.2" fill="#2C9A68" />
+      <rect x="99" y="104" width="5" height="4.5" rx="1.2" fill={O} />
+      <circle cx="80" cy="108" r="1.9" fill={T} />
+      <circle cx="94" cy="86" r="1.7" fill={T} />
     </>
   ),
 } as const satisfies Record<string, ReactNode>;

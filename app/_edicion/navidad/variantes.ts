@@ -28,14 +28,33 @@ export interface Variantes {
   toque: Toque;
 }
 
+/**
+ * LA SELECCIÓN DE DELFINA (2026-11-14, chat 013: "yo dejaría así"). Es la configuración que ve
+ * cualquiera que entre al sitio: el servidor la dibuja, y en esta rama no hay panel ni se leen
+ * elecciones guardadas en el navegador, así que no depende de lo que alguien haya tocado.
+ *
+ *  · Versión B · Navidad en su sección
+ *  · Tonos: Borgoña y dorado
+ *  · Efecto animado: Solo destellos
+ *  · Adorno entre secciones: Lamparitas
+ *  · Comienzo de la home: Hola, soy Delfi
+ *  · Al tocar un sticker: Solo un brillo
+ *
+ * "Colores de las secciones" no existe en la versión B (la casa conserva sus colores): queda
+ * en "salas" sólo porque el tipo lo pide, y no cambia nada en pantalla.
+ *
+ * La exploración completa —la base anterior (A · Cereza y pino · Colores navideños · Combinados
+ * · Lamparitas · Hola · Destellos alrededor) y todas las alternativas— vive en la rama
+ * `delfina-merry-christmas`.
+ */
 export const BASE: Variantes = {
-  version: "a",
-  paleta: "cereza",
+  version: "b",
+  paleta: "borgona",
   intensidad: "salas",
-  luz: "mezcla",
+  luz: "destellos",
   onda: "luces",
   apertura: "hola",
-  toque: "estrellas",
+  toque: "aura",
 };
 
 interface Opcion<K extends keyof Variantes> {

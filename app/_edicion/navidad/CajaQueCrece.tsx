@@ -1,7 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Sticker } from "./Sticker";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { Sticker, type NombreSticker } from "./Sticker";
+
+const PIEZAS: readonly { sticker: NombreSticker; nombre: string }[] = [
+  { sticker: "masita", nombre: "Cookie Box" },
+  { sticker: "frasco", nombre: "Confituras" },
+  { sticker: "pandulce", nombre: "Pan dulce o budín inglés" },
+];
 
 /**
  * LA CAJA QUE CRECE (quinta pasada). La Box Empresarial es, en palabras de Delfina, "cookie
@@ -41,20 +47,24 @@ export function CajaQueCrece({ leyenda }: { leyenda: string }) {
 
   return (
     <figure ref={ref} className="pn-crece" data-estado={estado} onClick={rearmar}>
-      <div className="pn-crece-fila" aria-hidden>
-        <span className="pn-crece-pieza" style={{ "--i": 0 } as React.CSSProperties}>
-          <Sticker nombre="masita" className="sticker-vivo" />
-        </span>
-        <span className="pn-crece-mas" style={{ "--i": 1 } as React.CSSProperties}>+</span>
-        <span className="pn-crece-pieza" style={{ "--i": 1 } as React.CSSProperties}>
-          <Sticker nombre="frasco" className="sticker-vivo" />
-        </span>
-        <span className="pn-crece-mas" style={{ "--i": 2 } as React.CSSProperties}>+</span>
-        <span className="pn-crece-pieza" style={{ "--i": 2 } as React.CSSProperties}>
-          <Sticker nombre="pandulce" className="sticker-vivo" />
-        </span>
+      {/* Cada pieza lleva su nombre (sexta pasada): sin él, el frasco se leía como el pan dulce
+          (Delfina, chat 013). */}
+      <div className="pn-crece-fila">
+        {PIEZAS.map((p, i) => (
+          <Fragment key={p.sticker}>
+            {i > 0 && (
+              <span className="pn-crece-mas" style={{ "--i": i } as React.CSSProperties} aria-hidden>
+                +
+              </span>
+            )}
+            <span className="pn-crece-pieza" style={{ "--i": i } as React.CSSProperties}>
+              <Sticker nombre={p.sticker} className="sticker-vivo" />
+              <span className="pn-crece-nombre">{p.nombre}</span>
+            </span>
+          </Fragment>
+        ))}
       </div>
-      <figcaption className="pn-crece-leyenda">{leyenda}</figcaption>
+      <figcaption className="sr-only">{leyenda}</figcaption>
     </figure>
   );
 }

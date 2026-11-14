@@ -1,6 +1,22 @@
 import type { Metadata, Viewport } from "next";
 import { fontVariables } from "./fonts";
 import "./globals.css";
+import { BASE } from "./_edicion/navidad/variantes";
+
+/**
+ * Edición de Navidad (Bloque 12): la configuración elegida se escribe en el `<html>` desde el
+ * servidor —versión, tonos y adorno—, así la página sale vestida desde el primer cuadro y no
+ * depende de que corra JavaScript. Con la bandera apagada no se agrega ningún atributo.
+ */
+const EDICION_HTML =
+  process.env.EDICION_NAVIDAD === "1"
+    ? {
+        "data-version": BASE.version,
+        "data-paleta": BASE.paleta,
+        "data-intensidad": BASE.intensidad,
+        "data-onda": BASE.onda,
+      }
+    : {};
 
 /**
  * Layout RAÍZ — sólo el documento (Bloque 8 · 14ª ola).
@@ -51,7 +67,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     // lang rioplatense: su voz, humor y registro son en español (B3 §7).
-    <html lang="es" className={fontVariables}>
+    <html lang="es" className={fontVariables} {...EDICION_HTML}>
       <body>{children}</body>
     </html>
   );

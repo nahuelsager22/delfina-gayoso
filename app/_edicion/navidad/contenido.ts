@@ -117,33 +117,47 @@ export const PAGINA = {
       nombre: "Box Kids",
       texto: "Para que los más peques armen la suya y la decoren a su gusto. Hay dos para elegir.",
       variantes: [
+        // Sexta pasada (Delfina, chat 016): la plancha de stickers pasa a la lista de lo que
+        // trae —"tipo incluye: esto esto esto y plancha de stickers para decorar la caja"—, con
+        // sus palabras, y "en su lugar" va la dificultad de cada una.
         {
           nombre: "Armá tu casita",
           sticker: "casita",
+          dificultad: { nivel: 2, texto: "Dificultad media" },
           incluye: [
             "Las piezas de la casita: paredes y techo",
             "Una manga grande de royal icing blanco, para pegar",
             "Mangas chicas de royal icing rojo y verde, para decorar",
             "Golosinas y sprinkles extra",
+            "Plancha de stickers para decorar la caja",
           ],
         },
         {
           nombre: "Armá tu arbolito",
           sticker: "arbolito",
+          dificultad: { nivel: 1, texto: "Dificultad baja" },
           incluye: [
             "Las cookies para armar el arbolito",
             "Una manga grande de royal icing blanco, para ensamblar",
             "Mangas chicas de royal icing verde, rojo y amarillo, para decorar",
             "Sprinkles extra",
+            "Plancha de stickers para decorar la caja",
           ],
         },
       ],
-      stickers: "¡Y stickers!",
+      /** El sello sobre la foto. La línea "¡Y stickers!" del texto se retiró: ahora la plancha
+       *  está en la lista de cada una, y en su lugar va la dificultad. */
+      sello: "¡Y stickers!",
     },
-    /** El pedido todavía no tiene destino: el botón se ve, y se ve provisional. */
-    pedir: "Quiero una",
-    pedirPendiente: "Falta definir cómo se piden",
-    reservar: "Mientras tanto, escribime y te la reservo",
+    /**
+     * El pedido (sexta pasada, chats 017-019). Delfina usa Mercado Pago: el plan es que se pueda
+     * comprar desde la página y que el pedido le llegue al mail con los datos de quien compró.
+     * Hasta que esa función esté probada, la acción dice "Muy pronto" —"para que la idea esté y
+     * tener tiempo de publicitarla"— y se habilita después. Mientras tanto, el contacto.
+     */
+    pedir: "Muy pronto",
+    pedirNota: "Vas a poder pedirla desde acá.",
+    escribime: "Mientras tanto, si tenés alguna duda, escribime",
   },
   juntos: {
     kicker: "Lo armamos juntos",
@@ -181,7 +195,9 @@ export const PAGINA = {
   cierre: {
     kicker: "¿Cómo seguimos?",
     titulo: "Escribime y lo charlamos",
-    reserva: "¿Ya sabés que querés una Cookie Box o una Box Kids? Escribime y te la reservo.",
+    // El "te la reservo" no estaba confirmado: ahora la compra va a ser por la página (ver
+    // `pedir`), así que el cierre lo dice así.
+    reserva: "La Cookie Box y la Box Kids se van a poder pedir desde esta página muy pronto.",
     volver: "Volver al inicio",
   },
 } as const;

@@ -1154,6 +1154,36 @@ html[data-version="b"] section[data-sala]:not([data-sala^="navidad"]):not([data-
 html[data-version="b"] section[data-sala]:not([data-sala^="navidad"]):not([data-tras-navidad]) > .onda-sup {
   block-size: clamp(38px, 5.5vw, 84px);
 }
+/* La salida de la sala, también desde el HTML. `data-tras-navidad` lo marca `aplicarVariantes`
+   cuando el panel cambia algo; donde no hay panel (la propuesta elegida) no corre, y la sala
+   que sigue a la de Navidad se reconoce por su lugar: la hermana siguiente de una sala de
+   Navidad o, en la home, la que sigue a `.apertura` cuando la banda es su última sala. */
+html[data-version="b"]
+  :is(
+    section[data-sala^="navidad"] + section[data-sala]:not([data-sala^="navidad"]),
+    .apertura:has(> section[data-sala="navidad"]:last-child) + section[data-sala]
+  )
+  > .guirnalda {
+  display: block;
+}
+html[data-version="b"]
+  :is(
+    section[data-sala^="navidad"] + section[data-sala]:not([data-sala^="navidad"]),
+    .apertura:has(> section[data-sala="navidad"]:last-child) + section[data-sala]
+  )
+  > .onda-sup {
+  block-size: 5.5vw;
+}
+@media (max-width: 690px) {
+  html[data-version="b"]
+    :is(
+      section[data-sala^="navidad"] + section[data-sala]:not([data-sala^="navidad"]),
+      .apertura:has(> section[data-sala="navidad"]:last-child) + section[data-sala]
+    )
+    > .onda-sup {
+    block-size: 9.7vw;
+  }
+}
 html[data-version="b"] .sello-navidad {
   display: none;
 }

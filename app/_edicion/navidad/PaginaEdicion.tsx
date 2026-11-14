@@ -129,7 +129,7 @@ export async function PaginaEdicion() {
                   </EspacioFoto>
                   <figcaption className="pn-referencia">Foto de referencia</figcaption>
                   <span className="pn-stickers" aria-hidden>
-                    {llevar.kids.stickers}
+                    {llevar.kids.sello}
                   </span>
                 </figure>
                 <div className="pn-ficha-texto">
@@ -141,6 +141,15 @@ export async function PaginaEdicion() {
                       <section key={v.nombre} className="pn-variante" aria-label={v.nombre}>
                         <Sticker nombre={v.sticker as NombreSticker} className="pn-variante-sticker sticker-vivo" />
                         <h4 className="pn-variante-nombre">{v.nombre}</h4>
+                        {/* La dificultad: el texto la dice, y tres marcas la muestran. */}
+                        <p className="pn-dificultad" data-nivel={v.dificultad.nivel}>
+                          <span className="pn-dificultad-marca" aria-hidden>
+                            {[1, 2, 3].map((n) => (
+                              <span key={n} data-lleno={n <= v.dificultad.nivel ? "" : undefined} />
+                            ))}
+                          </span>
+                          {v.dificultad.texto}
+                        </p>
                         <ul className="pn-incluye">
                           {v.incluye.map((x) => (
                             <li key={x}>{x}</li>
@@ -149,7 +158,6 @@ export async function PaginaEdicion() {
                       </section>
                     ))}
                   </div>
-                  <p className="pn-texto pn-texto--stickers">{llevar.kids.stickers}</p>
                   <Pedido />
                 </div>
               </article>
@@ -257,21 +265,19 @@ export async function PaginaEdicion() {
 }
 
 /**
- * El pedido de lo que se lleva. Todavía no hay cómo comprar (pendiente de Delfina), así que el
- * botón se ve —es la diferencia con "Escribime"— pero se ve PROVISIONAL y no lleva a ningún
- * lado inventado. Al lado, lo que sí se puede hacer hoy: escribirle para reservarla.
+ * El pedido de lo que se lleva (sexta pasada). La compra va a ser desde la página, con Mercado
+ * Pago (chats 017-019); hasta que esté probada, la acción dice "Muy pronto": se ve —es la
+ * diferencia con "Escribime"— pero no lleva a ningún lado. Al lado, el contacto, sin prometer
+ * una reserva que no está confirmada.
  */
 function Pedido() {
-  const { pedir, pedirPendiente, reservar } = PAGINA.llevar;
+  const { pedir, pedirNota, escribime } = PAGINA.llevar;
   return (
     <div className="pn-pedido">
-      <span className="cta-producto pn-provisional" aria-disabled="true">
-        <span>{pedir}</span>
-        <Flecha className="cta-flecha" size={18} />
-      </span>
-      <span className="pn-provisional-nota">{pedirPendiente}</span>
+      <span className="pill-proximamente pn-pronto">{pedir}</span>
+      <span className="pn-pronto-nota">{pedirNota}</span>
       <a href="#seccion-navidad-contacto" className="pn-reservar">
-        {reservar}
+        {escribime}
       </a>
     </div>
   );

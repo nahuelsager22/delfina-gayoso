@@ -1,5 +1,5 @@
 import { getSala, type RGB, type Sala } from "../../_chrome/atmosferas/config";
-import { salaEdicion } from "./paletas";
+import { salaSegunVersion } from "./paletas";
 import { BASE } from "./variantes";
 
 const hexARgb = (h: string): RGB => {
@@ -10,7 +10,9 @@ const hexARgb = (h: string): RGB => {
 /** La sala con la que sale el HTML: la de la variante base, o la habitual si la base no la
  *  recolorea. Respeta la forma de `Sala` para que `Banda` no tenga que distinguir nada. */
 export function salaDeLaEdicion(clave: string | undefined): Sala {
-  const e = salaEdicion(clave, BASE.paleta, BASE.intensidad);
+  // Con su versión: en B, sólo las salas de Navidad se visten y el resto sale con su color
+  // de siempre, ya desde el HTML.
+  const e = salaSegunVersion(clave, BASE.paleta, BASE.intensidad, BASE.version);
   if (!e) return getSala(clave);
   return {
     bg: e.bg,

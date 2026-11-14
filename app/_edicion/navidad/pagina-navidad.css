@@ -181,11 +181,6 @@ section[data-momento="navidad-entrada"][data-oscura="true"] .momento-titulo {
   line-height: 1.45;
   max-inline-size: 42ch;
 }
-.pn-texto--stickers {
-  font-weight: var(--font-weight-nombre);
-  color: rgb(var(--atm-accent));
-  margin-block-start: var(--space-sm);
-}
 
 /* La caja dibujada de la Cookie Box: kraft, su cinta, y las masitas asomando. */
 .pn-caja {
@@ -297,27 +292,47 @@ section[data-momento="navidad-entrada"][data-oscura="true"] .momento-titulo {
   font-size: 0.8em;
 }
 
-/* El pedido: el botón se ve —es lo que distingue comprar de consultar— pero provisional. */
+/* La dificultad de cada Box Kids (sexta pasada, Delfina): el texto la dice y tres marcas la
+   muestran, llenas hasta su nivel. Va debajo del nombre, antes de lo que trae. */
+.pn-dificultad {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-block-end: 8px;
+  font-size: var(--text-micro);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--atm-accent));
+}
+.pn-dificultad-marca {
+  display: inline-flex;
+  gap: 3px;
+}
+.pn-dificultad-marca span {
+  inline-size: 14px;
+  block-size: 6px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1.5px rgb(var(--atm-accent) / 0.7);
+}
+.pn-dificultad-marca span[data-lleno] {
+  background: rgb(var(--atm-accent));
+  box-shadow: none;
+}
+
+/* El pedido: "Muy pronto" con el rótulo de la casa (`.pill-proximamente`), hasta que la compra
+   con Mercado Pago esté probada. */
 .pn-pedido {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px var(--space-md);
+  gap: 8px var(--space-md);
   margin-block-start: var(--space-md);
 }
-.pn-provisional {
-  cursor: not-allowed;
-  outline: 2px dashed rgb(var(--atm-ink) / 0.55);
-  outline-offset: 4px;
-  box-shadow: none;
+.pn-pronto {
+  margin-block-start: 0;
 }
-.pn-provisional:hover {
-  transform: none;
-  box-shadow: none;
-}
-.pn-provisional-nota {
-  font-size: var(--text-micro);
-  letter-spacing: 0.04em;
+.pn-pronto-nota {
+  font-size: var(--text-meta);
   color: rgb(var(--atm-ink-soft));
 }
 .pn-reservar {
@@ -392,13 +407,23 @@ section[data-momento="navidad-entrada"][data-oscura="true"] .momento-titulo {
 }
 .pn-crece-fila {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 2px;
 }
 .pn-crece-pieza {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
   inline-size: 30%;
-  max-inline-size: 104px;
+  max-inline-size: 110px;
+  text-align: center;
+}
+.pn-crece-nombre {
+  font-size: var(--text-micro);
+  line-height: 1.2;
+  color: rgb(var(--atm-ink));
 }
 .pn-crece-pieza .sticker {
   inline-size: 100%;
@@ -407,6 +432,7 @@ section[data-momento="navidad-entrada"][data-oscura="true"] .momento-titulo {
   font-family: var(--font-voz);
   font-size: 1.8rem;
   line-height: 1;
+  margin-block-start: 9%;
   color: rgb(var(--atm-accent));
 }
 .pn-crece-leyenda {

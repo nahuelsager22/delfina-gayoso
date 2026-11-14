@@ -78,11 +78,12 @@ export function CapasEdicion() {
     return () => io.disconnect();
   }, [ruta]);
 
-  // Las variantes se leen también en un build servido (segunda exploración): es lo que deja
-  // medir cada combinación sobre el build real. El panel para cambiarlas sigue siendo sólo de
-  // desarrollo. Al elegir la dirección, esto se va con las demás opciones.
+  // Las elecciones guardadas en el navegador (las del panel) se leen SÓLO donde hay panel: en
+  // desarrollo y en la rama de exploración. En la propuesta elegida (`delfina-preview-01`)
+  // se ve siempre `BASE`, la selección de Delfina: una elección vieja guardada en un celular
+  // no puede reemplazarla.
   useEffect(() => {
-    cargarVariantes();
+    if (EXPLORAR) cargarVariantes();
   }, []);
 
   useEffect(() => {

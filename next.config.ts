@@ -1,12 +1,17 @@
 import type { NextConfig } from "next";
 
-/** Los Preview de la rama de prueba (`delfina-preview-01`) encienden la edición y su panel de
- *  exploración sin tocar el dashboard de Vercel: `VERCEL_ENV` y `VERCEL_GIT_COMMIT_REF` son
- *  variables de sistema que Vercel define en cada build. Producción (`main`) y cualquier otra
- *  rama quedan como siempre. Si una variable se define a mano (en `.env.local` o en Vercel),
- *  ese valor manda. */
-const RAMA_DE_PRUEBA =
-  process.env.VERCEL_ENV === "preview" && process.env.VERCEL_GIT_COMMIT_REF === "delfina-preview-01";
+/** Los Preview de las ramas de prueba encienden la edición sin tocar el dashboard de Vercel:
+ *  `VERCEL_ENV` y `VERCEL_GIT_COMMIT_REF` son variables de sistema que Vercel define en cada
+ *  build. Producción (`main`) y cualquier otra rama quedan como siempre. Si una variable se
+ *  define a mano (en `.env.local` o en Vercel), ese valor manda.
+ *
+ *  Dos ramas, dos papeles (2026-11-14):
+ *  · `delfina-preview-01` — la propuesta que eligió Delfina, SIN panel: quien entra ve
+ *    exactamente su selección (ver `BASE` en `app/_edicion/navidad/variantes.ts`).
+ *  · `delfina-merry-christmas` — la exploración completa, CON panel y todas las alternativas. */
+const RAMA = process.env.VERCEL_ENV === "preview" ? (process.env.VERCEL_GIT_COMMIT_REF ?? "") : "";
+const RAMA_DE_PRUEBA = RAMA === "delfina-preview-01" || RAMA === "delfina-merry-christmas";
+const RAMA_DE_EXPLORACION = RAMA === "delfina-merry-christmas";
 
 const nextConfig: NextConfig = {
   // La bandera de la edición se escribe en el código al compilar, y no se lee en ejecución,
@@ -14,11 +19,11 @@ const nextConfig: NextConfig = {
   // al build. Cambiarla exige volver a compilar (Bloque 12).
   //
   // `EDICION_NAVIDAD_EXPLORAR` suma, sobre la edición encendida, el panel de variantes y las
-  // tres ondas para compararlas en un deployment de prueba (Preview de `delfina-preview-01`).
+  // tres ondas para compararlas en la rama de exploración (`delfina-merry-christmas`).
   // En desarrollo ya están siempre. Se retira junto con las variantes al elegir la dirección.
   env: {
     EDICION_NAVIDAD: process.env.EDICION_NAVIDAD ?? (RAMA_DE_PRUEBA ? "1" : ""),
-    EDICION_NAVIDAD_EXPLORAR: process.env.EDICION_NAVIDAD_EXPLORAR ?? (RAMA_DE_PRUEBA ? "1" : ""),
+    EDICION_NAVIDAD_EXPLORAR: process.env.EDICION_NAVIDAD_EXPLORAR ?? (RAMA_DE_EXPLORACION ? "1" : ""),
   },
   images: {
     // Las fotos que Delfi suba al CMS se sirven desde la CDN de Sanity y siguen pasando
